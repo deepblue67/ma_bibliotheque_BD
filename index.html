@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ma Bibliothèque BD</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Archivo:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-row">
+      <h1 class="brand">MA BIBLIOTHÈQUE BD</h1>
+      <span id="stats" class="stats">…</span>
+    </div>
+
+    <div class="controls">
+      <div class="field">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="search-title" type="text" placeholder="Rechercher un titre…" autocomplete="off">
+      </div>
+      <div class="field">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        <input id="search-author" type="text" placeholder="Auteur…" autocomplete="off">
+      </div>
+      <div class="chips">
+        <button class="chip" id="sort-az" data-active="true">A → Z</button>
+        <button class="chip toggle" id="filter-read">Lus</button>
+        <button class="chip toggle" id="filter-unread">Non lus</button>
+        <button class="chip toggle" id="filter-fav">★ Favoris</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div id="empty-state" class="empty-state" hidden>Aucune BD ne correspond à ta recherche.</div>
+  <div id="grid" class="grid"></div>
+  <div id="sync-note" class="sync-note"></div>
+</main>
+
+<div id="overlay" class="overlay" hidden>
+  <div id="sheet" class="sheet" role="dialog" aria-modal="true">
+    <button id="sheet-close" class="sheet-close" aria-label="Fermer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="sheet-body">
+      <img id="sheet-cover" class="sheet-cover" alt="">
+      <div class="sheet-info">
+        <div id="sheet-title" class="sheet-title"></div>
+        <div id="sheet-author" class="sheet-author"></div>
+        <div id="sheet-meta" class="sheet-meta"></div>
+        <div class="sheet-actions">
+          <button id="btn-read" class="btn btn-outline">Marquer comme lu</button>
+          <button id="btn-fav" class="btn btn-outline">★ Ajouter aux favoris</button>
+        </div>
+        <div class="sheet-volumes">
+          <div class="sheet-volumes-label">Tomes</div>
+          <ol id="sheet-volume-list" class="volume-list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
