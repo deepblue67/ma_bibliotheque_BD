@@ -142,3 +142,4 @@ Ou plus simple : pousser directement sur GitHub Pages (qui sert en https, aucun 
 - Choix du mode de publication GitHub : Christophe pousse lui-même (pas d'accès token donné à Claude).
 - Les couvertures ont d'abord été prévues dans le dépôt Git, puis déplacées vers Supabase Storage après retour de Christophe ("trop de covers à déposer sous git").
 - Design retenu : direction "A — Kiosque BD" (comic pulpe), parmi 4 propositions.
+- Bug corrigé : la fiche détail (`#overlay`) restait affichée après clic sur fermer / clic hors-fiche. Cause : `.overlay { display:flex }` dans `style.css` écrasait le `display:none` natif associé à l'attribut HTML `hidden` (une règle CSS d'auteur passe toujours devant celle du navigateur). Fix : ajout de `.overlay[hidden] { display: none; }`.
