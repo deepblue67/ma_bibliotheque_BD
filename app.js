@@ -8,6 +8,11 @@
     activeId: null,
   };
 
+  function coverUrl(filename) {
+    if (!filename) return "";
+    return (window.BD_IMAGE_BASE || "covers/") + filename;
+  }
+
   var els = {
     grid: document.getElementById("grid"),
     empty: document.getElementById("empty-state"),
@@ -153,7 +158,7 @@
     var img = document.createElement("img");
     img.loading = "lazy";
     img.alt = entry.title;
-    img.src = entry.cover ? ("covers/" + entry.cover) : "";
+    img.src = coverUrl(entry.cover);
     if (!entry.cover) img.style.display = "none";
     coverWrap.appendChild(img);
 
@@ -185,7 +190,7 @@
     var entry = state.catalog.find(function (e) { return e.id === id; });
     if (!entry) return;
     state.activeId = id;
-    els.sheetCover.src = entry.cover ? ("covers/" + entry.cover) : "";
+    els.sheetCover.src = coverUrl(entry.cover);
     els.sheetCover.alt = entry.title;
     els.sheetTitle.textContent = entry.title;
     els.sheetAuthor.textContent = entry.author || "Auteur non renseigné";

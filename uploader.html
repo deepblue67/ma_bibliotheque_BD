@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Envoi des couvertures vers Supabase — usage unique</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px; color: #222; }
+  h1 { font-size: 20px; }
+  p { color: #555; line-height: 1.5; }
+  label { display: block; margin-top: 16px; font-weight: 600; font-size: 13px; }
+  input[type=text], input[type=password] { width: 100%; padding: 8px; font-size: 14px; box-sizing: border-box; }
+  button { margin-top: 20px; padding: 10px 18px; font-size: 14px; font-weight: 700; cursor: pointer; }
+  #log { margin-top: 20px; font-family: monospace; font-size: 12px; white-space: pre-wrap; background: #f5f5f5; padding: 12px; border-radius: 6px; max-height: 320px; overflow-y: auto; }
+  .warn { color: #a33; font-weight: 600; }
+</style>
+</head>
+<body>
+<h1>Envoi unique des couvertures vers Supabase Storage</h1>
+<p>Cette page sert une seule fois, en local, pour transférer les 852 images du dossier <code>covers/</code> vers ton bucket Supabase. Une fois l'envoi terminé, tu peux fermer cette page et <strong>supprimer ce fichier</strong> — il ne fait pas partie du site final et ne doit jamais être publié sur GitHub.</p>
+<p class="warn">La clé "service_role" que tu colles ci-dessous est secrète (contrairement à la clé "anon" du site) : ne la mets jamais dans le code du site, ne la commite jamais sur GitHub. Elle ne sert qu'ici, dans ton navigateur, pour cet envoi ponctuel.</p>
+
+<label for="url">Project URL</label>
+<input id="url" type="text" value="https://aotudxyifqhyazluxhko.supabase.co">
+
+<label for="key">Clé "service_role" (Project Settings → API Keys)</label>
+<input id="key" type="password" placeholder="colle la clé service_role ici">
+
+<label for="folder">Dossier des couvertures</label>
+<input id="folder" type="file" webkitdirectory multiple>
+
+<button id="go">Envoyer vers Supabase</button>
+
+<div id="log"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+  var logEl = document.getElementById("log");
+  function log(msg) { logEl.textContent += msg + "\n"; logEl.scrollTop = logEl.scrollHeight; }
+
+  document.getElementById("go").addEventListener("click", async function () {
+    var url = document.getElementById("url").value.trim();
+    var key = document.getElementById("key").value.trim();
+    var files = Array.from(document.getElementById("folder").files).filter(function (f) {
+      return /\.(jpg|jpeg|png)$/i.test(f.name);
+    });
+    if (!url || !key) { alert("Renseigne l'URL et la clé service_role."); return; }
+    if (!files.length) { alert("Sélectionne le dossier covers (avec les .jpg dedans)."); return; }
+
+    var client = window.supabase.createClient(url, key);
+    log("Bucket 'covers' : vérification…");
+
+    var ok = 0, fail = 0;
+    for (var i = 0; i < files.length; i++) {
+      var f = files[i];
+      var res = await client.storage.from("covers").upload(f.name, f, { upsert: true, contentType: f.type || "image/jpeg" });
+      if (res.error) { fail++; log("✗ " + f.name + " — " + res.error.message); }
+      else { ok++; if (ok % 25 === 0 || i === files.length - 1) log("✓ " + ok + " / " + files.length + " envoyées…"); }
+    }
+    log("\nTerminé : " + ok + " envoyées, " + fail + " échecs sur " + files.length + ".");
+    if (fail === 0) log("Tu peux fermer et supprimer cette page.");
+  });
+</script>
+</body>
+</html>
