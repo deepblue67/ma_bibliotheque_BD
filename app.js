@@ -29,6 +29,7 @@
     overlay: document.getElementById("overlay"),
     sheetClose: document.getElementById("sheet-close"),
     sheetCover: document.getElementById("sheet-cover"),
+    sheetCoverZoom: document.getElementById("sheet-cover-zoom"),
     sheetTitle: document.getElementById("sheet-title"),
     sheetAuthor: document.getElementById("sheet-author"),
     sheetMeta: document.getElementById("sheet-meta"),
@@ -36,6 +37,9 @@
     btnRead: document.getElementById("btn-read"),
     btnFav: document.getElementById("btn-fav"),
     syncNote: document.getElementById("sync-note"),
+    zoomOverlay: document.getElementById("zoom-overlay"),
+    zoomImg: document.getElementById("zoom-img"),
+    zoomClose: document.getElementById("zoom-close"),
   };
 
   // ---------- local cache ----------
@@ -249,6 +253,18 @@
 
     var badges = document.createElement("div");
     badges.className = "card-badges";
+    if (entry.cover) {
+      var zoomBtn = document.createElement("button");
+      zoomBtn.type = "button";
+      zoomBtn.className = "magnify-btn";
+      zoomBtn.setAttribute("aria-label", "Agrandir la couverture");
+      zoomBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
+      zoomBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        openZoom(coverUrl(entry.cover), entry.title);
+      });
+      badges.appendChild(zoomBtn);
+    }
     if (fav.is_favorite) {
       var bf = document.createElement("span"); bf.className = "badge fav"; bf.textContent = "★"; badges.appendChild(bf);
     }
@@ -294,14 +310,37 @@
     state.activeVolIdx = idx;
     var vol = entry.volumes[idx];
     var cover = (vol && vol.cover) || entry.cover;
+    var alt = entry.title + (vol ? " — " + vol.label : "");
     if (cover) {
       els.sheetCover.src = coverUrl(cover);
       els.sheetCover.style.display = "";
+      els.sheetCoverZoom.hidden = false;
+      state.activeCoverUrl = coverUrl(cover);
     } else {
       els.sheetCover.removeAttribute("src");
       els.sheetCover.style.display = "none";
+      els.sheetCoverZoom.hidden = true;
+      state.activeCoverUrl = null;
     }
-    els.sheetCover.alt = entry.title + (vol ? " — " + vol.label : "");
+    els.sheetCover.alt = alt;
+    state.activeCoverAlt = alt;
+  }
+
+  // ---------- zoom overlay ----------
+  function openZoom(url, alt) {
+    if (!url) return;
+    els.zoomImg.src = url;
+    els.zoomImg.alt = alt || "";
+    els.zoomOverlay.hidden = false;
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeZoom() {
+    els.zoomOverlay.hidden = true;
+    els.zoomImg.removeAttribute("src");
+    // le sheet reste ouvert derrière le zoom : ne restaure le scroll que si
+    // aucune autre couche modale n'est ouverte.
+    if (els.overlay.hidden) document.body.style.overflow = "";
   }
 
   function renderVolumeList() {
@@ -361,6 +400,7 @@
   }
 
   function closeSheet() {
+    if (!els.zoomOverlay.hidden) closeZoom();
     els.overlay.hidden = true;
     state.activeId = null;
     document.body.style.overflow = "";
@@ -411,9 +451,19 @@
 
   els.sheetClose.addEventListener("click", closeSheet);
   els.overlay.addEventListener("click", function (e) { if (e.target === els.overlay) closeSheet(); });
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeSheet(); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape") return;
+    if (!els.zoomOverlay.hidden) closeZoom();
+    else closeSheet();
+  });
   els.btnRead.addEventListener("click", toggleAllVolumesRead);
   els.btnFav.addEventListener("click", toggleFavorite);
+
+  els.sheetCoverZoom.addEventListener("click", function () {
+    openZoom(state.activeCoverUrl, state.activeCoverAlt);
+  });
+  els.zoomClose.addEventListener("click", closeZoom);
+  els.zoomOverlay.addEventListener("click", function (e) { if (e.target === els.zoomOverlay) closeZoom(); });
 
   // ---------- boot ----------
   state.favorites = loadLocalFavorites();
