@@ -185,7 +185,9 @@
 
   // ---------- data ----------
   function loadCatalog() {
-    fetch("data/catalog.json")
+    // cache: "no-store" + un paramètre unique évitent qu'un navigateur (ou un cache
+    // intermédiaire) serve une ancienne version de catalog.json après une mise à jour.
+    fetch("data/catalog.json?t=" + Date.now(), { cache: "no-store" })
       .then(function (r) { return r.json(); })
       .then(function (data) {
         state.catalog = data.entries;
