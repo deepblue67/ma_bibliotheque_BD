@@ -28,6 +28,10 @@ ma-bibliotheque-bd/
 ├── site.webmanifest      # manifest PWA (icônes Android/Chrome, nom, couleurs)
 ├── icons/                 # déclinaisons de tailles de l'icône (apple-touch-icon-*, favicon-*,
 │                        #   android-chrome-*) — voir section dédiée plus bas
+├── genre_map.json         # id -> {genres, confidence, source} — modifiable à la main,
+│                        #   lu par build_public_catalog_v2.py (voir section "Genres")
+├── genre_taxonomy.json    # liste fixe des genres, informatif (la vraie source pour l'appli
+│                        #   est le tableau GENRES dans app.js)
 ├── data/
 │   └── catalog.json     # catalogue généré (852 entrées) — voir schéma plus bas
 ├── volume_covers/        # copie locale des couvertures (une par TOME, ~6275 fichiers)
@@ -54,7 +58,8 @@ Depuis le passage au **suivi de lecture par tome**, chaque volume a sa propre co
     { "label": "L'Île des Mers gelées", "cover": "Thorgal_002.jpg" }
   ],
   "cover": "Thorgal_001.jpg",       // = volumes[0].cover, utilisé pour la vignette de la grille
-  "parent_series": null             // ex: "Thorgal" pour l'entrée "Thorgal - Les mondes de Thorgal"
+  "parent_series": null,            // ex: "Thorgal" pour l'entrée "Thorgal - Les mondes de Thorgal"
+  "genre": ["Fantasy", "Aventure"]  // 0 à 2 valeurs, tirées de la liste fixe — voir section "Genres"
 }
 ```
 
@@ -156,11 +161,27 @@ Les BD sources vivent dans `D:\Christophe\Mes BD` (dossier = un titre, fichiers 
    - → `final_catalog.json` (852 entrées finales, 845 avec auteur).
 7. **`fix_ascii_covers.py`** — (historique) renomme en ASCII tout nom de couverture par TITRE qui en contenait — n'est plus utilisé depuis le passage aux couvertures par tome (l'étape 8 ci-dessous produit directement des noms ASCII).
 8. **`extract_volume_covers.py`** — extrait une couverture JPEG pour **chaque tome** de chaque titre (pas seulement le 1er), avec un nom de fichier ASCII généré directement (`<prefixe_titre_ascii>_<NNN>.jpg`, préfixe dédupliqué stocké dans `volume_prefix_map.json`). Même logique PyMuPDF/zipfile+Pillow que `extract_covers.py`, même contrainte `.cbr` non supporté, même fonctionnement par lots resumable (`volume_covers_manifest.json` comme checkpoint, appelé en boucle avec un budget de ~150s). → `volume_covers/*.jpg` (~6275 fichiers sur 6323 tomes ; le reste = `.cbr` ou fichiers illisibles, `cover: null` dans le catalogue).
-9. **`build_public_catalog_v2.py`** — nettoie les noms de tomes affichés (retire le préfixe `<Série>_Tome_NN_`) et associe à chaque tome sa couverture individuelle (`volume_covers_manifest.json`) → `catalog_public_v2.json`, copié vers `data/catalog.json` du site. `volumes` y est un tableau d'objets `{label, cover}` (voir schéma plus haut) au lieu d'un simple tableau de libellés.
+9. **`build_public_catalog_v2.py`** — nettoie les noms de tomes affichés (retire le préfixe `<Série>_Tome_NN_`) et associe à chaque tome sa couverture individuelle (`volume_covers_manifest.json`) → `catalog_public_v2.json`, copié vers `data/catalog.json` du site. `volumes` y est un tableau d'objets `{label, cover}` (voir schéma plus haut) au lieu d'un simple tableau de libellés. Depuis l'ajout du genre, ce même script lit aussi `genre_map.json` (voir section "Genres" ci-dessous) et ajoute le champ `genre` à chaque entrée.
 
-**Pour ajouter de nouvelles BD à l'avenir** : relancer le pipeline à partir de `scan.py` (le plus fiable), puis `extract_volume_covers.py` et `build_public_catalog_v2.py`. Envoyer les nouveaux fichiers de `volume_covers/` sur le bucket Supabase `covers` via `uploader.html` (`upsert:true`, donc rejouer l'envoi complet ne casse rien). Rien d'autre à changer : `app.js` lit `data/catalog.json` dynamiquement.
+**Pour ajouter de nouvelles BD à l'avenir** : relancer le pipeline à partir de `scan.py` (le plus fiable), puis `extract_volume_covers.py` et `build_public_catalog_v2.py`. Envoyer les nouveaux fichiers de `volume_covers/` sur le bucket Supabase `covers` via `uploader.html` (`upsert:true`, donc rejouer l'envoi complet ne casse rien). Penser aussi à classifier le genre des nouveaux titres dans `genre_map.json` (sinon ils sortent avec `"genre": []`, donc invisibles au filtre genre) — le plus simple est de demander à Claude de le faire lors de la session qui traite l'ajout. Rien d'autre à changer : `app.js` lit `data/catalog.json` dynamiquement.
+
+## Genres
+
+Chaque titre a 0 à 2 genres (`catalog.json` → champ `genre`, tableau), tirés d'une **liste fixe** (pas de texte libre) — actuellement :
+
+`Aventure, Biographie, Documentaire, Drame / Chronique sociale, Fantastique / Horreur, Fantasy, Guerre, Historique, Humour, Jeunesse, Policier / Thriller, Science-fiction, Super-héros, Western`
+
+Cette liste vit à deux endroits qui doivent rester synchronisés : `genre_taxonomy.json` (à la racine du dossier du site, purement informatif) et le tableau `GENRES` en haut de `app.js` (qui peuple réellement le menu déroulant de filtre). **Pour ajouter un genre à la liste** : l'ajouter aux deux, puis reclassifier les titres concernés dans `genre_map.json`.
+
+**Comment la classification initiale a été faite** (852 titres, aucune info de genre dans les métadonnées des fichiers) :
+1. **Passe 1 — connaissance générale** : le catalogue a été réparti en lots, chacun classifié par un agent à partir de sa connaissance des séries BD, avec un niveau de confiance ("high" seulement si la série est vraiment reconnue). 342 titres résolus avec confiance.
+2. **Passe 2 — recherche web ciblée** : pour les ~510 titres restants (peu/pas connus, souvent avec `author: null`), des agents ont cherché chaque titre sur bedetheque.com, bdgest.com, Wikipedia, etc. Le quota de recherche web de la session a été atteint avant la fin (partagé entre tous les agents en parallèle) : 174 titres ont pu être vérifiés en ligne ; pour le reste, l'estimation de la passe 1 a été conservée telle quelle (non vérifiée) ; 46 titres restent sans genre du tout (aucune piste trouvable — souvent des titres génériques ou très confidentiels).
+
+Résultat : `genre_map.json` (id → `{genres, confidence, source}`) — `confidence: "low"` signale un genre à prendre avec réserve. Contrairement aux autres manifestes du pipeline (qui restent sur la VM Linux locale, invisibles depuis Windows), **`genre_map.json` et `genre_taxonomy.json` sont placés directement à la racine du dossier `ma-bibliotheque-bd`**, donc visibles et modifiables dans l'Explorateur — c'est fait exprès, puisque c'est le seul fichier du pipeline pensé pour être corrigé à la main. Si tu repères une erreur en parcourant l'appli, le plus simple reste de me le signaler, mais tu peux aussi éditer directement la ligne correspondante dans `genre_map.json` toi-même — il suffit ensuite de redemander à Claude de relancer `build_public_catalog_v2.py` (script resté côté VM) pour régénérer `data/catalog.json`. Ces deux fichiers ne sont pas gitignorés : ils partent avec le reste du dépôt lors du push (ce sont de petits fichiers texte, sans problème de volume comme les couvertures).
 
 ## Points restés ouverts (au moment de la rédaction)
+
+**46 BD sans genre identifié** (voir section "Genres" ci-dessus pour la méthode) — champ `genre: []`, invisibles au filtre genre tant qu'elles n'ont pas été classées manuellement dans `genre_map.json`. Par ailleurs, une bonne partie des genres non vérifiés en ligne (`confidence: "low"` dans `genre_map.json`) restent des estimations à corriger au fil de l'eau si une erreur saute aux yeux.
 
 **7 BD sans auteur identifié**, même après recherche : *1984, Arena, Arsène Lupin, Climax, Forbidden Zone, RAF Royal Air Force, Utopie*. Champ `author` à `null` dans le catalogue — l'appli affiche "Auteur non renseigné".
 
@@ -202,3 +223,4 @@ Ou plus simple : pousser directement sur GitHub Pages (qui sert en https, aucun 
 - Évolution majeure : passage du suivi "lu" du niveau titre au niveau **tome**, avec calcul automatique du statut du titre (tous les tomes lus ⇒ titre lu) et un bouton "Tout marquer comme lu" en raccourci. Ajout d'une couverture par tome (extraction étendue de 852 à 6323 images) affichée en cliquant sur un tome dans la fiche détail (remplace la grande couverture en haut). Nouvelle table Supabase `bd_volume_status` ; `bd_status` ne gère plus que les favoris.
 - Fonctionnalité ajoutée : icône d'écran d'accueil iPad/iPhone/Android (`apple-touch-icon`, favicon, manifest PWA). Plusieurs séries de propositions visuelles soumises à Christophe (styles "kiosque BD" variés, puis piste festive écartée par Christophe car hors ton de l'appli, puis pistes façon bulle de bande dessinée avec "?"/"!") ; design final retenu : bulle "BD" rouge avec petite bulle "?!" en accent dans le coin.
 - Fonctionnalité ajoutée : loupe d'agrandissement sur chaque couverture (grille + fiche détail). Un petit bouton rond (icône loupe) en haut à droite de chaque couverture ouvre un aperçu plein écran (fond sombre, image agrandie, bouton fermer, clic hors-image ou touche Échap pour fermer). Dans la fiche détail, la loupe agrandit toujours la couverture du tome actuellement affiché (celle sur laquelle on a cliqué dans la liste des tomes). Choix assumé : réutilise les couvertures existantes (~500px de large, déjà stockées dans Supabase Storage) sans ré-extraction ni stockage de versions haute résolution — l'agrandissement se fait uniquement à l'affichage (CSS `max-width`/`max-height`), donc qualité limitée à la résolution source mais aucun coût de stockage/traitement supplémentaire.
+- Fonctionnalité ajoutée : genre par titre (menu déroulant de filtre + tags affichés dans la fiche détail), liste fixe de 14 genres (voir section "Genres"). Classification des 852 titres en deux passes (connaissance générale, puis recherche web ciblée sur les titres incertains) — 806 titres avec au moins un genre, 46 sans genre faute de piste exploitable ; une partie des genres reste une estimation non vérifiée en ligne (quota de recherche web de la session atteint avant la fin), à corriger au fil de l'eau. Christophe a explicitement écarté le texte libre au profit d'une liste fixe extensible.

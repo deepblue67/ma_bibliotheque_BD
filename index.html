@@ -23,7 +23,7 @@
 <link rel="manifest" href="site.webmanifest">
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Archivo:wght@500;600;700;800&display=swap">
-<link rel="stylesheet" href="style.css?v=3">
+<link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
 
@@ -42,6 +42,12 @@
       <div class="field">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
         <input id="search-author" type="text" placeholder="Auteur…" autocomplete="off">
+      </div>
+      <div class="field field-select">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19V6a2 2 0 0 1 2-2h9l5 5v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M14 4v5h5"/></svg>
+        <select id="filter-genre">
+          <option value="">Tous les genres</option>
+        </select>
       </div>
       <div class="chips">
         <button class="chip" id="sort-az" data-active="true">A → Z</button>
@@ -75,6 +81,7 @@
         <div id="sheet-title" class="sheet-title"></div>
         <div id="sheet-author" class="sheet-author"></div>
         <div id="sheet-meta" class="sheet-meta"></div>
+        <div id="sheet-genres" class="sheet-genres"></div>
         <div class="sheet-actions">
           <button id="btn-read" class="btn btn-outline">Marquer comme lu</button>
           <button id="btn-fav" class="btn btn-outline">★ Ajouter aux favoris</button>
@@ -97,6 +104,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="config.js?v=2"></script>
-<script src="app.js?v=4"></script>
+<script src="app.js?v=5"></script>
 </body>
 </html>

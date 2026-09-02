@@ -86,6 +86,22 @@ html, body {
 }
 .field input::placeholder { color: var(--muted); }
 
+.field-select select {
+  border: none;
+  outline: none;
+  font-family: 'Archivo', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  width: 100%;
+  min-width: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.field-select { flex: 0 1 190px; }
+
 .chips { display: flex; gap: 8px; flex-wrap: wrap; }
 
 .chip {
@@ -263,6 +279,18 @@ main { max-width: 1400px; margin: 0 auto; padding: 32px 20px 80px; }
 .sheet-title { font-family: 'Bangers', cursive; font-size: 26px; color: var(--ink); line-height: 1.1; }
 .sheet-author { font-size: 13.5px; font-weight: 700; color: #555; margin-top: 4px; }
 .sheet-meta { font-size: 12.5px; font-weight: 700; color: var(--ink); margin-top: 10px; }
+
+.sheet-genres { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.sheet-genres[hidden] { display: none; }
+.genre-tag {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 2px solid var(--ink);
+  background: var(--tan);
+  color: var(--ink);
+}
 
 .sheet-actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
 

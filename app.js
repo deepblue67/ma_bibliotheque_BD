@@ -1,11 +1,19 @@
 (function () {
   "use strict";
 
+  // Liste fixe de genres (voir README) — s'agrandira au fil des ajouts, mais reste
+  // une liste fermée : pas de saisie libre, uniquement ces valeurs dans catalog.json.
+  var GENRES = [
+    "Aventure", "Biographie", "Documentaire", "Drame / Chronique sociale",
+    "Fantastique / Horreur", "Fantasy", "Guerre", "Historique", "Humour",
+    "Jeunesse", "Policier / Thriller", "Science-fiction", "Super-héros", "Western"
+  ];
+
   var state = {
     catalog: [],
     favorites: {},     // titleId -> { is_favorite }
     volumeRead: {},    // "titleId::idx" -> true
-    filters: { title: "", author: "", read: false, unread: false, fav: false },
+    filters: { title: "", author: "", read: false, unread: false, fav: false, genre: "" },
     activeId: null,
     activeVolIdx: 0,
   };
@@ -23,6 +31,7 @@
     stats: document.getElementById("stats"),
     searchTitle: document.getElementById("search-title"),
     searchAuthor: document.getElementById("search-author"),
+    filterGenre: document.getElementById("filter-genre"),
     filterRead: document.getElementById("filter-read"),
     filterUnread: document.getElementById("filter-unread"),
     filterFav: document.getElementById("filter-fav"),
@@ -33,6 +42,7 @@
     sheetTitle: document.getElementById("sheet-title"),
     sheetAuthor: document.getElementById("sheet-author"),
     sheetMeta: document.getElementById("sheet-meta"),
+    sheetGenres: document.getElementById("sheet-genres"),
     volumeList: document.getElementById("sheet-volume-list"),
     btnRead: document.getElementById("btn-read"),
     btnFav: document.getElementById("btn-fav"),
@@ -215,10 +225,20 @@
     var read = isTitleRead(entry);
     if (state.filters.title && normalize(entry.title).indexOf(normalize(state.filters.title)) === -1) return false;
     if (state.filters.author && normalize(entry.author || "").indexOf(normalize(state.filters.author)) === -1) return false;
+    if (state.filters.genre && (entry.genre || []).indexOf(state.filters.genre) === -1) return false;
     if (state.filters.read && !read) return false;
     if (state.filters.unread && read) return false;
     if (state.filters.fav && !fav.is_favorite) return false;
     return true;
+  }
+
+  function populateGenreFilter() {
+    GENRES.forEach(function (g) {
+      var opt = document.createElement("option");
+      opt.value = g;
+      opt.textContent = g;
+      els.filterGenre.appendChild(opt);
+    });
   }
 
   // ---------- render ----------
@@ -299,11 +319,25 @@
     els.sheetTitle.textContent = entry.title;
     els.sheetAuthor.textContent = entry.author || "Auteur non renseigné";
     els.sheetMeta.textContent = entry.volume_count + (entry.volume_count > 1 ? " tomes" : " tome") + (entry.parent_series ? " · série liée à " + entry.parent_series : "");
+    renderSheetGenres(entry);
     setActiveCover(entry, 0);
     renderVolumeList();
     renderSheetActions();
     els.overlay.hidden = false;
     document.body.style.overflow = "hidden";
+  }
+
+  function renderSheetGenres(entry) {
+    els.sheetGenres.innerHTML = "";
+    var genres = entry.genre || [];
+    if (!genres.length) { els.sheetGenres.hidden = true; return; }
+    els.sheetGenres.hidden = false;
+    genres.forEach(function (g) {
+      var tag = document.createElement("span");
+      tag.className = "genre-tag";
+      tag.textContent = g;
+      els.sheetGenres.appendChild(tag);
+    });
   }
 
   function setActiveCover(entry, idx) {
@@ -437,6 +471,7 @@
   // ---------- wiring ----------
   els.searchTitle.addEventListener("input", function () { state.filters.title = els.searchTitle.value; renderGrid(); });
   els.searchAuthor.addEventListener("input", function () { state.filters.author = els.searchAuthor.value; renderGrid(); });
+  els.filterGenre.addEventListener("change", function () { state.filters.genre = els.filterGenre.value; renderGrid(); });
 
   function toggleChip(el, key) {
     el.addEventListener("click", function () {
@@ -466,6 +501,7 @@
   els.zoomOverlay.addEventListener("click", function (e) { if (e.target === els.zoomOverlay) closeZoom(); });
 
   // ---------- boot ----------
+  populateGenreFilter();
   state.favorites = loadLocalFavorites();
   state.volumeRead = loadLocalVolumeRead();
   loadCatalog();
