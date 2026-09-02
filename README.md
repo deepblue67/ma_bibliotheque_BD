@@ -1,6 +1,6 @@
 # Ma Bibliothèque BD
 
-Catalogue personnel de bandes dessinées de Christophe : recherche par titre/auteur, marquage "lu" et favoris synchronisés entre iPhone, iPad et PC. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
+Catalogue personnel de bandes dessinées de Christophe : recherche par titre/auteur, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
 
 > **À faire vivre** : ce fichier doit être mis à jour à chaque changement fonctionnel, visuel ou technique. Il sert de mémoire au propriétaire du projet et de point de reprise rapide pour Claude/Codex lors d'une prochaine session.
 
@@ -9,8 +9,8 @@ Catalogue personnel de bandes dessinées de Christophe : recherche par titre/aut
 - **Site** : HTML/CSS/JS vanilla, aucun framework, aucune étape de build. Hébergé sur GitHub Pages.
 - **Design** : direction "Kiosque BD" — style comic pulpe (police Bangers pour les titres, Archivo pour le reste, palette crème/rouge/noir, fond à trame demi-teinte dans le header). Choisie parmi 4 propositions présentées via un canvas Design (voir historique de conversation si besoin de revoir les 3 autres directions écartées : "Bibliothèque" épurée, "Atelier Noir" sombre, "Fiche d'Archive" catalogue).
 - **Données** : `data/catalog.json`, généré une fois par un pipeline de scripts Python (voir plus bas), à régénérer à chaque ajout/retrait de BD dans la collection source.
-- **Couvertures** : hébergées sur **Supabase Storage** (pas dans le dépôt Git — trop de fichiers, voir section dédiée), extraites automatiquement depuis la première page de chaque BD.
-- **Synchro "lu"/"favoris"** : table Postgres sur **Supabase**, lue/écrite en direct par le navigateur (clé publique "anon"), avec Realtime pour propager les changements entre appareils sans recharger la page. Pas d'authentification (usage personnel mono-utilisateur).
+- **Couvertures** : hébergées sur **Supabase Storage** (pas dans le dépôt Git — trop de fichiers, voir section dédiée), **une par tome** (extraites automatiquement depuis la première page de chaque fichier PDF/cbz).
+- **Synchro "lu"/"favoris"** : deux tables Postgres sur **Supabase** (`bd_volume_status` pour le "lu" par tome, `bd_status` pour les favoris par titre), lues/écrites en direct par le navigateur (clé publique "anon"), avec Realtime pour propager les changements entre appareils sans recharger la page. Pas d'authentification (usage personnel mono-utilisateur).
 
 ## Structure des fichiers du site
 
@@ -19,45 +19,57 @@ ma-bibliotheque-bd/
 ├── index.html          # structure de la page (header recherche, grille, fiche détail)
 ├── style.css           # design "Kiosque BD", responsive (grid auto-fill, breakpoints mobile)
 ├── app.js              # toute la logique : chargement catalogue, recherche/filtres,
-│                        #   rendu grille + fiche détail, lu/favoris, sync Supabase
+│                        #   rendu grille + fiche détail, lu par tome (calcul du "lu" titre),
+│                        #   favoris par titre, aperçu couverture par tome, sync Supabase
 ├── config.js            # identifiants Supabase (URL + clé anon — publics, sans risque)
 │                        #   + BD_IMAGE_BASE (préfixe des couvertures sur Supabase Storage)
 ├── data/
 │   └── catalog.json     # catalogue généré (852 entrées) — voir schéma plus bas
-├── covers/               # copie locale des couvertures — GITIGNORÉ, ne sert qu'à
-│                        #   alimenter uploader.html, n'est PAS déployé
-├── uploader.html         # outil à usage unique pour envoyer les couvertures vers
-│                        #   Supabase Storage — GITIGNORÉ, ne doit jamais être publié
+├── volume_covers/        # copie locale des couvertures (une par TOME, ~6275 fichiers)
+│                        #   — GITIGNORÉ, ne sert qu'à alimenter uploader.html
+├── covers/               # ancien dossier (couverture par TITRE) — obsolète, gardé
+│                        #   gitignoré, peut être supprimé
+├── uploader.html         # outil pour envoyer les couvertures vers Supabase Storage
+│                        #   (sélectionner "volume_covers") — GITIGNORÉ, jamais publié
 └── .gitignore            # exclut covers/ et uploader.html
 ```
 
 ### Schéma d'une entrée de `data/catalog.json`
 
+Depuis le passage au **suivi de lecture par tome**, chaque volume a sa propre couverture (et plus seulement le titre) :
+
 ```json
 {
-  "id": "Thorgal",                 // slug utilisé comme clé primaire dans bd_status
+  "id": "Thorgal",                 // slug utilisé comme clé primaire dans bd_status ET comme préfixe des id de bd_volume_status
   "title": "Thorgal",
   "author": "Jean Van Hamme, Grzegorz Rosinski",
   "volume_count": 43,
-  "volumes": ["La Magicienne trahie", "L'Île des Mers gelées", "..."],
-  "cover": "Thorgal.jpg",           // nom de fichier sur Supabase Storage (bucket "covers")
+  "volumes": [
+    { "label": "La Magicienne trahie", "cover": "Thorgal_001.jpg" },
+    { "label": "L'Île des Mers gelées", "cover": "Thorgal_002.jpg" }
+  ],
+  "cover": "Thorgal_001.jpg",       // = volumes[0].cover, utilisé pour la vignette de la grille
   "parent_series": null             // ex: "Thorgal" pour l'entrée "Thorgal - Les mondes de Thorgal"
 }
 ```
+
+`cover` (au niveau tome ou titre) peut être `null` si l'extraction a échoué pour ce fichier (ex : `.cbr`, PDF corrompu) — l'appli affiche alors une case vide à la place de l'image.
 
 ## Backend Supabase
 
 - Projet : `ma-bibliotheque-bd` (org `deepblue67`), ref `aotudxyifqhyazluxhko`, région `eu-west-1` (Irlande).
 - Project URL : `https://aotudxyifqhyazluxhko.supabase.co`
-- La clé **anon** (publique, dans `config.js`) est protégée par les policies RLS ci-dessous — elle ne donne accès qu'à la table `bd_status` et à la lecture du bucket `covers`.
+- La clé **anon** (publique, dans `config.js`) est protégée par les policies RLS ci-dessous — elle ne donne accès qu'aux tables `bd_status` / `bd_volume_status` et à la lecture du bucket `covers`.
 - La clé **service_role** (secrète) n'est utilisée QUE ponctuellement dans `uploader.html`, en local, jamais commitée. Si besoin de la retrouver : Project Settings → API Keys.
 
-### Table `bd_status` (lu / favoris)
+### Table `bd_status` (favoris — au niveau du titre)
+
+Depuis le passage au suivi par tome, cette table ne gère plus que les **favoris**. La colonne `is_read` existe encore pour compat mais n'est plus utilisée par l'appli (le statut "lu" d'un titre est désormais calculé, voir plus bas).
 
 ```sql
 create table bd_status (
   id text primary key,              -- correspond à catalog.json[].id
-  is_read boolean not null default false,
+  is_read boolean not null default false,   -- non utilisée depuis le suivi par tome
   is_favorite boolean not null default false,
   updated_at timestamptz not null default now()
 );
@@ -71,6 +83,26 @@ create policy "public update" on bd_status for update using (true);
 alter publication supabase_realtime add table bd_status;
 ```
 
+### Table `bd_volume_status` (lu — au niveau du tome)
+
+```sql
+create table bd_volume_status (
+  id text primary key,              -- "<titleId>::<index 0-based>", ex: "Thorgal::0"
+  title_id text not null,
+  is_read boolean not null default false,
+  updated_at timestamptz not null default now()
+);
+
+alter table bd_volume_status enable row level security;
+create policy "public read" on bd_volume_status for select using (true);
+create policy "public upsert" on bd_volume_status for insert with check (true);
+create policy "public update" on bd_volume_status for update using (true);
+
+alter publication supabase_realtime add table bd_volume_status;
+```
+
+Le titre est affiché "Lu" dans l'appli quand **tous** ses tomes sont marqués lus (calculé côté client dans `app.js`, `isTitleRead()`) — rien à stocker côté titre pour ça.
+
 ### Bucket Storage `covers`
 
 ```sql
@@ -81,9 +113,9 @@ create policy "public read covers" on storage.objects
 for select using (bucket_id = 'covers');
 ```
 
-Pas de policy d'écriture publique : l'envoi des couvertures se fait une fois via `uploader.html` avec la clé service_role (qui contourne RLS), pas via le site public.
+Pas de policy d'écriture publique : l'envoi des couvertures se fait via `uploader.html` avec la clé service_role (qui contourne RLS), pas via le site public.
 
-**Contrainte importante** : les noms de fichiers dans le bucket doivent être **ASCII uniquement** (Supabase Storage rejette les accents avec une erreur `Invalid key`). C'est pour ça que `cover` dans catalog.json est un slug sans accents (ex: `Cedric.jpg`, pas `Cédric.jpg`) même si le `title` affiché garde ses accents.
+**Contrainte importante** : les noms de fichiers dans le bucket doivent être **ASCII uniquement** (Supabase Storage rejette les accents avec une erreur `Invalid key`). C'est pour ça que chaque `cover` dans catalog.json est un nom sans accents (ex: `Thorgal_001.jpg`) même si le `title`/`label` affiché garde ses accents.
 
 ## Pipeline de génération des données
 
@@ -100,10 +132,11 @@ Les BD sources vivent dans `D:\Christophe\Mes BD` (dossier = un titre, fichiers 
    - applique la logique d'auteur (`author_for()`) dans l'ordre : métadonnées PDF > connaissance générale > recherche agent > "non trouvé" ;
    - applique ~22 règles manuelles (dict `SPECIAL`) pour séparer les **vrais spin-offs** en entrées de catalogue distinctes (ex: `Donjon` → 6 cycles séparés, `Alix` → + Alix Senator/raconte/Origine/Odyssée, `Lucky Luke` → + Kid Lucky/HS/Vu par...) tout en **ignorant les doublons de scan** (ex: dossiers alternatifs de Tintin, double jeu PDF d'Astérix, compilations dupliquées de XIII) ;
    - → `final_catalog.json` (852 entrées finales, 845 avec auteur).
-7. **`build_public_catalog.py`** — nettoie les noms de tomes affichés (retire le préfixe `<Série>_Tome_NN_` des noms de fichiers) et produit le JSON allégé destiné au site → `catalog_public.json`, copié tel quel vers `data/catalog.json` du site.
-8. **`fix_ascii_covers.py`** — renomme en ASCII (sans accents) tout nom de couverture qui en contenait, met à jour `covers_manifest.json` et `final_catalog.json`/`catalog_public.json` en conséquence (nécessaire suite à l'échec initial de 188 uploads Supabase Storage sur des noms accentués).
+7. **`fix_ascii_covers.py`** — (historique) renomme en ASCII tout nom de couverture par TITRE qui en contenait — n'est plus utilisé depuis le passage aux couvertures par tome (l'étape 8 ci-dessous produit directement des noms ASCII).
+8. **`extract_volume_covers.py`** — extrait une couverture JPEG pour **chaque tome** de chaque titre (pas seulement le 1er), avec un nom de fichier ASCII généré directement (`<prefixe_titre_ascii>_<NNN>.jpg`, préfixe dédupliqué stocké dans `volume_prefix_map.json`). Même logique PyMuPDF/zipfile+Pillow que `extract_covers.py`, même contrainte `.cbr` non supporté, même fonctionnement par lots resumable (`volume_covers_manifest.json` comme checkpoint, appelé en boucle avec un budget de ~150s). → `volume_covers/*.jpg` (~6275 fichiers sur 6323 tomes ; le reste = `.cbr` ou fichiers illisibles, `cover: null` dans le catalogue).
+9. **`build_public_catalog_v2.py`** — nettoie les noms de tomes affichés (retire le préfixe `<Série>_Tome_NN_`) et associe à chaque tome sa couverture individuelle (`volume_covers_manifest.json`) → `catalog_public_v2.json`, copié vers `data/catalog.json` du site. `volumes` y est un tableau d'objets `{label, cover}` (voir schéma plus haut) au lieu d'un simple tableau de libellés.
 
-**Pour ajouter de nouvelles BD à l'avenir** : soit relancer tout le pipeline depuis `scan.py` (le plus fiable, mais retraite tout), soit ajouter à la main une entrée dans `catalog_public.json` / `data/catalog.json` avec le même schéma, extraire sa couverture (1ère page du tome 1, format JPEG ~500px de large) et l'envoyer sur le bucket Supabase `covers` avec un nom de fichier ASCII. Rien d'autre à changer : `app.js` lit `data/catalog.json` dynamiquement.
+**Pour ajouter de nouvelles BD à l'avenir** : relancer le pipeline à partir de `scan.py` (le plus fiable), puis `extract_volume_covers.py` et `build_public_catalog_v2.py`. Envoyer les nouveaux fichiers de `volume_covers/` sur le bucket Supabase `covers` via `uploader.html` (`upsert:true`, donc rejouer l'envoi complet ne casse rien). Rien d'autre à changer : `app.js` lit `data/catalog.json` dynamiquement.
 
 ## Points restés ouverts (au moment de la rédaction)
 
@@ -130,7 +163,7 @@ Ou plus simple : pousser directement sur GitHub Pages (qui sert en https, aucun 
 
 ## Déploiement
 
-1. `covers/` et `uploader.html` sont exclus via `.gitignore` — le commit ne contient que le code + `data/catalog.json` (quelques centaines de Ko).
+1. `covers/`, `volume_covers/` et `uploader.html` sont exclus via `.gitignore` — le commit ne contient que le code + `data/catalog.json` (quelques centaines de Ko).
 2. Pousser sur GitHub (dépôt `ma-bibliotheque-bd`, via GitHub Desktop).
 3. Settings → Pages → source = branche `main`, dossier racine.
 4. Site en ligne à `https://<pseudo-github>.github.io/ma-bibliotheque-bd/` après 1-2 minutes.
@@ -143,3 +176,4 @@ Ou plus simple : pousser directement sur GitHub Pages (qui sert en https, aucun 
 - Les couvertures ont d'abord été prévues dans le dépôt Git, puis déplacées vers Supabase Storage après retour de Christophe ("trop de covers à déposer sous git").
 - Design retenu : direction "A — Kiosque BD" (comic pulpe), parmi 4 propositions.
 - Bug corrigé : la fiche détail (`#overlay`) restait affichée après clic sur fermer / clic hors-fiche. Cause : `.overlay { display:flex }` dans `style.css` écrasait le `display:none` natif associé à l'attribut HTML `hidden` (une règle CSS d'auteur passe toujours devant celle du navigateur). Fix : ajout de `.overlay[hidden] { display: none; }`.
+- Évolution majeure : passage du suivi "lu" du niveau titre au niveau **tome**, avec calcul automatique du statut du titre (tous les tomes lus ⇒ titre lu) et un bouton "Tout marquer comme lu" en raccourci. Ajout d'une couverture par tome (extraction étendue de 852 à 6323 images) affichée en cliquant sur un tome dans la fiche détail (remplace la grande couverture en haut). Nouvelle table Supabase `bd_volume_status` ; `bd_status` ne gère plus que les favoris.

@@ -16,7 +16,7 @@
 </head>
 <body>
 <h1>Envoi unique des couvertures vers Supabase Storage</h1>
-<p>Cette page sert une seule fois, en local, pour transférer les 852 images du dossier <code>covers/</code> vers ton bucket Supabase. Une fois l'envoi terminé, tu peux fermer cette page et <strong>supprimer ce fichier</strong> — il ne fait pas partie du site final et ne doit jamais être publié sur GitHub.</p>
+<p>Cette page sert à transférer les images de couverture vers ton bucket Supabase (bucket "covers"). Sélectionne le dossier <code>volume_covers/</code> (une couverture par tome, ~6275 fichiers) — tu peux relancer cet envoi à chaque fois que tu ajoutes des BD, seuls les nouveaux fichiers prendront du temps grâce à <code>upsert:true</code>. Ce fichier ne fait pas partie du site final et ne doit jamais être publié sur GitHub.</p>
 <p class="warn">La clé "service_role" que tu colles ci-dessous est secrète (contrairement à la clé "anon" du site) : ne la mets jamais dans le code du site, ne la commite jamais sur GitHub. Elle ne sert qu'ici, dans ton navigateur, pour cet envoi ponctuel.</p>
 
 <label for="url">Project URL</label>
@@ -25,7 +25,7 @@
 <label for="key">Clé "service_role" (Project Settings → API Keys)</label>
 <input id="key" type="password" placeholder="colle la clé service_role ici">
 
-<label for="folder">Dossier des couvertures</label>
+<label for="folder">Dossier des couvertures (sélectionne "volume_covers")</label>
 <input id="folder" type="file" webkitdirectory multiple>
 
 <button id="go">Envoyer vers Supabase</button>

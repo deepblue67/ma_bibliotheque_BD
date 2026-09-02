@@ -3,15 +3,19 @@
 
   var state = {
     catalog: [],
-    status: {},        // id -> { is_read, is_favorite }
+    favorites: {},     // titleId -> { is_favorite }
+    volumeRead: {},    // "titleId::idx" -> true
     filters: { title: "", author: "", read: false, unread: false, fav: false },
     activeId: null,
+    activeVolIdx: 0,
   };
 
   function coverUrl(filename) {
     if (!filename) return "";
     return (window.BD_IMAGE_BASE || "covers/") + filename;
   }
+
+  function volKey(titleId, idx) { return titleId + "::" + idx; }
 
   var els = {
     grid: document.getElementById("grid"),
@@ -35,15 +39,38 @@
   };
 
   // ---------- local cache ----------
-  var LOCAL_KEY = "bd_status_cache_v1";
-  function loadLocalStatus() {
+  var LOCAL_FAV_KEY = "bd_status_cache_v1";
+  var LOCAL_VOL_KEY = "bd_volume_status_cache_v1";
+
+  function loadLocalFavorites() {
     try {
-      var raw = localStorage.getItem(LOCAL_KEY);
+      var raw = localStorage.getItem(LOCAL_FAV_KEY);
       return raw ? JSON.parse(raw) : {};
     } catch (e) { return {}; }
   }
-  function saveLocalStatus() {
-    try { localStorage.setItem(LOCAL_KEY, JSON.stringify(state.status)); } catch (e) {}
+  function saveLocalFavorites() {
+    try { localStorage.setItem(LOCAL_FAV_KEY, JSON.stringify(state.favorites)); } catch (e) {}
+  }
+  function loadLocalVolumeRead() {
+    try {
+      var raw = localStorage.getItem(LOCAL_VOL_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) { return {}; }
+  }
+  function saveLocalVolumeRead() {
+    try { localStorage.setItem(LOCAL_VOL_KEY, JSON.stringify(state.volumeRead)); } catch (e) {}
+  }
+
+  // ---------- computed read status ----------
+  function isVolumeRead(titleId, idx) {
+    return state.volumeRead[volKey(titleId, idx)] === true;
+  }
+  function isTitleRead(entry) {
+    if (!entry.volume_count) return false;
+    for (var i = 0; i < entry.volume_count; i++) {
+      if (!isVolumeRead(entry.id, i)) return false;
+    }
+    return true;
   }
 
   // ---------- supabase ----------
@@ -55,7 +82,8 @@
     }
     try {
       supabase = window.supabase.createClient(window.BD_SUPABASE_URL, window.BD_SUPABASE_ANON_KEY);
-      fetchRemoteStatus();
+      fetchRemoteFavorites();
+      fetchRemoteVolumeStatus();
       subscribeRealtime();
     } catch (e) {
       setSyncNote("Synchronisation indisponible — mode local uniquement.");
@@ -66,15 +94,32 @@
     els.syncNote.textContent = text || "";
   }
 
-  function fetchRemoteStatus() {
-    supabase.from("bd_status").select("id,is_read,is_favorite,updated_at")
+  function fetchRemoteFavorites() {
+    supabase.from("bd_status").select("id,is_favorite,updated_at")
       .then(function (res) {
         if (res.error) { setSyncNote("Synchro : hors ligne (données locales conservées)."); return; }
         (res.data || []).forEach(function (row) {
-          state.status[row.id] = { is_read: !!row.is_read, is_favorite: !!row.is_favorite };
+          state.favorites[row.id] = { is_favorite: !!row.is_favorite };
         });
-        saveLocalStatus();
+        saveLocalFavorites();
         renderGrid();
+        if (state.activeId) renderSheetActions();
+        setSyncNote("");
+      })
+      .catch(function () { setSyncNote("Synchro : hors ligne (données locales conservées)."); });
+  }
+
+  function fetchRemoteVolumeStatus() {
+    supabase.from("bd_volume_status").select("id,is_read,updated_at")
+      .then(function (res) {
+        if (res.error) { setSyncNote("Synchro : hors ligne (données locales conservées)."); return; }
+        (res.data || []).forEach(function (row) {
+          if (row.is_read) state.volumeRead[row.id] = true;
+          else delete state.volumeRead[row.id];
+        });
+        saveLocalVolumeRead();
+        renderGrid();
+        if (state.activeId) { renderVolumeList(); renderSheetActions(); }
         setSyncNote("");
       })
       .catch(function () { setSyncNote("Synchro : hors ligne (données locales conservées)."); });
@@ -85,21 +130,55 @@
       .on("postgres_changes", { event: "*", schema: "public", table: "bd_status" }, function (payload) {
         var row = payload.new && Object.keys(payload.new).length ? payload.new : payload.old;
         if (!row || !row.id) return;
-        if (payload.eventType === "DELETE") { delete state.status[row.id]; }
-        else { state.status[row.id] = { is_read: !!row.is_read, is_favorite: !!row.is_favorite }; }
-        saveLocalStatus();
+        if (payload.eventType === "DELETE") { delete state.favorites[row.id]; }
+        else { state.favorites[row.id] = { is_favorite: !!row.is_favorite }; }
+        saveLocalFavorites();
         renderGrid();
         if (state.activeId === row.id) renderSheetActions();
+      })
+      .on("postgres_changes", { event: "*", schema: "public", table: "bd_volume_status" }, function (payload) {
+        var row = payload.new && Object.keys(payload.new).length ? payload.new : payload.old;
+        if (!row || !row.id) return;
+        if (payload.eventType === "DELETE" || !row.is_read) { delete state.volumeRead[row.id]; }
+        else { state.volumeRead[row.id] = true; }
+        saveLocalVolumeRead();
+        renderGrid();
+        if (state.activeId && row.id.indexOf(state.activeId + "::") === 0) {
+          renderVolumeList();
+          renderSheetActions();
+        }
       })
       .subscribe();
   }
 
-  function pushStatus(id) {
+  function pushFavorite(titleId) {
     if (!supabase) return;
-    var s = state.status[id] || { is_read: false, is_favorite: false };
+    var f = state.favorites[titleId] || { is_favorite: false };
     supabase.from("bd_status").upsert({
-      id: id, is_read: s.is_read, is_favorite: s.is_favorite, updated_at: new Date().toISOString()
+      id: titleId, is_favorite: f.is_favorite, updated_at: new Date().toISOString()
     }).then(function (res) {
+      if (res.error) setSyncNote("Dernière modification pas encore synchronisée (réessaiera).");
+    }).catch(function () {});
+  }
+
+  function pushVolumeStatus(titleId, idx) {
+    if (!supabase) return;
+    var read = isVolumeRead(titleId, idx);
+    supabase.from("bd_volume_status").upsert({
+      id: volKey(titleId, idx), title_id: titleId, is_read: read, updated_at: new Date().toISOString()
+    }).then(function (res) {
+      if (res.error) setSyncNote("Dernière modification pas encore synchronisée (réessaiera).");
+    }).catch(function () {});
+  }
+
+  function pushVolumeStatusBulk(titleId, count, read) {
+    if (!supabase) return;
+    var rows = [];
+    var now = new Date().toISOString();
+    for (var i = 0; i < count; i++) {
+      rows.push({ id: volKey(titleId, i), title_id: titleId, is_read: read, updated_at: now });
+    }
+    supabase.from("bd_volume_status").upsert(rows).then(function (res) {
       if (res.error) setSyncNote("Dernière modification pas encore synchronisée (réessaiera).");
     }).catch(function () {});
   }
@@ -126,12 +205,13 @@
   }
 
   function matches(entry) {
-    var st = state.status[entry.id] || { is_read: false, is_favorite: false };
+    var fav = state.favorites[entry.id] || { is_favorite: false };
+    var read = isTitleRead(entry);
     if (state.filters.title && normalize(entry.title).indexOf(normalize(state.filters.title)) === -1) return false;
     if (state.filters.author && normalize(entry.author || "").indexOf(normalize(state.filters.author)) === -1) return false;
-    if (state.filters.read && !st.is_read) return false;
-    if (state.filters.unread && st.is_read) return false;
-    if (state.filters.fav && !st.is_favorite) return false;
+    if (state.filters.read && !read) return false;
+    if (state.filters.unread && read) return false;
+    if (state.filters.fav && !fav.is_favorite) return false;
     return true;
   }
 
@@ -148,7 +228,8 @@
   }
 
   function renderCard(entry) {
-    var st = state.status[entry.id] || {};
+    var fav = state.favorites[entry.id] || {};
+    var read = isTitleRead(entry);
     var card = document.createElement("div");
     card.className = "card";
     card.setAttribute("data-id", entry.id);
@@ -164,10 +245,10 @@
 
     var badges = document.createElement("div");
     badges.className = "card-badges";
-    if (st.is_favorite) {
+    if (fav.is_favorite) {
       var bf = document.createElement("span"); bf.className = "badge fav"; bf.textContent = "★"; badges.appendChild(bf);
     }
-    if (st.is_read) {
+    if (read) {
       var br = document.createElement("span"); br.className = "badge read"; br.textContent = "Lu"; badges.appendChild(br);
     }
     coverWrap.appendChild(badges);
@@ -186,35 +267,93 @@
   }
 
   // ---------- detail sheet ----------
+  function currentEntry() {
+    return state.catalog.find(function (e) { return e.id === state.activeId; });
+  }
+
   function openSheet(id) {
     var entry = state.catalog.find(function (e) { return e.id === id; });
     if (!entry) return;
     state.activeId = id;
-    els.sheetCover.src = coverUrl(entry.cover);
-    els.sheetCover.alt = entry.title;
+    state.activeVolIdx = 0;
     els.sheetTitle.textContent = entry.title;
     els.sheetAuthor.textContent = entry.author || "Auteur non renseigné";
     els.sheetMeta.textContent = entry.volume_count + (entry.volume_count > 1 ? " tomes" : " tome") + (entry.parent_series ? " · série liée à " + entry.parent_series : "");
-    els.volumeList.innerHTML = "";
-    entry.volumes.forEach(function (v, i) {
-      var li = document.createElement("li");
-      var num = document.createElement("span"); num.className = "num";
-      num.textContent = String(i + 1).padStart(2, "0");
-      var label = document.createElement("span"); label.textContent = v;
-      li.appendChild(num); li.appendChild(label);
-      els.volumeList.appendChild(li);
-    });
+    setActiveCover(entry, 0);
+    renderVolumeList();
     renderSheetActions();
     els.overlay.hidden = false;
     document.body.style.overflow = "hidden";
   }
 
+  function setActiveCover(entry, idx) {
+    state.activeVolIdx = idx;
+    var vol = entry.volumes[idx];
+    var cover = (vol && vol.cover) || entry.cover;
+    if (cover) {
+      els.sheetCover.src = coverUrl(cover);
+      els.sheetCover.style.display = "";
+    } else {
+      els.sheetCover.removeAttribute("src");
+      els.sheetCover.style.display = "none";
+    }
+    els.sheetCover.alt = entry.title + (vol ? " — " + vol.label : "");
+  }
+
+  function renderVolumeList() {
+    var entry = currentEntry();
+    if (!entry) return;
+    els.volumeList.innerHTML = "";
+    entry.volumes.forEach(function (v, i) {
+      var li = document.createElement("li");
+      li.className = "vol-row" + (isVolumeRead(entry.id, i) ? " is-read" : "") + (i === state.activeVolIdx ? " active" : "");
+
+      var check = document.createElement("button");
+      check.type = "button";
+      check.className = "vol-check";
+      check.setAttribute("aria-label", "Marquer ce tome comme lu");
+      check.textContent = isVolumeRead(entry.id, i) ? "✓" : "";
+      check.addEventListener("click", function (e) {
+        e.stopPropagation();
+        toggleVolumeRead(entry.id, i);
+      });
+
+      var num = document.createElement("span"); num.className = "num";
+      num.textContent = String(i + 1).padStart(2, "0");
+      var label = document.createElement("span"); label.className = "vol-label"; label.textContent = v.label;
+
+      li.appendChild(check);
+      li.appendChild(num);
+      li.appendChild(label);
+      li.addEventListener("click", function () {
+        setActiveCover(entry, i);
+        renderVolumeList();
+      });
+      els.volumeList.appendChild(li);
+    });
+  }
+
+  function toggleVolumeRead(titleId, idx) {
+    var key = volKey(titleId, idx);
+    if (state.volumeRead[key]) delete state.volumeRead[key];
+    else state.volumeRead[key] = true;
+    saveLocalVolumeRead();
+    renderVolumeList();
+    renderSheetActions();
+    renderGrid();
+    pushVolumeStatus(titleId, idx);
+  }
+
   function renderSheetActions() {
-    var st = state.status[state.activeId] || { is_read: false, is_favorite: false };
-    els.btnRead.setAttribute("data-on", st.is_read ? "true" : "false");
-    els.btnRead.textContent = st.is_read ? "✓ Marqué comme lu" : "Marquer comme lu";
-    els.btnFav.setAttribute("data-on", st.is_favorite ? "true" : "false");
-    els.btnFav.textContent = st.is_favorite ? "★ Dans les favoris" : "★ Ajouter aux favoris";
+    var entry = currentEntry();
+    if (!entry) return;
+    var allRead = isTitleRead(entry);
+    els.btnRead.setAttribute("data-on", allRead ? "true" : "false");
+    els.btnRead.textContent = allRead ? "✓ Tout marquer comme non lu" : "Tout marquer comme lu";
+
+    var fav = state.favorites[entry.id] || { is_favorite: false };
+    els.btnFav.setAttribute("data-on", fav.is_favorite ? "true" : "false");
+    els.btnFav.textContent = fav.is_favorite ? "★ Dans les favoris" : "★ Ajouter aux favoris";
   }
 
   function closeSheet() {
@@ -223,16 +362,32 @@
     document.body.style.overflow = "";
   }
 
-  function toggleStatus(field) {
-    var id = state.activeId;
-    if (!id) return;
-    var s = state.status[id] || { is_read: false, is_favorite: false };
-    s[field] = !s[field];
-    state.status[id] = s;
-    saveLocalStatus();
+  function toggleAllVolumesRead() {
+    var entry = currentEntry();
+    if (!entry) return;
+    var makeRead = !isTitleRead(entry);
+    for (var i = 0; i < entry.volume_count; i++) {
+      var key = volKey(entry.id, i);
+      if (makeRead) state.volumeRead[key] = true;
+      else delete state.volumeRead[key];
+    }
+    saveLocalVolumeRead();
+    renderVolumeList();
     renderSheetActions();
     renderGrid();
-    pushStatus(id);
+    pushVolumeStatusBulk(entry.id, entry.volume_count, makeRead);
+  }
+
+  function toggleFavorite() {
+    var entry = currentEntry();
+    if (!entry) return;
+    var f = state.favorites[entry.id] || { is_favorite: false };
+    f.is_favorite = !f.is_favorite;
+    state.favorites[entry.id] = f;
+    saveLocalFavorites();
+    renderSheetActions();
+    renderGrid();
+    pushFavorite(entry.id);
   }
 
   // ---------- wiring ----------
@@ -253,11 +408,12 @@
   els.sheetClose.addEventListener("click", closeSheet);
   els.overlay.addEventListener("click", function (e) { if (e.target === els.overlay) closeSheet(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeSheet(); });
-  els.btnRead.addEventListener("click", function () { toggleStatus("is_read"); });
-  els.btnFav.addEventListener("click", function () { toggleStatus("is_favorite"); });
+  els.btnRead.addEventListener("click", toggleAllVolumesRead);
+  els.btnFav.addEventListener("click", toggleFavorite);
 
   // ---------- boot ----------
-  state.status = loadLocalStatus();
+  state.favorites = loadLocalFavorites();
+  state.volumeRead = loadLocalVolumeRead();
   loadCatalog();
   initSupabase();
 })();

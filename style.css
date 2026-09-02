@@ -253,16 +253,39 @@ main { max-width: 1400px; margin: 0 auto; padding: 32px 20px 80px; }
 .sheet-volumes { margin-top: 18px; }
 .sheet-volumes-label { font-size: 11px; letter-spacing: .4px; font-weight: 800; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
 
-.volume-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 5px; max-height: 260px; overflow-y: auto; }
-.volume-list li {
+.volume-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 5px; max-height: 320px; overflow-y: auto; }
+.vol-row {
   font-size: 12.5px;
   color: #333;
-  padding-bottom: 6px;
+  padding: 5px 6px 5px 4px;
   border-bottom: 1px dotted #ccc;
+  border-radius: 6px;
   display: flex;
+  align-items: center;
   gap: 8px;
+  cursor: pointer;
 }
-.volume-list li .num { color: var(--red); font-weight: 800; flex-shrink: 0; }
+.vol-row:hover { background: rgba(0,0,0,.04); }
+.vol-row.active { background: var(--tan); }
+.vol-row.is-read .vol-label { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--muted); }
+.vol-row .num { color: var(--red); font-weight: 800; flex-shrink: 0; }
+.vol-row .vol-label { flex: 1; min-width: 0; }
+
+.vol-check {
+  width: 22px; height: 22px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  background: #fff;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0;
+}
+.vol-row.is-read .vol-check { background: #3f6b3f; border-color: #3f6b3f; }
 
 @media (max-width: 420px) {
   .grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 14px; }
