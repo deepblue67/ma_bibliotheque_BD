@@ -239,7 +239,9 @@
     var coverWrap = document.createElement("div");
     coverWrap.className = "card-cover-wrap";
     var img = document.createElement("img");
-    img.loading = "lazy";
+    // "lazy" natif s'est révélé peu fiable ici (certaines vignettes ne se
+    // chargent jamais, même visibles à l'écran) — chargement immédiat, plus
+    // sûr, quitte à consommer un peu plus de bande passante à l'ouverture.
     img.alt = entry.title;
     img.src = coverUrl(entry.cover);
     if (!entry.cover) img.style.display = "none";
