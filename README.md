@@ -117,6 +117,10 @@ Pas de policy d'écriture publique : l'envoi des couvertures se fait via `upload
 
 **Contrainte importante** : les noms de fichiers dans le bucket doivent être **ASCII uniquement** (Supabase Storage rejette les accents avec une erreur `Invalid key`). C'est pour ça que chaque `cover` dans catalog.json est un nom sans accents (ex: `Thorgal_001.jpg`) même si le `title`/`label` affiché garde ses accents.
 
+## Cache navigateur — convention de version
+
+`index.html` charge `style.css`, `config.js` et `app.js` avec un suffixe `?v=N` (ex: `app.js?v=2`). **À chaque modification de l'un de ces trois fichiers, il faut incrémenter son `?v=` dans `index.html`**, sinon certains navigateurs continuent de servir l'ancienne version en cache après un simple rechargement (vécu : un `app.js` mis à jour restait invisible malgré plusieurs rechargements, jusqu'à un vidage de cache complet). `data/catalog.json` n'a pas ce problème : il est chargé via `fetch(..., { cache: "no-store" })` dans `app.js`, donc toujours à jour sans rien à incrémenter.
+
 ## Pipeline de génération des données
 
 Les BD sources vivent dans `D:\Christophe\Mes BD` (dossier = un titre, fichiers PDF/cbz/cbr = les tomes). Les scripts qui construisent `catalog.json` et les couvertures tournent **sur l'ordinateur de Christophe**, via des scripts Python situés dans `~/bd-catalog/` **côté VM Linux locale** (accessible uniquement par l'outil `device_bash` d'une session Claude liée à cet ordinateur — ce n'est PAS un dossier Windows classique, donc invisible dans l'Explorateur).
