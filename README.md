@@ -23,6 +23,11 @@ ma-bibliotheque-bd/
 │                        #   favoris par titre, aperçu couverture par tome, sync Supabase
 ├── config.js            # identifiants Supabase (URL + clé anon — publics, sans risque)
 │                        #   + BD_IMAGE_BASE (préfixe des couvertures sur Supabase Storage)
+├── apple-touch-icon.png  # icône écran d'accueil iPad/iPhone (180×180, convention racine)
+├── favicon.ico           # favicon multi-résolution (onglet navigateur)
+├── site.webmanifest      # manifest PWA (icônes Android/Chrome, nom, couleurs)
+├── icons/                 # déclinaisons de tailles de l'icône (apple-touch-icon-*, favicon-*,
+│                        #   android-chrome-*) — voir section dédiée plus bas
 ├── data/
 │   └── catalog.json     # catalogue généré (852 entrées) — voir schéma plus bas
 ├── volume_covers/        # copie locale des couvertures (une par TOME, ~6275 fichiers)
@@ -117,6 +122,19 @@ Pas de policy d'écriture publique : l'envoi des couvertures se fait via `upload
 
 **Contrainte importante** : les noms de fichiers dans le bucket doivent être **ASCII uniquement** (Supabase Storage rejette les accents avec une erreur `Invalid key`). C'est pour ça que chaque `cover` dans catalog.json est un nom sans accents (ex: `Thorgal_001.jpg`) même si le `title`/`label` affiché garde ses accents.
 
+## Icône écran d'accueil (iPad / iPhone / Android)
+
+Le site déclare une icône pour "Ajouter à l'écran d'accueil" (Safari iOS/iPadOS) et pour l'installation en PWA sous Chrome/Android :
+
+- `apple-touch-icon.png` (180×180, à la racine) + variantes `icons/apple-touch-icon-{120,152,167,180}x180.png` référencées explicitement dans `<head>` (`<link rel="apple-touch-icon" sizes="…">`), pour couvrir tous les formats d'appareils Apple.
+- `favicon.ico` + `icons/favicon-{16,32}x32.png` pour l'onglet navigateur (corrige au passage l'ancienne erreur 404 sur le favicon visible dans la console).
+- `icons/android-chrome-{192,512}x512.png` + `site.webmanifest` pour Android/Chrome (nom "Ma Bibliothèque BD", couleur de thème rouge `#c1272d`, mode `standalone`).
+- Design retenu : bulle de BD rouge "BD" avec une petite bulle "?!" en accent dans le coin (parmi plusieurs séries de propositions présentées à Christophe — voir historique de conversation pour les pistes écartées).
+
+Toutes ces images sont générées depuis un seul visuel maître 1024×1024 (script Python + `cairosvg`, hors dépôt) puis redimensionnées ; pour changer l'icône plus tard, il suffit de refournir un nouveau visuel maître et de relancer l'export vers les mêmes noms de fichiers (pas besoin de retoucher le HTML).
+
+⚠️ iOS met l'icône en cache assez agressivement une fois qu'un raccourci existe déjà sur l'écran d'accueil : si Christophe avait déjà ajouté le site à son écran d'accueil avant ce changement, il faut supprimer l'ancien raccourci et refaire "Ajouter à l'écran d'accueil" pour voir la nouvelle icône (recharger la page dans Safari ne suffit pas).
+
 ## Cache navigateur — convention de version
 
 `index.html` charge `style.css`, `config.js` et `app.js` avec un suffixe `?v=N` (ex: `app.js?v=2`). **À chaque modification de l'un de ces trois fichiers, il faut incrémenter son `?v=` dans `index.html`**, sinon certains navigateurs continuent de servir l'ancienne version en cache après un simple rechargement (vécu : un `app.js` mis à jour restait invisible malgré plusieurs rechargements, jusqu'à un vidage de cache complet). `data/catalog.json` n'a pas ce problème : il est chargé via `fetch(..., { cache: "no-store" })` dans `app.js`, donc toujours à jour sans rien à incrémenter.
@@ -182,4 +200,5 @@ Ou plus simple : pousser directement sur GitHub Pages (qui sert en https, aucun 
 - Bug corrigé : la fiche détail (`#overlay`) restait affichée après clic sur fermer / clic hors-fiche. Cause : `.overlay { display:flex }` dans `style.css` écrasait le `display:none` natif associé à l'attribut HTML `hidden` (une règle CSS d'auteur passe toujours devant celle du navigateur). Fix : ajout de `.overlay[hidden] { display: none; }`.
 - Bug corrigé : certaines vignettes de la grille restaient vides alors que leur image existait bien et s'affichait correctement dans la fiche détail. Cause : l'attribut `loading="lazy"` des `<img>` de la grille, peu fiable dans ce contexte (chargement jamais déclenché pour certaines images, même visibles à l'écran). Fix : chargement immédiat (pas de `loading="lazy"`) sur les vignettes de la grille — léger surcoût de bande passante à l'ouverture de l'appli (toutes les vignettes visibles se chargent d'un coup), sans impact pratique vu le volume (~850 vignettes, quelques dizaines de Ko chacune).
 - Évolution majeure : passage du suivi "lu" du niveau titre au niveau **tome**, avec calcul automatique du statut du titre (tous les tomes lus ⇒ titre lu) et un bouton "Tout marquer comme lu" en raccourci. Ajout d'une couverture par tome (extraction étendue de 852 à 6323 images) affichée en cliquant sur un tome dans la fiche détail (remplace la grande couverture en haut). Nouvelle table Supabase `bd_volume_status` ; `bd_status` ne gère plus que les favoris.
+- Fonctionnalité ajoutée : icône d'écran d'accueil iPad/iPhone/Android (`apple-touch-icon`, favicon, manifest PWA). Plusieurs séries de propositions visuelles soumises à Christophe (styles "kiosque BD" variés, puis piste festive écartée par Christophe car hors ton de l'appli, puis pistes façon bulle de bande dessinée avec "?"/"!") ; design final retenu : bulle "BD" rouge avec petite bulle "?!" en accent dans le coin.
 - Fonctionnalité ajoutée : loupe d'agrandissement sur chaque couverture (grille + fiche détail). Un petit bouton rond (icône loupe) en haut à droite de chaque couverture ouvre un aperçu plein écran (fond sombre, image agrandie, bouton fermer, clic hors-image ou touche Échap pour fermer). Dans la fiche détail, la loupe agrandit toujours la couverture du tome actuellement affiché (celle sur laquelle on a cliqué dans la liste des tomes). Choix assumé : réutilise les couvertures existantes (~500px de large, déjà stockées dans Supabase Storage) sans ré-extraction ni stockage de versions haute résolution — l'agrandissement se fait uniquement à l'affichage (CSS `max-width`/`max-height`), donc qualité limitée à la résolution source mais aucun coût de stockage/traitement supplémentaire.
