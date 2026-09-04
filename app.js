@@ -13,7 +13,7 @@
     catalog: [],
     favorites: {},     // titleId -> { is_favorite }
     volumeRead: {},    // "titleId::idx" -> true
-    filters: { title: "", author: "", read: false, unread: false, fav: false, genre: "" },
+    filters: { title: "", author: "", read: false, unread: false, inprogress: false, fav: false, genre: "" },
     activeId: null,
     activeVolIdx: 0,
   };
@@ -33,6 +33,7 @@
     searchAuthor: document.getElementById("search-author"),
     filterGenre: document.getElementById("filter-genre"),
     filterRead: document.getElementById("filter-read"),
+    filterInprogress: document.getElementById("filter-inprogress"),
     filterUnread: document.getElementById("filter-unread"),
     filterFav: document.getElementById("filter-fav"),
     overlay: document.getElementById("overlay"),
@@ -85,6 +86,17 @@
       if (!isVolumeRead(entry.id, i)) return false;
     }
     return true;
+  }
+  function countRead(entry) {
+    var n = 0;
+    for (var i = 0; i < entry.volume_count; i++) {
+      if (isVolumeRead(entry.id, i)) n++;
+    }
+    return n;
+  }
+  function isInProgress(entry) {
+    var c = countRead(entry);
+    return c > 0 && c < entry.volume_count;
   }
 
   // ---------- supabase ----------
@@ -223,11 +235,14 @@
   function matches(entry) {
     var fav = state.favorites[entry.id] || { is_favorite: false };
     var read = isTitleRead(entry);
+    var readCount = countRead(entry);
+    var inProgress = isInProgress(entry);
     if (state.filters.title && normalize(entry.title).indexOf(normalize(state.filters.title)) === -1) return false;
     if (state.filters.author && normalize(entry.author || "").indexOf(normalize(state.filters.author)) === -1) return false;
     if (state.filters.genre && (entry.genre || []).indexOf(state.filters.genre) === -1) return false;
     if (state.filters.read && !read) return false;
-    if (state.filters.unread && read) return false;
+    if (state.filters.inprogress && !inProgress) return false;
+    if (state.filters.unread && readCount > 0) return false;
     if (state.filters.fav && !fav.is_favorite) return false;
     return true;
   }
@@ -256,6 +271,8 @@
   function renderCard(entry) {
     var fav = state.favorites[entry.id] || {};
     var read = isTitleRead(entry);
+    var readCount = countRead(entry);
+    var inProgress = isInProgress(entry);
     var card = document.createElement("div");
     card.className = "card";
     card.setAttribute("data-id", entry.id);
@@ -290,6 +307,8 @@
     }
     if (read) {
       var br = document.createElement("span"); br.className = "badge read"; br.textContent = "Lu"; badges.appendChild(br);
+    } else if (inProgress) {
+      var bp = document.createElement("span"); bp.className = "badge inprogress"; bp.textContent = readCount + "/" + entry.volume_count + " lus"; badges.appendChild(bp);
     }
     coverWrap.appendChild(badges);
 
@@ -481,6 +500,7 @@
     });
   }
   toggleChip(els.filterRead, "read");
+  toggleChip(els.filterInprogress, "inprogress");
   toggleChip(els.filterUnread, "unread");
   toggleChip(els.filterFav, "fav");
 
