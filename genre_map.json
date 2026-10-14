@@ -1,6226 +1,7373 @@
 {
 "1800_Collection": {
+"confidence": "high",
 "genres": [
 "Historique"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "1984": {
+"confidence": "high",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "high",
-"source": "pass2_web"
-},
-"3_cases_pour_1_chute": {
-"genres": [
-"Humour"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"3_souhaits": {
-"genres": [
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"3_vierges": {
-"genres": [
-"Drame / Chronique sociale"
-],
-"confidence": "high",
 "source": "pass2_web"
 },
 "30_jours_de_nuit": {
+"confidence": "high",
 "genres": [
 "Fantastique / Horreur"
 ],
-"confidence": "high",
 "source": "pass1"
 },
+"3_cases_pour_1_chute": {
+"confidence": "high",
+"genres": [
+"Humour"
+],
+"source": "pass2_web"
+},
+"3_souhaits": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass2_web"
+},
+"3_vierges": {
+"confidence": "high",
+"genres": [
+"Drame / Chronique sociale"
+],
+"source": "pass2_web"
+},
 "7_secondes": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "9_11": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Drame / Chronique sociale"
 ],
-"confidence": "high",
-"source": "pass2_web"
-},
-"A_l_école_des_lettres": {
-"genres": [
-"Jeunesse"
-],
-"confidence": "high",
 "source": "pass2_web"
 },
 "A_Prix_d_Or": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
+"A_l_école_des_lettres": {
+"confidence": "high",
+"genres": [
+"Jeunesse"
+],
+"source": "pass2_web"
+},
 "Aarib": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
 "Adler_-_L_aigle_à_deux_têtes": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Guerre"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Affaires_d_État_Guerre_Froide": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Policier / Thriller"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "After_God": {
+"confidence": "high",
 "genres": [
 "Science-fiction",
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Agata": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Ailes_de_légende": {
+"confidence": "high",
 "genres": [
 "Guerre",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Air": {
+"confidence": "high",
 "genres": [
 "Aventure",
 "Drame / Chronique sociale"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Air_Forces_Vietnam": {
+"confidence": "high",
 "genres": [
 "Guerre"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Airborne": {
+"confidence": "high",
 "genres": [
 "Guerre",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Al_Togo": {
+"confidence": "high",
 "genres": [
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Alban": {
+"confidence": "high",
 "genres": [
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Alef_Thau": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Science-fiction"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Alef_Thau_-_Le_monde_d_Alef_Thau": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Science-fiction"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Alien": {
+"confidence": "high",
 "genres": [
 "Science-fiction",
 "Fantastique / Horreur"
 ],
-"confidence": "high",
 "source": "pass1"
+},
+"Alika": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Aventure"
+],
+"source": "pass3"
 },
 "Alix": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Aventure"
 ],
-"confidence": "high",
-"source": "pass1"
-},
-"Alix_-_Alix_raconte": {
-"genres": [
-"Historique",
-"Aventure"
-],
-"confidence": "high",
 "source": "pass1"
 },
 "Alix_-_Alix_Senator": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Aventure"
 ],
+"source": "pass1"
+},
+"Alix_-_Alix_raconte": {
 "confidence": "high",
+"genres": [
+"Historique",
+"Aventure"
+],
 "source": "pass1"
 },
 "Alix_-_Odyssée": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Alix_-_Origine": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Alter_Ego": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
 "Alva": {
+"confidence": "high",
 "genres": [
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
+"Alzéor_Mondraggo": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass3"
+},
 "Aléa_Drumman": {
+"confidence": "high",
 "genres": [
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Amabilia": {
-"genres": [],
 "confidence": "high",
+"genres": [],
 "source": "pass2_web"
 },
 "Amelia_Woods": {
+"confidence": "high",
 "genres": [
 "Jeunesse",
 "Fantastique / Horreur"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Amours_fragiles": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Drame / Chronique sociale"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Amulet": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Jeunesse"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Amy_pour_la_vie": {
+"confidence": "high",
 "genres": [
 "Jeunesse",
 "Humour"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Ana_Lucia": {
+"confidence": "high",
 "genres": [
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Anatole_Latuile": {
+"confidence": "high",
 "genres": [
 "Jeunesse",
 "Humour"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Anatole_Latuile_-_Les_Idées_folles_d_Anatole": {
+"confidence": "high",
 "genres": [
 "Jeunesse",
 "Humour"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Androides": {
+"confidence": "high",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Ange_et_Démon": {
+"confidence": "high",
 "genres": [
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Angel_Wings": {
+"confidence": "high",
 "genres": [
 "Guerre",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Angor": {
+"confidence": "low",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Anna_Stein": {
+"confidence": "low",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "low",
 "source": "pass1_guess"
+},
+"Anta": {
+"confidence": "low",
+"genres": [
+"Aventure"
+],
+"source": "pass3"
 },
 "Antartica_3-3": {
+"confidence": "low",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
+"Antichristus": {
+"confidence": "low",
+"genres": [
+"Historique",
+"Fantastique / Horreur"
+],
+"source": "pass3"
+},
 "Aphrodite": {
+"confidence": "high",
 "genres": [
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Apocalypse_Mania": {
+"confidence": "low",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Apogée": {
+"confidence": "high",
 "genres": [
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Après_l_Incal": {
+"confidence": "high",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Aquablue_18-19_0-2_HS": {
+"confidence": "high",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Aquarica_2-2": {
+"confidence": "low",
 "genres": [
 "Fantasy"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Arcana": {
+"confidence": "high",
 "genres": [
 "Fantastique / Horreur"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Arcanes": {
+"confidence": "low",
 "genres": [
 "Fantasy"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Arcanes_-_Arcane_Majeur": {
+"confidence": "low",
 "genres": [
 "Fantasy"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
-"Arctica_13-13": {
+"Archipel": {
+"confidence": "high",
 "genres": [
 "Science-fiction"
 ],
+"source": "pass3"
+},
+"Arctica_13-13": {
 "confidence": "low",
+"genres": [
+"Science-fiction"
+],
 "source": "pass1_guess"
 },
+"Arctica_13-14": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass3"
+},
 "Arena": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
 "Aria": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Ariane_et_Nicolas": {
+"confidence": "high",
 "genres": [
 "Jeunesse"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Ariol": {
+"confidence": "high",
 "genres": [
 "Jeunesse",
 "Humour"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Aristophania": {
+"confidence": "high",
 "genres": [
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Aristote_et_ses_potes": {
+"confidence": "high",
 "genres": [
 "Humour",
 "Jeunesse"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Arlequin": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
 "Arrowsmith": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Guerre"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Arsène_Lupin": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Aryanne": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Ascender": {
+"confidence": "high",
 "genres": [
 "Science-fiction",
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Aslak": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
 "Assassin": {
+"confidence": "low",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Asterix_le_gaulois_-_39_BD_CBR_CBZ_-_Les_Mordus": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Humour"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Astra_Saga": {
+"confidence": "low",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Astérix_V2": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Humour"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Atalante_La_Légende": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
+"Atana": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Jeunesse"
+],
+"source": "pass3"
+},
 "Atlantide_experiment": {
+"confidence": "low",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Atomick_Lucas": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
 "Au_Chant_Des_Grenouilles": {
+"confidence": "low",
 "genres": [
 "Fantasy"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Au_nom_du_pain": {
+"confidence": "low",
 "genres": [
 "Drame / Chronique sociale"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Autopsie": {
+"confidence": "low",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Ava_Dream": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
 "Avaler_La_Lune": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
+"Aven": {
+"confidence": "low",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass3"
+},
+"Aya_de_Yopougon": {
+"confidence": "high",
+"genres": [
+"Humour",
+"Drame / Chronique sociale"
+],
+"source": "pass3"
+},
+"Azaqi": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Aventure"
+],
+"source": "pass3"
+},
+"Azur": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Jeunesse"
+],
+"source": "pass3"
+},
+"BRZRKR": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Aventure"
+],
+"source": "pass1"
+},
 "Babylone": {
+"confidence": "low",
 "genres": [
 "Historique"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Barbe_rouge": {
+"confidence": "high",
 "genres": [
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Barbe_rouge_-_Le_Cimetière_des_Innocents": {
+"confidence": "high",
 "genres": [
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Barracuda": {
+"confidence": "high",
 "genres": [
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
+"Basil_Victoria_MANQUE_CDS": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller",
+"Historique"
+],
+"source": "pass3"
+},
 "Beauté_Fatale": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
+"Belem": {
+"confidence": "low",
+"genres": [
+"Aventure",
+"Historique"
+],
+"source": "pass3"
+},
 "Benoît_Brisefer": {
+"confidence": "high",
 "genres": [
 "Jeunesse",
 "Humour"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Bergères_Guerrières": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Jeunesse"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Berlin_sera_notre_tombeau": {
+"confidence": "high",
 "genres": [
 "Guerre",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Bernard_prince_18-18": {
+"confidence": "high",
 "genres": [
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Billy_the_kid_21": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
 "Black_Crow": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
+"Black_Hammer": {
+"confidence": "high",
+"genres": [
+"Super-héros"
+],
+"source": "pass3"
+},
+"Black_Squaw_4-4": {
+"confidence": "low",
+"genres": [
+"Western"
+],
+"source": "pass1_guess"
+},
 "Black_et_Mortimer": {
+"confidence": "high",
 "genres": [
 "Aventure",
 "Science-fiction"
 ],
-"confidence": "high",
 "source": "pass1"
 },
-"Black_Squaw_4-4": {
-"genres": [
-"Western"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
 "Blackline": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller",
 "Science-fiction"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Blacksad_7-7_3-3_HS__CDS": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Bloodborne": {
+"confidence": "high",
 "genres": [
 "Fantastique / Horreur"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Bomb_Road": {
+"confidence": "high",
 "genres": [
 "Guerre"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Bon_chien": {
+"confidence": "high",
 "genres": [
 "Humour"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Borgia": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Drame / Chronique sociale"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Boudicca_la_furie_celte": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Guerre"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Boule_à_zéro": {
+"confidence": "high",
 "genres": [
 "Drame / Chronique sociale"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Bouncer": {
+"confidence": "high",
 "genres": [
 "Western"
 ],
+"source": "pass1"
+},
+"Breizh_Histoire_de_la_Bretagne": {
+"confidence": "low",
+"genres": [
+"Historique"
+],
+"source": "pass3"
+},
+"Brigade_Verhoeven": {
 "confidence": "high",
+"genres": [
+"Policier / Thriller"
+],
 "source": "pass1"
 },
 "Brigade_mondaine": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
-"Brigade_Verhoeven": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "high",
-"source": "pass1"
-},
 "Brigantus": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Brocéliande": {
+"confidence": "high",
 "genres": [
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Broussaille": {
+"confidence": "high",
 "genres": [
 "Humour",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Brume": {
+"confidence": "high",
 "genres": [
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
-"BRZRKR": {
-"genres": [
-"Fantasy",
-"Aventure"
-],
-"confidence": "high",
-"source": "pass1"
-},
 "Buck_Danny": {
+"confidence": "high",
 "genres": [
 "Guerre",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Bug": {
+"confidence": "high",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Bunker": {
+"confidence": "high",
 "genres": [
 "Science-fiction",
 "Fantastique / Horreur"
 ],
-"confidence": "high",
-"source": "pass2_web"
-},
-"C_est_où_le_plus_loin_d_ici": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Cadres_noirs": {
-"genres": [
-"Policier / Thriller",
-"Drame / Chronique sociale"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Calamity_Jane": {
-"genres": [
-"Western"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Caledonia": {
-"genres": [
-"Historique",
-"Guerre"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Camomille_et_les_chevaux": {
-"genres": [
-"Jeunesse"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Camp_poutine": {
-"genres": [
-"Jeunesse",
-"Humour"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Car_l_enfer_est_ici": {
-"genres": [
-"Drame / Chronique sociale",
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Carmen_Mc_Callum": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Carnet_d_auteur": {
-"genres": [
-"Documentaire"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Carthago_16-16": {
-"genres": [
-"Science-fiction",
-"Aventure"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Castlewitch": {
-"genres": [
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Ceux_qui_n_existaient_plus": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Champignac": {
-"genres": [
-"Humour",
-"Aventure"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Champs_d_honneur": {
-"genres": [
-"Historique",
-"Guerre"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Charles_De_Gaulle": {
-"genres": [
-"Biographie",
-"Historique"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Chez_Adolf": {
-"genres": [
-"Historique"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Châteaux_Bordeaux": {
-"genres": [
-"Drame / Chronique sociale",
-"Policier / Thriller"
-],
-"confidence": "high",
 "source": "pass2_web"
 },
 "CIA_Le_cycle_de_la_peur": {
+"confidence": "low",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
-"Ciel_d_orages": {
-"genres": [],
+"C_est_où_le_plus_loin_d_ici": {
 "confidence": "low",
-"source": "unresolved"
-},
-"Ciel_en_ruine": {
-"genres": [
-"Guerre"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Cinjis_Qan": {
-"genres": [
-"Historique",
-"Aventure"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Cinq_Avril": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Civilisations": {
-"genres": [
-"Historique",
-"Aventure"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Cixi_de_Troy": {
-"genres": [
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Cizo": {
-"genres": [],
-"confidence": "low",
-"source": "unresolved"
-},
-"Claire_de_nuit_MANQUE_LE_2_et_5": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Climax": {
-"genres": [],
-"confidence": "low",
-"source": "unresolved"
-},
-"Clovd": {
 "genres": [
 "Science-fiction"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
-"Clues": {
-"genres": [],
-"confidence": "low",
-"source": "unresolved"
-},
-"Code_Mc_Callum": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Collège_Apocalypse": {
-"genres": [
-"Fantastique / Horreur"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Colonisation": {
-"genres": [
-"Historique"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Comanche": {
-"genres": [
-"Western"
-],
+"Cadres_noirs": {
 "confidence": "high",
-"source": "pass1"
-},
-"Commandant_Achab": {
-"genres": [
-"Aventure"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Commando_samouraï": {
-"genres": [
-"Aventure",
-"Guerre"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Complot_à_Versailles_12-12": {
-"genres": [
-"Historique",
-"Jeunesse"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Contrapaso": {
 "genres": [
 "Policier / Thriller",
-"Historique"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Corpus_Hermeticum": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Cortès": {
-"genres": [
-"Historique"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Courtisanes": {
-"genres": [
-"Historique"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Croisades": {
-"genres": [
-"Historique"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Cyberpunk_2077": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Cyborgs": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Cédric": {
-"genres": [
-"Humour",
-"Jeunesse"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Damoclès": {
-"genres": [
-"Aventure"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Dans_les_yeux_de_Lya": {
-"genres": [
 "Drame / Chronique sociale"
 ],
-"confidence": "low",
-"source": "pass1_guess"
+"source": "pass2_web"
 },
-"Dante_Alighieri": {
-"genres": [
-"Biographie"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Danthrakon": {
-"genres": [
-"Fantasy"
-],
+"Calamity_Jane": {
 "confidence": "high",
-"source": "pass1"
-},
-"Dark_Ride": {
-"genres": [
-"Fantastique / Horreur"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Dark_Souls_Redemption": {
-"genres": [
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Dent_d_ours": {
-"genres": [
-"Aventure"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Detectives": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Didi": {
-"genres": [],
-"confidence": "low",
-"source": "unresolved"
-},
-"Doc_Fights": {
-"genres": [],
-"confidence": "low",
-"source": "unresolved"
-},
-"Don_Juan": {
-"genres": [
-"Aventure"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Donjon_-_Donjon_Antipodes": {
-"genres": [
-"Fantasy",
-"Humour"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Donjon_-_Donjon_Crépuscule": {
-"genres": [
-"Fantasy",
-"Humour"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Donjon_-_Donjon_Monsters": {
-"genres": [
-"Fantasy",
-"Humour"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Donjon_-_Donjon_Parade": {
-"genres": [
-"Fantasy",
-"Humour"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Donjon_-_Donjon_Potron_Minet": {
-"genres": [
-"Fantasy",
-"Humour"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Donjon_-_Donjon_Zénith": {
-"genres": [
-"Fantasy",
-"Humour"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Dossier_A": {
-"genres": [],
-"confidence": "low",
-"source": "unresolved"
-},
-"Durango": {
 "genres": [
 "Western"
 ],
-"confidence": "high",
 "source": "pass1"
 },
-"Dusha": {
-"genres": [
-"Aventure",
-"Fantasy"
-],
+"Caledonia": {
 "confidence": "high",
-"source": "pass2_web"
-},
-"Dylan_Dog": {
-"genres": [
-"Fantastique / Horreur"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Edward_John_Trelawnay": {
-"genres": [
-"Aventure"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Eightball_hunter": {
-"genres": [],
-"confidence": "low",
-"source": "unresolved"
-},
-"Ekho_complet_13": {
-"genres": [
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"El_Niño": {
-"genres": [
-"Aventure",
-"Historique"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Ellana": {
-"genres": [
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Elles": {
-"genres": [
-"Drame / Chronique sociale"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Elliot_au_collège": {
-"genres": [
-"Humour",
-"Jeunesse"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Ellis_Island": {
-"genres": [
-"Historique"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Elya_Les_Brumes_d_Asceltis": {
-"genres": [
-"Fantasy"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Emma_et_Capucine": {
-"genres": [
-"Jeunesse"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Empires": {
-"genres": [
-"Fantasy"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Ennemis": {
-"genres": [
-"Drame / Chronique sociale"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Erwann": {
-"genres": [
-"Jeunesse",
-"Humour"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Esprit_du_Vent": {
-"genres": [
-"Western"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Eternum": {
-"genres": [
-"Science-fiction",
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Ex_humans": {
-"genres": [
-"Science-fiction",
-"Fantastique / Horreur"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Extases": {
-"genres": [
-"Drame / Chronique sociale"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Fantomas": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Faucheurs_de_vent": {
-"genres": [
-"Guerre"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Faut_pas_prendre_les_cons_pour_des_gens": {
-"genres": [
-"Humour"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Final_Incal": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Fleur_de_nuit": {
-"genres": [
-"Historique"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Fluide_Glacial": {
-"genres": [
-"Humour"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Forbidden_Zone": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Foudroyants": {
-"genres": [
-"Aventure",
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Fracasse": {
-"genres": [
-"Aventure"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Frigiel_et_Fluffy": {
-"genres": [
-"Jeunesse",
-"Aventure"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"FRNCK": {
-"genres": [
-"Aventure"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Furious_Jumper": {
-"genres": [
-"Jeunesse"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Gagner_la_guerre": {
-"genres": [
-"Fantasy"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Game_of_trone_-_T1_à_17_Artbook": {
-"genres": [
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Gardiens_des_cités_perdues": {
-"genres": [
-"Fantasy",
-"Jeunesse"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Garulfo": {
-"genres": [
-"Fantasy",
-"Humour"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Gaston_lagaffe": {
-"genres": [
-"Humour"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Genève": {
-"genres": [
-"Drame / Chronique sociale"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Ghost_war": {
-"genres": [
-"Guerre",
-"Fantastique / Horreur"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Gibier_de_potence": {
-"genres": [
-"Western"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Gilgamesh": {
-"genres": [
-"Aventure"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Glouton": {
-"genres": [
-"Jeunesse",
-"Aventure"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Godspeed": {
-"genres": [
-"Guerre"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Golden_City": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Gone_with_the_wind": {
 "genres": [
 "Historique",
-"Drame / Chronique sociale"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Gosse_et_les_berges": {
-"genres": [
-"Jeunesse"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Great_Pacific": {
-"genres": [
-"Science-fiction",
-"Aventure"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Green_Class": {
-"genres": [
-"Fantastique / Horreur",
-"Jeunesse"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Grim": {
-"genres": [
-"Fantastique / Horreur"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Guerres_Dragons": {
-"genres": [
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Guerres_d_Arran": {
-"genres": [
-"Fantasy"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Gueule_de_cuir": {
-"genres": [
-"Aventure",
-"Historique"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Guy_de_Maupassant": {
-"genres": [
-"Drame / Chronique sociale"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"H_ELL": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"H_cktivists": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Habemus_Bastard_2-2__CDS": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Hannibal_Meriadec_et_les_larmes_d_Odin": {
-"genres": [
-"Fantasy"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Harry_Dickson": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Hauteville_House": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Hawkmoon": {
-"genres": [
-"Fantasy"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Hedge_fund": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Hercule_Poirot": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Histoires_de_guerre": {
-"genres": [
 "Guerre"
 ],
-"confidence": "high",
-"source": "pass1"
+"source": "pass2_web"
 },
-"Histoires_de_l_ouest": {
+"Camomille_et_les_chevaux": {
+"confidence": "high",
 "genres": [
-"Western"
+"Jeunesse"
 ],
+"source": "pass2_web"
+},
+"Camp_poutine": {
+"confidence": "low",
+"genres": [
+"Jeunesse",
+"Humour"
+],
+"source": "pass1_guess"
+},
+"Car_l_enfer_est_ici": {
 "confidence": "high",
+"genres": [
+"Drame / Chronique sociale",
+"Science-fiction"
+],
+"source": "pass2_web"
+},
+"Carmen_Mc_Callum": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
 "source": "pass1"
 },
-"Histoires_vraies": {
+"Carnet_d_auteur": {
+"confidence": "high",
 "genres": [
 "Documentaire"
 ],
-"confidence": "low",
-"source": "pass1_guess"
+"source": "pass2_web"
 },
-"Holly_Ann": {
+"Carthago_16-16": {
+"confidence": "high",
 "genres": [
+"Science-fiction",
 "Aventure"
 ],
-"confidence": "low",
-"source": "pass1_guess"
+"source": "pass1"
 },
-"Human_Stock": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Hurlevent": {
+"Castlewitch": {
+"confidence": "high",
 "genres": [
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
-"Hypnos": {
+"Cellule_Poison": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass3"
+},
+"Ceux_qui_n_existaient_plus": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass2_web"
+},
+"Champignac": {
+"confidence": "high",
+"genres": [
+"Humour",
+"Aventure"
+],
+"source": "pass2_web"
+},
+"Champs_d_honneur": {
+"confidence": "high",
+"genres": [
+"Historique",
+"Guerre"
+],
+"source": "pass2_web"
+},
+"Charles_De_Gaulle": {
+"confidence": "high",
+"genres": [
+"Biographie",
+"Historique"
+],
+"source": "pass1"
+},
+"Chasseurs_d_Héritiers": {
+"confidence": "high",
+"genres": [
+"Aventure",
+"Policier / Thriller"
+],
+"source": "pass3"
+},
+"Chez_Adolf": {
+"confidence": "high",
+"genres": [
+"Historique"
+],
+"source": "pass2_web"
+},
+"Chiens_Loups": {
+"confidence": "low",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass3"
+},
+"Chroniques_de_la_guerre_des_fées": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass3"
+},
+"Châteaux_Bordeaux": {
+"confidence": "high",
+"genres": [
+"Drame / Chronique sociale",
+"Policier / Thriller"
+],
+"source": "pass2_web"
+},
+"Ciel_d_orages": {
+"confidence": "low",
+"genres": [],
+"source": "unresolved"
+},
+"Ciel_en_ruine": {
+"confidence": "low",
+"genres": [
+"Guerre"
+],
+"source": "pass1_guess"
+},
+"Cinjis_Qan": {
+"confidence": "low",
+"genres": [
+"Historique",
+"Aventure"
+],
+"source": "pass1_guess"
+},
+"Cinq_Avril": {
+"confidence": "low",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1_guess"
+},
+"Cirk": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass3"
+},
+"Civilisations": {
+"confidence": "low",
+"genres": [
+"Historique",
+"Aventure"
+],
+"source": "pass1_guess"
+},
+"Cixi_de_Troy": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass1"
+},
+"Cizo": {
+"confidence": "low",
+"genres": [],
+"source": "unresolved"
+},
+"Claire_de_nuit_MANQUE_LE_2_et_5": {
+"confidence": "low",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1_guess"
+},
+"Climax": {
+"confidence": "low",
+"genres": [],
+"source": "unresolved"
+},
+"Clovd": {
+"confidence": "low",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1_guess"
+},
+"Clues": {
+"confidence": "low",
+"genres": [],
+"source": "unresolved"
+},
+"Code_Mc_Callum": {
+"confidence": "low",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1_guess"
+},
+"Codex_Sinaïticus": {
+"confidence": "high",
+"genres": [
+"Historique",
+"Policier / Thriller"
+],
+"source": "pass3"
+},
+"Collège_Apocalypse": {
+"confidence": "low",
 "genres": [
 "Fantastique / Horreur"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
-"Hyver": {
+"Colonisation": {
+"confidence": "low",
 "genres": [
-"Fantasy"
+"Historique"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
-"Héraclès": {
+"Colt_Pepper": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Aventure"
+],
+"source": "pass3"
+},
+"Comanche": {
+"confidence": "high",
+"genres": [
+"Western"
+],
+"source": "pass1"
+},
+"Commandant_Achab": {
+"confidence": "low",
 "genres": [
 "Aventure"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
-"I_R_HD": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"I_R_HD_-_I_R_-_All_Watcher_HD": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"I_R_HD_-_I_R_Team_HD": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"I_S_S_Snipers": {
-"genres": [
-"Guerre"
-],
+"Commando_samouraï": {
 "confidence": "low",
-"source": "pass1_guess"
-},
-"Il_était_une_fois_en_France": {
-"genres": [
-"Historique",
-"Policier / Thriller"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Immergés": {
-"genres": [
-"Guerre"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"In_vino_veritas": {
-"genres": [
-"Drame / Chronique sociale"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Inguinis": {
-"genres": [],
-"confidence": "low",
-"source": "unresolved"
-},
-"Inhumain": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Intraitable": {
-"genres": [
-"Drame / Chronique sociale"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"IRENA": {
-"genres": [
-"Biographie",
-"Guerre"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Islandia": {
-"genres": [
-"Aventure"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Jason_et_la_Toison_d_Or": {
 "genres": [
 "Aventure",
-"Fantasy"
+"Guerre"
 ],
-"confidence": "high",
-"source": "pass2_web"
+"source": "pass1_guess"
 },
-"Jeremiah": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Jeremiah_Johnson": {
-"genres": [
-"Western"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Jeux_de_dames": {
-"genres": [],
+"Complot_à_Versailles_12-12": {
 "confidence": "low",
-"source": "unresolved"
-},
-"Jhen": {
-"genres": [
-"Historique"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"JOUR_J": {
 "genres": [
 "Historique",
-"Science-fiction"
+"Jeunesse"
 ],
-"confidence": "high",
-"source": "pass1"
+"source": "pass1_guess"
 },
-"Journal_inqu_et_d_Istanbul": {
-"genres": [
-"Biographie",
-"Drame / Chronique sociale"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Jules_Matrat": {
-"genres": [
-"Aventure"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Julie_Doohan": {
-"genres": [
-"Western"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Jungle_Fantasy_Ivory": {
-"genres": [
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Justes_parmi_les_nations": {
-"genres": [
-"Guerre",
-"Historique"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Jérôme_K_Jérôme_Bloche_CDS": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Kaamelott": {
-"genres": [
-"Humour",
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Karma_Salsa": {
-"genres": [],
+"Contrapaso": {
 "confidence": "low",
-"source": "unresolved"
-},
-"KGB_complet_4": {
 "genres": [
 "Policier / Thriller",
 "Historique"
 ],
+"source": "pass1_guess"
+},
+"Corpus_Hermeticum": {
+"confidence": "low",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1_guess"
+},
+"Cortès": {
+"confidence": "low",
+"genres": [
+"Historique"
+],
+"source": "pass1_guess"
+},
+"Cosmopirates": {
+"confidence": "low",
+"genres": [
+"Science-fiction",
+"Aventure"
+],
+"source": "pass3"
+},
+"Courtisanes": {
+"confidence": "low",
+"genres": [
+"Historique"
+],
+"source": "pass1_guess"
+},
+"Creepy_Past": {
 "confidence": "high",
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass3"
+},
+"Criminal": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass3"
+},
+"Croisades": {
+"confidence": "high",
+"genres": [
+"Historique"
+],
+"source": "pass1"
+},
+"Croquemitaines": {
+"confidence": "low",
+"genres": [
+"Fantastique / Horreur",
+"Fantasy"
+],
+"source": "pass3"
+},
+"Crusades": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Historique"
+],
+"source": "pass3"
+},
+"Cyberpunk_2077": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1"
+},
+"Cyborgs": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1"
+},
+"Cédric": {
+"confidence": "high",
+"genres": [
+"Humour",
+"Jeunesse"
+],
+"source": "pass1"
+},
+"Damoclès": {
+"confidence": "low",
+"genres": [
+"Aventure"
+],
+"source": "pass1_guess"
+},
+"Dans_les_yeux_de_Lya": {
+"confidence": "low",
+"genres": [
+"Drame / Chronique sociale"
+],
+"source": "pass1_guess"
+},
+"Dante_Alighieri": {
+"confidence": "low",
+"genres": [
+"Biographie"
+],
+"source": "pass1_guess"
+},
+"Danthrakon": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass1"
+},
+"Dantès": {
+"confidence": "low",
+"genres": [
+"Policier / Thriller",
+"Drame / Chronique sociale"
+],
+"source": "pass3"
+},
+"Dark_Ride": {
+"confidence": "low",
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass1_guess"
+},
+"Dark_Souls_Redemption": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass1"
+},
+"Dawn_of_Superman": {
+"confidence": "high",
+"genres": [
+"Super-héros"
+],
+"source": "pass3"
+},
+"De_bruit_de_fureur": {
+"confidence": "high",
+"genres": [
+"Fantastique / Horreur",
+"Historique"
+],
+"source": "pass3"
+},
+"Dent_d_ours": {
+"confidence": "low",
+"genres": [
+"Aventure"
+],
+"source": "pass1_guess"
+},
+"Descender": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass3"
+},
+"Detectives": {
+"confidence": "low",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1_guess"
+},
+"Didi": {
+"confidence": "low",
+"genres": [],
+"source": "unresolved"
+},
+"Doc_Fights": {
+"confidence": "low",
+"genres": [],
+"source": "unresolved"
+},
+"Don_Juan": {
+"confidence": "low",
+"genres": [
+"Aventure"
+],
+"source": "pass1_guess"
+},
+"Donjon_-_Donjon_Antipodes": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Humour"
+],
+"source": "pass1"
+},
+"Donjon_-_Donjon_Crépuscule": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Humour"
+],
+"source": "pass1"
+},
+"Donjon_-_Donjon_Monsters": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Humour"
+],
+"source": "pass1"
+},
+"Donjon_-_Donjon_Parade": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Humour"
+],
+"source": "pass1"
+},
+"Donjon_-_Donjon_Potron_Minet": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Humour"
+],
+"source": "pass1"
+},
+"Donjon_-_Donjon_Zénith": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Humour"
+],
+"source": "pass1"
+},
+"Donnington": {
+"confidence": "high",
+"genres": [
+"Aventure"
+],
+"source": "pass3"
+},
+"Dossier_A": {
+"confidence": "low",
+"genres": [],
+"source": "unresolved"
+},
+"Durandal_MANQUE_CDS": {
+"confidence": "low",
+"genres": [
+"Fantasy",
+"Historique"
+],
+"source": "pass3"
+},
+"Durango": {
+"confidence": "high",
+"genres": [
+"Western"
+],
+"source": "pass1"
+},
+"Dusha": {
+"confidence": "high",
+"genres": [
+"Aventure",
+"Fantasy"
+],
 "source": "pass2_web"
 },
-"Kiki_et_Aliène": {
+"Dylan_Dog": {
+"confidence": "high",
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass1"
+},
+"Edward_John_Trelawnay": {
+"confidence": "high",
+"genres": [
+"Aventure"
+],
+"source": "pass2_web"
+},
+"Eightball_hunter": {
+"confidence": "low",
+"genres": [],
+"source": "unresolved"
+},
+"Ekho_complet_13": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass1"
+},
+"El_Niño": {
+"confidence": "high",
+"genres": [
+"Aventure",
+"Historique"
+],
+"source": "pass2_web"
+},
+"Elecboy": {
+"confidence": "high",
+"genres": [
+"Science-fiction",
+"Aventure"
+],
+"source": "pass3"
+},
+"Ellana": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass1"
+},
+"Elles": {
+"confidence": "low",
+"genres": [
+"Drame / Chronique sociale"
+],
+"source": "pass1_guess"
+},
+"Elliot_au_collège": {
+"confidence": "low",
+"genres": [
+"Humour",
+"Jeunesse"
+],
+"source": "pass1_guess"
+},
+"Ellis_Island": {
+"confidence": "low",
+"genres": [
+"Historique"
+],
+"source": "pass1_guess"
+},
+"Elya_Les_Brumes_d_Asceltis": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass1_guess"
+},
+"Emma_et_Capucine": {
+"confidence": "low",
+"genres": [
+"Jeunesse"
+],
+"source": "pass1_guess"
+},
+"Empire_USA": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass3"
+},
+"Empires": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass1_guess"
+},
+"Ennemis": {
+"confidence": "low",
+"genres": [
+"Drame / Chronique sociale"
+],
+"source": "pass1_guess"
+},
+"Erwann": {
+"confidence": "high",
 "genres": [
 "Jeunesse",
 "Humour"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
-"Killadelphia": {
+"Esprit_du_Vent": {
+"confidence": "low",
 "genres": [
+"Western"
+],
+"source": "pass1_guess"
+},
+"Eternum": {
+"confidence": "high",
+"genres": [
+"Science-fiction",
+"Fantasy"
+],
+"source": "pass2_web"
+},
+"Ex_humans": {
+"confidence": "low",
+"genres": [
+"Science-fiction",
 "Fantastique / Horreur"
 ],
-"confidence": "high",
-"source": "pass2_web"
+"source": "pass1_guess"
 },
-"Kingsman": {
+"Extases": {
+"confidence": "low",
 "genres": [
-"Aventure",
+"Drame / Chronique sociale"
+],
+"source": "pass1_guess"
+},
+"FRNCK": {
+"confidence": "low",
+"genres": [
+"Aventure"
+],
+"source": "pass1_guess"
+},
+"Fang": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Aventure"
+],
+"source": "pass3"
+},
+"Fantomas": {
+"confidence": "high",
+"genres": [
 "Policier / Thriller"
 ],
+"source": "pass1"
+},
+"Faucheurs_de_vent": {
+"confidence": "low",
+"genres": [
+"Guerre"
+],
+"source": "pass1_guess"
+},
+"Faut_pas_prendre_les_cons_pour_des_gens": {
 "confidence": "high",
+"genres": [
+"Humour"
+],
+"source": "pass1"
+},
+"Femmes_en_résistance": {
+"confidence": "low",
+"genres": [
+"Biographie",
+"Guerre"
+],
+"source": "pass3"
+},
+"Final_Incal": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1"
+},
+"Fleur_de_nuit": {
+"confidence": "high",
+"genres": [
+"Historique"
+],
 "source": "pass2_web"
 },
-"Klaw": {
+"Fluide_Glacial": {
+"confidence": "high",
+"genres": [
+"Humour"
+],
+"source": "pass1"
+},
+"Forbidden_Zone": {
+"confidence": "low",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1_guess"
+},
+"Foudroyants": {
+"confidence": "high",
+"genres": [
+"Aventure",
+"Fantasy"
+],
+"source": "pass2_web"
+},
+"Fracasse": {
+"confidence": "low",
+"genres": [
+"Aventure"
+],
+"source": "pass1_guess"
+},
+"Frigiel_et_Fluffy": {
+"confidence": "low",
+"genres": [
+"Jeunesse",
+"Aventure"
+],
+"source": "pass1_guess"
+},
+"Furious_Jumper": {
+"confidence": "low",
+"genres": [
+"Jeunesse"
+],
+"source": "pass1_guess"
+},
+"Gagner_la_guerre": {
+"confidence": "low",
 "genres": [
 "Fantasy"
 ],
+"source": "pass1_guess"
+},
+"Game_of_trone_-_T1_à_17_Artbook": {
 "confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass1"
+},
+"Gardiens_des_cités_perdues": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Jeunesse"
+],
+"source": "pass1"
+},
+"Garulfo": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Humour"
+],
+"source": "pass1"
+},
+"Gaston_lagaffe": {
+"confidence": "high",
+"genres": [
+"Humour"
+],
+"source": "pass1"
+},
+"Genève": {
+"confidence": "low",
+"genres": [
+"Drame / Chronique sociale"
+],
+"source": "pass1_guess"
+},
+"Ghost_war": {
+"confidence": "low",
+"genres": [
+"Guerre",
+"Fantastique / Horreur"
+],
+"source": "pass1_guess"
+},
+"Gibier_de_potence": {
+"confidence": "high",
+"genres": [
+"Western"
+],
 "source": "pass2_web"
 },
-"Kundan": {
+"Gideon_Falls": {
+"confidence": "high",
+"genres": [
+"Fantastique / Horreur",
+"Policier / Thriller"
+],
+"source": "pass3"
+},
+"Gilgamesh": {
+"confidence": "high",
+"genres": [
+"Aventure"
+],
+"source": "pass2_web"
+},
+"Glouton": {
+"confidence": "high",
+"genres": [
+"Jeunesse",
+"Aventure"
+],
+"source": "pass2_web"
+},
+"Godspeed": {
+"confidence": "low",
+"genres": [
+"Guerre"
+],
+"source": "pass1_guess"
+},
+"Golden_City": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1"
+},
+"Gone_with_the_wind": {
+"confidence": "high",
+"genres": [
+"Historique",
+"Drame / Chronique sociale"
+],
+"source": "pass1"
+},
+"Gosse_et_les_berges": {
+"confidence": "high",
+"genres": [
+"Jeunesse"
+],
+"source": "pass2_web"
+},
+"Great_Pacific": {
+"confidence": "high",
+"genres": [
+"Science-fiction",
+"Aventure"
+],
+"source": "pass2_web"
+},
+"Green_Class": {
+"confidence": "low",
+"genres": [
+"Fantastique / Horreur",
+"Jeunesse"
+],
+"source": "pass1_guess"
+},
+"Grim": {
+"confidence": "high",
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass2_web"
+},
+"Guerres_Dragons": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass1"
+},
+"Guerres_d_Arran": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass1_guess"
+},
+"Gueule_de_cuir": {
+"confidence": "high",
 "genres": [
 "Aventure",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
-"Kurusan_le_samouraï_noir": {
+"Guy_de_Maupassant": {
+"confidence": "high",
+"genres": [
+"Drame / Chronique sociale"
+],
+"source": "pass2_web"
+},
+"H_ELL": {
+"confidence": "low",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1_guess"
+},
+"H_cktivists": {
+"confidence": "low",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1_guess"
+},
+"Habemus_Bastard_2-2__CDS": {
+"confidence": "low",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1_guess"
+},
+"Hannibal_Meriadec_et_les_larmes_d_Odin": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass1_guess"
+},
+"Happy_End": {
+"confidence": "high",
+"genres": [
+"Jeunesse",
+"Drame / Chronique sociale"
+],
+"source": "pass3"
+},
+"Harry_Dickson": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1"
+},
+"Hauteville_House": {
+"confidence": "low",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1_guess"
+},
+"Havana_Split": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller",
+"Historique"
+],
+"source": "pass3"
+},
+"Hawkmoon": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass1_guess"
+},
+"Hedge_fund": {
+"confidence": "low",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1_guess"
+},
+"Hercule_Poirot": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1"
+},
+"Histoires_de_guerre": {
+"confidence": "high",
+"genres": [
+"Guerre"
+],
+"source": "pass1"
+},
+"Histoires_de_l_ouest": {
+"confidence": "high",
+"genres": [
+"Western"
+],
+"source": "pass1"
+},
+"Histoires_vraies": {
+"confidence": "low",
+"genres": [
+"Documentaire"
+],
+"source": "pass1_guess"
+},
+"Holly_Ann": {
+"confidence": "low",
+"genres": [
+"Aventure"
+],
+"source": "pass1_guess"
+},
+"Human_Stock": {
+"confidence": "low",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1_guess"
+},
+"Hurlevent": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass2_web"
+},
+"Hypnos": {
+"confidence": "low",
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass1_guess"
+},
+"Hyver": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass1_guess"
+},
+"Héraclès": {
+"confidence": "low",
+"genres": [
+"Aventure"
+],
+"source": "pass1_guess"
+},
+"IRENA": {
+"confidence": "high",
+"genres": [
+"Biographie",
+"Guerre"
+],
+"source": "pass1"
+},
+"I_R_HD": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1"
+},
+"I_R_HD_-_I_R_-_All_Watcher_HD": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1"
+},
+"I_R_HD_-_I_R_Team_HD": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1"
+},
+"I_S_S_Snipers": {
+"confidence": "low",
+"genres": [
+"Guerre"
+],
+"source": "pass1_guess"
+},
+"Il_était_une_fois_en_France": {
+"confidence": "high",
+"genres": [
+"Historique",
+"Policier / Thriller"
+],
+"source": "pass1"
+},
+"Immergés": {
+"confidence": "high",
+"genres": [
+"Guerre"
+],
+"source": "pass2_web"
+},
+"In_nomine": {
+"confidence": "high",
+"genres": [
+"Historique",
+"Policier / Thriller"
+],
+"source": "pass3"
+},
+"In_vino_veritas": {
+"confidence": "low",
+"genres": [
+"Drame / Chronique sociale"
+],
+"source": "pass1_guess"
+},
+"Inguinis": {
+"confidence": "low",
+"genres": [],
+"source": "unresolved"
+},
+"Inhumain": {
+"confidence": "low",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1_guess"
+},
+"Intraitable": {
+"confidence": "high",
+"genres": [
+"Drame / Chronique sociale"
+],
+"source": "pass2_web"
+},
+"Islandia": {
+"confidence": "high",
+"genres": [
+"Aventure"
+],
+"source": "pass2_web"
+},
+"JOUR_J": {
+"confidence": "high",
+"genres": [
+"Historique",
+"Science-fiction"
+],
+"source": "pass1"
+},
+"Jason_et_la_Toison_d_Or": {
+"confidence": "high",
+"genres": [
+"Aventure",
+"Fantasy"
+],
+"source": "pass2_web"
+},
+"Je_suis_Cathare_MANQUE_CDS": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Aventure"
 ],
-"confidence": "high",
-"source": "pass2_web"
+"source": "pass3"
 },
-"L_adoption": {
+"Jeanne_des_Embruns": {
+"confidence": "low",
 "genres": [
-"Drame / Chronique sociale"
+"Jeunesse",
+"Aventure"
 ],
+"source": "pass3"
+},
+"Jeremiah": {
 "confidence": "high",
+"genres": [
+"Science-fiction"
+],
 "source": "pass1"
 },
-"L_agence": {
+"Jeremiah_Johnson": {
+"confidence": "high",
+"genres": [
+"Western"
+],
+"source": "pass2_web"
+},
+"Jeux_de_dames": {
+"confidence": "low",
+"genres": [],
+"source": "unresolved"
+},
+"Jhen": {
+"confidence": "high",
+"genres": [
+"Historique"
+],
+"source": "pass1"
+},
+"Journal_inqu_et_d_Istanbul": {
+"confidence": "high",
+"genres": [
+"Biographie",
+"Drame / Chronique sociale"
+],
+"source": "pass2_web"
+},
+"Jules_Matrat": {
+"confidence": "high",
+"genres": [
+"Aventure"
+],
+"source": "pass2_web"
+},
+"Julie_Doohan": {
+"confidence": "high",
+"genres": [
+"Western"
+],
+"source": "pass2_web"
+},
+"Jungle_Fantasy_Ivory": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass2_web"
+},
+"Justes_parmi_les_nations": {
+"confidence": "high",
+"genres": [
+"Guerre",
+"Historique"
+],
+"source": "pass2_web"
+},
+"Jérôme_K_Jérôme_Bloche_CDS": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller"
 ],
+"source": "pass1"
+},
+"KGB_complet_4": {
 "confidence": "high",
+"genres": [
+"Policier / Thriller",
+"Historique"
+],
 "source": "pass2_web"
 },
-"L_agent_Jean": {
+"Kaamelott": {
+"confidence": "high",
 "genres": [
 "Humour",
-"Jeunesse"
+"Fantasy"
 ],
-"confidence": "high",
-"source": "pass2_web"
+"source": "pass1"
 },
-"L_alchimiste": {
+"Kaplan_Masson": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller",
+"Aventure"
+],
+"source": "pass3"
+},
+"Karma_Salsa": {
+"confidence": "low",
+"genres": [],
+"source": "unresolved"
+},
+"Katsuo": {
+"confidence": "high",
 "genres": [
 "Aventure",
 "Jeunesse"
 ],
+"source": "pass3"
+},
+"Kaya": {
 "confidence": "high",
+"genres": [
+"Fantasy",
+"Aventure"
+],
+"source": "pass3"
+},
+"Kaël": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass3"
+},
+"Kiki_et_Aliène": {
+"confidence": "high",
+"genres": [
+"Jeunesse",
+"Humour"
+],
 "source": "pass2_web"
 },
-"L_alternative": {
-"genres": [],
-"confidence": "low",
-"source": "unresolved"
-},
-"L_arabe_du_futur": {
-"genres": [
-"Biographie"
-],
+"Killadelphia": {
 "confidence": "high",
-"source": "pass1"
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass2_web"
+},
+"Kingsman": {
+"confidence": "high",
+"genres": [
+"Aventure",
+"Policier / Thriller"
+],
+"source": "pass2_web"
+},
+"Klaw": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass2_web"
+},
+"Kundan": {
+"confidence": "high",
+"genres": [
+"Aventure",
+"Historique"
+],
+"source": "pass2_web"
+},
+"Kurusan_le_samouraï_noir": {
+"confidence": "high",
+"genres": [
+"Historique",
+"Aventure"
+],
+"source": "pass2_web"
+},
+"L_Affaire_des_affaires": {
+"confidence": "low",
+"genres": [
+"Documentaire",
+"Policier / Thriller"
+],
+"source": "pass3"
 },
 "L_Arche_de_Néo": {
+"confidence": "high",
 "genres": [
 "Humour"
 ],
-"confidence": "high",
 "source": "pass2_web"
-},
-"L_armée_des_anges": {
-"genres": [
-"Fantastique / Horreur",
-"Aventure"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"L_art_du_crime": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "high",
-"source": "pass1"
 },
 "L_Assassin_Royal": {
+"confidence": "high",
 "genres": [
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass1"
-},
-"L_atelier_des_sorciers": {
-"genres": [
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"L_autre": {
-"genres": [
-"Fantasy",
-"Jeunesse"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"L_autre_monde": {
-"genres": [
-"Fantasy",
-"Aventure"
-],
-"confidence": "high",
-"source": "pass2_web"
 },
 "L_Aviateur": {
+"confidence": "high",
 "genres": [
 "Aventure",
 "Guerre"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
-"L_ecole_des_petits_monstres": {
-"genres": [
-"Humour",
-"Jeunesse"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"L_eleve_Ducobu": {
-"genres": [
-"Humour",
-"Jeunesse"
-],
-"confidence": "high",
-"source": "pass1"
-},
 "L_Enfant_maudit": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Drame / Chronique sociale"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
-"L_histoire_secrète_MANQUE_26": {
+"L_Epervier": {
+"confidence": "high",
 "genres": [
-"Fantastique / Horreur",
+"Aventure",
 "Historique"
 ],
+"source": "pass3"
+},
+"L_Evangile_selon_Satan": {
 "confidence": "high",
-"source": "pass1"
+"genres": [
+"Policier / Thriller",
+"Fantastique / Horreur"
+],
+"source": "pass3"
 },
 "L_Homme_de_l_année": {
+"confidence": "high",
 "genres": [
 "Science-fiction",
 "Guerre"
 ],
-"confidence": "high",
-"source": "pass2_web"
-},
-"L_ile_du_crane": {
-"genres": [
-"Fantasy",
-"Jeunesse"
-],
-"confidence": "high",
 "source": "pass2_web"
 },
 "L_Iliade": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "L_Incal": {
+"confidence": "high",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "high",
 "source": "pass1"
-},
-"L_instit_Latouche": {
-"genres": [
-"Humour"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"L_institutrice": {
-"genres": [
-"Drame / Chronique sociale"
-],
-"confidence": "low",
-"source": "pass1_guess"
 },
 "L_Odyssée": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "L_Odyssée_d_Hakim": {
+"confidence": "high",
 "genres": [
 "Drame / Chronique sociale",
 "Documentaire"
 ],
-"confidence": "high",
 "source": "pass1"
 },
-"L_ogre_lion": {
-"genres": [
-"Fantasy"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
 "L_Or_des_marées": {
+"confidence": "low",
 "genres": [
 "Aventure"
 ],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"L_or_sous_la_neige_3-3": {
-"genres": [
-"Aventure",
-"Historique"
-],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "L_Ordre_des_dragons": {
+"confidence": "high",
 "genres": [
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass1"
 },
-"L_âge_d_eau": {
+"L_adoption": {
+"confidence": "high",
 "genres": [
 "Drame / Chronique sociale"
 ],
-"confidence": "low",
-"source": "pass1_guess"
+"source": "pass1"
 },
-"L_Écuyer_et_son_chevalier": {
-"genres": [
-"Humour",
-"Jeunesse"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"L_éducation_des_assassins": {
+"L_agence": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "low",
-"source": "pass1_guess"
+"source": "pass2_web"
 },
-"L_Épopée_de_la_Franc_Maçonnerie": {
+"L_agent_Jean": {
+"confidence": "high",
 "genres": [
-"Historique",
-"Documentaire"
+"Humour",
+"Jeunesse"
 ],
-"confidence": "low",
-"source": "pass1_guess"
+"source": "pass2_web"
 },
-"L_érection": {
-"genres": [
-"Humour"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"La_Baroque_épopée_du_monde_qui_ne_voulait_plus_tourner": {
-"genres": [
-"Fantasy",
-"Humour"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"La_BD_érotique": {
-"genres": [
-"Humour"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"La_brigade_des_souvenirs": {
-"genres": [
-"Aventure"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"La_buse": {
+"L_alchimiste": {
+"confidence": "high",
 "genres": [
 "Aventure",
-"Historique"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"La_Cantoche": {
-"genres": [
-"Humour",
 "Jeunesse"
 ],
-"confidence": "low",
-"source": "pass1_guess"
+"source": "pass2_web"
 },
-"La_Confrérie_des_tempêtes": {
-"genres": [
-"Fantasy"
-],
+"L_alternative": {
+"confidence": "low",
+"genres": [],
+"source": "unresolved"
+},
+"L_ambulance_13": {
 "confidence": "high",
-"source": "pass1"
-},
-"La_contessa": {
-"genres": [
-"Fantasy"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"La_Couronne_De_France": {
-"genres": [
-"Historique"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"La_couronne_de_verre": {
-"genres": [
-"Fantasy"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"La_Famille_Bellaventure": {
-"genres": [
-"Humour",
-"Jeunesse"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"La_faune_symbolique": {
-"genres": [
-"Drame / Chronique sociale"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"La_Fille_de_Paname": {
-"genres": [
-"Historique",
-"Drame / Chronique sociale"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"La_fortune_des_Winczlav": {
-"genres": [
-"Historique",
-"Drame / Chronique sociale"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"La_Forêt_du_temps": {
-"genres": [
-"Fantasy"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"La_geste_des_chevaliers_dragons": {
-"genres": [
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"La_grande_peste": {
-"genres": [
-"Historique"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"La_guerre_des_lulus": {
 "genres": [
 "Guerre",
 "Historique"
 ],
-"confidence": "high",
-"source": "pass1"
+"source": "pass3"
 },
-"La_guerre_des_mondes": {
-"genres": [
-"Science-fiction"
-],
+"L_ange_corse": {
 "confidence": "high",
-"source": "pass1"
-},
-"La_guerre_du_feu": {
 "genres": [
-"Aventure"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"La_horde_du_contrevent": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"La_loi_des_12_tables": {
-"genres": [
+"Aventure",
 "Historique"
 ],
-"confidence": "low",
-"source": "pass1_guess"
+"source": "pass3"
 },
-"La_légende_de_Drizzt": {
-"genres": [
-"Fantasy"
-],
+"L_arabe_du_futur": {
 "confidence": "high",
+"genres": [
+"Biographie"
+],
 "source": "pass1"
 },
-"La_légende_de_la_mort": {
-"genres": [
-"Fantastique / Horreur"
-],
+"L_armée_des_anges": {
 "confidence": "high",
-"source": "pass1"
-},
-"La_marche_Brume": {
 "genres": [
-"Fantasy"
+"Fantastique / Horreur",
+"Aventure"
 ],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"La_marche_du_crabe": {
-"genres": [
-"Humour"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"La_mémoire_dans_les_poches": {
-"genres": [
-"Drame / Chronique sociale"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"La_méthode_Raowl": {
-"genres": [
-"Humour"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"La_planète_des_sages": {
-"genres": [
-"Humour"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"La_planète_des_singes": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"La_prière_aux_étoiles": {
-"genres": [],
-"confidence": "low",
-"source": "unresolved"
-},
-"La_promesse_de_la_tortue": {
-"genres": [
-"Drame / Chronique sociale"
-],
-"confidence": "high",
 "source": "pass2_web"
 },
-"La_quête_d_Ewilan_7-7": {
+"L_art_du_crime": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1"
+},
+"L_atelier_des_sorciers": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass1"
+},
+"L_autre": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Jeunesse"
 ],
-"confidence": "high",
-"source": "pass1"
-},
-"La_Quête_de_l_Oiseau_du_Temps": {
-"genres": [
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"La_rhapsodie_du_ciel": {
-"genres": [
-"Aventure"
-],
-"confidence": "high",
 "source": "pass2_web"
 },
-"La_Rose_écarlate": {
+"L_autre_monde": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Aventure"
 ],
+"source": "pass2_web"
+},
+"L_ecole_des_petits_monstres": {
 "confidence": "high",
+"genres": [
+"Humour",
+"Jeunesse"
+],
 "source": "pass1"
 },
-"La_révolte_sans_précédent": {
+"L_eleve_Ducobu": {
+"confidence": "high",
+"genres": [
+"Humour",
+"Jeunesse"
+],
+"source": "pass1"
+},
+"L_ennemi": {
+"confidence": "low",
+"genres": [
+"Fantastique / Horreur",
+"Policier / Thriller"
+],
+"source": "pass3"
+},
+"L_histoire_secrète_MANQUE_26": {
+"confidence": "high",
+"genres": [
+"Fantastique / Horreur",
+"Historique"
+],
+"source": "pass1"
+},
+"L_ile_du_crane": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Jeunesse"
+],
+"source": "pass2_web"
+},
+"L_instit_Latouche": {
+"confidence": "high",
 "genres": [
 "Humour"
 ],
-"confidence": "high",
-"source": "pass2_web"
+"source": "pass1"
 },
-"La_saga_d_Atlas_Axis": {
-"genres": [
-"Science-fiction"
-],
+"L_institutrice": {
 "confidence": "low",
-"source": "pass1_guess"
-},
-"La_sentinelle_du_Petit_Peuple": {
-"genres": [
-"Jeunesse",
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"La_source": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"La_sportive": {
 "genres": [
 "Drame / Chronique sociale"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
+"L_ogre_lion": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass1_guess"
+},
+"L_ombre_des_lumières": {
+"confidence": "high",
+"genres": [
+"Historique"
+],
+"source": "pass3"
+},
+"L_or_des_Belges": {
+"confidence": "high",
+"genres": [
+"Aventure",
+"Historique"
+],
+"source": "pass3"
+},
+"L_or_sous_la_neige_3-3": {
+"confidence": "low",
+"genres": [
+"Aventure",
+"Historique"
+],
+"source": "pass1_guess"
+},
+"L_ordre_de_Cicéron": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller",
+"Historique"
+],
+"source": "pass3"
+},
+"L_Écuyer_et_son_chevalier": {
+"confidence": "low",
+"genres": [
+"Humour",
+"Jeunesse"
+],
+"source": "pass1_guess"
+},
+"L_Épopée_de_la_Franc_Maçonnerie": {
+"confidence": "low",
+"genres": [
+"Historique",
+"Documentaire"
+],
+"source": "pass1_guess"
+},
+"L_âge_d_eau": {
+"confidence": "low",
+"genres": [
+"Drame / Chronique sociale"
+],
+"source": "pass1_guess"
+},
+"L_âge_d_or": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Aventure"
+],
+"source": "pass3"
+},
+"L_éducation_des_assassins": {
+"confidence": "low",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1_guess"
+},
+"L_érection": {
+"confidence": "low",
+"genres": [
+"Humour"
+],
+"source": "pass1_guess"
+},
+"L_île_de_minuit": {
+"confidence": "low",
+"genres": [
+"Jeunesse",
+"Fantastique / Horreur"
+],
+"source": "pass3"
+},
+"La_6e_Heure": {
+"confidence": "high",
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass3"
+},
+"La_BD_érotique": {
+"confidence": "low",
+"genres": [
+"Humour"
+],
+"source": "pass1_guess"
+},
+"La_Baroque_épopée_du_monde_qui_ne_voulait_plus_tourner": {
+"confidence": "low",
+"genres": [
+"Fantasy",
+"Humour"
+],
+"source": "pass1_guess"
+},
+"La_Cantoche": {
+"confidence": "low",
+"genres": [
+"Humour",
+"Jeunesse"
+],
+"source": "pass1_guess"
+},
+"La_Confrérie_des_tempêtes": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass1"
+},
+"La_Couronne_De_France": {
+"confidence": "low",
+"genres": [
+"Historique"
+],
+"source": "pass1_guess"
+},
+"La_Duelliste": {
+"confidence": "low",
+"genres": [
+"Historique",
+"Aventure"
+],
+"source": "pass3"
+},
+"La_Famille_Bellaventure": {
+"confidence": "low",
+"genres": [
+"Humour",
+"Jeunesse"
+],
+"source": "pass1_guess"
+},
+"La_Fille_de_Paname": {
+"confidence": "low",
+"genres": [
+"Historique",
+"Drame / Chronique sociale"
+],
+"source": "pass1_guess"
+},
+"La_Forêt_du_temps": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass1_guess"
+},
+"La_Mondaine": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller",
+"Historique"
+],
+"source": "pass3"
+},
+"La_Quête_de_l_Oiseau_du_Temps": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass1"
+},
+"La_Rose_et_la_Croix": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller",
+"Historique"
+],
+"source": "pass3"
+},
+"La_Rose_écarlate": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Aventure"
+],
+"source": "pass1"
+},
 "La_Terre_du_Milieu_mais_un_peu_sur_la_Gauche": {
+"confidence": "high",
 "genres": [
 "Humour",
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass1"
 },
-"La_tour": {
+"La_brigade_des_cauchemars": {
+"confidence": "high",
 "genres": [
-"Policier / Thriller"
+"Fantastique / Horreur",
+"Jeunesse"
 ],
-"confidence": "low",
-"source": "pass1_guess"
+"source": "pass3"
 },
-"La_voie_du_glaive": {
+"La_brigade_des_souvenirs": {
+"confidence": "low",
 "genres": [
 "Aventure"
 ],
+"source": "pass1_guess"
+},
+"La_buse": {
 "confidence": "high",
+"genres": [
+"Aventure",
+"Historique"
+],
+"source": "pass1"
+},
+"La_contessa": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass1_guess"
+},
+"La_cour_des_miracles": {
+"confidence": "high",
+"genres": [
+"Historique",
+"Aventure"
+],
+"source": "pass3"
+},
+"La_couronne_de_verre": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass1_guess"
+},
+"La_faune_symbolique": {
+"confidence": "low",
+"genres": [
+"Drame / Chronique sociale"
+],
+"source": "pass1_guess"
+},
+"La_fortune_des_Winczlav": {
+"confidence": "high",
+"genres": [
+"Historique",
+"Drame / Chronique sociale"
+],
+"source": "pass1"
+},
+"La_geste_des_chevaliers_dragons": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass1"
+},
+"La_grande_peste": {
+"confidence": "low",
+"genres": [
+"Historique"
+],
+"source": "pass1_guess"
+},
+"La_guerre_des_lulus": {
+"confidence": "high",
+"genres": [
+"Guerre",
+"Historique"
+],
+"source": "pass1"
+},
+"La_guerre_des_mondes": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1"
+},
+"La_guerre_du_feu": {
+"confidence": "high",
+"genres": [
+"Aventure"
+],
+"source": "pass1"
+},
+"La_horde_du_contrevent": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1"
+},
+"La_loi_des_12_tables": {
+"confidence": "low",
+"genres": [
+"Historique"
+],
+"source": "pass1_guess"
+},
+"La_légende_de_Drizzt": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass1"
+},
+"La_légende_de_la_mort": {
+"confidence": "high",
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass1"
+},
+"La_main_de_Dieu": {
+"confidence": "low",
+"genres": [
+"Policier / Thriller",
+"Historique"
+],
+"source": "pass3"
+},
+"La_marche_Brume": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass1_guess"
+},
+"La_marche_du_crabe": {
+"confidence": "high",
+"genres": [
+"Humour"
+],
+"source": "pass1"
+},
+"La_mémoire_dans_les_poches": {
+"confidence": "low",
+"genres": [
+"Drame / Chronique sociale"
+],
+"source": "pass1_guess"
+},
+"La_méthode_Raowl": {
+"confidence": "low",
+"genres": [
+"Humour"
+],
+"source": "pass1_guess"
+},
+"La_planète_des_sages": {
+"confidence": "low",
+"genres": [
+"Humour"
+],
+"source": "pass1_guess"
+},
+"La_planète_des_singes": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1"
+},
+"La_prière_aux_étoiles": {
+"confidence": "low",
+"genres": [],
+"source": "unresolved"
+},
+"La_promesse_de_la_tortue": {
+"confidence": "high",
+"genres": [
+"Drame / Chronique sociale"
+],
+"source": "pass2_web"
+},
+"La_quête_d_Ewilan_7-7": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Jeunesse"
+],
+"source": "pass1"
+},
+"La_rhapsodie_du_ciel": {
+"confidence": "high",
+"genres": [
+"Aventure"
+],
+"source": "pass2_web"
+},
+"La_révolte_sans_précédent": {
+"confidence": "high",
+"genres": [
+"Humour"
+],
+"source": "pass2_web"
+},
+"La_saga_d_Atlas_Axis": {
+"confidence": "low",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1_guess"
+},
+"La_sentinelle_du_Petit_Peuple": {
+"confidence": "high",
+"genres": [
+"Jeunesse",
+"Fantasy"
+],
+"source": "pass2_web"
+},
+"La_source": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass2_web"
+},
+"La_sportive": {
+"confidence": "low",
+"genres": [
+"Drame / Chronique sociale"
+],
+"source": "pass1_guess"
+},
+"La_tour": {
+"confidence": "low",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1_guess"
+},
+"La_venin": {
+"confidence": "low",
+"genres": [
+"Science-fiction",
+"Aventure"
+],
+"source": "pass3"
+},
+"La_voie_du_glaive": {
+"confidence": "high",
+"genres": [
+"Aventure"
+],
 "source": "pass2_web"
 },
 "La_véritable_histoire_du_Far_West": {
+"confidence": "high",
 "genres": [
 "Western",
 "Documentaire"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Ladies_with_guns": {
+"confidence": "high",
 "genres": [
 "Western"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Lady_Mechanika": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Lady_S": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Largo_Winch_24-25": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Lastman": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Laïyna": {
+"confidence": "high",
 "genres": [
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
-"Le_bossu_de_Montfaucon": {
-"genres": [
-"Historique",
-"Aventure"
-],
+"Le_3e_œil": {
 "confidence": "high",
-"source": "pass2_web"
+"genres": [
+"Policier / Thriller",
+"Fantastique / Horreur"
+],
+"source": "pass3"
 },
 "Le_Caravage": {
+"confidence": "high",
 "genres": [
 "Biographie"
 ],
-"confidence": "high",
-"source": "pass1"
-},
-"Le_casse": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Le_chant_des_runes": {
-"genres": [
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Le_chant_des_Stryges_18-18": {
-"genres": [
-"Fantastique / Horreur"
-],
-"confidence": "high",
 "source": "pass1"
 },
 "Le_Chat_du_Rabbin": {
+"confidence": "high",
 "genres": [
 "Humour",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
-"Le_chateau_des_millions_d_années": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Le_choix_du_Roi": {
-"genres": [
-"Historique"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
 "Le_Château_des_Animaux": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Drame / Chronique sociale"
 ],
-"confidence": "high",
 "source": "pass1"
 },
-"Le_château_des_étoiles": {
-"genres": [
-"Science-fiction",
-"Aventure"
-],
+"Le_Cinquième_évangile": {
 "confidence": "high",
-"source": "pass1"
-},
-"Le_clan_des_chimères": {
-"genres": [
-"Fantastique / Horreur"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Le_clan_des_Otori": {
-"genres": [
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Le_Clan_des_Salamandres": {
-"genres": [
-"Jeunesse",
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Le_Complexe_du_chimpanze": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Le_comte_de_Monte_Cristo": {
-"genres": [
-"Aventure",
-"Historique"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Le_convoyeur": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Le_Courrier_de_Casablanca": {
-"genres": [
-"Historique",
-"Aventure"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Le_dernier_Cathare": {
-"genres": [
-"Historique"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Le_dernier_des_dieux": {
-"genres": [
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Le_dernier_templier": {
 "genres": [
 "Policier / Thriller",
 "Historique"
 ],
-"confidence": "high",
-"source": "pass1"
+"source": "pass3"
 },
-"Le_destin_de_Sarah": {
-"genres": [
-"Historique",
-"Drame / Chronique sociale"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Le_domaine_Grisloire": {
-"genres": [
-"Fantastique / Horreur"
-],
+"Le_Clan_des_Salamandres": {
 "confidence": "high",
+"genres": [
+"Jeunesse",
+"Fantasy"
+],
 "source": "pass2_web"
 },
+"Le_Complexe_du_chimpanze": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1"
+},
+"Le_Courrier_de_Casablanca": {
+"confidence": "high",
+"genres": [
+"Historique",
+"Aventure"
+],
+"source": "pass2_web"
+},
+"Le_Crépuscule_des_dieux": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Historique"
+],
+"source": "pass3"
+},
 "Le_Donjon_de_Naheulbeuk": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Humour"
 ],
-"confidence": "high",
 "source": "pass1"
 },
-"Le_déclic": {
+"Le_Décalogue": {
+"confidence": "low",
 "genres": [
-"Drame / Chronique sociale"
+"Policier / Thriller",
+"Historique"
 ],
-"confidence": "high",
-"source": "pass2_web"
+"source": "pass3"
 },
 "Le_Faucon_du_désert": {
+"confidence": "high",
 "genres": [
 "Aventure",
 "Guerre"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
-"Le_fil_de_l_Histoire_raconté_par_Ariane_Nino": {
-"genres": [
-"Historique",
-"Humour"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Le_fond_du_monde": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Le_grand_châtiment": {
-"genres": [
-"Fantastique / Horreur"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Le_grand_duc": {
-"genres": [
-"Guerre",
-"Aventure"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Le_grand_jeu": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
 "Le_Grizzli": {
+"confidence": "low",
 "genres": [
 "Aventure"
 ],
-"confidence": "low",
 "source": "pass1_guess"
-},
-"Le_jardin_des_fées": {
-"genres": [
-"Fantasy",
-"Jeunesse"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Le_jour_des_magiciens": {
-"genres": [
-"Fantasy"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Le_jour_où": {
-"genres": [
-"Humour"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Le_journal_de_Mickey": {
-"genres": [
-"Jeunesse",
-"Humour"
-],
-"confidence": "high",
-"source": "pass1"
 },
 "Le_Journal_de_Spirou": {
+"confidence": "high",
 "genres": [
 "Jeunesse",
 "Humour"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Le_Juge_la_République_assassinée": {
+"confidence": "low",
 "genres": [
 "Policier / Thriller",
 "Historique"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
-"Le_maitre_de_jeu": {
+"Le_Neptune": {
+"confidence": "high",
 "genres": [
-"Policier / Thriller"
+"Aventure",
+"Historique"
 ],
-"confidence": "low",
-"source": "pass1_guess"
+"source": "pass1"
 },
-"Le_marquis_d_Anaon": {
+"Le_Petit_Prince": {
+"confidence": "low",
+"genres": [
+"Jeunesse",
+"Aventure"
+],
+"source": "pass3"
+},
+"Le_Pingouin": {
+"confidence": "high",
+"genres": [
+"Super-héros"
+],
+"source": "pass1"
+},
+"Le_Prince_de_la_Nuit": {
+"confidence": "high",
 "genres": [
 "Fantastique / Horreur",
 "Historique"
 ],
-"confidence": "high",
-"source": "pass1"
+"source": "pass3"
 },
-"Le_moine_fou": {
+"Le_Réseau_Papillon": {
+"confidence": "low",
 "genres": [
-"Aventure",
+"Guerre",
 "Historique"
 ],
+"source": "pass1_guess"
+},
+"Le_Rêve_de_Jérusalem": {
+"confidence": "low",
+"genres": [
+"Historique"
+],
+"source": "pass1_guess"
+},
+"Le_Sang_des_Porphyre": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass1_guess"
+},
+"Le_Territoire": {
+"confidence": "low",
+"genres": [
+"Fantastique / Horreur",
+"Policier / Thriller"
+],
+"source": "pass3"
+},
+"Le_Testament_des_siècles": {
 "confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass2_web"
+},
+"Le_Troisième_Testament": {
+"confidence": "high",
+"genres": [
+"Fantastique / Horreur",
+"Historique"
+],
 "source": "pass1"
 },
-"Le_mythe_de_l_Ossuaire": {
+"Le_Trône_d_argile": {
+"confidence": "high",
+"genres": [
+"Historique"
+],
+"source": "pass3"
+},
+"Le_bossu_de_Montfaucon": {
+"confidence": "high",
+"genres": [
+"Historique",
+"Aventure"
+],
+"source": "pass2_web"
+},
+"Le_casse": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1"
+},
+"Le_chant_des_Stryges_18-18": {
+"confidence": "high",
 "genres": [
 "Fantastique / Horreur"
 ],
+"source": "pass1"
+},
+"Le_chant_des_runes": {
 "confidence": "high",
+"genres": [
+"Fantasy"
+],
 "source": "pass2_web"
 },
-"Le_Neptune": {
+"Le_chateau_des_millions_d_années": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass2_web"
+},
+"Le_choix_du_Roi": {
+"confidence": "high",
+"genres": [
+"Historique"
+],
+"source": "pass2_web"
+},
+"Le_château_des_étoiles": {
+"confidence": "high",
+"genres": [
+"Science-fiction",
+"Aventure"
+],
+"source": "pass1"
+},
+"Le_clan_des_Otori": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass1"
+},
+"Le_clan_des_chimères": {
+"confidence": "high",
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass2_web"
+},
+"Le_coeur_en_braille": {
+"confidence": "high",
+"genres": [
+"Drame / Chronique sociale",
+"Jeunesse"
+],
+"source": "pass3"
+},
+"Le_comte_de_Monte_Cristo": {
+"confidence": "high",
 "genres": [
 "Aventure",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
+"Le_convoyeur": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass2_web"
+},
+"Le_dernier_Cathare": {
+"confidence": "high",
+"genres": [
+"Historique"
+],
+"source": "pass1"
+},
+"Le_dernier_des_dieux": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass2_web"
+},
+"Le_dernier_templier": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller",
+"Historique"
+],
+"source": "pass1"
+},
+"Le_destin_de_Sarah": {
+"confidence": "low",
+"genres": [
+"Historique",
+"Drame / Chronique sociale"
+],
+"source": "pass1_guess"
+},
+"Le_domaine_Grisloire": {
+"confidence": "high",
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass2_web"
+},
+"Le_déclic": {
+"confidence": "high",
+"genres": [
+"Drame / Chronique sociale"
+],
+"source": "pass2_web"
+},
+"Le_fil_de_l_Histoire_raconté_par_Ariane_Nino": {
+"confidence": "high",
+"genres": [
+"Historique",
+"Humour"
+],
+"source": "pass1"
+},
+"Le_fond_du_monde": {
+"confidence": "low",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1_guess"
+},
+"Le_grand_châtiment": {
+"confidence": "low",
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass1_guess"
+},
+"Le_grand_duc": {
+"confidence": "high",
+"genres": [
+"Guerre",
+"Aventure"
+],
+"source": "pass1"
+},
+"Le_grand_jeu": {
+"confidence": "low",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1_guess"
+},
+"Le_grimoire_d_Elfie_MANQUE_CDS": {
+"confidence": "low",
+"genres": [
+"Jeunesse",
+"Fantasy"
+],
+"source": "pass3"
+},
+"Le_jardin_des_fées": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Jeunesse"
+],
+"source": "pass1"
+},
+"Le_jour_des_magiciens": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass1_guess"
+},
+"Le_jour_où": {
+"confidence": "low",
+"genres": [
+"Humour"
+],
+"source": "pass1_guess"
+},
+"Le_journal_de_Mickey": {
+"confidence": "high",
+"genres": [
+"Jeunesse",
+"Humour"
+],
+"source": "pass1"
+},
+"Le_maitre_de_jeu": {
+"confidence": "low",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1_guess"
+},
+"Le_marquis_d_Anaon": {
+"confidence": "high",
+"genres": [
+"Fantastique / Horreur",
+"Historique"
+],
+"source": "pass1"
+},
+"Le_moine_fou": {
+"confidence": "high",
+"genres": [
+"Aventure",
+"Historique"
+],
+"source": "pass1"
+},
+"Le_monde_de_Charline": {
+"confidence": "low",
+"genres": [
+"Humour",
+"Jeunesse"
+],
+"source": "pass3"
+},
+"Le_mythe_de_l_Ossuaire": {
+"confidence": "high",
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass2_web"
+},
 "Le_paquebot_des_sables": {
+"confidence": "low",
 "genres": [
 "Aventure"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Le_petit_théâtre_des_opérations": {
+"confidence": "high",
 "genres": [
 "Humour",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Le_photographe": {
+"confidence": "high",
 "genres": [
 "Documentaire",
 "Guerre"
 ],
-"confidence": "high",
-"source": "pass1"
-},
-"Le_Pingouin": {
-"genres": [
-"Super-héros"
-],
-"confidence": "high",
 "source": "pass1"
 },
 "Le_pouvoir_des_innocents": {
+"confidence": "high",
 "genres": [
 "Super-héros",
 "Drame / Chronique sociale"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Le_reste_du_monde": {
+"confidence": "low",
 "genres": [
 "Drame / Chronique sociale"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Le_royaume": {
+"confidence": "low",
 "genres": [
 "Fantasy",
 "Humour"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Le_royaume_sans_nom": {
+"confidence": "low",
 "genres": [
 "Fantasy"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
-"Le_Réseau_Papillon": {
-"genres": [
-"Guerre",
-"Historique"
-],
+"Le_révérend": {
 "confidence": "low",
-"source": "pass1_guess"
-},
-"Le_Rêve_de_Jérusalem": {
 "genres": [
-"Historique"
+"Western"
 ],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Le_Sang_des_Porphyre": {
-"genres": [
-"Fantasy"
-],
-"confidence": "low",
-"source": "pass1_guess"
+"source": "pass3"
 },
 "Le_sang_des_Valois": {
+"confidence": "high",
 "genres": [
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Le_sang_du_dragon_Manque_1": {
+"confidence": "high",
 "genres": [
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Le_scorpion": {
+"confidence": "high",
 "genres": [
 "Aventure",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Le_sentier_de_la_guerre": {
+"confidence": "high",
 "genres": [
 "Western"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Le_serpent_et_la_lance": {
+"confidence": "high",
 "genres": [
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Le_syndrome_d_Abel": {
+"confidence": "low",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Le_syndrome_de_Cain": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Le_syndrome_de_Hyde": {
+"confidence": "high",
 "genres": [
 "Fantastique / Horreur",
 "Policier / Thriller"
 ],
-"confidence": "high",
 "source": "pass1"
 },
-"Le_Testament_des_siècles": {
-"genres": [
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
 "Le_train_des_orphelins": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Drame / Chronique sociale"
 ],
-"confidence": "high",
-"source": "pass1"
-},
-"Le_Troisième_Testament": {
-"genres": [
-"Fantastique / Horreur",
-"Historique"
-],
-"confidence": "high",
 "source": "pass1"
 },
 "Le_tueur": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Le_tueur_affaire_d_etat": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Le_zoo_des_animaux_disparus": {
+"confidence": "high",
 "genres": [
 "Humour",
 "Jeunesse"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Lefranc": {
+"confidence": "high",
 "genres": [
 "Aventure",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Lefranc_-_Les_reportages_de_Lefranc": {
+"confidence": "high",
 "genres": [
 "Aventure",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Lefranc_-_Les_voyages_de_Lefranc": {
+"confidence": "high",
 "genres": [
 "Aventure",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Les_30_deniers": {
+"confidence": "low",
 "genres": [
 "Fantastique / Horreur",
 "Historique"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Les_4_princes_de_Ganahan": {
+"confidence": "low",
 "genres": [
 "Fantasy"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Les_5_Daux": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
 "Les_5_terres": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Les_7_merveilles": {
+"confidence": "high",
 "genres": [
 "Aventure",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
-"Les_ailes_de_plomb": {
-"genres": [],
+"Les_Amazones": {
 "confidence": "low",
-"source": "unresolved"
-},
-"Les_ailes_du_temps": {
-"genres": [],
-"confidence": "low",
-"source": "unresolved"
-},
-"Les_animaux_marins_en_bande_dessinée": {
 "genres": [
-"Documentaire",
-"Humour"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Les_arcanes_de_la_lune_noire": {
-"genres": [
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Les_arcanes_de_la_maison_fleury": {
-"genres": [],
-"confidence": "low",
-"source": "unresolved"
-},
-"Les_arcanes_du_Midi_Minuit": {
-"genres": [
-"Fantasy"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Les_archives_secrètes_de_Sherlock_Holmes": {
-"genres": [
-"Policier / Thriller",
+"Aventure",
 "Historique"
 ],
-"confidence": "high",
-"source": "pass1"
+"source": "pass3"
 },
 "Les_Artilleuses": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass2_web"
-},
-"Les_autres_gens": {
-"genres": [
-"Drame / Chronique sociale"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Les_aventures_de_Tex": {
-"genres": [
-"Western"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Les_aventures_extraordinaires_de_Nelson_Lobster": {
-"genres": [
-"Humour",
-"Jeunesse"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Les_beaux_étés": {
-"genres": [
-"Drame / Chronique sociale"
-],
-"confidence": "high",
-"source": "pass1"
 },
 "Les_Blondes_-_Tome_1_a_15": {
+"confidence": "high",
 "genres": [
 "Humour"
 ],
-"confidence": "high",
 "source": "pass1"
 },
-"Les_bras_armés": {
-"genres": [],
-"confidence": "low",
-"source": "unresolved"
-},
 "Les_Brumes_d_Asceltis": {
+"confidence": "high",
 "genres": [
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Les_Brumes_écarlates": {
+"confidence": "low",
 "genres": [
 "Fantasy"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Les_Bâtisseurs": {
+"confidence": "high",
 "genres": [
 "Historique"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
-"Les_carnets_de_Cerise": {
-"genres": [
-"Jeunesse",
-"Aventure"
-],
-"confidence": "high",
-"source": "pass1"
-},
 "Les_Carnets_secrets_du_Vatican": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Les_cavaliers_de_l_apocadispe": {
-"genres": [
-"Humour"
-],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Les_Champs_d_azur": {
+"confidence": "high",
 "genres": [
 "Drame / Chronique sociale",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
-"Les_charmes_de_l_infirmiere": {
-"genres": [],
+"Les_Chevaliers_d_Émeraude": {
 "confidence": "high",
-"source": "pass2_web"
-},
-"Les_chemins_de_Malefosse": {
-"genres": [
-"Historique",
-"Drame / Chronique sociale"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Les_chevaliers_d_Héliopolis": {
-"genres": [
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Les_Chevaucheurs": {
 "genres": [
 "Fantasy",
 "Jeunesse"
 ],
-"confidence": "high",
-"source": "pass2_web"
+"source": "pass3"
 },
-"Les_chroniques_de_Conan_CDS99": {
+"Les_Chevaucheurs": {
+"confidence": "high",
 "genres": [
 "Fantasy",
-"Aventure"
+"Jeunesse"
 ],
-"confidence": "high",
-"source": "pass1"
-},
-"Les_Chroniques_de_la_guerre_de_Lodoss_La_Dame_de_Falis": {
-"genres": [
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Les_chroniques_de_la_lune_noire": {
-"genres": [
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass1"
+"source": "pass2_web"
 },
 "Les_Chroniques_de_Legion": {
+"confidence": "low",
 "genres": [
 "Fantastique / Horreur",
 "Guerre"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
+"Les_Chroniques_de_la_guerre_de_Lodoss_La_Dame_de_Falis": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass1"
+},
 "Les_Cités_obscures": {
+"confidence": "high",
 "genres": [
 "Science-fiction",
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass1"
-},
-"Les_coeurs_de_ferraille": {
-"genres": [
-"Aventure"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Les_compagnons_de_la_libération": {
-"genres": [
-"Guerre",
-"Historique"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Les_contes_de_Brocéliande": {
-"genres": [
-"Fantasy"
-],
-"confidence": "low",
-"source": "pass1_guess"
 },
 "Les_Cosaques_d_Hitler": {
+"confidence": "high",
 "genres": [
 "Guerre",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
-"Les_cowboys_sont_toujours_à_l_ouest": {
+"Les_Druides": {
+"confidence": "high",
 "genres": [
-"Western",
-"Humour"
+"Fantasy",
+"Historique"
 ],
+"source": "pass3"
+},
+"Les_Enquêtes_du_FBI": {
 "confidence": "low",
-"source": "pass1_guess"
-},
-"Les_dragons_de_la_frontière": {
-"genres": [
-"Fantasy"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Les_démons_d_Alexia": {
-"genres": [
-"Fantastique / Horreur",
-"Jeunesse"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Les_enfants_de_Jessica": {
-"genres": [
-"Drame / Chronique sociale"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Les_enfants_de_la_résistance": {
-"genres": [
-"Historique",
-"Guerre"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Les_enquêtes_d_Enola_Holmes": {
-"genres": [
-"Policier / Thriller",
-"Jeunesse"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Les_enquêtes_de_Machiavel": {
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "low",
-"source": "pass1_guess"
+"source": "pass3"
 },
 "Les_Exilés_d_Asceltis": {
+"confidence": "high",
 "genres": [
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Les_Experts": {
+"confidence": "low",
 "genres": [
 "Humour",
 "Jeunesse"
 ],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Les_filles_au_chocolat": {
-"genres": [
-"Jeunesse",
-"Drame / Chronique sociale"
-],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Les_Filles_des_Marins_Perdus": {
+"confidence": "low",
 "genres": [
 "Aventure",
 "Historique"
 ],
-"confidence": "low",
 "source": "pass1_guess"
+},
+"Les_Fleury_Nadal": {
+"confidence": "low",
+"genres": [
+"Historique",
+"Drame / Chronique sociale"
+],
+"source": "pass3"
 },
 "Les_Foot_furieux": {
+"confidence": "high",
 "genres": [
 "Humour"
 ],
-"confidence": "high",
 "source": "pass1"
 },
-"Les_forêts_d_Opale": {
-"genres": [
-"Fantasy",
-"Humour"
-],
+"Les_Foot_furieux_MANQUE_LE_28": {
 "confidence": "high",
-"source": "pass1"
-},
-"Les_frères_Rubinstein": {
 "genres": [
-"Drame / Chronique sociale",
-"Historique"
+"Humour",
+"Jeunesse"
 ],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Les_futurs_de_Liu_Cixin": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass1"
+"source": "pass3"
 },
 "Les_Fées_noires": {
+"confidence": "low",
 "genres": [
 "Fantasy"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
-"Les_gendarmes": {
-"genres": [
-"Humour"
-],
-"confidence": "high",
-"source": "pass1"
-},
 "Les_Grandes_batailles_de_chars": {
+"confidence": "high",
 "genres": [
 "Guerre",
 "Documentaire"
 ],
-"confidence": "high",
-"source": "pass1"
-},
-"Les_grandes_batailles_de_l_histoire_de_France": {
-"genres": [
-"Historique",
-"Documentaire"
-],
-"confidence": "high",
 "source": "pass1"
 },
 "Les_Grandes_batailles_navales": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Guerre"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Les_Grands_Classiques_de_la_Littérature_en_Bande_Dessinées": {
+"confidence": "low",
 "genres": [
 "Aventure"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Les_Grands_Personnages_de_l_Histoire_en_Bandes_Dessinées": {
+"confidence": "high",
 "genres": [
 "Biographie",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Les_Grands_Romans_Dessinés": {
+"confidence": "low",
 "genres": [
 "Aventure"
 ],
-"confidence": "low",
 "source": "pass1_guess"
-},
-"Les_guerriers_du_silence": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Les_géants": {
-"genres": [
-"Fantasy"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Les_hydres_d_Arès": {
-"genres": [
-"Fantasy"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Les_lapins_crétins": {
-"genres": [
-"Humour",
-"Jeunesse"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Les_licorniers": {
-"genres": [
-"Fantasy",
-"Jeunesse"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Les_légendaires": {
-"genres": [
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass1"
 },
 "Les_Maîtres_de_guerre": {
+"confidence": "low",
 "genres": [
 "Guerre",
 "Historique"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Les_Maîtres_de_l_Orge_-_T01-T08_-_FR_-_Intégrale_-_CBZ_PDF": {
+"confidence": "high",
 "genres": [
 "Drame / Chronique sociale",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Les_Mondes_d_Ewilan": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Jeunesse"
 ],
-"confidence": "high",
-"source": "pass1"
-},
-"Les_mondes_de_Leo_-_1-Centaurus": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Les_mondes_de_Leo_-_2-Europa": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Les_mondes_de_Leo_-_3-Demain": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Les_mondes_de_Leo_-_Terres_lointaines_HD": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Les_mondes_de_Leo_-_Trent_HD": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Les_mondes_de_Leo_-_Ultime_Frontière_HD": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
 "source": "pass1"
 },
 "Les_Mondes_perdus": {
+"confidence": "low",
 "genres": [
 "Aventure",
 "Fantasy"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Les_Mondes_Électriques": {
+"confidence": "low",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Les_Munroe": {
+"confidence": "high",
 "genres": [
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Les_Mystères_d_Osiris": {
+"confidence": "high",
 "genres": [
 "Aventure",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Les_Mythics": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Jeunesse"
 ],
+"source": "pass1"
+},
+"Les_Naufragés_d_Ythaq": {
 "confidence": "high",
+"genres": [
+"Fantasy",
+"Science-fiction"
+],
+"source": "pass1"
+},
+"Les_Ogres_Dieux": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass3"
+},
+"Les_Pirates_de_Barataria": {
+"confidence": "high",
+"genres": [
+"Aventure",
+"Historique"
+],
+"source": "pass1"
+},
+"Les_Princes_d_Ambre": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass3"
+},
+"Les_Rescapés_d_Eden": {
+"confidence": "low",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1_guess"
+},
+"Les_Rois_Forgerons": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass3"
+},
+"Les_Sisters": {
+"confidence": "high",
+"genres": [
+"Humour",
+"Jeunesse"
+],
+"source": "pass1"
+},
+"Les_Sœurs_Fox": {
+"confidence": "low",
+"genres": [
+"Historique",
+"Fantastique / Horreur"
+],
+"source": "pass1_guess"
+},
+"Les_Trois_Mousquetaires": {
+"confidence": "high",
+"genres": [
+"Aventure",
+"Historique"
+],
+"source": "pass1"
+},
+"Les_Voleurs_d_empires": {
+"confidence": "low",
+"genres": [
+"Historique",
+"Aventure"
+],
+"source": "pass3"
+},
+"Les_ailes_de_plomb": {
+"confidence": "low",
+"genres": [],
+"source": "unresolved"
+},
+"Les_ailes_du_temps": {
+"confidence": "low",
+"genres": [],
+"source": "unresolved"
+},
+"Les_animaux_marins_en_bande_dessinée": {
+"confidence": "high",
+"genres": [
+"Documentaire",
+"Humour"
+],
+"source": "pass1"
+},
+"Les_arcanes_de_la_lune_noire": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass1"
+},
+"Les_arcanes_de_la_maison_fleury": {
+"confidence": "low",
+"genres": [],
+"source": "unresolved"
+},
+"Les_arcanes_du_Midi_Minuit": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass1_guess"
+},
+"Les_archives_secrètes_de_Sherlock_Holmes": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller",
+"Historique"
+],
+"source": "pass1"
+},
+"Les_autres_gens": {
+"confidence": "high",
+"genres": [
+"Drame / Chronique sociale"
+],
+"source": "pass1"
+},
+"Les_aventures_de_Tex": {
+"confidence": "high",
+"genres": [
+"Western"
+],
+"source": "pass1"
+},
+"Les_aventures_extraordinaires_de_Nelson_Lobster": {
+"confidence": "high",
+"genres": [
+"Humour",
+"Jeunesse"
+],
+"source": "pass2_web"
+},
+"Les_beaux_étés": {
+"confidence": "high",
+"genres": [
+"Drame / Chronique sociale"
+],
+"source": "pass1"
+},
+"Les_bras_armés": {
+"confidence": "low",
+"genres": [],
+"source": "unresolved"
+},
+"Les_carnets_de_Cerise": {
+"confidence": "high",
+"genres": [
+"Jeunesse",
+"Aventure"
+],
+"source": "pass1"
+},
+"Les_cavaliers_de_l_apocadispe": {
+"confidence": "high",
+"genres": [
+"Humour"
+],
+"source": "pass2_web"
+},
+"Les_charmes_de_l_infirmiere": {
+"confidence": "high",
+"genres": [],
+"source": "pass2_web"
+},
+"Les_chemins_de_Malefosse": {
+"confidence": "high",
+"genres": [
+"Historique",
+"Drame / Chronique sociale"
+],
+"source": "pass1"
+},
+"Les_chevaliers_d_Héliopolis": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass1"
+},
+"Les_chroniques_de_Conan_CDS99": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Aventure"
+],
+"source": "pass1"
+},
+"Les_chroniques_de_la_lune_noire": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass1"
+},
+"Les_coeurs_de_ferraille": {
+"confidence": "low",
+"genres": [
+"Aventure"
+],
+"source": "pass1_guess"
+},
+"Les_compagnons_de_la_libération": {
+"confidence": "high",
+"genres": [
+"Guerre",
+"Historique"
+],
+"source": "pass1"
+},
+"Les_contes_de_Brocéliande": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass1_guess"
+},
+"Les_cowboys_sont_toujours_à_l_ouest": {
+"confidence": "low",
+"genres": [
+"Western",
+"Humour"
+],
+"source": "pass1_guess"
+},
+"Les_dragons_de_la_frontière": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass1_guess"
+},
+"Les_démons_d_Alexia": {
+"confidence": "high",
+"genres": [
+"Fantastique / Horreur",
+"Jeunesse"
+],
+"source": "pass1"
+},
+"Les_enfants_de_Jessica": {
+"confidence": "low",
+"genres": [
+"Drame / Chronique sociale"
+],
+"source": "pass1_guess"
+},
+"Les_enfants_de_la_résistance": {
+"confidence": "high",
+"genres": [
+"Historique",
+"Guerre"
+],
+"source": "pass1"
+},
+"Les_enquêtes_d_Enola_Holmes": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller",
+"Jeunesse"
+],
+"source": "pass1"
+},
+"Les_enquêtes_de_Gabriel_Joly": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller",
+"Historique"
+],
+"source": "pass3"
+},
+"Les_enquêtes_de_Machiavel": {
+"confidence": "low",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1_guess"
+},
+"Les_filles_au_chocolat": {
+"confidence": "low",
+"genres": [
+"Jeunesse",
+"Drame / Chronique sociale"
+],
+"source": "pass1_guess"
+},
+"Les_forêts_d_Opale": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Humour"
+],
+"source": "pass1"
+},
+"Les_frères_Rubinstein": {
+"confidence": "low",
+"genres": [
+"Drame / Chronique sociale",
+"Historique"
+],
+"source": "pass1_guess"
+},
+"Les_futurs_de_Liu_Cixin": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1"
+},
+"Les_gendarmes": {
+"confidence": "high",
+"genres": [
+"Humour"
+],
+"source": "pass1"
+},
+"Les_grandes_batailles_de_l_histoire_de_France": {
+"confidence": "high",
+"genres": [
+"Historique",
+"Documentaire"
+],
+"source": "pass1"
+},
+"Les_guerriers_du_silence": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1"
+},
+"Les_géants": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass1_guess"
+},
+"Les_hydres_d_Arès": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass1_guess"
+},
+"Les_lapins_crétins": {
+"confidence": "high",
+"genres": [
+"Humour",
+"Jeunesse"
+],
+"source": "pass1"
+},
+"Les_licorniers": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Jeunesse"
+],
+"source": "pass1"
+},
+"Les_légendaires": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass1"
+},
+"Les_légendes_de_Clash": {
+"confidence": "low",
+"genres": [
+"Fantasy",
+"Jeunesse"
+],
+"source": "pass3"
+},
+"Les_mondes_de_Leo_-_1-Centaurus": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1"
+},
+"Les_mondes_de_Leo_-_2-Europa": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1"
+},
+"Les_mondes_de_Leo_-_3-Demain": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1"
+},
+"Les_mondes_de_Leo_-_Terres_lointaines_HD": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1"
+},
+"Les_mondes_de_Leo_-_Trent_HD": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1"
+},
+"Les_mondes_de_Leo_-_Ultime_Frontière_HD": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
 "source": "pass1"
 },
 "Les_mémoires_du_Dragon_Dragon": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Humour"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
-"Les_Naufragés_d_Ythaq": {
-"genres": [
-"Fantasy",
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass1"
-},
 "Les_naufragés_du_temps": {
+"confidence": "high",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Les_nouveaux_tsars": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
-"Les_omniscients": {
-"genres": [],
+"Les_nuits_écorchées": {
 "confidence": "low",
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass3"
+},
+"Les_omniscients": {
+"confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
 "Les_passagers_du_vent_9-9_0-7_HS": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Les_petits_Mythos": {
+"confidence": "high",
 "genres": [
 "Humour",
 "Jeunesse"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Les_pierres_du_cauchemar": {
+"confidence": "low",
 "genres": [
 "Fantastique / Horreur"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Les_pilliers_de_la_terre": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Drame / Chronique sociale"
 ],
-"confidence": "high",
 "source": "pass1"
 },
-"Les_pionniers_du_nouveau_monde": {
+"Les_pionniers": {
+"confidence": "low",
 "genres": [
 "Historique",
 "Aventure"
 ],
-"confidence": "high",
-"source": "pass1"
+"source": "pass3"
 },
-"Les_Pirates_de_Barataria": {
-"genres": [
-"Aventure",
-"Historique"
-],
+"Les_pionniers_du_nouveau_monde": {
 "confidence": "high",
+"genres": [
+"Historique",
+"Aventure"
+],
 "source": "pass1"
 },
 "Les_porteurs_d_artefacts": {
+"confidence": "low",
 "genres": [
 "Fantasy"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Les_quatre_de_Baker_Street": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller",
 "Jeunesse"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Les_reines_de_sang": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Fantastique / Horreur"
 ],
-"confidence": "high",
 "source": "pass1"
 },
-"Les_Rescapés_d_Eden": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
 "Les_runners": {
+"confidence": "high",
 "genres": [
 "Humour"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Les_seigneurs_de_la_Terre": {
+"confidence": "low",
 "genres": [
 "Fantasy"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Les_semi_Déus": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
-"Les_Sisters": {
-"genres": [
-"Humour",
-"Jeunesse"
-],
-"confidence": "high",
-"source": "pass1"
-},
 "Les_soleils_rouges_de_l_Eden": {
+"confidence": "low",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
+"Les_sortilèges_de_Zora_MANQUE_CDS": {
+"confidence": "low",
+"genres": [
+"Jeunesse",
+"Fantasy"
+],
+"source": "pass3"
+},
+"Les_souliers_rouges": {
+"confidence": "high",
+"genres": [
+"Historique",
+"Drame / Chronique sociale"
+],
+"source": "pass3"
+},
+"Les_souris_du_Louvre": {
+"confidence": "high",
+"genres": [
+"Jeunesse",
+"Aventure"
+],
+"source": "pass3"
+},
 "Les_sudenne": {
+"confidence": "low",
 "genres": [
 "Fantasy"
 ],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Les_Sœurs_Fox": {
-"genres": [
-"Historique",
-"Fantastique / Horreur"
-],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Les_sœurs_Grémillet": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
-"Les_Trois_Mousquetaires": {
-"genres": [
-"Aventure",
-"Historique"
-],
-"confidence": "high",
-"source": "pass1"
-},
 "Les_tuniques_bleues_69-69": {
+"confidence": "high",
 "genres": [
 "Humour",
 "Guerre"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Les_voyages_de_He_Pao": {
+"confidence": "low",
 "genres": [
 "Fantasy",
 "Aventure"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Les_voyages_de_Jhen": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Les_Âges_perdus": {
+"confidence": "low",
 "genres": [
 "Fantasy"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Les_Échappés": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
 "Les_Éphémères": {
+"confidence": "low",
 "genres": [
 "Drame / Chronique sociale"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Lightfall": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Jeunesse"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Lignes_de_front": {
+"confidence": "low",
 "genres": [
 "Guerre",
 "Historique"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Ling_Ling": {
+"confidence": "low",
 "genres": [
 "Humour",
 "Jeunesse"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Little_Blade": {
+"confidence": "low",
 "genres": [
 "Fantasy"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Lloyd_Singer_-_Makabi": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Locke_key": {
+"confidence": "high",
 "genres": [
 "Fantastique / Horreur"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Lolika": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
 "Lonesome": {
+"confidence": "high",
 "genres": [
 "Western"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Lord_of_Burger": {
+"confidence": "high",
 "genres": [
 "Humour",
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass1"
 },
-"Lothaire_Flammes": {
-"genres": [],
+"Lost_Atlantide": {
 "confidence": "low",
+"genres": [
+"Aventure"
+],
+"source": "pass3"
+},
+"Lothaire_Flammes": {
+"confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
 "Lou": {
+"confidence": "high",
 "genres": [
 "Humour",
 "Jeunesse"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Louca": {
+"confidence": "high",
 "genres": [
 "Drame / Chronique sociale",
 "Jeunesse"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Louise_Beauvoir_CDS": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
 "Love": {
+"confidence": "high",
 "genres": [
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Lozère_apocalypse": {
+"confidence": "low",
 "genres": [
 "Science-fiction",
 "Fantastique / Horreur"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Loïc_Francœur": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
 "Luc_Leroi": {
+"confidence": "low",
 "genres": [
 "Drame / Chronique sociale"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Lucky_Luke_68-95": {
+"confidence": "high",
 "genres": [
 "Humour",
 "Western"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Lucky_Luke_68-95_-_HS": {
+"confidence": "high",
 "genres": [
 "Humour",
 "Western"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Lucky_Luke_68-95_-_Kid_Lucky": {
+"confidence": "high",
 "genres": [
 "Humour",
 "Western"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Lucky_Luke_68-95_-_Vu_par": {
+"confidence": "high",
 "genres": [
 "Humour",
 "Western"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Luminary": {
+"confidence": "low",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Lune_de_miel": {
+"confidence": "high",
 "genres": [
 "Drame / Chronique sociale"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Luuna": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Légende": {
+"confidence": "low",
 "genres": [
 "Fantasy"
 ],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Légendes_de_la_Table_Ronde": {
-"genres": [
-"Fantasy",
-"Historique"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Légendes_de_la_table_ronde_bis": {
-"genres": [
-"Fantasy",
-"Historique"
-],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Légendes_de_Troy": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Humour"
 ],
-"confidence": "high",
 "source": "pass1"
 },
+"Légendes_de_la_Table_Ronde": {
+"confidence": "low",
+"genres": [
+"Fantasy",
+"Historique"
+],
+"source": "pass1_guess"
+},
+"Légendes_de_la_table_ronde_bis": {
+"confidence": "low",
+"genres": [
+"Fantasy",
+"Historique"
+],
+"source": "pass1_guess"
+},
 "Léo_Loden_29-29_2-5_HS": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller",
 "Humour"
 ],
-"confidence": "high",
 "source": "pass1"
 },
+"Léo_Loden_30-30_2-5_HS": {
+"confidence": "high",
+"genres": [
+"Humour",
+"Policier / Thriller"
+],
+"source": "pass3"
+},
 "Léon_Lena": {
+"confidence": "low",
 "genres": [
 "Humour"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Léonard_30-56_0-9_HS": {
+"confidence": "high",
 "genres": [
 "Humour"
 ],
-"confidence": "high",
 "source": "pass1"
 },
+"Léonard_30-57_0-9_HS": {
+"confidence": "high",
+"genres": [
+"Humour",
+"Jeunesse"
+],
+"source": "pass3"
+},
 "Léonie": {
+"confidence": "low",
 "genres": [
 "Humour"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
+"Léviathan": {
+"confidence": "high",
+"genres": [
+"Science-fiction",
+"Policier / Thriller"
+],
+"source": "pass3"
+},
 "M_A_D": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
 "M_O_R_I_A_R_T_Y": {
+"confidence": "low",
 "genres": [
 "Policier / Thriller",
 "Historique"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Ma_première_série_documentaire_L_Espace": {
+"confidence": "high",
 "genres": [
 "Documentaire",
 "Jeunesse"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "MacGuffin_Alan_Smithee": {
+"confidence": "high",
 "genres": [
 "Humour",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
+"Magic_7": {
+"confidence": "low",
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass3"
+},
 "Major_Burns": {
+"confidence": "high",
 "genres": [
 "Humour"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Malouines": {
+"confidence": "high",
 "genres": [
 "Guerre",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Manchuria_Opium_Squad": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
+"Mangetrouille": {
+"confidence": "high",
+"genres": [
+"Jeunesse",
+"Humour"
+],
+"source": "pass3"
+},
 "Manifest_Destiny": {
+"confidence": "high",
 "genres": [
 "Aventure",
 "Fantastique / Horreur"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Manson": {
+"confidence": "high",
 "genres": [
 "Biographie",
 "Policier / Thriller"
 ],
-"confidence": "high",
-"source": "pass1"
-},
-"Marie_des_dragons": {
-"genres": [
-"Fantasy"
-],
-"confidence": "high",
 "source": "pass1"
 },
 "Marie_Tudor_La_Reine_Saglante": {
+"confidence": "high",
 "genres": [
 "Historique"
 ],
+"source": "pass1"
+},
+"Marie_des_dragons": {
 "confidence": "high",
+"genres": [
+"Fantasy"
+],
 "source": "pass1"
 },
 "Marilou": {
+"confidence": "high",
 "genres": [
 "Jeunesse"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Marshal_Bass": {
+"confidence": "high",
 "genres": [
 "Western"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Mattéo": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Drame / Chronique sociale"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Mauvais_monstre": {
+"confidence": "high",
 "genres": [
 "Jeunesse"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Mauvaise_réputation_La_véritable_histoire_d_Emmett_Dalton": {
+"confidence": "high",
 "genres": [
 "Western",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Mekka_Nikki": {
+"confidence": "high",
 "genres": [
 "Jeunesse"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Memphis": {
+"confidence": "low",
 "genres": [
 "Science-fiction",
 "Aventure"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
+"Mercenaires": {
+"confidence": "low",
+"genres": [
+"Fantasy",
+"Aventure"
+],
+"source": "pass3"
+},
 "Mercy": {
+"confidence": "high",
 "genres": [
 "Fantastique / Horreur"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Merlin": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Merlin_-_Le_prophète": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Merlin_-_Merlin_la_quete_de_l_epée": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Mes_années_les_plus_hard": {
+"confidence": "high",
 "genres": [
 "Humour"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Meteors": {
+"confidence": "high",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Methraton": {
+"confidence": "low",
 "genres": [
 "Fantastique / Horreur"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
-"Metropolis": {
+"Metropolia": {
+"confidence": "low",
 "genres": [
 "Science-fiction"
 ],
+"source": "pass3"
+},
+"Metropolis": {
 "confidence": "low",
+"genres": [
+"Science-fiction"
+],
 "source": "pass1_guess"
 },
 "Metropolitan": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
 "Michel_Vaillant": {
+"confidence": "high",
 "genres": [
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Michel_Vaillant_-_Légendes": {
+"confidence": "high",
 "genres": [
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Michel_Vaillant_-_Palmares_Inédit": {
+"confidence": "high",
 "genres": [
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Michel_Vaillant_Legends": {
+"confidence": "high",
 "genres": [
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Mille_femmes_blanches": {
+"confidence": "low",
 "genres": [
 "Historique",
 "Drame / Chronique sociale"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Millénaire": {
+"confidence": "low",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
+"Millénium": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass3"
+},
 "Misty_Mission": {
+"confidence": "high",
 "genres": [
 "Aventure",
 "Fantastique / Horreur"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Mjöllnir": {
+"confidence": "high",
 "genres": [
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
+"Molières": {
+"confidence": "low",
+"genres": [
+"Biographie",
+"Historique"
+],
+"source": "pass3"
+},
+"Molly_West": {
+"confidence": "high",
+"genres": [
+"Western"
+],
+"source": "pass3"
+},
 "Molly_Wind": {
+"confidence": "high",
 "genres": [
 "Western",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Mon_papy_Titanic": {
+"confidence": "low",
 "genres": [
 "Jeunesse",
 "Humour"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Monsieur_Vadim": {
+"confidence": "high",
 "genres": [
 "Humour"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
+"Monster": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass3"
+},
+"Monstre": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass3"
+},
 "Monstress": {
+"confidence": "high",
 "genres": [
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Mont_Saint_Michel_2-2": {
+"confidence": "low",
 "genres": [
 "Documentaire",
 "Historique"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Monte_Cristo": {
+"confidence": "high",
 "genres": [
 "Aventure",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Moonshine": {
+"confidence": "high",
 "genres": [
 "Fantastique / Horreur",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
+"Mortesève": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass3"
+},
 "Mousquetaire": {
+"confidence": "low",
 "genres": [
 "Aventure",
 "Historique"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
+"Muraille": {
+"confidence": "low",
+"genres": [
+"Science-fiction"
+],
+"source": "pass3"
+},
 "Myrtis": {
+"confidence": "high",
 "genres": [
 "Historique"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Mâchefer": {
+"confidence": "high",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Médecins_de_guerre": {
+"confidence": "high",
 "genres": [
 "Guerre",
 "Documentaire"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Mélusine": {
+"confidence": "high",
 "genres": [
 "Humour",
 "Fantastique / Horreur"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Métamorphes": {
+"confidence": "low",
 "genres": [
 "Fantasy"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "N_É_O": {
+"confidence": "low",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
+"Nanami": {
+"confidence": "low",
+"genres": [
+"Fantasy",
+"Aventure"
+],
+"source": "pass3"
+},
 "Naragam": {
+"confidence": "low",
 "genres": [
 "Fantasy"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Nash": {
+"confidence": "low",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Natacha": {
+"confidence": "high",
 "genres": [
 "Humour",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Navis": {
+"confidence": "low",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Neandertal": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "NeoForest": {
+"confidence": "low",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Nero": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
 "Nevada": {
+"confidence": "low",
 "genres": [
 "Western"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "New_Cherbourg_Stories": {
+"confidence": "low",
 "genres": [
 "Fantastique / Horreur",
 "Policier / Thriller"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "New_Hope": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
 "Newburn": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Nico": {
+"confidence": "low",
 "genres": [
 "Policier / Thriller",
 "Science-fiction"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Niklos_Koda": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Nikopol": {
+"confidence": "high",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "high",
 "source": "pass1"
 },
+"Noir_Horizon": {
+"confidence": "low",
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass3"
+},
 "Nom_de_code_Martin": {
+"confidence": "low",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Normandie_juin_44": {
+"confidence": "high",
 "genres": [
 "Guerre",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Nota_bene": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Documentaire"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Noé": {
+"confidence": "low",
 "genres": [
 "Aventure",
 "Fantasy"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Nuisible": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
 "Nunuche": {
+"confidence": "low",
 "genres": [
 "Humour",
 "Jeunesse"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Nyota_et_les_Surveillants_des_étoiles": {
+"confidence": "low",
 "genres": [
 "Jeunesse",
 "Fantasy"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Odyxes": {
+"confidence": "low",
 "genres": [
 "Fantasy",
 "Aventure"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Ogres": {
+"confidence": "low",
 "genres": [
 "Fantasy"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Ohio": {
+"confidence": "low",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
+"Olive": {
+"confidence": "low",
+"genres": [
+"Jeunesse",
+"Science-fiction"
+],
+"source": "pass3"
+},
 "Oliver_Page_les_tueurs_de_temps": {
+"confidence": "low",
 "genres": [
 "Science-fiction",
 "Policier / Thriller"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "On_Mars": {
+"confidence": "low",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Oniria": {
+"confidence": "low",
 "genres": [
 "Fantastique / Horreur"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Opération_Overlord": {
+"confidence": "high",
 "genres": [
 "Guerre",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Oracle": {
+"confidence": "low",
 "genres": [
 "Fantasy"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Orbital": {
+"confidence": "high",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Orgies_barbares": {
+"confidence": "low",
 "genres": [
 "Fantasy"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
+"Outcast": {
+"confidence": "high",
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass3"
+},
 "Outlaws": {
+"confidence": "low",
 "genres": [
 "Western"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Oxalys": {
+"confidence": "low",
 "genres": [
 "Fantasy"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Pandamonia": {
+"confidence": "low",
 "genres": [
 "Humour"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Papeete_1914": {
+"confidence": "low",
 "genres": [
 "Historique",
 "Guerre"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Papyrus_complet_33": {
+"confidence": "high",
 "genres": [
 "Jeunesse",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Paradis_perdu_HD": {
+"confidence": "low",
 "genres": [
 "Fantasy",
 "Science-fiction"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Paris_Maléfices": {
+"confidence": "low",
 "genres": [
 "Fantastique / Horreur",
 "Policier / Thriller"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Parole_de_chat": {
+"confidence": "low",
 "genres": [
 "Humour",
 "Jeunesse"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
+"Paroles_de_Poilus_1914_1918": {
+"confidence": "low",
+"genres": [
+"Guerre",
+"Historique"
+],
+"source": "pass3"
+},
 "Partitions_irlandaises": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Drame / Chronique sociale"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Petit_miracle": {
+"confidence": "low",
 "genres": [
 "Drame / Chronique sociale"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Petit_poilu": {
+"confidence": "high",
 "genres": [
 "Jeunesse"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Petite_Casbah": {
+"confidence": "high",
 "genres": [
 "Jeunesse",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Petits_Dieux": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Jeunesse"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Phantom_Road": {
+"confidence": "high",
 "genres": [
 "Science-fiction",
 "Fantastique / Horreur"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Phenomenum": {
+"confidence": "high",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Pinkerton": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Policier / Thriller"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Plastok": {
+"confidence": "low",
 "genres": [
 "Humour"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Poison_Ivy": {
+"confidence": "high",
 "genres": [
 "Super-héros"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Pol_Polaire": {
+"confidence": "high",
 "genres": [
 "Jeunesse",
 "Humour"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
+"Pour_un_peu_de_bonheur": {
+"confidence": "high",
+"genres": [
+"Drame / Chronique sociale",
+"Historique"
+],
+"source": "pass3"
+},
 "Princesse_Sara": {
+"confidence": "high",
 "genres": [
 "Jeunesse",
 "Drame / Chronique sociale"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Prométhée": {
+"confidence": "low",
 "genres": [
 "Fantastique / Horreur"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "RAF_Royal_Air_Force": {
+"confidence": "high",
 "genres": [
 "Guerre",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
+"RIP": {
+"confidence": "low",
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass1_guess"
+},
 "Rafale_Leader": {
+"confidence": "low",
 "genres": [
 "Aventure",
 "Guerre"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Ralph_Azham": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Humour"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Randolph_Carter": {
+"confidence": "high",
 "genres": [
 "Fantastique / Horreur"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Rani": {
+"confidence": "high",
 "genres": [
 "Aventure",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Raowl": {
+"confidence": "high",
 "genres": [
 "Humour",
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Raven": {
+"confidence": "high",
 "genres": [
 "Aventure",
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass1"
 },
+"Ray_Ringo": {
+"confidence": "high",
+"genres": [
+"Western"
+],
+"source": "pass3"
+},
 "Rebelles": {
+"confidence": "high",
 "genres": [
 "Biographie",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Reckless": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Reconquêtes": {
+"confidence": "low",
 "genres": [
 "Historique",
 "Fantastique / Horreur"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Red_Ketchup": {
+"confidence": "high",
 "genres": [
 "Humour"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Renaissance": {
+"confidence": "high",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
-"RIP": {
-"genres": [
-"Fantastique / Horreur"
-],
+"Renégat": {
 "confidence": "low",
-"source": "pass1_guess"
+"genres": [
+"Science-fiction"
+],
+"source": "pass3"
+},
+"Roger_et_ses_humains": {
+"confidence": "high",
+"genres": [
+"Humour",
+"Science-fiction"
+],
+"source": "pass3"
 },
 "Rosamée": {
+"confidence": "high",
 "genres": [
 "Aventure",
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
+"Rose_Crow": {
+"confidence": "low",
+"genres": [
+"Western"
+],
+"source": "pass3"
+},
 "Rosetta": {
+"confidence": "high",
 "genres": [
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
+"Royal_city": {
+"confidence": "high",
+"genres": [
+"Drame / Chronique sociale",
+"Fantastique / Horreur"
+],
+"source": "pass3"
+},
+"Rue_de_la_grande_truanderie": {
+"confidence": "high",
+"genres": [
+"Aventure",
+"Historique"
+],
+"source": "pass3"
+},
+"Résilience": {
+"confidence": "low",
+"genres": [
+"Science-fiction"
+],
+"source": "pass3"
+},
 "Résistances": {
+"confidence": "high",
 "genres": [
 "Guerre",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
+},
+"Révolutionnaires": {
+"confidence": "high",
+"genres": [
+"Historique",
+"Aventure"
+],
+"source": "pass3"
 },
 "S_O_S_Lusitania": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Guerre"
 ],
-"confidence": "high",
 "source": "pass1"
 },
+"Sa_majesté_des_ours": {
+"confidence": "low",
+"genres": [
+"Aventure"
+],
+"source": "pass3"
+},
 "Saboteuses": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Guerre"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Saint_Elme_complet_5": {
+"confidence": "high",
 "genres": [
 "Fantastique / Horreur",
 "Policier / Thriller"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Saint_Exupéry": {
+"confidence": "high",
 "genres": [
 "Biographie",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Sambre": {
+"confidence": "high",
 "genres": [
 "Historique",
 "Drame / Chronique sociale"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Sanctuaire": {
+"confidence": "high",
 "genres": [
 "Science-fiction",
 "Fantastique / Horreur"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Sapiens": {
+"confidence": "high",
 "genres": [
 "Documentaire",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Sara_Lone_complet_4": {
+"confidence": "low",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Sasmira": {
+"confidence": "high",
 "genres": [
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Scalped": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller",
 "Drame / Chronique sociale"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Science_infuse": {
+"confidence": "high",
 "genres": [
 "Humour",
 "Jeunesse"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Secrets_-_L_écorché_-_Complet_02_Tomes_BD": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller",
 "Drame / Chronique sociale"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Secrets_L_echarde": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller",
 "Drame / Chronique sociale"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Section_de_recherches": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Sections_spéciales": {
+"confidence": "low",
 "genres": [
 "Historique",
 "Guerre"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Selen_MANQUE_LE_DEBUT": {
-"genres": [],
 "confidence": "low",
+"genres": [],
 "source": "unresolved"
 },
 "Semper_Feri": {
+"confidence": "low",
 "genres": [
 "Guerre"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Sept": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
+"Sept_jours_pour_une_éternité": {
+"confidence": "low",
+"genres": [
+"Fantastique / Horreur",
+"Humour"
+],
+"source": "pass3"
+},
+"Servitudes": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass3"
+},
 "Seul_au_monde": {
+"confidence": "low",
 "genres": [
 "Aventure"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Seul_survivant": {
+"confidence": "low",
 "genres": [
 "Guerre",
 "Aventure"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Seuls_15-15": {
+"confidence": "high",
 "genres": [
 "Fantastique / Horreur",
 "Jeunesse"
 ],
-"confidence": "high",
 "source": "pass1"
 },
+"Seuls_16-16": {
+"confidence": "high",
+"genres": [
+"Aventure",
+"Science-fiction"
+],
+"source": "pass3"
+},
 "Sherlock_Holmes": {
+"confidence": "high",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Shi": {
+"confidence": "low",
 "genres": [
 "Historique"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
+"Si_seulement": {
+"confidence": "high",
+"genres": [
+"Fantastique / Horreur",
+"Drame / Chronique sociale"
+],
+"source": "pass3"
+},
 "Siberia_56": {
+"confidence": "low",
 "genres": [
 "Fantastique / Horreur",
 "Science-fiction"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Siegfried": {
+"confidence": "high",
 "genres": [
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Silex_and_the_city": {
+"confidence": "high",
 "genres": [
 "Humour"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Sillage": {
+"confidence": "high",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Sir_Arthur_Benton": {
+"confidence": "low",
 "genres": [
 "Fantastique / Horreur"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Six": {
+"confidence": "low",
 "genres": [
 "Aventure"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Slava": {
+"confidence": "low",
 "genres": [
 "Drame / Chronique sociale",
 "Aventure"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Soleil_froid": {
+"confidence": "low",
 "genres": [
 "Aventure"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
+"Solo": {
+"confidence": "high",
+"genres": [
+"Science-fiction",
+"Aventure"
+],
+"source": "pass3"
+},
 "Sonora": {
+"confidence": "low",
 "genres": [
 "Western"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Sorceline": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Jeunesse"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Sorcelleries": {
+"confidence": "low",
 "genres": [
 "Fantastique / Horreur",
 "Historique"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Souvenir_d_enfance_-_Pagnol": {
+"confidence": "high",
 "genres": [
 "Biographie",
 "Jeunesse"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Sparte": {
+"confidence": "high",
 "genres": [
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Spirite": {
+"confidence": "low",
 "genres": [
 "Fantastique / Horreur"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Spirou_et_Fantasio": {
+"confidence": "high",
 "genres": [
 "Humour",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Spirou_et_Fantasio_-_Une_aventure_de_Spirou_et_Fantasio": {
+"confidence": "high",
 "genres": [
 "Humour",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Spy_X_Family": {
+"confidence": "high",
 "genres": [
 "Humour",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
+"Star_Wars_Mini_Séries": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass3"
+},
 "Stern": {
+"confidence": "low",
 "genres": [
 "Aventure"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Sur_les_traces_de_Dracula": {
+"confidence": "high",
 "genres": [
 "Fantastique / Horreur"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Surcouf": {
+"confidence": "low",
 "genres": [
 "Historique",
 "Aventure"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Survivants_Anomalies_quantiques": {
+"confidence": "high",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Swan_Néo": {
+"confidence": "low",
 "genres": [
 "Aventure"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Synchrone": {
+"confidence": "low",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Systeme_Solaire": {
+"confidence": "low",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Tango": {
+"confidence": "low",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Tanguy_et_Laverdure": {
+"confidence": "high",
 "genres": [
 "Aventure",
 "Guerre"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Tanis": {
+"confidence": "low",
 "genres": [
 "Science-fiction"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Tanâtos": {
+"confidence": "low",
 "genres": [
 "Fantastique / Horreur"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Taïga": {
+"confidence": "low",
 "genres": [
 "Aventure"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Team_Rafale": {
+"confidence": "low",
 "genres": [
 "Aventure",
 "Guerre"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Tebori": {
+"confidence": "low",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Terminus": {
+"confidence": "low",
 "genres": [
 "Policier / Thriller"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
+"Terra_Prime": {
+"confidence": "low",
+"genres": [
+"Science-fiction"
+],
+"source": "pass3"
+},
 "Terres_d_Ogon": {
+"confidence": "low",
 "genres": [
 "Fantasy"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
+"Terres_d_Ynuma": {
+"confidence": "low",
+"genres": [
+"Fantasy",
+"Aventure"
+],
+"source": "pass3"
+},
 "Tex": {
+"confidence": "high",
 "genres": [
 "Western"
 ],
-"confidence": "high",
-"source": "pass1"
-},
-"The_boys": {
-"genres": [
-"Super-héros"
-],
-"confidence": "high",
 "source": "pass1"
 },
 "The_Department_of_Truth": {
+"confidence": "high",
 "genres": [
 "Fantastique / Horreur",
 "Policier / Thriller"
 ],
-"confidence": "high",
 "source": "pass1"
 },
-"The_frontier": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"The_infinite_loop": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
 "The_Kong_crew": {
+"confidence": "low",
 "genres": [
 "Aventure",
 "Humour"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "The_Magic_Order": {
+"confidence": "high",
 "genres": [
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass1"
 },
-"The_nice_house_on_the_lake_CDS": {
+"The_Prism": {
+"confidence": "high",
 "genres": [
-"Fantastique / Horreur",
 "Science-fiction"
 ],
-"confidence": "high",
-"source": "pass1"
+"source": "pass3"
 },
 "The_Regiment_L_Histoire_vraie_du_SAS": {
+"confidence": "high",
 "genres": [
 "Guerre",
 "Historique"
 ],
-"confidence": "high",
 "source": "pass1"
 },
-"The_resistance": {
+"The_boys": {
+"confidence": "high",
+"genres": [
+"Super-héros"
+],
+"source": "pass1"
+},
+"The_frontier": {
+"confidence": "low",
 "genres": [
 "Science-fiction"
 ],
+"source": "pass1_guess"
+},
+"The_infinite_loop": {
 "confidence": "low",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1_guess"
+},
+"The_nice_house_on_the_lake_CDS": {
+"confidence": "high",
+"genres": [
+"Fantastique / Horreur",
+"Science-fiction"
+],
+"source": "pass1"
+},
+"The_resistance": {
+"confidence": "low",
+"genres": [
+"Science-fiction"
+],
 "source": "pass1_guess"
 },
 "Thellus": {
+"confidence": "low",
 "genres": [
 "Aventure"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Thorgal": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Thorgal_-_Les_mondes_de_Thorgal_10-11": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Thorgal_-_Saga": {
+"confidence": "high",
 "genres": [
 "Fantasy",
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Thrace_Taboo": {
+"confidence": "high",
 "genres": [
 "Historique"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
+"Tiago_Solan": {
+"confidence": "low",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass3"
+},
 "Tin_Lizzie": {
+"confidence": "high",
 "genres": [
 "Aventure"
 ],
-"confidence": "high",
 "source": "pass2_web"
 },
 "Tintin": {
+"confidence": "high",
 "genres": [
 "Aventure",
 "Humour"
 ],
-"confidence": "high",
 "source": "pass1"
 },
 "Titans_Oxymore_Éditions": {
+"confidence": "low",
 "genres": [
 "Fantasy"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
 "Tony_L_Enfant_des_rivières": {
+"confidence": "low",
 "genres": [
 "Jeunesse",
 "Aventure"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
-"Traffic": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Tramp": {
-"genres": [
-"Aventure"
-],
+"Totem_MANQUE_CDS": {
 "confidence": "high",
-"source": "pass1"
-},
-"Transmetropolitan": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Travis_16-17": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Triade": {
-"genres": [
-"Historique"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Tristan_Iseult": {
-"genres": [
-"Historique",
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Troie": {
-"genres": [
-"Historique"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Trolls_de_Troy": {
-"genres": [
-"Fantasy",
-"Humour"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Tseu_Hi_La_Dame_Dragon": {
-"genres": [
-"Historique",
-"Biographie"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Tu_mourras_moins_bête": {
-"genres": [
-"Documentaire",
-"Humour"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Tuez_la_grande_Zohra": {
-"genres": [
-"Historique"
-],
-"confidence": "high",
-"source": "pass2_web"
-},
-"Twins": {
-"genres": [
-"Aventure"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Tête_de_chien": {
-"genres": [
-"Guerre"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Tête_de_pioche": {
-"genres": [
-"Western"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"U_47": {
-"genres": [
-"Guerre"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"U_Boot": {
-"genres": [
-"Guerre"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Uchronie_s": {
-"genres": [
-"Science-fiction",
-"Historique"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Ulysse": {
-"genres": [
-"Historique",
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Ulysse_Tabou": {
-"genres": [
-"Historique"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Ulysse_1781": {
-"genres": [
-"Aventure",
-"Historique"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Un_pape_dans_l_histoire": {
-"genres": [
-"Historique",
-"Biographie"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Un_putain_de_salopard": {
-"genres": [
-"Guerre",
-"Aventure"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Un_sac_de_billes": {
-"genres": [
-"Guerre",
-"Biographie"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Un_village_francais_3-3": {
-"genres": [
-"Guerre",
-"Drame / Chronique sociale"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Undertaker": {
-"genres": [
-"Western"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Une_aventure_des_Spectaculaires": {
-"genres": [
-"Humour",
-"Super-héros"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Une_brève_histoire_de_l_avenir": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Une_famille_en_guerre": {
-"genres": [
-"Guerre",
-"Drame / Chronique sociale"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Une_génération_française": {
-"genres": [
-"Historique",
-"Drame / Chronique sociale"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Une_nuit_à_Rome_4-4_1-1_HS__CDS": {
-"genres": [
-"Drame / Chronique sociale"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Urban": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Urbance": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Urbex": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Usa_Über_Alles": {
-"genres": [
-"Science-fiction",
-"Guerre"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Utopie": {
-"genres": [],
-"confidence": "low",
-"source": "unresolved"
-},
-"V_Girls_L_Œil_du_diable": {
-"genres": [
-"Aventure"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Vegvisir": {
-"genres": [
-"Fantasy"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Velvet": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Vermines": {
-"genres": [
-"Fantastique / Horreur"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Versailles": {
-"genres": [
-"Historique"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Vidocq": {
-"genres": [
-"Policier / Thriller",
-"Historique"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Vieille_Bruyère_et_Bas_de_Soie": {
-"genres": [
-"Humour"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Vietnam": {
-"genres": [
-"Guerre"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Vikings_dans_la_brume": {
-"genres": [
-"Humour",
-"Aventure"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Villevermine": {
-"genres": [
-"Fantastique / Horreur"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Vinifera": {
-"genres": [
-"Drame / Chronique sociale"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Visages": {
-"genres": [
-"Drame / Chronique sociale"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Vo_hounâ": {
-"genres": [
-"Aventure",
-"Historique"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Voitures_de_legendes": {
-"genres": [
-"Documentaire"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Voleur_de_feu": {
-"genres": [
-"Aventure"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Vor": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Voyage_au_centre_de_la_terre": {
-"genres": [
-"Science-fiction",
-"Aventure"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Vénus_H": {
-"genres": [
-"Fantastique / Horreur"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"W_E_S_T": {
-"genres": [
-"Western",
-"Fantastique / Horreur"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"W0rldtr33": {
-"genres": [
-"Fantastique / Horreur"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Walking_dead": {
-"genres": [
-"Fantastique / Horreur"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Waluk": {
 "genres": [
 "Aventure",
 "Jeunesse"
 ],
+"source": "pass3"
+},
+"Tracnar_Faribol": {
 "confidence": "low",
+"genres": [
+"Fantasy",
+"Humour"
+],
+"source": "pass3"
+},
+"Traffic": {
+"confidence": "low",
+"genres": [
+"Policier / Thriller"
+],
 "source": "pass1_guess"
 },
-"War_and_Dreams": {
+"Tramp": {
+"confidence": "high",
+"genres": [
+"Aventure"
+],
+"source": "pass1"
+},
+"Transmetropolitan": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1"
+},
+"Travis_16-17": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass2_web"
+},
+"Travis_16-18": {
+"confidence": "high",
+"genres": [
+"Science-fiction",
+"Policier / Thriller"
+],
+"source": "pass3"
+},
+"Triade": {
+"confidence": "high",
+"genres": [
+"Historique"
+],
+"source": "pass2_web"
+},
+"Trilogie_du_Moi": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller",
+"Drame / Chronique sociale"
+],
+"source": "pass3"
+},
+"Triple_galop": {
+"confidence": "low",
+"genres": [
+"Jeunesse"
+],
+"source": "pass3"
+},
+"Tristan_Iseult": {
+"confidence": "high",
+"genres": [
+"Historique",
+"Fantasy"
+],
+"source": "pass1"
+},
+"Troie": {
+"confidence": "high",
+"genres": [
+"Historique"
+],
+"source": "pass1"
+},
+"Trolls_de_Troy": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Humour"
+],
+"source": "pass1"
+},
+"Tseu_Hi_La_Dame_Dragon": {
+"confidence": "high",
+"genres": [
+"Historique",
+"Biographie"
+],
+"source": "pass2_web"
+},
+"Tu_mourras_moins_bête": {
+"confidence": "high",
+"genres": [
+"Documentaire",
+"Humour"
+],
+"source": "pass1"
+},
+"Tuez_la_grande_Zohra": {
+"confidence": "high",
+"genres": [
+"Historique"
+],
+"source": "pass2_web"
+},
+"Twins": {
+"confidence": "low",
+"genres": [
+"Aventure"
+],
+"source": "pass1_guess"
+},
+"Tête_de_chien": {
+"confidence": "low",
 "genres": [
 "Guerre"
 ],
-"confidence": "low",
 "source": "pass1_guess"
 },
-"Waterloo_1911": {
+"Tête_de_pioche": {
+"confidence": "low",
+"genres": [
+"Western"
+],
+"source": "pass1_guess"
+},
+"U_47": {
+"confidence": "high",
+"genres": [
+"Guerre"
+],
+"source": "pass1"
+},
+"U_Boot": {
+"confidence": "high",
+"genres": [
+"Guerre"
+],
+"source": "pass1"
+},
+"Uchronie_s": {
+"confidence": "high",
 "genres": [
 "Science-fiction",
 "Historique"
 ],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Wayne_Shelton": {
-"genres": [
-"Policier / Thriller",
-"Aventure"
-],
-"confidence": "high",
 "source": "pass1"
 },
-"Wendy": {
+"Ulysse": {
+"confidence": "high",
 "genres": [
-"Science-fiction"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"West_Fantasy": {
-"genres": [
-"Western",
+"Historique",
 "Fantasy"
 ],
-"confidence": "high",
 "source": "pass1"
 },
-"West_Legends": {
-"genres": [
-"Western"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Weëna": {
-"genres": [
-"Science-fiction"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"White_Sand": {
-"genres": [
-"Fantasy"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Wikipanda": {
-"genres": [
-"Jeunesse",
-"Humour"
-],
+"Ulysse_1781": {
 "confidence": "low",
+"genres": [
+"Aventure",
+"Historique"
+],
 "source": "pass1_guess"
 },
-"Wild_West": {
-"genres": [
-"Western"
-],
-"confidence": "high",
-"source": "pass1"
-},
-"Wollodrïn": {
-"genres": [
-"Fantasy"
-],
+"Ulysse_Tabou": {
 "confidence": "low",
+"genres": [
+"Historique"
+],
 "source": "pass1_guess"
 },
-"Wonderball": {
-"genres": [
-"Science-fiction"
-],
+"Un_pape_dans_l_histoire": {
 "confidence": "low",
+"genres": [
+"Historique",
+"Biographie"
+],
 "source": "pass1_guess"
 },
-"Wunderwaffen": {
+"Un_putain_de_salopard": {
+"confidence": "low",
 "genres": [
 "Guerre",
-"Science-fiction"
+"Aventure"
 ],
-"confidence": "high",
-"source": "pass1"
+"source": "pass1_guess"
 },
-"XIII": {
+"Un_sac_de_billes": {
+"confidence": "high",
 "genres": [
-"Policier / Thriller"
+"Guerre",
+"Biographie"
 ],
-"confidence": "high",
 "source": "pass1"
 },
-"XIII_-_XIII_Mystery_HD": {
+"Un_village_francais_3-3": {
+"confidence": "high",
 "genres": [
-"Policier / Thriller"
+"Guerre",
+"Drame / Chronique sociale"
 ],
-"confidence": "high",
 "source": "pass1"
 },
-"Yiu": {
+"Undertaker": {
+"confidence": "high",
+"genres": [
+"Western"
+],
+"source": "pass1"
+},
+"Une_aventure_Classic_de_Tanguy_et_Laverdure": {
+"confidence": "low",
 "genres": [
 "Aventure"
 ],
+"source": "pass3"
+},
+"Une_aventure_des_Spectaculaires": {
 "confidence": "low",
+"genres": [
+"Humour",
+"Super-héros"
+],
 "source": "pass1_guess"
 },
-"Yojimbot": {
-"genres": [
-"Science-fiction",
-"Humour"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Ys_la_légende": {
-"genres": [
-"Fantasy",
-"Historique"
-],
+"Une_brève_histoire_de_l_avenir": {
 "confidence": "high",
-"source": "pass1"
-},
-"Zaroff": {
-"genres": [
-"Policier / Thriller"
-],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Zentak": {
 "genres": [
 "Science-fiction"
 ],
-"confidence": "low",
-"source": "pass1_guess"
-},
-"Zouk": {
-"genres": [
-"Jeunesse",
-"Humour"
-],
-"confidence": "high",
 "source": "pass1"
 },
-"Zoé_Carrington": {
-"genres": [
-"Aventure"
-],
+"Une_famille_en_guerre": {
 "confidence": "low",
+"genres": [
+"Guerre",
+"Drame / Chronique sociale"
+],
 "source": "pass1_guess"
 },
-"Zéro_absolu": {
-"genres": [
-"Science-fiction",
-"Fantastique / Horreur"
-],
+"Une_génération_française": {
 "confidence": "low",
+"genres": [
+"Historique",
+"Drame / Chronique sociale"
+],
 "source": "pass1_guess"
 },
-"À_la_recherche_du_temps_perdu": {
+"Une_nuit_à_Rome_4-4_1-1_HS__CDS": {
+"confidence": "low",
 "genres": [
 "Drame / Chronique sociale"
 ],
+"source": "pass1_guess"
+},
+"Universal_War_One": {
 "confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass3"
+},
+"Universal_War_Two": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass3"
+},
+"Urban": {
+"confidence": "low",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1_guess"
+},
+"Urbance": {
+"confidence": "low",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1_guess"
+},
+"Urbex": {
+"confidence": "low",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1_guess"
+},
+"Usa_Über_Alles": {
+"confidence": "low",
+"genres": [
+"Science-fiction",
+"Guerre"
+],
+"source": "pass1_guess"
+},
+"Utopie": {
+"confidence": "low",
+"genres": [],
+"source": "unresolved"
+},
+"V_Girls_L_Œil_du_diable": {
+"confidence": "low",
+"genres": [
+"Aventure"
+],
+"source": "pass1_guess"
+},
+"Vegvisir": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass1_guess"
+},
+"Velvet": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller"
+],
 "source": "pass1"
 },
-"À_bord": {
+"Verdun": {
+"confidence": "high",
+"genres": [
+"Guerre",
+"Historique"
+],
+"source": "pass3"
+},
+"Vermines": {
+"confidence": "low",
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass1_guess"
+},
+"Versailles": {
+"confidence": "low",
+"genres": [
+"Historique"
+],
+"source": "pass1_guess"
+},
+"Vidocq": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller",
+"Historique"
+],
+"source": "pass1"
+},
+"Vieille_Bruyère_et_Bas_de_Soie": {
+"confidence": "low",
+"genres": [
+"Humour"
+],
+"source": "pass1_guess"
+},
+"Vietnam": {
+"confidence": "high",
+"genres": [
+"Guerre"
+],
+"source": "pass1"
+},
+"Vikings": {
+"confidence": "low",
 "genres": [
 "Historique",
 "Aventure"
 ],
+"source": "pass3"
+},
+"Vikings_dans_la_brume": {
 "confidence": "low",
+"genres": [
+"Humour",
+"Aventure"
+],
 "source": "pass1_guess"
 },
-"Éclore": {
+"Villevermine": {
+"confidence": "low",
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass1_guess"
+},
+"Vinifera": {
+"confidence": "low",
 "genres": [
 "Drame / Chronique sociale"
 ],
-"confidence": "low",
 "source": "pass1_guess"
+},
+"Visages": {
+"confidence": "low",
+"genres": [
+"Drame / Chronique sociale"
+],
+"source": "pass1_guess"
+},
+"Vo_hounâ": {
+"confidence": "low",
+"genres": [
+"Aventure",
+"Historique"
+],
+"source": "pass1_guess"
+},
+"Voitures_de_legendes": {
+"confidence": "low",
+"genres": [
+"Documentaire"
+],
+"source": "pass1_guess"
+},
+"Voleur_de_feu": {
+"confidence": "low",
+"genres": [
+"Aventure"
+],
+"source": "pass1_guess"
+},
+"Vor": {
+"confidence": "low",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1_guess"
+},
+"Voyage_au_centre_de_la_terre": {
+"confidence": "high",
+"genres": [
+"Science-fiction",
+"Aventure"
+],
+"source": "pass1"
+},
+"Vénus_H": {
+"confidence": "low",
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass1_guess"
+},
+"W0rldtr33": {
+"confidence": "high",
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass1"
+},
+"W_E_S_T": {
+"confidence": "high",
+"genres": [
+"Western",
+"Fantastique / Horreur"
+],
+"source": "pass1"
+},
+"W_I_T_C_H": {
+"confidence": "high",
+"genres": [
+"Jeunesse",
+"Fantasy"
+],
+"source": "pass3"
+},
+"Walking_dead": {
+"confidence": "high",
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass1"
+},
+"Waluk": {
+"confidence": "low",
+"genres": [
+"Aventure",
+"Jeunesse"
+],
+"source": "pass1_guess"
+},
+"War_and_Dreams": {
+"confidence": "low",
+"genres": [
+"Guerre"
+],
+"source": "pass1_guess"
+},
+"Waterloo_1911": {
+"confidence": "low",
+"genres": [
+"Science-fiction",
+"Historique"
+],
+"source": "pass1_guess"
+},
+"Wayne_Shelton": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller",
+"Aventure"
+],
+"source": "pass1"
+},
+"Wendy": {
+"confidence": "low",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1_guess"
+},
+"West_Fantasy": {
+"confidence": "high",
+"genres": [
+"Western",
+"Fantasy"
+],
+"source": "pass1"
+},
+"West_Legends": {
+"confidence": "high",
+"genres": [
+"Western"
+],
+"source": "pass1"
+},
+"Western_Love": {
+"confidence": "low",
+"genres": [
+"Western",
+"Humour"
+],
+"source": "pass3"
+},
+"Weëna": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1"
+},
+"White_Sand": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass1"
+},
+"Wikipanda": {
+"confidence": "low",
+"genres": [
+"Jeunesse",
+"Humour"
+],
+"source": "pass1_guess"
+},
+"Wild_West": {
+"confidence": "high",
+"genres": [
+"Western"
+],
+"source": "pass1"
+},
+"Wollodrïn": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass1_guess"
+},
+"Wonderball": {
+"confidence": "low",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1_guess"
+},
+"Wunderwaffen": {
+"confidence": "high",
+"genres": [
+"Guerre",
+"Science-fiction"
+],
+"source": "pass1"
+},
+"XIII": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1"
+},
+"XIII_-_XIII_Mystery_HD": {
+"confidence": "high",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1"
+},
+"Yiu": {
+"confidence": "low",
+"genres": [
+"Aventure"
+],
+"source": "pass1_guess"
+},
+"Yojimbot": {
+"confidence": "low",
+"genres": [
+"Science-fiction",
+"Humour"
+],
+"source": "pass1_guess"
+},
+"Ys_la_légende": {
+"confidence": "high",
+"genres": [
+"Fantasy",
+"Historique"
+],
+"source": "pass1"
+},
+"Yvain_le_chevalier_au_lion": {
+"confidence": "low",
+"genres": [
+"Fantasy",
+"Historique"
+],
+"source": "pass3"
+},
+"Zaroff": {
+"confidence": "low",
+"genres": [
+"Policier / Thriller"
+],
+"source": "pass1_guess"
+},
+"Zentak": {
+"confidence": "low",
+"genres": [
+"Science-fiction"
+],
+"source": "pass1_guess"
+},
+"Zouk": {
+"confidence": "high",
+"genres": [
+"Jeunesse",
+"Humour"
+],
+"source": "pass1"
+},
+"Zoé_Carrington": {
+"confidence": "low",
+"genres": [
+"Aventure"
+],
+"source": "pass1_guess"
+},
+"Zoé_baby_sitter": {
+"confidence": "high",
+"genres": [
+"Humour",
+"Jeunesse"
+],
+"source": "pass3"
+},
+"Zéro_absolu": {
+"confidence": "low",
+"genres": [
+"Science-fiction",
+"Fantastique / Horreur"
+],
+"source": "pass1_guess"
+},
+"À_bord": {
+"confidence": "low",
+"genres": [
+"Historique",
+"Aventure"
+],
+"source": "pass1_guess"
+},
+"À_la_recherche_du_temps_perdu": {
+"confidence": "high",
+"genres": [
+"Drame / Chronique sociale"
+],
+"source": "pass1"
+},
+"Éclore": {
+"confidence": "low",
+"genres": [
+"Drame / Chronique sociale"
+],
+"source": "pass1_guess"
+},
+"Œil_De_Dragon": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass3"
 }
 }

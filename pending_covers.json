@@ -1,0 +1,6458 @@
+[
+{
+"id": "Alika",
+"title": "Alika",
+"rel": "Alika",
+"file": "Alika_Tome_01_Les_territoires_interdits.pdf",
+"index": 0,
+"out": "Alika_001.jpg"
+},
+{
+"id": "Alika",
+"title": "Alika",
+"rel": "Alika",
+"file": "Alika_Tome_02_La_thaumaturge.pdf",
+"index": 1,
+"out": "Alika_002.jpg"
+},
+{
+"id": "Alika",
+"title": "Alika",
+"rel": "Alika",
+"file": "Alika_Tome_03_L'Ère_des_Dragons.pdf",
+"index": 2,
+"out": "Alika_003.jpg"
+},
+{
+"id": "Alzéor_Mondraggo",
+"title": "Alzéor Mondraggo",
+"rel": "Alzéor Mondraggo",
+"file": "Alzéor_Mondraggo_Tome_01_La_pierre_blanche.pdf",
+"index": 0,
+"out": "Alzeor_Mondraggo_001.jpg"
+},
+{
+"id": "Alzéor_Mondraggo",
+"title": "Alzéor Mondraggo",
+"rel": "Alzéor Mondraggo",
+"file": "Alzéor_Mondraggo_Tome_02_Le_prince_rouge.pdf",
+"index": 1,
+"out": "Alzeor_Mondraggo_002.jpg"
+},
+{
+"id": "Alzéor_Mondraggo",
+"title": "Alzéor Mondraggo",
+"rel": "Alzéor Mondraggo",
+"file": "Alzéor_Mondraggo_Tome_03_La_clé_de_l'amour.pdf",
+"index": 2,
+"out": "Alzeor_Mondraggo_003.jpg"
+},
+{
+"id": "Anta",
+"title": "Anta",
+"rel": "Anta",
+"file": "Anta_Tome_01_Les_Voix_de_l'Océan.pdf",
+"index": 0,
+"out": "Anta_001.jpg"
+},
+{
+"id": "Anta",
+"title": "Anta",
+"rel": "Anta",
+"file": "Anta_Tome_02_Les_singes_rouges.pdf",
+"index": 1,
+"out": "Anta_002.jpg"
+},
+{
+"id": "Antichristus",
+"title": "Antichristus",
+"rel": "Antichristus",
+"file": "Antichristus_Tome_01_Bon_vouloir_et_loyauté.pdf",
+"index": 0,
+"out": "Antichristus_001.jpg"
+},
+{
+"id": "Antichristus",
+"title": "Antichristus",
+"rel": "Antichristus",
+"file": "Antichristus_Tome_02_Bonaparte.pdf",
+"index": 1,
+"out": "Antichristus_002.jpg"
+},
+{
+"id": "Archipel",
+"title": "Archipel",
+"rel": "Archipel",
+"file": "Archipel_Tome_01_Le_Déluge.pdf",
+"index": 0,
+"out": "Archipel_001.jpg"
+},
+{
+"id": "Archipel",
+"title": "Archipel",
+"rel": "Archipel",
+"file": "Archipel_Tome_02_Les_Marchands_de_Sable.pdf",
+"index": 1,
+"out": "Archipel_002.jpg"
+},
+{
+"id": "Archipel",
+"title": "Archipel",
+"rel": "Archipel",
+"file": "Archipel_Tome_03_Le_Dormeur_des_Profondeurs.pdf",
+"index": 2,
+"out": "Archipel_003.jpg"
+},
+{
+"id": "Arctica_13-14",
+"title": "Arctica (13-14)",
+"rel": "Arctica (13-14)",
+"file": "Arctica_Tome_01_Dix_mille_ans_sous_les_glaces.pdf",
+"index": 0,
+"out": "Arctica_13-14_001.jpg"
+},
+{
+"id": "Arctica_13-14",
+"title": "Arctica (13-14)",
+"rel": "Arctica (13-14)",
+"file": "Arctica_Tome_02_Mystère_sous_la_mer.pdf",
+"index": 1,
+"out": "Arctica_13-14_002.jpg"
+},
+{
+"id": "Arctica_13-14",
+"title": "Arctica (13-14)",
+"rel": "Arctica (13-14)",
+"file": "Arctica_Tome_03_Le_Passager_de_la_Préhistoire.pdf",
+"index": 2,
+"out": "Arctica_13-14_003.jpg"
+},
+{
+"id": "Arctica_13-14",
+"title": "Arctica (13-14)",
+"rel": "Arctica (13-14)",
+"file": "Arctica_Tome_04_Révélations.pdf",
+"index": 3,
+"out": "Arctica_13-14_004.jpg"
+},
+{
+"id": "Arctica_13-14",
+"title": "Arctica (13-14)",
+"rel": "Arctica (13-14)",
+"file": "Arctica_Tome_05_Destination_Terre.pdf",
+"index": 4,
+"out": "Arctica_13-14_005.jpg"
+},
+{
+"id": "Arctica_13-14",
+"title": "Arctica (13-14)",
+"rel": "Arctica (13-14)",
+"file": "Arctica_Tome_06_Les_Fugitifs.pdf",
+"index": 5,
+"out": "Arctica_13-14_006.jpg"
+},
+{
+"id": "Arctica_13-14",
+"title": "Arctica (13-14)",
+"rel": "Arctica (13-14)",
+"file": "Arctica_Tome_07_Le_Messager_du_cosmos.pdf",
+"index": 6,
+"out": "Arctica_13-14_007.jpg"
+},
+{
+"id": "Arctica_13-14",
+"title": "Arctica (13-14)",
+"rel": "Arctica (13-14)",
+"file": "Arctica_Tome_08_Ultimatum.pdf",
+"index": 7,
+"out": "Arctica_13-14_008.jpg"
+},
+{
+"id": "Arctica_13-14",
+"title": "Arctica (13-14)",
+"rel": "Arctica (13-14)",
+"file": "Arctica_Tome_09_Commando_noir.pdf",
+"index": 8,
+"out": "Arctica_13-14_009.jpg"
+},
+{
+"id": "Arctica_13-14",
+"title": "Arctica (13-14)",
+"rel": "Arctica (13-14)",
+"file": "Arctica_Tome_10_Le_Complot.pdf",
+"index": 9,
+"out": "Arctica_13-14_010.jpg"
+},
+{
+"id": "Arctica_13-14",
+"title": "Arctica (13-14)",
+"rel": "Arctica (13-14)",
+"file": "Arctica_Tome_11_Invasion.pdf",
+"index": 10,
+"out": "Arctica_13-14_011.jpg"
+},
+{
+"id": "Arctica_13-14",
+"title": "Arctica (13-14)",
+"rel": "Arctica (13-14)",
+"file": "Arctica_Tome_12_Le_Dernier_homme.pdf",
+"index": 11,
+"out": "Arctica_13-14_012.jpg"
+},
+{
+"id": "Arctica_13-14",
+"title": "Arctica (13-14)",
+"rel": "Arctica (13-14)",
+"file": "Arctica_Tome_13_La_Planète_des_cyborgs.pdf",
+"index": 12,
+"out": "Arctica_13-14_013.jpg"
+},
+{
+"id": "Arctica_13-14",
+"title": "Arctica (13-14)",
+"rel": "Arctica (13-14)",
+"file": "Arctica_Tome_14_Le_pénitencier_du_cosmos.pdf",
+"index": 13,
+"out": "Arctica_13-14_014.jpg"
+},
+{
+"id": "Atana",
+"title": "Atana",
+"rel": "Atana",
+"file": "Atana_Tome_01_Atana_et_l'oiseau_de_feu.pdf",
+"index": 0,
+"out": "Atana_001.jpg"
+},
+{
+"id": "Atana",
+"title": "Atana",
+"rel": "Atana",
+"file": "Atana_Tome_02_Atana_et_la_Sirène_de_Jade.pdf",
+"index": 1,
+"out": "Atana_002.jpg"
+},
+{
+"id": "Aven",
+"title": "Aven",
+"rel": "Aven",
+"file": "Aven_Tome_01_Les_lois_de_l'attraction.pdf",
+"index": 0,
+"out": "Aven_001.jpg"
+},
+{
+"id": "Aven",
+"title": "Aven",
+"rel": "Aven",
+"file": "Aven_Tome_02_L'affût.pdf",
+"index": 1,
+"out": "Aven_002.jpg"
+},
+{
+"id": "Aven",
+"title": "Aven",
+"rel": "Aven",
+"file": "Aven_Tome_03_Source_je_boirai_de_ton_eau.pdf",
+"index": 2,
+"out": "Aven_003.jpg"
+},
+{
+"id": "Aya_de_Yopougon",
+"title": "Aya de Yopougon",
+"rel": "Aya de Yopougon",
+"file": "Aya_de_Yopougon_Tome_01.pdf",
+"index": 0,
+"out": "Aya_de_Yopougon_001.jpg"
+},
+{
+"id": "Aya_de_Yopougon",
+"title": "Aya de Yopougon",
+"rel": "Aya de Yopougon",
+"file": "Aya_de_Yopougon_Tome_02.pdf",
+"index": 1,
+"out": "Aya_de_Yopougon_002.jpg"
+},
+{
+"id": "Aya_de_Yopougon",
+"title": "Aya de Yopougon",
+"rel": "Aya de Yopougon",
+"file": "Aya_de_Yopougon_Tome_03.pdf",
+"index": 2,
+"out": "Aya_de_Yopougon_003.jpg"
+},
+{
+"id": "Aya_de_Yopougon",
+"title": "Aya de Yopougon",
+"rel": "Aya de Yopougon",
+"file": "Aya_de_Yopougon_Tome_04.pdf",
+"index": 3,
+"out": "Aya_de_Yopougon_004.jpg"
+},
+{
+"id": "Aya_de_Yopougon",
+"title": "Aya de Yopougon",
+"rel": "Aya de Yopougon",
+"file": "Aya_de_Yopougon_Tome_05.pdf",
+"index": 4,
+"out": "Aya_de_Yopougon_005.jpg"
+},
+{
+"id": "Azaqi",
+"title": "Azaqi",
+"rel": "Azaqi",
+"file": "Azaqi_Tome_01_Le_Cinquième_Rôdeur.pdf",
+"index": 0,
+"out": "Azaqi_001.jpg"
+},
+{
+"id": "Azaqi",
+"title": "Azaqi",
+"rel": "Azaqi",
+"file": "Azaqi_Tome_02_Malmoria.pdf",
+"index": 1,
+"out": "Azaqi_002.jpg"
+},
+{
+"id": "Azaqi",
+"title": "Azaqi",
+"rel": "Azaqi",
+"file": "Azaqi_Tome_03_L'Ile_des_Démons.pdf",
+"index": 2,
+"out": "Azaqi_003.jpg"
+},
+{
+"id": "Azur",
+"title": "Azur",
+"rel": "Azur",
+"file": "Azur_Tome_01_Providence.pdf",
+"index": 0,
+"out": "Azur_001.jpg"
+},
+{
+"id": "Azur",
+"title": "Azur",
+"rel": "Azur",
+"file": "Azur_Tome_02_L'Oiseau_sacré.pdf",
+"index": 1,
+"out": "Azur_002.jpg"
+},
+{
+"id": "Azur",
+"title": "Azur",
+"rel": "Azur",
+"file": "Azur_Tome_03_La_Déesse_Orc.pdf",
+"index": 2,
+"out": "Azur_003.jpg"
+},
+{
+"id": "Azur",
+"title": "Azur",
+"rel": "Azur",
+"file": "Azur_Tome_04_La_reine_blanche.pdf",
+"index": 3,
+"out": "Azur_004.jpg"
+},
+{
+"id": "Basil_Victoria_MANQUE_CDS",
+"title": "Basil Victoria MANQUE CDS",
+"rel": "Basil Victoria MANQUE CDS",
+"file": "Basil_Victoria_Tome_01_Sâti.pdf",
+"index": 0,
+"out": "Basil_Victoria_MANQUE_CDS_001.jpg"
+},
+{
+"id": "Basil_Victoria_MANQUE_CDS",
+"title": "Basil Victoria MANQUE CDS",
+"rel": "Basil Victoria MANQUE CDS",
+"file": "Basil_Victoria_Tome_02_Jack.pdf",
+"index": 1,
+"out": "Basil_Victoria_MANQUE_CDS_002.jpg"
+},
+{
+"id": "Basil_Victoria_MANQUE_CDS",
+"title": "Basil Victoria MANQUE CDS",
+"rel": "Basil Victoria MANQUE CDS",
+"file": "Basil_Victoria_Tome_03_Zanzibar.pdf",
+"index": 2,
+"out": "Basil_Victoria_MANQUE_CDS_003.jpg"
+},
+{
+"id": "Basil_Victoria_MANQUE_CDS",
+"title": "Basil Victoria MANQUE CDS",
+"rel": "Basil Victoria MANQUE CDS",
+"file": "Basil_Victoria_Tome_04_Pearl.pdf",
+"index": 3,
+"out": "Basil_Victoria_MANQUE_CDS_004.jpg"
+},
+{
+"id": "Basil_Victoria_MANQUE_CDS",
+"title": "Basil Victoria MANQUE CDS",
+"rel": "Basil Victoria MANQUE CDS",
+"file": "Basil_Victoria_Tome_05_Ravenstein.pdf",
+"index": 4,
+"out": "Basil_Victoria_MANQUE_CDS_005.jpg"
+},
+{
+"id": "Belem",
+"title": "Belem",
+"rel": "Belem",
+"file": "Belem_Tome_01_Le_Temps_des_naufrageurs.pdf",
+"index": 0,
+"out": "Belem_001.jpg"
+},
+{
+"id": "Belem",
+"title": "Belem",
+"rel": "Belem",
+"file": "Belem_Tome_02_Enfer_en_Martinique.pdf",
+"index": 1,
+"out": "Belem_002.jpg"
+},
+{
+"id": "Belem",
+"title": "Belem",
+"rel": "Belem",
+"file": "Belem_Tome_03_Le_yacht_du_bagne.pdf",
+"index": 2,
+"out": "Belem_003.jpg"
+},
+{
+"id": "Belem",
+"title": "Belem",
+"rel": "Belem",
+"file": "Belem_Tome_04_La_dernière_traversée.pdf",
+"index": 3,
+"out": "Belem_004.jpg"
+},
+{
+"id": "Black_Hammer",
+"title": "Black Hammer",
+"rel": "Black Hammer",
+"file": "Black_Hammer_Tome_01_Origines_secrètes.pdf",
+"index": 0,
+"out": "Black_Hammer_001.jpg"
+},
+{
+"id": "Black_Hammer",
+"title": "Black Hammer",
+"rel": "Black Hammer",
+"file": "Black_Hammer_Tome_02_L'Incident.pdf",
+"index": 1,
+"out": "Black_Hammer_002.jpg"
+},
+{
+"id": "Black_Hammer",
+"title": "Black Hammer",
+"rel": "Black Hammer",
+"file": "Black_Hammer_Tome_03_L'Heure_du_jugement.pdf",
+"index": 2,
+"out": "Black_Hammer_003.jpg"
+},
+{
+"id": "Black_Hammer",
+"title": "Black Hammer",
+"rel": "Black Hammer",
+"file": "Black_Hammer_Tome_04_Le_Meilleur_des_mondes.pdf",
+"index": 3,
+"out": "Black_Hammer_004.jpg"
+},
+{
+"id": "Breizh_Histoire_de_la_Bretagne",
+"title": "Breizh Histoire de la Bretagne",
+"rel": "Breizh Histoire de la Bretagne",
+"file": "Breizh_Histoire_de_la_Bretagne_Tome_01_Le_Peuple_indomptable.pdf",
+"index": 0,
+"out": "Breizh_Histoire_de_la_Bretagne_001.jpg"
+},
+{
+"id": "Breizh_Histoire_de_la_Bretagne",
+"title": "Breizh Histoire de la Bretagne",
+"rel": "Breizh Histoire de la Bretagne",
+"file": "Breizh_Histoire_de_la_Bretagne_Tome_02_Une_nouvelle_terre.pdf",
+"index": 1,
+"out": "Breizh_Histoire_de_la_Bretagne_002.jpg"
+},
+{
+"id": "Breizh_Histoire_de_la_Bretagne",
+"title": "Breizh Histoire de la Bretagne",
+"rel": "Breizh Histoire de la Bretagne",
+"file": "Breizh_Histoire_de_la_Bretagne_Tome_03_Nominoë_le_père_de_la_patrie.pdf",
+"index": 2,
+"out": "Breizh_Histoire_de_la_Bretagne_003.jpg"
+},
+{
+"id": "Breizh_Histoire_de_la_Bretagne",
+"title": "Breizh Histoire de la Bretagne",
+"rel": "Breizh Histoire de la Bretagne",
+"file": "Breizh_Histoire_de_la_Bretagne_Tome_04_Les_Hommes_du_Nord.pdf",
+"index": 3,
+"out": "Breizh_Histoire_de_la_Bretagne_004.jpg"
+},
+{
+"id": "Breizh_Histoire_de_la_Bretagne",
+"title": "Breizh Histoire de la Bretagne",
+"rel": "Breizh Histoire de la Bretagne",
+"file": "Breizh_Histoire_de_la_Bretagne_Tome_05_La_Guerre_des_deux_Jeanne.pdf",
+"index": 4,
+"out": "Breizh_Histoire_de_la_Bretagne_005.jpg"
+},
+{
+"id": "Breizh_Histoire_de_la_Bretagne",
+"title": "Breizh Histoire de la Bretagne",
+"rel": "Breizh Histoire de la Bretagne",
+"file": "Breizh_Histoire_de_la_Bretagne_Tome_06_Anne_de_Bretagne.pdf",
+"index": 5,
+"out": "Breizh_Histoire_de_la_Bretagne_006.jpg"
+},
+{
+"id": "Breizh_Histoire_de_la_Bretagne",
+"title": "Breizh Histoire de la Bretagne",
+"rel": "Breizh Histoire de la Bretagne",
+"file": "Breizh_Histoire_de_la_Bretagne_Tome_07_Le_Temps_des_révoltes.pdf",
+"index": 6,
+"out": "Breizh_Histoire_de_la_Bretagne_007.jpg"
+},
+{
+"id": "Breizh_Histoire_de_la_Bretagne",
+"title": "Breizh Histoire de la Bretagne",
+"rel": "Breizh Histoire de la Bretagne",
+"file": "Breizh_Histoire_de_la_Bretagne_Tome_08_Les_Chouans.pdf",
+"index": 7,
+"out": "Breizh_Histoire_de_la_Bretagne_008.jpg"
+},
+{
+"id": "Camomille_et_les_chevaux",
+"title": "Camomille et les chevaux",
+"rel": "Camomille et les chevaux",
+"file": "Camomille_et_les_chevaux_Tome_14_Montée_à_cheval.pdf",
+"index": 13,
+"out": "Camomille_et_les_chevaux_014.jpg"
+},
+{
+"id": "Cellule_Poison",
+"title": "Cellule Poison",
+"rel": "Cellule Poison",
+"file": "Cellule_Poison_Tome_01_Immersion.pdf",
+"index": 0,
+"out": "Cellule_Poison_001.jpg"
+},
+{
+"id": "Cellule_Poison",
+"title": "Cellule Poison",
+"rel": "Cellule Poison",
+"file": "Cellule_Poison_Tome_02_Qui_suis_je.pdf",
+"index": 1,
+"out": "Cellule_Poison_002.jpg"
+},
+{
+"id": "Cellule_Poison",
+"title": "Cellule Poison",
+"rel": "Cellule Poison",
+"file": "Cellule_Poison_Tome_03_La_main_dans_le_sac.pdf",
+"index": 2,
+"out": "Cellule_Poison_003.jpg"
+},
+{
+"id": "Cellule_Poison",
+"title": "Cellule Poison",
+"rel": "Cellule Poison",
+"file": "Cellule_Poison_Tome_04_Dans_les_serres_de_l'aigle.pdf",
+"index": 3,
+"out": "Cellule_Poison_004.jpg"
+},
+{
+"id": "Cellule_Poison",
+"title": "Cellule Poison",
+"rel": "Cellule Poison",
+"file": "Cellule_Poison_Tome_05_Comptines.pdf",
+"index": 4,
+"out": "Cellule_Poison_005.jpg"
+},
+{
+"id": "Chasseurs_d_Héritiers",
+"title": "Chasseurs d'Héritiers",
+"rel": "Chasseurs d'Héritiers",
+"file": "Chasseurs_d'Héritiers_Tome_01_Les_sept_vierges.pdf",
+"index": 0,
+"out": "Chasseurs_d_Heritiers_001.jpg"
+},
+{
+"id": "Chasseurs_d_Héritiers",
+"title": "Chasseurs d'Héritiers",
+"rel": "Chasseurs d'Héritiers",
+"file": "Chasseurs_d'Héritiers_Tome_02_Secrets_de_famille.pdf",
+"index": 1,
+"out": "Chasseurs_d_Heritiers_002.jpg"
+},
+{
+"id": "Chiens_Loups",
+"title": "Chiens & Loups",
+"rel": "Chiens & Loups",
+"file": "Chiens_&_Loups_Tome_01_Le_Temps_des_Ombres.pdf",
+"index": 0,
+"out": "Chiens_Loups_001.jpg"
+},
+{
+"id": "Chiens_Loups",
+"title": "Chiens & Loups",
+"rel": "Chiens & Loups",
+"file": "Chiens_&_Loups_Tome_02_Jeux_truqués.pdf",
+"index": 1,
+"out": "Chiens_Loups_002.jpg"
+},
+{
+"id": "Chroniques_de_la_guerre_des_fées",
+"title": "Chroniques de la guerre des fées",
+"rel": "Chroniques de la guerre des fées",
+"file": "Chroniques_de_la_guerre_des_fées_Tome_01_Dans_la_gueule_du_loup.pdf",
+"index": 0,
+"out": "Chroniques_de_la_guerre_des_fees_001.jpg"
+},
+{
+"id": "Chroniques_de_la_guerre_des_fées",
+"title": "Chroniques de la guerre des fées",
+"rel": "Chroniques de la guerre des fées",
+"file": "Chroniques_de_la_guerre_des_fées_Tome_02_Aedlyn.pdf",
+"index": 1,
+"out": "Chroniques_de_la_guerre_des_fees_002.jpg"
+},
+{
+"id": "Cirk",
+"title": "Cirk",
+"rel": "Cirk",
+"file": "Cirk_Tome_01_Sur_le_fil_du_rasoir.pdf",
+"index": 0,
+"out": "Cirk_001.jpg"
+},
+{
+"id": "Cirk",
+"title": "Cirk",
+"rel": "Cirk",
+"file": "Cirk_Tome_02_Ballerine.pdf",
+"index": 1,
+"out": "Cirk_002.jpg"
+},
+{
+"id": "Cirk",
+"title": "Cirk",
+"rel": "Cirk",
+"file": "Cirk_Tome_03_En_exil.pdf",
+"index": 2,
+"out": "Cirk_003.jpg"
+},
+{
+"id": "Codex_Sinaïticus",
+"title": "Codex Sinaïticus",
+"rel": "Codex Sinaïticus",
+"file": "Codex_Sinaïticus_Tome_01_Le_manuscrit_de_Tischendorf.pdf",
+"index": 0,
+"out": "Codex_Sinaiticus_001.jpg"
+},
+{
+"id": "Codex_Sinaïticus",
+"title": "Codex Sinaïticus",
+"rel": "Codex Sinaïticus",
+"file": "Codex_Sinaïticus_Tome_02_La_Piste_de_Constantinople.pdf",
+"index": 1,
+"out": "Codex_Sinaiticus_002.jpg"
+},
+{
+"id": "Colt_Pepper",
+"title": "Colt Pepper",
+"rel": "Colt Pepper",
+"file": "Colt_Pepper_Tome_01_Pandemonium_à_Paragusa.pdf",
+"index": 0,
+"out": "Colt_Pepper_001.jpg"
+},
+{
+"id": "Colt_Pepper",
+"title": "Colt Pepper",
+"rel": "Colt Pepper",
+"file": "Colt_Pepper_Tome_02_Et_in_Arcadia_ego.pdf",
+"index": 1,
+"out": "Colt_Pepper_002.jpg"
+},
+{
+"id": "Cosmopirates",
+"title": "Cosmopirates",
+"rel": "Cosmopirates",
+"file": "Cosmopirates_Tome_01_Captif_de_l'oubli.pdf",
+"index": 0,
+"out": "Cosmopirates_001.jpg"
+},
+{
+"id": "Cosmopirates",
+"title": "Cosmopirates",
+"rel": "Cosmopirates",
+"file": "Cosmopirates_Tome_02_La_Tortue_d'or.pdf",
+"index": 1,
+"out": "Cosmopirates_002.jpg"
+},
+{
+"id": "Creepy_Past",
+"title": "Creepy Past",
+"rel": "Creepy Past",
+"file": "Creepy_past_Tome_01_Tapi_dans_l'ombre.pdf",
+"index": 0,
+"out": "Creepy_Past_001.jpg"
+},
+{
+"id": "Creepy_Past",
+"title": "Creepy Past",
+"rel": "Creepy Past",
+"file": "Creepy_past_Tome_02_Phalène.pdf",
+"index": 1,
+"out": "Creepy_Past_002.jpg"
+},
+{
+"id": "Creepy_Past",
+"title": "Creepy Past",
+"rel": "Creepy Past",
+"file": "Creepy_past_Tome_03_Dans_les_profondeurs.pdf",
+"index": 2,
+"out": "Creepy_Past_003.jpg"
+},
+{
+"id": "Creepy_Past",
+"title": "Creepy Past",
+"rel": "Creepy Past",
+"file": "Creepy_past_Tome_04_La_Forêt_des_larmes.pdf",
+"index": 3,
+"out": "Creepy_Past_004.jpg"
+},
+{
+"id": "Creepy_Past",
+"title": "Creepy Past",
+"rel": "Creepy Past",
+"file": "Creepy_past_Tome_05_Par_delà_la_lumière.pdf",
+"index": 4,
+"out": "Creepy_Past_005.jpg"
+},
+{
+"id": "Creepy_Past",
+"title": "Creepy Past",
+"rel": "Creepy Past",
+"file": "Creepy_past_Tome_06_La_Maison_des_mannequins.pdf",
+"index": 5,
+"out": "Creepy_Past_006.jpg"
+},
+{
+"id": "Criminal",
+"title": "Criminal",
+"rel": "Criminal",
+"file": "Criminal_Tome_01_Lâche!.pdf",
+"index": 0,
+"out": "Criminal_001.jpg"
+},
+{
+"id": "Criminal",
+"title": "Criminal",
+"rel": "Criminal",
+"file": "Criminal_Tome_02_Impitoyable.pdf",
+"index": 1,
+"out": "Criminal_002.jpg"
+},
+{
+"id": "Criminal",
+"title": "Criminal",
+"rel": "Criminal",
+"file": "Criminal_Tome_03_Morts_en_sursis.pdf",
+"index": 2,
+"out": "Criminal_003.jpg"
+},
+{
+"id": "Croquemitaines",
+"title": "Croquemitaines",
+"rel": "Croquemitaines",
+"file": "Croquemitaines_Tome_01.pdf",
+"index": 0,
+"out": "Croquemitaines_001.jpg"
+},
+{
+"id": "Croquemitaines",
+"title": "Croquemitaines",
+"rel": "Croquemitaines",
+"file": "Croquemitaines_Tome_02.pdf",
+"index": 1,
+"out": "Croquemitaines_002.jpg"
+},
+{
+"id": "Crusades",
+"title": "Crusades",
+"rel": "Crusades",
+"file": "Crusades_Tome_01_Le_Spectre_aux_yeux_d'argent.pdf",
+"index": 0,
+"out": "Crusades_001.jpg"
+},
+{
+"id": "Crusades",
+"title": "Crusades",
+"rel": "Crusades",
+"file": "Crusades_Tome_02_La_Porte_d'Hermès.pdf",
+"index": 1,
+"out": "Crusades_002.jpg"
+},
+{
+"id": "Crusades",
+"title": "Crusades",
+"rel": "Crusades",
+"file": "Crusades_Tome_03_La_Bataille_de_Mansourah.pdf",
+"index": 2,
+"out": "Crusades_003.jpg"
+},
+{
+"id": "Dantès",
+"title": "Dantès",
+"rel": "Dantès",
+"file": "Dantès_Tome_01_La_Chute_d'un_trader.pdf",
+"index": 0,
+"out": "Dantes_001.jpg"
+},
+{
+"id": "Dantès",
+"title": "Dantès",
+"rel": "Dantès",
+"file": "Dantès_Tome_02_6_années_en_enfer.pdf",
+"index": 1,
+"out": "Dantes_002.jpg"
+},
+{
+"id": "Dantès",
+"title": "Dantès",
+"rel": "Dantès",
+"file": "Dantès_Tome_03_Le_Visage_de_la_vengeance.pdf",
+"index": 2,
+"out": "Dantes_003.jpg"
+},
+{
+"id": "Dantès",
+"title": "Dantès",
+"rel": "Dantès",
+"file": "Dantès_Tome_04_Pour_solde_de_tout_compte.pdf",
+"index": 3,
+"out": "Dantes_004.jpg"
+},
+{
+"id": "Dantès",
+"title": "Dantès",
+"rel": "Dantès",
+"file": "Dantès_Tome_05_Le_Complot_politique.pdf",
+"index": 4,
+"out": "Dantes_005.jpg"
+},
+{
+"id": "Dantès",
+"title": "Dantès",
+"rel": "Dantès",
+"file": "Dantès_Tome_06_L'Affrontement_final.pdf",
+"index": 5,
+"out": "Dantes_006.jpg"
+},
+{
+"id": "Dantès",
+"title": "Dantès",
+"rel": "Dantès",
+"file": "Dantès_Tome_07_Le_Poison_d'Ébène.pdf",
+"index": 6,
+"out": "Dantes_007.jpg"
+},
+{
+"id": "Dantès",
+"title": "Dantès",
+"rel": "Dantès",
+"file": "Dantès_Tome_08_Vérités_toxiques.pdf",
+"index": 7,
+"out": "Dantes_008.jpg"
+},
+{
+"id": "Dantès",
+"title": "Dantès",
+"rel": "Dantès",
+"file": "Dantès_Tome_09_Contrefaçons.pdf",
+"index": 8,
+"out": "Dantes_009.jpg"
+},
+{
+"id": "Dantès",
+"title": "Dantès",
+"rel": "Dantès",
+"file": "Dantès_Tome_10_Dernier_acte.pdf",
+"index": 9,
+"out": "Dantes_010.jpg"
+},
+{
+"id": "Dawn_of_Superman",
+"title": "Dawn of Superman",
+"rel": "Dawn of Superman",
+"file": "Dawn_of_Superman_Tome_01.pdf",
+"index": 0,
+"out": "Dawn_of_Superman_001.jpg"
+},
+{
+"id": "Dawn_of_Superman",
+"title": "Dawn of Superman",
+"rel": "Dawn of Superman",
+"file": "Dawn_of_Superman_Tomes_02.pdf",
+"index": 1,
+"out": "Dawn_of_Superman_002.jpg"
+},
+{
+"id": "Dawn_of_Superman",
+"title": "Dawn of Superman",
+"rel": "Dawn of Superman",
+"file": "Dawn_of_Superman_Tomes_03.pdf",
+"index": 2,
+"out": "Dawn_of_Superman_003.jpg"
+},
+{
+"id": "De_bruit_de_fureur",
+"title": "De bruit & de fureur",
+"rel": "De bruit & de fureur",
+"file": "De_bruit_&_de_fureur_Tome_01_Shakespeare.pdf",
+"index": 0,
+"out": "De_bruit_de_fureur_001.jpg"
+},
+{
+"id": "De_bruit_de_fureur",
+"title": "De bruit & de fureur",
+"rel": "De bruit & de fureur",
+"file": "De_bruit_&_de_fureur_Tome_02_Marlowe.pdf",
+"index": 1,
+"out": "De_bruit_de_fureur_002.jpg"
+},
+{
+"id": "Descender",
+"title": "Descender",
+"rel": "Descender",
+"file": "Descender_Tome_01_Étoiles_de_métal.pdf",
+"index": 0,
+"out": "Descender_001.jpg"
+},
+{
+"id": "Descender",
+"title": "Descender",
+"rel": "Descender",
+"file": "Descender_Tome_02_Lune_mécanique.pdf",
+"index": 1,
+"out": "Descender_002.jpg"
+},
+{
+"id": "Descender",
+"title": "Descender",
+"rel": "Descender",
+"file": "Descender_Tome_03_Singularités.pdf",
+"index": 2,
+"out": "Descender_003.jpg"
+},
+{
+"id": "Descender",
+"title": "Descender",
+"rel": "Descender",
+"file": "Descender_Tome_04_Mise_en_orbite.pdf",
+"index": 3,
+"out": "Descender_004.jpg"
+},
+{
+"id": "Descender",
+"title": "Descender",
+"rel": "Descender",
+"file": "Descender_Tome_05_Le_Soulèvement.pdf",
+"index": 4,
+"out": "Descender_005.jpg"
+},
+{
+"id": "Descender",
+"title": "Descender",
+"rel": "Descender",
+"file": "Descender_Tome_06_La_Fin_d'un_monde_ancien.pdf",
+"index": 5,
+"out": "Descender_006.jpg"
+},
+{
+"id": "Donnington",
+"title": "Donnington",
+"rel": "Donnington",
+"file": "Donnington_Tome_01_La_Nuit_du_leopard.pdf",
+"index": 0,
+"out": "Donnington_001.jpg"
+},
+{
+"id": "Donnington",
+"title": "Donnington",
+"rel": "Donnington",
+"file": "Donnington_Tome_02_Sur_les_rives_du_lac_Karoun.pdf",
+"index": 1,
+"out": "Donnington_002.jpg"
+},
+{
+"id": "Donnington",
+"title": "Donnington",
+"rel": "Donnington",
+"file": "Donnington_Tome_03_Mort_dans_l'île.pdf",
+"index": 2,
+"out": "Donnington_003.jpg"
+},
+{
+"id": "Durandal_MANQUE_CDS",
+"title": "Durandal MANQUE CDS",
+"rel": "Durandal MANQUE CDS",
+"file": "Durandal_Tome_01_La_Marche_de_Bretagne_Partie_I.pdf",
+"index": 0,
+"out": "Durandal_MANQUE_CDS_001.jpg"
+},
+{
+"id": "Durandal_MANQUE_CDS",
+"title": "Durandal MANQUE CDS",
+"rel": "Durandal MANQUE CDS",
+"file": "Durandal_Tome_02_La_Marche_de_Bretagne_Partie_II.pdf",
+"index": 1,
+"out": "Durandal_MANQUE_CDS_002.jpg"
+},
+{
+"id": "Durandal_MANQUE_CDS",
+"title": "Durandal MANQUE CDS",
+"rel": "Durandal MANQUE CDS",
+"file": "Durandal_Tome_03_La_Marche_de_Bretagne_Partie_III.pdf",
+"index": 2,
+"out": "Durandal_MANQUE_CDS_003.jpg"
+},
+{
+"id": "Durandal_MANQUE_CDS",
+"title": "Durandal MANQUE CDS",
+"rel": "Durandal MANQUE CDS",
+"file": "Durandal_Tome_04_La_Marche_de_Bretagne_Partie_IV.pdf",
+"index": 3,
+"out": "Durandal_MANQUE_CDS_004.jpg"
+},
+{
+"id": "Elecboy",
+"title": "Elecboy",
+"rel": "Elecboy",
+"file": "Elecboy_Tome_01_Naissance.pdf",
+"index": 0,
+"out": "Elecboy_001.jpg"
+},
+{
+"id": "Elecboy",
+"title": "Elecboy",
+"rel": "Elecboy",
+"file": "Elecboy_Tome_02_Révélations.pdf",
+"index": 1,
+"out": "Elecboy_002.jpg"
+},
+{
+"id": "Elecboy",
+"title": "Elecboy",
+"rel": "Elecboy",
+"file": "Elecboy_Tome_03_La_data_croix.pdf",
+"index": 2,
+"out": "Elecboy_003.jpg"
+},
+{
+"id": "Elecboy",
+"title": "Elecboy",
+"rel": "Elecboy",
+"file": "Elecboy_Tome_04_Le_Mur_du_Temps.pdf",
+"index": 3,
+"out": "Elecboy_004.jpg"
+},
+{
+"id": "Empire_USA",
+"title": "Empire USA",
+"rel": "Empire USA",
+"file": "Empire_USA_Tome_01.pdf",
+"index": 0,
+"out": "Empire_USA_001.jpg"
+},
+{
+"id": "Empire_USA",
+"title": "Empire USA",
+"rel": "Empire USA",
+"file": "Empire_USA_Tome_02.pdf",
+"index": 1,
+"out": "Empire_USA_002.jpg"
+},
+{
+"id": "Empire_USA",
+"title": "Empire USA",
+"rel": "Empire USA",
+"file": "Empire_USA_Tome_04.pdf",
+"index": 2,
+"out": "Empire_USA_003.jpg"
+},
+{
+"id": "Empire_USA",
+"title": "Empire USA",
+"rel": "Empire USA",
+"file": "Empire_USA_Tome_05.pdf",
+"index": 3,
+"out": "Empire_USA_004.jpg"
+},
+{
+"id": "Empire_USA",
+"title": "Empire USA",
+"rel": "Empire USA",
+"file": "Empire_USA_Tome_06.pdf",
+"index": 4,
+"out": "Empire_USA_005.jpg"
+},
+{
+"id": "Empire_USA",
+"title": "Empire USA",
+"rel": "Empire USA",
+"file": "Empire_USA_Tome_07.pdf",
+"index": 5,
+"out": "Empire_USA_006.jpg"
+},
+{
+"id": "Empire_USA",
+"title": "Empire USA",
+"rel": "Empire USA",
+"file": "Empire_USA_Tome_08.pdf",
+"index": 6,
+"out": "Empire_USA_007.jpg"
+},
+{
+"id": "Empire_USA",
+"title": "Empire USA",
+"rel": "Empire USA",
+"file": "Empire_USA_Tome_09.pdf",
+"index": 7,
+"out": "Empire_USA_008.jpg"
+},
+{
+"id": "Empire_USA",
+"title": "Empire USA",
+"rel": "Empire USA",
+"file": "Empire_USA_Tome_10.pdf",
+"index": 8,
+"out": "Empire_USA_009.jpg"
+},
+{
+"id": "Empire_USA",
+"title": "Empire USA",
+"rel": "Empire USA",
+"file": "Empire_USA_Tome_11.pdf",
+"index": 9,
+"out": "Empire_USA_010.jpg"
+},
+{
+"id": "Empire_USA",
+"title": "Empire USA",
+"rel": "Empire USA",
+"file": "Empire_USA_Tome_12.pdf",
+"index": 10,
+"out": "Empire_USA_011.jpg"
+},
+{
+"id": "Fang",
+"title": "Fang",
+"rel": "Fang",
+"file": "Fang_Tome_01_Chasseuse_de_Démons.pdf",
+"index": 0,
+"out": "Fang_001.jpg"
+},
+{
+"id": "Fang",
+"title": "Fang",
+"rel": "Fang",
+"file": "Fang_Tome_02_À_la_Poursuite_d'Aldafaor.pdf",
+"index": 1,
+"out": "Fang_002.jpg"
+},
+{
+"id": "Femmes_en_résistance",
+"title": "Femmes en résistance",
+"rel": "Femmes en résistance",
+"file": "Femmes_en_résistance_Tome_01_Amy_Johnson.pdf",
+"index": 0,
+"out": "Femmes_en_resistance_001.jpg"
+},
+{
+"id": "Femmes_en_résistance",
+"title": "Femmes en résistance",
+"rel": "Femmes en résistance",
+"file": "Femmes_en_résistance_Tome_02_Sophie_Scholl.pdf",
+"index": 1,
+"out": "Femmes_en_resistance_002.jpg"
+},
+{
+"id": "Femmes_en_résistance",
+"title": "Femmes en résistance",
+"rel": "Femmes en résistance",
+"file": "Femmes_en_résistance_Tome_03_Berty_Albrecht.pdf",
+"index": 2,
+"out": "Femmes_en_resistance_003.jpg"
+},
+{
+"id": "Femmes_en_résistance",
+"title": "Femmes en résistance",
+"rel": "Femmes en résistance",
+"file": "Femmes_en_résistance_Tome_04_Mila_Racine.pdf",
+"index": 3,
+"out": "Femmes_en_resistance_004.jpg"
+},
+{
+"id": "Gideon_Falls",
+"title": "Gideon Falls",
+"rel": "Gideon Falls",
+"file": "Gideon_Falls_Tome_01_La_Grange_noire.pdf",
+"index": 0,
+"out": "Gideon_Falls_001.jpg"
+},
+{
+"id": "Gideon_Falls",
+"title": "Gideon Falls",
+"rel": "Gideon Falls",
+"file": "Gideon_Falls_Tome_02_Péché_originel.pdf",
+"index": 1,
+"out": "Gideon_Falls_002.jpg"
+},
+{
+"id": "Gideon_Falls",
+"title": "Gideon Falls",
+"rel": "Gideon Falls",
+"file": "Gideon_Falls_Tome_03_Chemin_de_croix.pdf",
+"index": 2,
+"out": "Gideon_Falls_003.jpg"
+},
+{
+"id": "Gideon_Falls",
+"title": "Gideon Falls",
+"rel": "Gideon Falls",
+"file": "Gideon_Falls_Tome_04_Le_Pentoculus.pdf",
+"index": 3,
+"out": "Gideon_Falls_004.jpg"
+},
+{
+"id": "Happy_End",
+"title": "Happy End",
+"rel": "Happy End",
+"file": "Happy_End_Tome_01_La_grande_panne.pdf",
+"index": 0,
+"out": "Happy_End_001.jpg"
+},
+{
+"id": "Happy_End",
+"title": "Happy End",
+"rel": "Happy End",
+"file": "Happy_End_Tome_02_L'enfer_c'est_les_autres!.pdf",
+"index": 1,
+"out": "Happy_End_002.jpg"
+},
+{
+"id": "Havana_Split",
+"title": "Havana Split",
+"rel": "Havana Split",
+"file": "Havana_Split_Tome_01_Bienvenue_à_Cuba.pdf",
+"index": 0,
+"out": "Havana_Split_001.jpg"
+},
+{
+"id": "Havana_Split",
+"title": "Havana Split",
+"rel": "Havana Split",
+"file": "Havana_Split_Tome_02_Tropicana.pdf",
+"index": 1,
+"out": "Havana_Split_002.jpg"
+},
+{
+"id": "In_nomine",
+"title": "In nomine",
+"rel": "In nomine",
+"file": "In_nomine_Tome_01_Demain_est_à_Dieu.pdf",
+"index": 0,
+"out": "In_nomine_001.jpg"
+},
+{
+"id": "In_nomine",
+"title": "In nomine",
+"rel": "In nomine",
+"file": "In_nomine_Tome_02_Aujourd'hui_est_aux_Hommes.pdf",
+"index": 1,
+"out": "In_nomine_002.jpg"
+},
+{
+"id": "Je_suis_Cathare_MANQUE_CDS",
+"title": "Je suis Cathare MANQUE CDS",
+"rel": "Je suis Cathare MANQUE CDS",
+"file": "Je_suis_Cathare_Tome_01_Le_Parfait_Introuvable.pdf",
+"index": 0,
+"out": "Je_suis_Cathare_MANQUE_CDS_001.jpg"
+},
+{
+"id": "Je_suis_Cathare_MANQUE_CDS",
+"title": "Je suis Cathare MANQUE CDS",
+"rel": "Je suis Cathare MANQUE CDS",
+"file": "Je_suis_Cathare_Tome_02_Impardonnable_Pardonné.pdf",
+"index": 1,
+"out": "Je_suis_Cathare_MANQUE_CDS_002.jpg"
+},
+{
+"id": "Je_suis_Cathare_MANQUE_CDS",
+"title": "Je suis Cathare MANQUE CDS",
+"rel": "Je suis Cathare MANQUE CDS",
+"file": "Je_suis_Cathare_Tome_03_Immensité_Retrouvée.pdf",
+"index": 2,
+"out": "Je_suis_Cathare_MANQUE_CDS_003.jpg"
+},
+{
+"id": "Je_suis_Cathare_MANQUE_CDS",
+"title": "Je suis Cathare MANQUE CDS",
+"rel": "Je suis Cathare MANQUE CDS",
+"file": "Je_suis_Cathare_Tome_04_La_Légèreté_du_Monde.pdf",
+"index": 3,
+"out": "Je_suis_Cathare_MANQUE_CDS_004.jpg"
+},
+{
+"id": "Je_suis_Cathare_MANQUE_CDS",
+"title": "Je suis Cathare MANQUE CDS",
+"rel": "Je suis Cathare MANQUE CDS",
+"file": "Je_suis_Cathare_Tome_05_Le_Grand_Labyrinthe.pdf",
+"index": 4,
+"out": "Je_suis_Cathare_MANQUE_CDS_005.jpg"
+},
+{
+"id": "Je_suis_Cathare_MANQUE_CDS",
+"title": "Je suis Cathare MANQUE CDS",
+"rel": "Je suis Cathare MANQUE CDS",
+"file": "Je_suis_Cathare_Tome_07_L'Accomplissement.pdf",
+"index": 5,
+"out": "Je_suis_Cathare_MANQUE_CDS_006.jpg"
+},
+{
+"id": "Jeanne_des_Embruns",
+"title": "Jeanne des Embruns",
+"rel": "Jeanne des Embruns",
+"file": "Jeanne_des_Embruns_Tome_01.pdf",
+"index": 0,
+"out": "Jeanne_des_Embruns_001.jpg"
+},
+{
+"id": "Jeanne_des_Embruns",
+"title": "Jeanne des Embruns",
+"rel": "Jeanne des Embruns",
+"file": "Jeanne_des_Embruns_Tome_02.pdf",
+"index": 1,
+"out": "Jeanne_des_Embruns_002.jpg"
+},
+{
+"id": "Kaplan_Masson",
+"title": "Kaplan Masson",
+"rel": "Kaplan Masson",
+"file": "Kaplan_Masson_Tome_01_La_théorie_du_chaos.pdf",
+"index": 0,
+"out": "Kaplan_Masson_001.jpg"
+},
+{
+"id": "Kaplan_Masson",
+"title": "Kaplan Masson",
+"rel": "Kaplan Masson",
+"file": "Kaplan_Masson_Tome_02_Il_faut_sauver_Hitler.pdf",
+"index": 1,
+"out": "Kaplan_Masson_002.jpg"
+},
+{
+"id": "Katsuo",
+"title": "Katsuo",
+"rel": "Katsuo",
+"file": "Katsuo_Tome_01_Le_Samourai_Noir.pdf",
+"index": 0,
+"out": "Katsuo_001.jpg"
+},
+{
+"id": "Katsuo",
+"title": "Katsuo",
+"rel": "Katsuo",
+"file": "Katsuo_Tome_02_Les_guerriers_du_temps.pdf",
+"index": 1,
+"out": "Katsuo_002.jpg"
+},
+{
+"id": "Kaya",
+"title": "Kaya",
+"rel": "Kaya",
+"file": "Kaya_Tome_01_Les_Lézardiers.pdf",
+"index": 0,
+"out": "Kaya_001.jpg"
+},
+{
+"id": "Kaya",
+"title": "Kaya",
+"rel": "Kaya",
+"file": "Kaya_Tome_02_Les_Terres_empoisonnées.pdf",
+"index": 1,
+"out": "Kaya_002.jpg"
+},
+{
+"id": "Kaël",
+"title": "Kaël",
+"rel": "Kaël",
+"file": "Kaël_Tome_01_Le_sans_totem.pdf",
+"index": 0,
+"out": "Kael_001.jpg"
+},
+{
+"id": "Kaël",
+"title": "Kaël",
+"rel": "Kaël",
+"file": "Kaël_Tome_02_Le_Sans_démon.pdf",
+"index": 1,
+"out": "Kael_002.jpg"
+},
+{
+"id": "L_Affaire_des_affaires",
+"title": "L'Affaire des affaires",
+"rel": "L'Affaire des affaires",
+"file": "L'Affaire_des_affaires_Tome_01_L'argent_invisible.pdf",
+"index": 0,
+"out": "L_Affaire_des_affaires_001.jpg"
+},
+{
+"id": "L_Affaire_des_affaires",
+"title": "L'Affaire des affaires",
+"rel": "L'Affaire des affaires",
+"file": "L'Affaire_des_affaires_Tome_02_L'enquête.pdf",
+"index": 1,
+"out": "L_Affaire_des_affaires_002.jpg"
+},
+{
+"id": "L_Affaire_des_affaires",
+"title": "L'Affaire des affaires",
+"rel": "L'Affaire des affaires",
+"file": "L'Affaire_des_affaires_Tome_03_Clearstream_manipulation.pdf",
+"index": 2,
+"out": "L_Affaire_des_affaires_003.jpg"
+},
+{
+"id": "L_Affaire_des_affaires",
+"title": "L'Affaire des affaires",
+"rel": "L'Affaire des affaires",
+"file": "L'Affaire_des_affaires_Tome_04_Clearstream_justice.pdf",
+"index": 3,
+"out": "L_Affaire_des_affaires_004.jpg"
+},
+{
+"id": "L_ambulance_13",
+"title": "L'ambulance 13",
+"rel": "L'ambulance 13",
+"file": "L'ambulance_13_Tome_01_Croix_de_sang.pdf",
+"index": 0,
+"out": "L_ambulance_13_001.jpg"
+},
+{
+"id": "L_ambulance_13",
+"title": "L'ambulance 13",
+"rel": "L'ambulance 13",
+"file": "L'ambulance_13_Tome_02_Au_nom_des_hommes.pdf",
+"index": 1,
+"out": "L_ambulance_13_002.jpg"
+},
+{
+"id": "L_ambulance_13",
+"title": "L'ambulance 13",
+"rel": "L'ambulance 13",
+"file": "L'ambulance_13_Tome_03_Les_Braves_Gens.pdf",
+"index": 2,
+"out": "L_ambulance_13_003.jpg"
+},
+{
+"id": "L_ambulance_13",
+"title": "L'ambulance 13",
+"rel": "L'ambulance 13",
+"file": "L'ambulance_13_Tome_04_Des_morts_sans_nom.pdf",
+"index": 3,
+"out": "L_ambulance_13_004.jpg"
+},
+{
+"id": "L_ambulance_13",
+"title": "L'ambulance 13",
+"rel": "L'ambulance 13",
+"file": "L'ambulance_13_Tome_05_Les_plumes_de_fer.pdf",
+"index": 4,
+"out": "L_ambulance_13_005.jpg"
+},
+{
+"id": "L_ambulance_13",
+"title": "L'ambulance 13",
+"rel": "L'ambulance 13",
+"file": "L'ambulance_13_Tome_06_Gueule_de_Guerre.pdf",
+"index": 5,
+"out": "L_ambulance_13_006.jpg"
+},
+{
+"id": "L_ambulance_13",
+"title": "L'ambulance 13",
+"rel": "L'ambulance 13",
+"file": "L'ambulance_13_Tome_07_Les_oublies_d_Orient.pdf",
+"index": 6,
+"out": "L_ambulance_13_007.jpg"
+},
+{
+"id": "L_ambulance_13",
+"title": "L'ambulance 13",
+"rel": "L'ambulance 13",
+"file": "L'ambulance_13_Tome_08_D'un_enfer_l'autre.pdf",
+"index": 7,
+"out": "L_ambulance_13_008.jpg"
+},
+{
+"id": "L_ambulance_13",
+"title": "L'ambulance 13",
+"rel": "L'ambulance 13",
+"file": "L'ambulance_13_Tome_09_Pourquoi.pdf",
+"index": 8,
+"out": "L_ambulance_13_009.jpg"
+},
+{
+"id": "L_ange_corse",
+"title": "L'ange corse",
+"rel": "L'ange corse",
+"file": "L'ange_corse_Tome_01_Exode.pdf",
+"index": 0,
+"out": "L_ange_corse_001.jpg"
+},
+{
+"id": "L_ange_corse",
+"title": "L'ange corse",
+"rel": "L'ange corse",
+"file": "L'ange_corse_Tome_02_Opium.pdf",
+"index": 1,
+"out": "L_ange_corse_002.jpg"
+},
+{
+"id": "L_ennemi",
+"title": "L'ennemi",
+"rel": "L'ennemi",
+"file": "L'ennemi_Tome_01_Les_Mouches.pdf",
+"index": 0,
+"out": "L_ennemi_001.jpg"
+},
+{
+"id": "L_ennemi",
+"title": "L'ennemi",
+"rel": "L'ennemi",
+"file": "L'ennemi_Tome_02_Sorcière.pdf",
+"index": 1,
+"out": "L_ennemi_002.jpg"
+},
+{
+"id": "L_ennemi",
+"title": "L'ennemi",
+"rel": "L'ennemi",
+"file": "L'ennemi_Tome_03_Démon.pdf",
+"index": 2,
+"out": "L_ennemi_003.jpg"
+},
+{
+"id": "L_Epervier",
+"title": "L'Epervier",
+"rel": "L'Epervier",
+"file": "L'Epervier_Archives_secrètes_Tome_01.pdf",
+"index": 0,
+"out": "L_Epervier_001.jpg"
+},
+{
+"id": "L_Epervier",
+"title": "L'Epervier",
+"rel": "L'Epervier",
+"file": "L'Epervier_HS_Secrets_de_tournage.pdf",
+"index": 1,
+"out": "L_Epervier_002.jpg"
+},
+{
+"id": "L_Epervier",
+"title": "L'Epervier",
+"rel": "L'Epervier",
+"file": "L'Epervier_Tome_01_Le_Trépassé_de_Kermellec.pdf",
+"index": 2,
+"out": "L_Epervier_003.jpg"
+},
+{
+"id": "L_Epervier",
+"title": "L'Epervier",
+"rel": "L'Epervier",
+"file": "L'Epervier_Tome_02_Le_Rocher_du_Crâne.pdf",
+"index": 3,
+"out": "L_Epervier_004.jpg"
+},
+{
+"id": "L_Epervier",
+"title": "L'Epervier",
+"rel": "L'Epervier",
+"file": "L'Epervier_Tome_03_Tempête_sur_Brest.pdf",
+"index": 4,
+"out": "L_Epervier_005.jpg"
+},
+{
+"id": "L_Epervier",
+"title": "L'Epervier",
+"rel": "L'Epervier",
+"file": "L'Epervier_Tome_04_Captives_à_bord.pdf",
+"index": 5,
+"out": "L_Epervier_006.jpg"
+},
+{
+"id": "L_Epervier",
+"title": "L'Epervier",
+"rel": "L'Epervier",
+"file": "L'Epervier_Tome_05_Le_Trésor_du_Mahury.pdf",
+"index": 6,
+"out": "L_Epervier_007.jpg"
+},
+{
+"id": "L_Epervier",
+"title": "L'Epervier",
+"rel": "L'Epervier",
+"file": "L'Epervier_Tome_06_Les_Larmes_de_Tlaloc.pdf",
+"index": 7,
+"out": "L_Epervier_008.jpg"
+},
+{
+"id": "L_Epervier",
+"title": "L'Epervier",
+"rel": "L'Epervier",
+"file": "L'Epervier_Tome_07_La_Mission.pdf",
+"index": 8,
+"out": "L_Epervier_009.jpg"
+},
+{
+"id": "L_Epervier",
+"title": "L'Epervier",
+"rel": "L'Epervier",
+"file": "L'Epervier_Tome_08_Corsaire_du_Roy.pdf",
+"index": 9,
+"out": "L_Epervier_010.jpg"
+},
+{
+"id": "L_Epervier",
+"title": "L'Epervier",
+"rel": "L'Epervier",
+"file": "L'Epervier_Tome_09_Coulez_la_Méduse!.pdf",
+"index": 10,
+"out": "L_Epervier_011.jpg"
+},
+{
+"id": "L_Epervier",
+"title": "L'Epervier",
+"rel": "L'Epervier",
+"file": "L'Epervier_Tome_10_La_Princesse_indienne.pdf",
+"index": 11,
+"out": "L_Epervier_012.jpg"
+},
+{
+"id": "L_Evangile_selon_Satan",
+"title": "L'Evangile selon Satan",
+"rel": "L'Evangile selon Satan",
+"file": "L'Evangile_selon_Satan_Tome_01_Je_vous_salue_Marie.pdf",
+"index": 0,
+"out": "L_Evangile_selon_Satan_001.jpg"
+},
+{
+"id": "L_Evangile_selon_Satan",
+"title": "L'Evangile selon Satan",
+"rel": "L'Evangile selon Satan",
+"file": "L'Evangile_selon_Satan_Tome_02_Et_délivre_nous_du_Mal.pdf",
+"index": 1,
+"out": "L_Evangile_selon_Satan_002.jpg"
+},
+{
+"id": "L_ombre_des_lumières",
+"title": "L'ombre des lumières",
+"rel": "L'ombre des lumières",
+"file": "L'ombre_des_lumières_Tome_01_L'Ennemi_du_genre_humain.pdf",
+"index": 0,
+"out": "L_ombre_des_lumieres_001.jpg"
+},
+{
+"id": "L_ombre_des_lumières",
+"title": "L'ombre des lumières",
+"rel": "L'ombre des lumières",
+"file": "L'ombre_des_lumières_Tome_02_Dentelles_et_Wampum.pdf",
+"index": 1,
+"out": "L_ombre_des_lumieres_002.jpg"
+},
+{
+"id": "L_ombre_des_lumières",
+"title": "L'ombre des lumières",
+"rel": "L'ombre des lumières",
+"file": "L'ombre_des_lumières_Tome_03_Le_Démon_des_Grands_Lacs.pdf",
+"index": 2,
+"out": "L_ombre_des_lumieres_003.jpg"
+},
+{
+"id": "L_or_des_Belges",
+"title": "L'or des Belges",
+"rel": "L'or des Belges",
+"file": "L'or_des_Belges_Tome_01.pdf",
+"index": 0,
+"out": "L_or_des_Belges_001.jpg"
+},
+{
+"id": "L_or_des_Belges",
+"title": "L'or des Belges",
+"rel": "L'or des Belges",
+"file": "L'or_des_Belges_Tome_02.pdf",
+"index": 1,
+"out": "L_or_des_Belges_002.jpg"
+},
+{
+"id": "L_ordre_de_Cicéron",
+"title": "L'ordre de Cicéron",
+"rel": "L'ordre de Cicéron",
+"file": "L'ordre_de_Cicéron_Tome_01_Le_procès.pdf",
+"index": 0,
+"out": "L_ordre_de_Ciceron_001.jpg"
+},
+{
+"id": "L_ordre_de_Cicéron",
+"title": "L'ordre de Cicéron",
+"rel": "L'ordre de Cicéron",
+"file": "L'ordre_de_Cicéron_Tome_02_Mis_en_examen.pdf",
+"index": 1,
+"out": "L_ordre_de_Ciceron_002.jpg"
+},
+{
+"id": "L_ordre_de_Cicéron",
+"title": "L'ordre de Cicéron",
+"rel": "L'ordre de Cicéron",
+"file": "L'ordre_de_Cicéron_Tome_03_Le_survivant.pdf",
+"index": 2,
+"out": "L_ordre_de_Ciceron_003.jpg"
+},
+{
+"id": "L_ordre_de_Cicéron",
+"title": "L'ordre de Cicéron",
+"rel": "L'ordre de Cicéron",
+"file": "L'ordre_de_Cicéron_Tome_04_Verdicts.pdf",
+"index": 3,
+"out": "L_ordre_de_Ciceron_004.jpg"
+},
+{
+"id": "L_âge_d_or",
+"title": "L'âge d'or",
+"rel": "L'âge d'or",
+"file": "L'âge_d'or_Tome_01.pdf",
+"index": 0,
+"out": "L_age_d_or_001.jpg"
+},
+{
+"id": "L_âge_d_or",
+"title": "L'âge d'or",
+"rel": "L'âge d'or",
+"file": "L'âge_d'or_Tome_02.pdf",
+"index": 1,
+"out": "L_age_d_or_002.jpg"
+},
+{
+"id": "L_île_de_minuit",
+"title": "L'île de minuit",
+"rel": "L'île de minuit",
+"file": "L'île_de_minuit_Tome_01_Le_réveil_de_l'automate.pdf",
+"index": 0,
+"out": "L_ile_de_minuit_001.jpg"
+},
+{
+"id": "L_île_de_minuit",
+"title": "L'île de minuit",
+"rel": "L'île de minuit",
+"file": "L'île_de_minuit_Tome_02_La_femme_aux_singes.pdf",
+"index": 1,
+"out": "L_ile_de_minuit_002.jpg"
+},
+{
+"id": "La_6e_Heure",
+"title": "La 6e Heure",
+"rel": "La 6e Heure",
+"file": "La_6e_Heure_Tome_01_Dernier_corps.pdf",
+"index": 0,
+"out": "La_6e_Heure_001.jpg"
+},
+{
+"id": "La_6e_Heure",
+"title": "La 6e Heure",
+"rel": "La 6e Heure",
+"file": "La_6e_Heure_Tome_02_La_Chute_de_l'ange.pdf",
+"index": 1,
+"out": "La_6e_Heure_002.jpg"
+},
+{
+"id": "La_brigade_des_cauchemars",
+"title": "La brigade des cauchemars",
+"rel": "La brigade des cauchemars",
+"file": "La_brigade_des_cauchemars_Tome_01_Sarah.pdf",
+"index": 0,
+"out": "La_brigade_des_cauchemars_001.jpg"
+},
+{
+"id": "La_brigade_des_cauchemars",
+"title": "La brigade des cauchemars",
+"rel": "La brigade des cauchemars",
+"file": "La_brigade_des_cauchemars_Tome_02_Nicolas.pdf",
+"index": 1,
+"out": "La_brigade_des_cauchemars_002.jpg"
+},
+{
+"id": "La_brigade_des_cauchemars",
+"title": "La brigade des cauchemars",
+"rel": "La brigade des cauchemars",
+"file": "La_brigade_des_cauchemars_Tome_03_Esteban.pdf",
+"index": 2,
+"out": "La_brigade_des_cauchemars_003.jpg"
+},
+{
+"id": "La_brigade_des_cauchemars",
+"title": "La brigade des cauchemars",
+"rel": "La brigade des cauchemars",
+"file": "La_brigade_des_cauchemars_Tome_04_Mélissandre.pdf",
+"index": 3,
+"out": "La_brigade_des_cauchemars_004.jpg"
+},
+{
+"id": "La_brigade_des_cauchemars",
+"title": "La brigade des cauchemars",
+"rel": "La brigade des cauchemars",
+"file": "La_brigade_des_cauchemars_Tome_05_Léonard.pdf",
+"index": 4,
+"out": "La_brigade_des_cauchemars_005.jpg"
+},
+{
+"id": "La_brigade_des_cauchemars",
+"title": "La brigade des cauchemars",
+"rel": "La brigade des cauchemars",
+"file": "La_brigade_des_cauchemars_Tome_06_Ariane.pdf",
+"index": 5,
+"out": "La_brigade_des_cauchemars_006.jpg"
+},
+{
+"id": "La_brigade_des_cauchemars",
+"title": "La brigade des cauchemars",
+"rel": "La brigade des cauchemars",
+"file": "La_brigade_des_cauchemars_Tome_07_Sofiane.pdf",
+"index": 6,
+"out": "La_brigade_des_cauchemars_007.jpg"
+},
+{
+"id": "La_brigade_des_cauchemars",
+"title": "La brigade des cauchemars",
+"rel": "La brigade des cauchemars",
+"file": "La_brigade_des_cauchemars_Tome_08_Jane.pdf",
+"index": 7,
+"out": "La_brigade_des_cauchemars_008.jpg"
+},
+{
+"id": "La_cour_des_miracles",
+"title": "La cour des miracles",
+"rel": "La cour des miracles",
+"file": "La_cour_des_miracles_Tome_01_Anacréon_Roi_des_Gueux.pdf",
+"index": 0,
+"out": "La_cour_des_miracles_001.jpg"
+},
+{
+"id": "La_cour_des_miracles",
+"title": "La cour des miracles",
+"rel": "La cour des miracles",
+"file": "La_cour_des_miracles_Tome_02_Vive_la_Reine!.pdf",
+"index": 1,
+"out": "La_cour_des_miracles_002.jpg"
+},
+{
+"id": "La_cour_des_miracles",
+"title": "La cour des miracles",
+"rel": "La cour des miracles",
+"file": "La_cour_des_miracles_Tome_03_Le_Crépuscule_des_miracles.pdf",
+"index": 2,
+"out": "La_cour_des_miracles_003.jpg"
+},
+{
+"id": "La_Duelliste",
+"title": "La Duelliste",
+"rel": "La Duelliste",
+"file": "La_Duelliste_Tome_01_Le_maître_d'armes.pdf",
+"index": 0,
+"out": "La_Duelliste_001.jpg"
+},
+{
+"id": "La_Duelliste",
+"title": "La Duelliste",
+"rel": "La Duelliste",
+"file": "La_Duelliste_Tome_02_Le_bal_masqué.pdf",
+"index": 1,
+"out": "La_Duelliste_002.jpg"
+},
+{
+"id": "La_main_de_Dieu",
+"title": "La main de Dieu",
+"rel": "La main de Dieu",
+"file": "La_main_de_Dieu_Tome_01_La_Peur_Rouge.pdf",
+"index": 0,
+"out": "La_main_de_Dieu_001.jpg"
+},
+{
+"id": "La_main_de_Dieu",
+"title": "La main de Dieu",
+"rel": "La main de Dieu",
+"file": "La_main_de_Dieu_Tome_02_Promotion_Gangsters.pdf",
+"index": 1,
+"out": "La_main_de_Dieu_002.jpg"
+},
+{
+"id": "La_main_de_Dieu",
+"title": "La main de Dieu",
+"rel": "La main de Dieu",
+"file": "La_main_de_Dieu_Tome_03_L'Usurpateur.pdf",
+"index": 2,
+"out": "La_main_de_Dieu_003.jpg"
+},
+{
+"id": "La_Mondaine",
+"title": "La Mondaine",
+"rel": "La Mondaine",
+"file": "La_Mondaine_Tome_01.pdf",
+"index": 0,
+"out": "La_Mondaine_001.jpg"
+},
+{
+"id": "La_Mondaine",
+"title": "La Mondaine",
+"rel": "La Mondaine",
+"file": "La_Mondaine_Tome_02.pdf",
+"index": 1,
+"out": "La_Mondaine_002.jpg"
+},
+{
+"id": "La_Rose_et_la_Croix",
+"title": "La Rose et la Croix",
+"rel": "La Rose et la Croix",
+"file": "La_Rose_et_la_Croix_Tome_01_La_Confrérie.pdf",
+"index": 0,
+"out": "La_Rose_et_la_Croix_001.jpg"
+},
+{
+"id": "La_Rose_et_la_Croix",
+"title": "La Rose et la Croix",
+"rel": "La Rose et la Croix",
+"file": "La_Rose_et_la_Croix_Tome_02_Maître_Dagélius.pdf",
+"index": 1,
+"out": "La_Rose_et_la_Croix_002.jpg"
+},
+{
+"id": "La_Rose_et_la_Croix",
+"title": "La Rose et la Croix",
+"rel": "La Rose et la Croix",
+"file": "La_Rose_et_la_Croix_Tome_03_La_Loge_de_Vienne.pdf",
+"index": 2,
+"out": "La_Rose_et_la_Croix_003.jpg"
+},
+{
+"id": "La_Rose_et_la_Croix",
+"title": "La Rose et la Croix",
+"rel": "La Rose et la Croix",
+"file": "La_Rose_et_la_Croix_Tome_04_La_Couronne_de_Prusse.pdf",
+"index": 3,
+"out": "La_Rose_et_la_Croix_004.jpg"
+},
+{
+"id": "La_Rose_et_la_Croix",
+"title": "La Rose et la Croix",
+"rel": "La Rose et la Croix",
+"file": "La_Rose_et_la_Croix_Tome_05_L'Arcane.pdf",
+"index": 4,
+"out": "La_Rose_et_la_Croix_005.jpg"
+},
+{
+"id": "La_venin",
+"title": "La venin",
+"rel": "La venin",
+"file": "La_Venin_Tome_01_Déluge_de_feu.pdf",
+"index": 0,
+"out": "La_venin_001.jpg"
+},
+{
+"id": "La_venin",
+"title": "La venin",
+"rel": "La venin",
+"file": "La_Venin_Tome_02_Lame_de_fond.pdf",
+"index": 1,
+"out": "La_venin_002.jpg"
+},
+{
+"id": "La_venin",
+"title": "La venin",
+"rel": "La venin",
+"file": "La_Venin_Tome_03_Entrailles.pdf",
+"index": 2,
+"out": "La_venin_003.jpg"
+},
+{
+"id": "La_venin",
+"title": "La venin",
+"rel": "La venin",
+"file": "La_Venin_Tome_04_Ciel_d'éther.pdf",
+"index": 3,
+"out": "La_venin_004.jpg"
+},
+{
+"id": "La_venin",
+"title": "La venin",
+"rel": "La venin",
+"file": "La_Venin_Tome_05_Soleil_de_plomb.pdf",
+"index": 4,
+"out": "La_venin_005.jpg"
+},
+{
+"id": "Le_3e_œil",
+"title": "Le 3e œil",
+"rel": "Le 3e œil",
+"file": "Le_3e_œil_Tome_01_Arnaud.pdf",
+"index": 0,
+"out": "Le_3e_il_001.jpg"
+},
+{
+"id": "Le_3e_œil",
+"title": "Le 3e œil",
+"rel": "Le 3e œil",
+"file": "Le_3e_œil_Tome_02_Maud.pdf",
+"index": 1,
+"out": "Le_3e_il_002.jpg"
+},
+{
+"id": "Le_Cinquième_évangile",
+"title": "Le Cinquième évangile",
+"rel": "Le Cinquième évangile",
+"file": "Le_Cinquième_évangile_Tome_01_La_Main_de_Fatima.pdf",
+"index": 0,
+"out": "Le_Cinquieme_evangile_001.jpg"
+},
+{
+"id": "Le_Cinquième_évangile",
+"title": "Le Cinquième évangile",
+"rel": "Le Cinquième évangile",
+"file": "Le_Cinquième_évangile_Tome_02_L'Antre_de_Cerbère.pdf",
+"index": 1,
+"out": "Le_Cinquieme_evangile_002.jpg"
+},
+{
+"id": "Le_Cinquième_évangile",
+"title": "Le Cinquième évangile",
+"rel": "Le Cinquième évangile",
+"file": "Le_Cinquième_évangile_Tome_03_Hérodion.pdf",
+"index": 2,
+"out": "Le_Cinquieme_evangile_003.jpg"
+},
+{
+"id": "Le_Cinquième_évangile",
+"title": "Le Cinquième évangile",
+"rel": "Le Cinquième évangile",
+"file": "Le_Cinquième_évangile_Tome_04_Révélation.pdf",
+"index": 3,
+"out": "Le_Cinquieme_evangile_004.jpg"
+},
+{
+"id": "Le_coeur_en_braille",
+"title": "Le coeur en braille",
+"rel": "Le coeur en braille",
+"file": "Le_cœur_en_braille_Tome_01.pdf",
+"index": 0,
+"out": "Le_coeur_en_braille_001.jpg"
+},
+{
+"id": "Le_coeur_en_braille",
+"title": "Le coeur en braille",
+"rel": "Le coeur en braille",
+"file": "Le_cœur_en_braille_Tome_02.pdf",
+"index": 1,
+"out": "Le_coeur_en_braille_002.jpg"
+},
+{
+"id": "Le_Crépuscule_des_dieux",
+"title": "Le Crépuscule des dieux",
+"rel": "Le Crépuscule des dieux",
+"file": "Le_Crépuscule_des_dieux_Tome_00_La_Malédiction_de_L'Anneau.pdf",
+"index": 0,
+"out": "Le_Crepuscule_des_dieux_001.jpg"
+},
+{
+"id": "Le_Crépuscule_des_dieux",
+"title": "Le Crépuscule des dieux",
+"rel": "Le Crépuscule des dieux",
+"file": "Le_Crépuscule_des_dieux_Tome_01_La_Malédiction_des_Niebelungen.pdf",
+"index": 1,
+"out": "Le_Crepuscule_des_dieux_002.jpg"
+},
+{
+"id": "Le_Crépuscule_des_dieux",
+"title": "Le Crépuscule des dieux",
+"rel": "Le Crépuscule des dieux",
+"file": "Le_Crépuscule_des_dieux_Tome_02_Siegfried.pdf",
+"index": 2,
+"out": "Le_Crepuscule_des_dieux_003.jpg"
+},
+{
+"id": "Le_Crépuscule_des_dieux",
+"title": "Le Crépuscule des dieux",
+"rel": "Le Crépuscule des dieux",
+"file": "Le_Crépuscule_des_dieux_Tome_03_Fafner.pdf",
+"index": 3,
+"out": "Le_Crepuscule_des_dieux_004.jpg"
+},
+{
+"id": "Le_Crépuscule_des_dieux",
+"title": "Le Crépuscule des dieux",
+"rel": "Le Crépuscule des dieux",
+"file": "Le_Crépuscule_des_dieux_Tome_04_Brunhilde.pdf",
+"index": 4,
+"out": "Le_Crepuscule_des_dieux_005.jpg"
+},
+{
+"id": "Le_Crépuscule_des_dieux",
+"title": "Le Crépuscule des dieux",
+"rel": "Le Crépuscule des dieux",
+"file": "Le_Crépuscule_des_dieux_Tome_05_Kriemhilde.pdf",
+"index": 5,
+"out": "Le_Crepuscule_des_dieux_006.jpg"
+},
+{
+"id": "Le_Crépuscule_des_dieux",
+"title": "Le Crépuscule des dieux",
+"rel": "Le Crépuscule des dieux",
+"file": "Le_Crépuscule_des_dieux_Tome_06_Ragnarök.pdf",
+"index": 6,
+"out": "Le_Crepuscule_des_dieux_007.jpg"
+},
+{
+"id": "Le_Crépuscule_des_dieux",
+"title": "Le Crépuscule des dieux",
+"rel": "Le Crépuscule des dieux",
+"file": "Le_Crépuscule_des_dieux_Tome_07_Le_Grand_Hiver.pdf",
+"index": 7,
+"out": "Le_Crepuscule_des_dieux_008.jpg"
+},
+{
+"id": "Le_Crépuscule_des_dieux",
+"title": "Le Crépuscule des dieux",
+"rel": "Le Crépuscule des dieux",
+"file": "Le_Crépuscule_des_dieux_Tome_08_Le_Sang_d'Odin.pdf",
+"index": 8,
+"out": "Le_Crepuscule_des_dieux_009.jpg"
+},
+{
+"id": "Le_Crépuscule_des_dieux",
+"title": "Le Crépuscule des dieux",
+"rel": "Le Crépuscule des dieux",
+"file": "Le_Crépuscule_des_dieux_Tome_09_Yggdrasil.pdf",
+"index": 9,
+"out": "Le_Crepuscule_des_dieux_010.jpg"
+},
+{
+"id": "Le_Décalogue",
+"title": "Le Décalogue",
+"rel": "Le Décalogue",
+"file": "Le_Décalogue_Tome_01_Le_manuscrit.pdf",
+"index": 0,
+"out": "Le_Decalogue_001.jpg"
+},
+{
+"id": "Le_Décalogue",
+"title": "Le Décalogue",
+"rel": "Le Décalogue",
+"file": "Le_Décalogue_Tome_02_La_Fatwa.pdf",
+"index": 1,
+"out": "Le_Decalogue_002.jpg"
+},
+{
+"id": "Le_Décalogue",
+"title": "Le Décalogue",
+"rel": "Le Décalogue",
+"file": "Le_Décalogue_Tome_03_Le_météore.pdf",
+"index": 2,
+"out": "Le_Decalogue_003.jpg"
+},
+{
+"id": "Le_Décalogue",
+"title": "Le Décalogue",
+"rel": "Le Décalogue",
+"file": "Le_Décalogue_Tome_04_Le_serment.pdf",
+"index": 3,
+"out": "Le_Decalogue_004.jpg"
+},
+{
+"id": "Le_Décalogue",
+"title": "Le Décalogue",
+"rel": "Le Décalogue",
+"file": "Le_Décalogue_Tome_05_Le_vengeur.pdf",
+"index": 4,
+"out": "Le_Decalogue_005.jpg"
+},
+{
+"id": "Le_Décalogue",
+"title": "Le Décalogue",
+"rel": "Le Décalogue",
+"file": "Le_Décalogue_Tome_06_L'échange.pdf",
+"index": 5,
+"out": "Le_Decalogue_006.jpg"
+},
+{
+"id": "Le_Décalogue",
+"title": "Le Décalogue",
+"rel": "Le Décalogue",
+"file": "Le_Décalogue_Tome_07_Les_conjurés.pdf",
+"index": 6,
+"out": "Le_Decalogue_007.jpg"
+},
+{
+"id": "Le_Décalogue",
+"title": "Le Décalogue",
+"rel": "Le Décalogue",
+"file": "Le_Décalogue_Tome_08_Nahik.pdf",
+"index": 7,
+"out": "Le_Decalogue_008.jpg"
+},
+{
+"id": "Le_Décalogue",
+"title": "Le Décalogue",
+"rel": "Le Décalogue",
+"file": "Le_Décalogue_Tome_09_Le_papyrus_de_Kôm_Ombo.pdf",
+"index": 8,
+"out": "Le_Decalogue_009.jpg"
+},
+{
+"id": "Le_Décalogue",
+"title": "Le Décalogue",
+"rel": "Le Décalogue",
+"file": "Le_Décalogue_Tome_10_La_dernière_sourate.pdf",
+"index": 9,
+"out": "Le_Decalogue_010.jpg"
+},
+{
+"id": "Le_Décalogue",
+"title": "Le Décalogue",
+"rel": "Le Décalogue",
+"file": "Le_Décalogue_Tome_11_Le_XIe_commandement.pdf",
+"index": 10,
+"out": "Le_Decalogue_011.jpg"
+},
+{
+"id": "Le_grimoire_d_Elfie_MANQUE_CDS",
+"title": "Le grimoire d'Elfie MANQUE CDS",
+"rel": "Le grimoire d'Elfie MANQUE CDS",
+"file": "Le_grimoire_d'Elfie_Tome_01_L'Île_Presque.pdf",
+"index": 0,
+"out": "Le_grimoire_d_Elfie_MANQUE_CDS_001.jpg"
+},
+{
+"id": "Le_grimoire_d_Elfie_MANQUE_CDS",
+"title": "Le grimoire d'Elfie MANQUE CDS",
+"rel": "Le grimoire d'Elfie MANQUE CDS",
+"file": "Le_grimoire_d'Elfie_Tome_02_Le_Dit_des_cigales.pdf",
+"index": 1,
+"out": "Le_grimoire_d_Elfie_MANQUE_CDS_002.jpg"
+},
+{
+"id": "Le_grimoire_d_Elfie_MANQUE_CDS",
+"title": "Le grimoire d'Elfie MANQUE CDS",
+"rel": "Le grimoire d'Elfie MANQUE CDS",
+"file": "Le_grimoire_d'Elfie_Tome_03_Malaventure_en_pain_d'épices.pdf",
+"index": 2,
+"out": "Le_grimoire_d_Elfie_MANQUE_CDS_003.jpg"
+},
+{
+"id": "Le_grimoire_d_Elfie_MANQUE_CDS",
+"title": "Le grimoire d'Elfie MANQUE CDS",
+"rel": "Le grimoire d'Elfie MANQUE CDS",
+"file": "Le_grimoire_d'Elfie_Tome_04_Le_trésor_de_la_tricomancienne.pdf",
+"index": 3,
+"out": "Le_grimoire_d_Elfie_MANQUE_CDS_004.jpg"
+},
+{
+"id": "Le_grimoire_d_Elfie_MANQUE_CDS",
+"title": "Le grimoire d'Elfie MANQUE CDS",
+"rel": "Le grimoire d'Elfie MANQUE CDS",
+"file": "Le_grimoire_d'Elfie_Tome_05_Les_reflets_de_Walqpurgis.pdf",
+"index": 4,
+"out": "Le_grimoire_d_Elfie_MANQUE_CDS_005.jpg"
+},
+{
+"id": "Le_grimoire_d_Elfie_MANQUE_CDS",
+"title": "Le grimoire d'Elfie MANQUE CDS",
+"rel": "Le grimoire d'Elfie MANQUE CDS",
+"file": "Le_grimoire_d'Elfie_Tome_06_Le_sortilège_Corse.pdf",
+"index": 5,
+"out": "Le_grimoire_d_Elfie_MANQUE_CDS_006.jpg"
+},
+{
+"id": "Le_journal_de_Mickey",
+"title": "Le journal de Mickey",
+"rel": "Le journal de Mickey",
+"file": "Le_Journal_de_Mickey_2026_09_16.pdf",
+"index": 9,
+"out": "Le_journal_de_Mickey_010.jpg"
+},
+{
+"id": "Le_journal_de_Mickey",
+"title": "Le journal de Mickey",
+"rel": "Le journal de Mickey",
+"file": "Le_Journal_de_Mickey_2026_09_2.pdf",
+"index": 10,
+"out": "Le_journal_de_Mickey_011.jpg"
+},
+{
+"id": "Le_journal_de_Mickey",
+"title": "Le journal de Mickey",
+"rel": "Le journal de Mickey",
+"file": "Le_Journal_de_Mickey_2026_09_30.pdf",
+"index": 11,
+"out": "Le_journal_de_Mickey_012.jpg"
+},
+{
+"id": "Le_journal_de_Mickey",
+"title": "Le journal de Mickey",
+"rel": "Le journal de Mickey",
+"file": "Le_Meilleur_du_Journal_de_Mickey_2026_07.pdf",
+"index": 12,
+"out": "Le_journal_de_Mickey_013.jpg"
+},
+{
+"id": "Le_Journal_de_Spirou",
+"title": "Le Journal de Spirou",
+"rel": "Le Journal de Spirou",
+"file": "Le_Journal_de_Spirou_2026_09_16.pdf",
+"index": 12,
+"out": "Le_Journal_de_Spirou_013.jpg"
+},
+{
+"id": "Le_Journal_de_Spirou",
+"title": "Le Journal de Spirou",
+"rel": "Le Journal de Spirou",
+"file": "Le_Journal_de_Spirou_2026_09_2.pdf",
+"index": 13,
+"out": "Le_Journal_de_Spirou_014.jpg"
+},
+{
+"id": "Le_Journal_de_Spirou",
+"title": "Le Journal de Spirou",
+"rel": "Le Journal de Spirou",
+"file": "Le_Journal_de_Spirou_2026_09_30.pdf",
+"index": 14,
+"out": "Le_Journal_de_Spirou_015.jpg"
+},
+{
+"id": "Le_Journal_de_Spirou",
+"title": "Le Journal de Spirou",
+"rel": "Le Journal de Spirou",
+"file": "Le_Journal_de_Spirou_2026_09_9.pdf",
+"index": 15,
+"out": "Le_Journal_de_Spirou_016.jpg"
+},
+{
+"id": "Le_Journal_de_Spirou",
+"title": "Le Journal de Spirou",
+"rel": "Le Journal de Spirou",
+"file": "Le_Journal_de_Spirou_2026_10_7.pdf",
+"index": 16,
+"out": "Le_Journal_de_Spirou_017.jpg"
+},
+{
+"id": "Le_monde_de_Charline",
+"title": "Le monde de Charline",
+"rel": "Le monde de Charline",
+"file": "Le_monde_de_Charline_Tome_01.pdf",
+"index": 0,
+"out": "Le_monde_de_Charline_001.jpg"
+},
+{
+"id": "Le_monde_de_Charline",
+"title": "Le monde de Charline",
+"rel": "Le monde de Charline",
+"file": "Le_monde_de_Charline_Tome_02.pdf",
+"index": 1,
+"out": "Le_monde_de_Charline_002.jpg"
+},
+{
+"id": "Le_monde_de_Charline",
+"title": "Le monde de Charline",
+"rel": "Le monde de Charline",
+"file": "Le_monde_de_Charline_Tome_03.pdf",
+"index": 2,
+"out": "Le_monde_de_Charline_003.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_HS_Hommages.pdf",
+"index": 0,
+"out": "Le_Petit_Prince_001.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_01_La_Planète_des_Éoliens.pdf",
+"index": 1,
+"out": "Le_Petit_Prince_002.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_02_La_Planète_de_l'Oiseau_de_feu.pdf",
+"index": 2,
+"out": "Le_Petit_Prince_003.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_03_La_Planète_de_la_musique.pdf",
+"index": 3,
+"out": "Le_Petit_Prince_004.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_04_La_Planète_de_Jade.pdf",
+"index": 4,
+"out": "Le_Petit_Prince_005.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_05_La_Planète_de_l'Astronome.pdf",
+"index": 5,
+"out": "Le_Petit_Prince_006.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_06_La_Planète_des_Globus.pdf",
+"index": 6,
+"out": "Le_Petit_Prince_007.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_07_La_Planète_des_Amicopes.pdf",
+"index": 7,
+"out": "Le_Petit_Prince_008.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_08_La_Planète_des_Caropodes.pdf",
+"index": 8,
+"out": "Le_Petit_Prince_009.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_09_La_Planète_du_Géant.pdf",
+"index": 9,
+"out": "Le_Petit_Prince_010.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_10_La_Planète_des_Wagonautes.pdf",
+"index": 10,
+"out": "Le_Petit_Prince_011.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_11_La_Planète_des_Libris.pdf",
+"index": 11,
+"out": "Le_Petit_Prince_012.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_12_La_Planète_du_Ludokaa.pdf",
+"index": 12,
+"out": "Le_Petit_Prince_013.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_13_La_Planète_des_Lacrimavoras.pdf",
+"index": 13,
+"out": "Le_Petit_Prince_014.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_14_La_Planète_du_Grand_Bouffon.pdf",
+"index": 14,
+"out": "Le_Petit_Prince_015.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_15_La_Planète_du_Gargand.pdf",
+"index": 15,
+"out": "Le_Petit_Prince_016.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_16_La_planète_de_géhom.pdf",
+"index": 16,
+"out": "Le_Petit_Prince_017.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_17_La_planète_du_bubble_gob.pdf",
+"index": 17,
+"out": "Le_Petit_Prince_018.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_18_La_Planète_du_temps.pdf",
+"index": 18,
+"out": "Le_Petit_Prince_019.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_19_La_planète_des_Cublix.pdf",
+"index": 19,
+"out": "Le_Petit_Prince_020.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_20_La_planète_de_Coppélius.pdf",
+"index": 20,
+"out": "Le_Petit_Prince_021.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_21_La_Planète_des_Okidiens.pdf",
+"index": 21,
+"out": "Le_Petit_Prince_022.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_22_La_Planète_d'Ashkabaar.pdf",
+"index": 22,
+"out": "Le_Petit_Prince_023.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_23_La_planète_des_Bamalias.pdf",
+"index": 23,
+"out": "Le_Petit_Prince_024.jpg"
+},
+{
+"id": "Le_Petit_Prince",
+"title": "Le Petit Prince",
+"rel": "Le Petit Prince",
+"file": "Le_Petit_Prince_Tome_24_La_planète_du_Serpent.pdf",
+"index": 24,
+"out": "Le_Petit_Prince_025.jpg"
+},
+{
+"id": "Le_Prince_de_la_Nuit",
+"title": "Le Prince de la Nuit",
+"rel": "Le Prince de la Nuit",
+"file": "Le_Prince_de_la_Nuit_Tome_01_Le_chasseur.pdf",
+"index": 0,
+"out": "Le_Prince_de_la_Nuit_001.jpg"
+},
+{
+"id": "Le_Prince_de_la_Nuit",
+"title": "Le Prince de la Nuit",
+"rel": "Le Prince de la Nuit",
+"file": "Le_Prince_de_la_Nuit_Tome_02_La_lettre_de_l'inquisiteur.pdf",
+"index": 1,
+"out": "Le_Prince_de_la_Nuit_002.jpg"
+},
+{
+"id": "Le_Prince_de_la_Nuit",
+"title": "Le Prince de la Nuit",
+"rel": "Le Prince de la Nuit",
+"file": "Le_Prince_de_la_Nuit_Tome_03_Pleine_lune.pdf",
+"index": 2,
+"out": "Le_Prince_de_la_Nuit_003.jpg"
+},
+{
+"id": "Le_Prince_de_la_Nuit",
+"title": "Le Prince de la Nuit",
+"rel": "Le Prince de la Nuit",
+"file": "Le_Prince_de_la_Nuit_Tome_04_Le_journal_de_Maximilien.pdf",
+"index": 3,
+"out": "Le_Prince_de_la_Nuit_004.jpg"
+},
+{
+"id": "Le_Prince_de_la_Nuit",
+"title": "Le Prince de la Nuit",
+"rel": "Le Prince de la Nuit",
+"file": "Le_Prince_de_la_Nuit_Tome_05_Élise.pdf",
+"index": 4,
+"out": "Le_Prince_de_la_Nuit_005.jpg"
+},
+{
+"id": "Le_Prince_de_la_Nuit",
+"title": "Le Prince de la Nuit",
+"rel": "Le Prince de la Nuit",
+"file": "Le_Prince_de_la_Nuit_Tome_06_Retour_à_Ruhenberg.pdf",
+"index": 5,
+"out": "Le_Prince_de_la_Nuit_006.jpg"
+},
+{
+"id": "Le_Prince_de_la_Nuit",
+"title": "Le Prince de la Nuit",
+"rel": "Le Prince de la Nuit",
+"file": "Le_Prince_de_la_Nuit_Tome_07_La_Première_Mort.pdf",
+"index": 6,
+"out": "Le_Prince_de_la_Nuit_007.jpg"
+},
+{
+"id": "Le_Prince_de_la_Nuit",
+"title": "Le Prince de la Nuit",
+"rel": "Le Prince de la Nuit",
+"file": "Le_Prince_de_la_Nuit_Tome_08_Anna.pdf",
+"index": 7,
+"out": "Le_Prince_de_la_Nuit_008.jpg"
+},
+{
+"id": "Le_Prince_de_la_Nuit",
+"title": "Le Prince de la Nuit",
+"rel": "Le Prince de la Nuit",
+"file": "Le_Prince_de_la_Nuit_Tome_09_Arkanéa.pdf",
+"index": 8,
+"out": "Le_Prince_de_la_Nuit_009.jpg"
+},
+{
+"id": "Le_Réseau_Papillon",
+"title": "Le Réseau Papillon",
+"rel": "Le Réseau Papillon",
+"file": "Le_Réseau_Papillon_Tome_06_Une_guerre_sans_fin.pdf",
+"index": 9,
+"out": "Le_Reseau_Papillon_010.jpg"
+},
+{
+"id": "Le_révérend",
+"title": "Le révérend",
+"rel": "Le révérend",
+"file": "Le_révérend_Tome_01_Les_Diables_Déchus_du_Nevada.pdf",
+"index": 0,
+"out": "Le_reverend_001.jpg"
+},
+{
+"id": "Le_révérend",
+"title": "Le révérend",
+"rel": "Le révérend",
+"file": "Le_révérend_Tome_02_Chasse_à_l'Homme.pdf",
+"index": 1,
+"out": "Le_reverend_002.jpg"
+},
+{
+"id": "Le_Territoire",
+"title": "Le Territoire",
+"rel": "Le Territoire",
+"file": "Le_Territoire_Tome_01_Nécropsie.pdf",
+"index": 0,
+"out": "Le_Territoire_001.jpg"
+},
+{
+"id": "Le_Territoire",
+"title": "Le Territoire",
+"rel": "Le Territoire",
+"file": "Le_Territoire_Tome_02_Hypnose.pdf",
+"index": 1,
+"out": "Le_Territoire_002.jpg"
+},
+{
+"id": "Le_Territoire",
+"title": "Le Territoire",
+"rel": "Le Territoire",
+"file": "Le_Territoire_Tome_03_Disparition.pdf",
+"index": 2,
+"out": "Le_Territoire_003.jpg"
+},
+{
+"id": "Le_Territoire",
+"title": "Le Territoire",
+"rel": "Le Territoire",
+"file": "Le_Territoire_Tome_04_Frontière.pdf",
+"index": 3,
+"out": "Le_Territoire_004.jpg"
+},
+{
+"id": "Le_Territoire",
+"title": "Le Territoire",
+"rel": "Le Territoire",
+"file": "Le_Territoire_Tome_05_Palingénésie.pdf",
+"index": 4,
+"out": "Le_Territoire_005.jpg"
+},
+{
+"id": "Le_Territoire",
+"title": "Le Territoire",
+"rel": "Le Territoire",
+"file": "Le_Territoire_Tome_06_Avènement.pdf",
+"index": 5,
+"out": "Le_Territoire_006.jpg"
+},
+{
+"id": "Le_Trône_d_argile",
+"title": "Le Trône d'argile",
+"rel": "Le Trône d'argile",
+"file": "Le_Trône_d'argile_Tome_01_Le_chevalier_à_la_hache.pdf",
+"index": 0,
+"out": "Le_Trone_d_argile_001.jpg"
+},
+{
+"id": "Le_Trône_d_argile",
+"title": "Le Trône d'argile",
+"rel": "Le Trône d'argile",
+"file": "Le_Trône_d'argile_Tome_02_Le_pont_de_Montereau.pdf",
+"index": 1,
+"out": "Le_Trone_d_argile_002.jpg"
+},
+{
+"id": "Le_Trône_d_argile",
+"title": "Le Trône d'argile",
+"rel": "Le Trône d'argile",
+"file": "Le_Trône_d'argile_Tome_03_Henry_roi_de_France_et_d_Angleterre.pdf",
+"index": 2,
+"out": "Le_Trone_d_argile_003.jpg"
+},
+{
+"id": "Le_Trône_d_argile",
+"title": "Le Trône d'argile",
+"rel": "Le Trône d'argile",
+"file": "Le_Trône_d'argile_Tome_04_La_mort_des_rois.pdf",
+"index": 3,
+"out": "Le_Trone_d_argile_004.jpg"
+},
+{
+"id": "Le_Trône_d_argile",
+"title": "Le Trône d'argile",
+"rel": "Le Trône d'argile",
+"file": "Le_Trône_d'argile_Tome_05_La_pucelle.pdf",
+"index": 4,
+"out": "Le_Trone_d_argile_005.jpg"
+},
+{
+"id": "Le_Trône_d_argile",
+"title": "Le Trône d'argile",
+"rel": "Le Trône d'argile",
+"file": "Le_Trône_d'argile_Tome_06_La_Geste_d'Orléans.pdf",
+"index": 5,
+"out": "Le_Trone_d_argile_006.jpg"
+},
+{
+"id": "Les_5_terres",
+"title": "Les 5 terres",
+"rel": "Les 5 terres",
+"file": "Les_5_Terres_Tome_16_Nulle_part_où_aller.pdf",
+"index": 16,
+"out": "Les_5_terres_017.jpg"
+},
+{
+"id": "Les_Amazones",
+"title": "Les Amazones",
+"rel": "Les Amazones",
+"file": "Les_Amazones_Tome_01.pdf",
+"index": 0,
+"out": "Les_Amazones_001.jpg"
+},
+{
+"id": "Les_Amazones",
+"title": "Les Amazones",
+"rel": "Les Amazones",
+"file": "Les_Amazones_Tome_02.pdf",
+"index": 1,
+"out": "Les_Amazones_002.jpg"
+},
+{
+"id": "Les_Chevaliers_d_Émeraude",
+"title": "Les Chevaliers d'Émeraude",
+"rel": "Les Chevaliers d'Émeraude",
+"file": "Les_Chevaliers_d'Émeraude_Tome_01_Les_Enfants_Magiques.pdf",
+"index": 0,
+"out": "Les_Chevaliers_d_Emeraude_001.jpg"
+},
+{
+"id": "Les_Chevaliers_d_Émeraude",
+"title": "Les Chevaliers d'Émeraude",
+"rel": "Les Chevaliers d'Émeraude",
+"file": "Les_Chevaliers_d'Émeraude_Tome_02_L'Epreuve_du_Magicien.pdf",
+"index": 1,
+"out": "Les_Chevaliers_d_Emeraude_002.jpg"
+},
+{
+"id": "Les_Chevaliers_d_Émeraude",
+"title": "Les Chevaliers d'Émeraude",
+"rel": "Les Chevaliers d'Émeraude",
+"file": "Les_Chevaliers_d'Émeraude_Tome_03_L'Imposteur.pdf",
+"index": 2,
+"out": "Les_Chevaliers_d_Emeraude_003.jpg"
+},
+{
+"id": "Les_Chevaliers_d_Émeraude",
+"title": "Les Chevaliers d'Émeraude",
+"rel": "Les Chevaliers d'Émeraude",
+"file": "Les_Chevaliers_d'Émeraude_Tome_04_Le_garçon_foudre.pdf",
+"index": 3,
+"out": "Les_Chevaliers_d_Emeraude_004.jpg"
+},
+{
+"id": "Les_Chevaliers_d_Émeraude",
+"title": "Les Chevaliers d'Émeraude",
+"rel": "Les Chevaliers d'Émeraude",
+"file": "Les_Chevaliers_d'Émeraude_Tome_05_La_Première_Invasion.pdf",
+"index": 4,
+"out": "Les_Chevaliers_d_Emeraude_005.jpg"
+},
+{
+"id": "Les_Druides",
+"title": "Les Druides",
+"rel": "Les Druides",
+"file": "Les_Druides_Tome_01_Le_Mystère_des_Oghams.pdf",
+"index": 0,
+"out": "Les_Druides_001.jpg"
+},
+{
+"id": "Les_Druides",
+"title": "Les Druides",
+"rel": "Les Druides",
+"file": "Les_Druides_Tome_02_Is_la_blanche.pdf",
+"index": 1,
+"out": "Les_Druides_002.jpg"
+},
+{
+"id": "Les_Druides",
+"title": "Les Druides",
+"rel": "Les Druides",
+"file": "Les_Druides_Tome_03_La_Lance_de_Lug.pdf",
+"index": 2,
+"out": "Les_Druides_003.jpg"
+},
+{
+"id": "Les_Druides",
+"title": "Les Druides",
+"rel": "Les Druides",
+"file": "Les_Druides_Tome_04_La_Ronde_des_Géants.pdf",
+"index": 3,
+"out": "Les_Druides_004.jpg"
+},
+{
+"id": "Les_Druides",
+"title": "Les Druides",
+"rel": "Les Druides",
+"file": "Les_Druides_Tome_05_La_Pierre_de_destinée.pdf",
+"index": 4,
+"out": "Les_Druides_005.jpg"
+},
+{
+"id": "Les_Druides",
+"title": "Les Druides",
+"rel": "Les Druides",
+"file": "Les_Druides_Tome_06_Crépuscule.pdf",
+"index": 5,
+"out": "Les_Druides_006.jpg"
+},
+{
+"id": "Les_Druides",
+"title": "Les Druides",
+"rel": "Les Druides",
+"file": "Les_Druides_Tome_07_Les_Disparus_de_Cornouaille.pdf",
+"index": 6,
+"out": "Les_Druides_007.jpg"
+},
+{
+"id": "Les_Druides",
+"title": "Les Druides",
+"rel": "Les Druides",
+"file": "Les_Druides_Tome_08_Les_Secrets_d'Orient.pdf",
+"index": 7,
+"out": "Les_Druides_008.jpg"
+},
+{
+"id": "Les_Druides",
+"title": "Les Druides",
+"rel": "Les Druides",
+"file": "Les_Druides_Tome_09_Le_Temps_des_corbeaux.pdf",
+"index": 8,
+"out": "Les_Druides_009.jpg"
+},
+{
+"id": "Les_enquêtes_de_Gabriel_Joly",
+"title": "Les enquêtes de Gabriel Joly",
+"rel": "Les enquêtes de Gabriel Joly",
+"file": "Les_enquêtes_de_Gabriel_Joly_Tome_01_Le_loup_des_Cordeliers.pdf",
+"index": 0,
+"out": "Les_enquetes_de_Gabriel_Joly_001.jpg"
+},
+{
+"id": "Les_enquêtes_de_Gabriel_Joly",
+"title": "Les enquêtes de Gabriel Joly",
+"rel": "Les enquêtes de Gabriel Joly",
+"file": "Les_enquêtes_de_Gabriel_Joly_Tome_02_Le_Mystère_de_la_Main_rouge.pdf",
+"index": 1,
+"out": "Les_enquetes_de_Gabriel_Joly_002.jpg"
+},
+{
+"id": "Les_Enquêtes_du_FBI",
+"title": "Les Enquêtes du FBI",
+"rel": "Les Enquêtes du FBI",
+"file": "Les_Enquêtes_du_FBI_Tome_01_Disparition_en_plein_vol.pdf",
+"index": 0,
+"out": "Les_Enquetes_du_FBI_001.jpg"
+},
+{
+"id": "Les_Enquêtes_du_FBI",
+"title": "Les Enquêtes du FBI",
+"rel": "Les Enquêtes du FBI",
+"file": "Les_Enquêtes_du_FBI_Tome_02_Les_évadés_d'Alcatraz.pdf",
+"index": 1,
+"out": "Les_Enquetes_du_FBI_002.jpg"
+},
+{
+"id": "Les_Fleury_Nadal",
+"title": "Les Fleury Nadal",
+"rel": "Les Fleury Nadal",
+"file": "Les_Fleury_Nadal_Tome_01_Ninon.pdf",
+"index": 0,
+"out": "Les_Fleury_Nadal_001.jpg"
+},
+{
+"id": "Les_Fleury_Nadal",
+"title": "Les Fleury Nadal",
+"rel": "Les Fleury Nadal",
+"file": "Les_Fleury_Nadal_Tome_02_Benjamin_Tome_1.pdf",
+"index": 1,
+"out": "Les_Fleury_Nadal_002.jpg"
+},
+{
+"id": "Les_Fleury_Nadal",
+"title": "Les Fleury Nadal",
+"rel": "Les Fleury Nadal",
+"file": "Les_Fleury_Nadal_Tome_03_Benjamin_Tome_2.pdf",
+"index": 2,
+"out": "Les_Fleury_Nadal_003.jpg"
+},
+{
+"id": "Les_Fleury_Nadal",
+"title": "Les Fleury Nadal",
+"rel": "Les Fleury Nadal",
+"file": "Les_Fleury_Nadal_Tome_04_Anahide.pdf",
+"index": 3,
+"out": "Les_Fleury_Nadal_004.jpg"
+},
+{
+"id": "Les_Fleury_Nadal",
+"title": "Les Fleury Nadal",
+"rel": "Les Fleury Nadal",
+"file": "Les_Fleury_Nadal_Tome_05_Missak_Tome_1.pdf",
+"index": 4,
+"out": "Les_Fleury_Nadal_005.jpg"
+},
+{
+"id": "Les_Fleury_Nadal",
+"title": "Les Fleury Nadal",
+"rel": "Les Fleury Nadal",
+"file": "Les_Fleury_Nadal_Tome_06_Missak_Tome_2.pdf",
+"index": 5,
+"out": "Les_Fleury_Nadal_006.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_01.pdf",
+"index": 0,
+"out": "Les_Foot_furieux_MANQUE_LE_28_001.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_02.pdf",
+"index": 1,
+"out": "Les_Foot_furieux_MANQUE_LE_28_002.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_03.pdf",
+"index": 2,
+"out": "Les_Foot_furieux_MANQUE_LE_28_003.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_04.pdf",
+"index": 3,
+"out": "Les_Foot_furieux_MANQUE_LE_28_004.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_05.pdf",
+"index": 4,
+"out": "Les_Foot_furieux_MANQUE_LE_28_005.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_06.pdf",
+"index": 5,
+"out": "Les_Foot_furieux_MANQUE_LE_28_006.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_07.pdf",
+"index": 6,
+"out": "Les_Foot_furieux_MANQUE_LE_28_007.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_08.pdf",
+"index": 7,
+"out": "Les_Foot_furieux_MANQUE_LE_28_008.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_09.pdf",
+"index": 8,
+"out": "Les_Foot_furieux_MANQUE_LE_28_009.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_10.pdf",
+"index": 9,
+"out": "Les_Foot_furieux_MANQUE_LE_28_010.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_11.pdf",
+"index": 10,
+"out": "Les_Foot_furieux_MANQUE_LE_28_011.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_12.pdf",
+"index": 11,
+"out": "Les_Foot_furieux_MANQUE_LE_28_012.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_13.pdf",
+"index": 12,
+"out": "Les_Foot_furieux_MANQUE_LE_28_013.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_14.pdf",
+"index": 13,
+"out": "Les_Foot_furieux_MANQUE_LE_28_014.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_15.pdf",
+"index": 14,
+"out": "Les_Foot_furieux_MANQUE_LE_28_015.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_16.pdf",
+"index": 15,
+"out": "Les_Foot_furieux_MANQUE_LE_28_016.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_17.pdf",
+"index": 16,
+"out": "Les_Foot_furieux_MANQUE_LE_28_017.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_18.pdf",
+"index": 17,
+"out": "Les_Foot_furieux_MANQUE_LE_28_018.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_19.pdf",
+"index": 18,
+"out": "Les_Foot_furieux_MANQUE_LE_28_019.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_20.pdf",
+"index": 19,
+"out": "Les_Foot_furieux_MANQUE_LE_28_020.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_21.pdf",
+"index": 20,
+"out": "Les_Foot_furieux_MANQUE_LE_28_021.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_22.pdf",
+"index": 21,
+"out": "Les_Foot_furieux_MANQUE_LE_28_022.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_23.pdf",
+"index": 22,
+"out": "Les_Foot_furieux_MANQUE_LE_28_023.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_24.pdf",
+"index": 23,
+"out": "Les_Foot_furieux_MANQUE_LE_28_024.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_25.pdf",
+"index": 24,
+"out": "Les_Foot_furieux_MANQUE_LE_28_025.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_26.pdf",
+"index": 25,
+"out": "Les_Foot_furieux_MANQUE_LE_28_026.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_27.pdf",
+"index": 26,
+"out": "Les_Foot_furieux_MANQUE_LE_28_027.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_Tome_29_Let_Derby_Rock.pdf",
+"index": 27,
+"out": "Les_Foot_furieux_MANQUE_LE_28_028.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_kids_Tome_01.pdf",
+"index": 28,
+"out": "Les_Foot_furieux_MANQUE_LE_28_029.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_kids_Tome_02.pdf",
+"index": 29,
+"out": "Les_Foot_furieux_MANQUE_LE_28_030.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_kids_Tome_03.pdf",
+"index": 30,
+"out": "Les_Foot_furieux_MANQUE_LE_28_031.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_kids_Tome_04.pdf",
+"index": 31,
+"out": "Les_Foot_furieux_MANQUE_LE_28_032.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_kids_Tome_05.pdf",
+"index": 32,
+"out": "Les_Foot_furieux_MANQUE_LE_28_033.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_kids_Tome_06.pdf",
+"index": 33,
+"out": "Les_Foot_furieux_MANQUE_LE_28_034.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_kids_Tome_07_Fini_de_rire.pdf",
+"index": 34,
+"out": "Les_Foot_furieux_MANQUE_LE_28_035.jpg"
+},
+{
+"id": "Les_Foot_furieux_MANQUE_LE_28",
+"title": "Les Foot furieux MANQUE LE 28",
+"rel": "Les Foot furieux MANQUE LE 28",
+"file": "Les_Foot_furieux_kids_Tome_08_Le_coach_se_marie.pdf",
+"index": 35,
+"out": "Les_Foot_furieux_MANQUE_LE_28_036.jpg"
+},
+{
+"id": "Les_légendaires",
+"title": "Les légendaires",
+"rel": "Les légendaires",
+"file": "Les_Légendaires_Les_Chroniques_de_Darkhell_Tome_06_L'escadron_Ravage.pdf",
+"index": 70,
+"out": "Les_legendaires_071.jpg"
+},
+{
+"id": "Les_légendaires",
+"title": "Les légendaires",
+"rel": "Les légendaires",
+"file": "Les_Légendaires_Saga_Tome_12.pdf",
+"index": 71,
+"out": "Les_legendaires_072.jpg"
+},
+{
+"id": "Les_légendes_de_Clash",
+"title": "Les légendes de Clash",
+"rel": "Les légendes de Clash",
+"file": "Les_légendes_de_Clash_Tome_01.pdf",
+"index": 0,
+"out": "Les_legendes_de_Clash_001.jpg"
+},
+{
+"id": "Les_légendes_de_Clash",
+"title": "Les légendes de Clash",
+"rel": "Les légendes de Clash",
+"file": "Les_légendes_de_Clash_Tome_02.pdf",
+"index": 1,
+"out": "Les_legendes_de_Clash_002.jpg"
+},
+{
+"id": "Les_légendes_de_Clash",
+"title": "Les légendes de Clash",
+"rel": "Les légendes de Clash",
+"file": "Les_légendes_de_Clash_Tome_03.pdf",
+"index": 2,
+"out": "Les_legendes_de_Clash_003.jpg"
+},
+{
+"id": "Les_légendes_de_Clash",
+"title": "Les légendes de Clash",
+"rel": "Les légendes de Clash",
+"file": "Les_légendes_de_Clash_Tome_04.pdf",
+"index": 3,
+"out": "Les_legendes_de_Clash_004.jpg"
+},
+{
+"id": "Les_Maîtres_de_l_Orge_-_T01-T08_-_FR_-_Intégrale_-_CBZ_PDF",
+"title": "Les Maîtres de l'Orge - T01-T08 - FR - Intégrale - CBZ & PDF",
+"rel": "Les Maîtres de l'Orge - T01-T08 - FR - Intégrale - CBZ & PDF/pdf",
+"file": "01 - Charles 1854.pdf",
+"index": 0,
+"out": "Les_Maitres_de_l_Orge_-_T01-T08_-_FR_-_Integrale_-_CBZ__001.jpg"
+},
+{
+"id": "Les_Maîtres_de_l_Orge_-_T01-T08_-_FR_-_Intégrale_-_CBZ_PDF",
+"title": "Les Maîtres de l'Orge - T01-T08 - FR - Intégrale - CBZ & PDF",
+"rel": "Les Maîtres de l'Orge - T01-T08 - FR - Intégrale - CBZ & PDF/pdf",
+"file": "02 - Margrit 1886.pdf",
+"index": 1,
+"out": "Les_Maitres_de_l_Orge_-_T01-T08_-_FR_-_Integrale_-_CBZ__002.jpg"
+},
+{
+"id": "Les_Maîtres_de_l_Orge_-_T01-T08_-_FR_-_Intégrale_-_CBZ_PDF",
+"title": "Les Maîtres de l'Orge - T01-T08 - FR - Intégrale - CBZ & PDF",
+"rel": "Les Maîtres de l'Orge - T01-T08 - FR - Intégrale - CBZ & PDF/pdf",
+"file": "03 - Adrien 1917.pdf",
+"index": 2,
+"out": "Les_Maitres_de_l_Orge_-_T01-T08_-_FR_-_Integrale_-_CBZ__003.jpg"
+},
+{
+"id": "Les_Maîtres_de_l_Orge_-_T01-T08_-_FR_-_Intégrale_-_CBZ_PDF",
+"title": "Les Maîtres de l'Orge - T01-T08 - FR - Intégrale - CBZ & PDF",
+"rel": "Les Maîtres de l'Orge - T01-T08 - FR - Intégrale - CBZ & PDF/pdf",
+"file": "04 - Noel 1932.pdf",
+"index": 3,
+"out": "Les_Maitres_de_l_Orge_-_T01-T08_-_FR_-_Integrale_-_CBZ__004.jpg"
+},
+{
+"id": "Les_Maîtres_de_l_Orge_-_T01-T08_-_FR_-_Intégrale_-_CBZ_PDF",
+"title": "Les Maîtres de l'Orge - T01-T08 - FR - Intégrale - CBZ & PDF",
+"rel": "Les Maîtres de l'Orge - T01-T08 - FR - Intégrale - CBZ & PDF/pdf",
+"file": "05 - Julienne 1950.pdf",
+"index": 4,
+"out": "Les_Maitres_de_l_Orge_-_T01-T08_-_FR_-_Integrale_-_CBZ__005.jpg"
+},
+{
+"id": "Les_Maîtres_de_l_Orge_-_T01-T08_-_FR_-_Intégrale_-_CBZ_PDF",
+"title": "Les Maîtres de l'Orge - T01-T08 - FR - Intégrale - CBZ & PDF",
+"rel": "Les Maîtres de l'Orge - T01-T08 - FR - Intégrale - CBZ & PDF/pdf",
+"file": "06 - Jay 1973.pdf",
+"index": 5,
+"out": "Les_Maitres_de_l_Orge_-_T01-T08_-_FR_-_Integrale_-_CBZ__006.jpg"
+},
+{
+"id": "Les_Maîtres_de_l_Orge_-_T01-T08_-_FR_-_Intégrale_-_CBZ_PDF",
+"title": "Les Maîtres de l'Orge - T01-T08 - FR - Intégrale - CBZ & PDF",
+"rel": "Les Maîtres de l'Orge - T01-T08 - FR - Intégrale - CBZ & PDF/pdf",
+"file": "07 - Frank 1997.pdf",
+"index": 6,
+"out": "Les_Maitres_de_l_Orge_-_T01-T08_-_FR_-_Integrale_-_CBZ__007.jpg"
+},
+{
+"id": "Les_Maîtres_de_l_Orge_-_T01-T08_-_FR_-_Intégrale_-_CBZ_PDF",
+"title": "Les Maîtres de l'Orge - T01-T08 - FR - Intégrale - CBZ & PDF",
+"rel": "Les Maîtres de l'Orge - T01-T08 - FR - Intégrale - CBZ & PDF/pdf",
+"file": "08 - Les Steenfort.pdf",
+"index": 7,
+"out": "Les_Maitres_de_l_Orge_-_T01-T08_-_FR_-_Integrale_-_CBZ__008.jpg"
+},
+{
+"id": "Les_mémoires_du_Dragon_Dragon",
+"title": "Les mémoires du Dragon Dragon",
+"rel": "Les mémoires du Dragon Dragon",
+"file": "Les_mémoires_du_Dragon_Dragon_Tome_03_Osez_Joséphine.pdf",
+"index": 2,
+"out": "Les_memoires_du_Dragon_Dragon_003.jpg"
+},
+{
+"id": "Les_nuits_écorchées",
+"title": "Les nuits écorchées",
+"rel": "Les nuits écorchées",
+"file": "Les_nuits_écorchées_Tome_01_Progénitures.pdf",
+"index": 0,
+"out": "Les_nuits_ecorchees_001.jpg"
+},
+{
+"id": "Les_nuits_écorchées",
+"title": "Les nuits écorchées",
+"rel": "Les nuits écorchées",
+"file": "Les_nuits_écorchées_Tome_02_La_Chute_des_Corps.pdf",
+"index": 1,
+"out": "Les_nuits_ecorchees_002.jpg"
+},
+{
+"id": "Les_nuits_écorchées",
+"title": "Les nuits écorchées",
+"rel": "Les nuits écorchées",
+"file": "Les_nuits_écorchées_Tome_03_Les_Chrysalides.pdf",
+"index": 2,
+"out": "Les_nuits_ecorchees_003.jpg"
+},
+{
+"id": "Les_Ogres_Dieux",
+"title": "Les Ogres Dieux",
+"rel": "Les Ogres Dieux",
+"file": "Les_Ogres_Dieux_Tome_01_Petit.pdf",
+"index": 0,
+"out": "Les_Ogres_Dieux_001.jpg"
+},
+{
+"id": "Les_Ogres_Dieux",
+"title": "Les Ogres Dieux",
+"rel": "Les Ogres Dieux",
+"file": "Les_Ogres_Dieux_Tome_02_Demi_Sang.pdf",
+"index": 1,
+"out": "Les_Ogres_Dieux_002.jpg"
+},
+{
+"id": "Les_Ogres_Dieux",
+"title": "Les Ogres Dieux",
+"rel": "Les Ogres Dieux",
+"file": "Les_Ogres_Dieux_Tome_03_Le_Grand_Homme.pdf",
+"index": 2,
+"out": "Les_Ogres_Dieux_003.jpg"
+},
+{
+"id": "Les_Ogres_Dieux",
+"title": "Les Ogres Dieux",
+"rel": "Les Ogres Dieux",
+"file": "Les_Ogres_Dieux_Tome_04_Première_Née.pdf",
+"index": 3,
+"out": "Les_Ogres_Dieux_004.jpg"
+},
+{
+"id": "Les_pionniers",
+"title": "Les pionniers",
+"rel": "Les pionniers",
+"file": "Les_pionniers_Tome_01_La_machine_du_diable.pdf",
+"index": 0,
+"out": "Les_pionniers_001.jpg"
+},
+{
+"id": "Les_pionniers",
+"title": "Les pionniers",
+"rel": "Les pionniers",
+"file": "Les_pionniers_Tome_02_Le_rêve_américain.pdf",
+"index": 1,
+"out": "Les_pionniers_002.jpg"
+},
+{
+"id": "Les_Princes_d_Ambre",
+"title": "Les Princes d'Ambre",
+"rel": "Les Princes d'Ambre",
+"file": "Les_Princes_d'Ambre_Tome_01_L'Ombre_Terre.pdf",
+"index": 0,
+"out": "Les_Princes_d_Ambre_001.jpg"
+},
+{
+"id": "Les_Princes_d_Ambre",
+"title": "Les Princes d'Ambre",
+"rel": "Les Princes d'Ambre",
+"file": "Les_Princes_d'Ambre_Tome_02_L'Aveugle_et_le_Fou.pdf",
+"index": 1,
+"out": "Les_Princes_d_Ambre_002.jpg"
+},
+{
+"id": "Les_Rois_Forgerons",
+"title": "Les Rois Forgerons",
+"rel": "Les Rois Forgerons",
+"file": "Les_Rois_Forgerons_Tome_01_Le_Sceau_de_Karzac_Um_Rork.pdf",
+"index": 0,
+"out": "Les_Rois_Forgerons_001.jpg"
+},
+{
+"id": "Les_Rois_Forgerons",
+"title": "Les Rois Forgerons",
+"rel": "Les Rois Forgerons",
+"file": "Les_Rois_Forgerons_Tome_02_Le_Petit_Père_des_Elfes.pdf",
+"index": 1,
+"out": "Les_Rois_Forgerons_002.jpg"
+},
+{
+"id": "Les_sortilèges_de_Zora_MANQUE_CDS",
+"title": "Les sortilèges de Zora MANQUE CDS",
+"rel": "Les sortilèges de Zora MANQUE CDS",
+"file": "Les_Sortilèges_De_Zora_Tome_02_La_Bibliothèque_Interdite.pdf",
+"index": 0,
+"out": "Les_sortileges_de_Zora_MANQUE_CDS_001.jpg"
+},
+{
+"id": "Les_sortilèges_de_Zora_MANQUE_CDS",
+"title": "Les sortilèges de Zora MANQUE CDS",
+"rel": "Les sortilèges de Zora MANQUE CDS",
+"file": "Les_sortilèges_de_Zora_Tome_01_Une_sorcière_au_collège.pdf",
+"index": 1,
+"out": "Les_sortileges_de_Zora_MANQUE_CDS_002.jpg"
+},
+{
+"id": "Les_sortilèges_de_Zora_MANQUE_CDS",
+"title": "Les sortilèges de Zora MANQUE CDS",
+"rel": "Les sortilèges de Zora MANQUE CDS",
+"file": "Les_sortilèges_de_Zora_Tome_03_Magie_Blanche.pdf",
+"index": 2,
+"out": "Les_sortileges_de_Zora_MANQUE_CDS_003.jpg"
+},
+{
+"id": "Les_sortilèges_de_Zora_MANQUE_CDS",
+"title": "Les sortilèges de Zora MANQUE CDS",
+"rel": "Les sortilèges de Zora MANQUE CDS",
+"file": "Les_sortilèges_de_Zora_Tome_04_Le_monde_de_dessous.pdf",
+"index": 3,
+"out": "Les_sortileges_de_Zora_MANQUE_CDS_004.jpg"
+},
+{
+"id": "Les_sortilèges_de_Zora_MANQUE_CDS",
+"title": "Les sortilèges de Zora MANQUE CDS",
+"rel": "Les sortilèges de Zora MANQUE CDS",
+"file": "Les_sortilèges_de_Zora_Tome_05_Le_rocher_de_la_sorcière.pdf",
+"index": 4,
+"out": "Les_sortileges_de_Zora_MANQUE_CDS_005.jpg"
+},
+{
+"id": "Les_souliers_rouges",
+"title": "Les souliers rouges",
+"rel": "Les souliers rouges",
+"file": "Les_souliers_rouges_Tome_01_Georges.pdf",
+"index": 0,
+"out": "Les_souliers_rouges_001.jpg"
+},
+{
+"id": "Les_souliers_rouges",
+"title": "Les souliers rouges",
+"rel": "Les souliers rouges",
+"file": "Les_souliers_rouges_Tome_02_L'Albinos.pdf",
+"index": 1,
+"out": "Les_souliers_rouges_002.jpg"
+},
+{
+"id": "Les_souris_du_Louvre",
+"title": "Les souris du Louvre",
+"rel": "Les souris du Louvre",
+"file": "Les_souris_du_Louvre_Tome_01_Milo_et_le_monde_caché.pdf",
+"index": 0,
+"out": "Les_souris_du_Louvre_001.jpg"
+},
+{
+"id": "Les_souris_du_Louvre",
+"title": "Les souris du Louvre",
+"rel": "Les souris du Louvre",
+"file": "Les_souris_du_Louvre_Tome_02_Le_damier_de_babel.pdf",
+"index": 1,
+"out": "Les_souris_du_Louvre_002.jpg"
+},
+{
+"id": "Les_souris_du_Louvre",
+"title": "Les souris du Louvre",
+"rel": "Les souris du Louvre",
+"file": "Les_souris_du_Louvre_Tome_03_Le_serment_oublié.pdf",
+"index": 2,
+"out": "Les_souris_du_Louvre_003.jpg"
+},
+{
+"id": "Les_souris_du_Louvre",
+"title": "Les souris du Louvre",
+"rel": "Les souris du Louvre",
+"file": "Les_souris_du_Louvre_Tome_04_Le_clan_de_la_couronne.pdf",
+"index": 3,
+"out": "Les_souris_du_Louvre_004.jpg"
+},
+{
+"id": "Les_souris_du_Louvre",
+"title": "Les souris du Louvre",
+"rel": "Les souris du Louvre",
+"file": "Les_souris_du_Louvre_Tome_05_la_plume_et_l_épée.pdf",
+"index": 4,
+"out": "Les_souris_du_Louvre_005.jpg"
+},
+{
+"id": "Les_Voleurs_d_empires",
+"title": "Les Voleurs d'empires",
+"rel": "Les Voleurs d'empires",
+"file": "Les_Voleurs_d'empires_Tome_01_Les_Voleurs_d'Empires.pdf",
+"index": 0,
+"out": "Les_Voleurs_d_empires_001.jpg"
+},
+{
+"id": "Les_Voleurs_d_empires",
+"title": "Les Voleurs d'empires",
+"rel": "Les Voleurs d'empires",
+"file": "Les_Voleurs_d'empires_Tome_02_Fleurs_de_peau.pdf",
+"index": 1,
+"out": "Les_Voleurs_d_empires_002.jpg"
+},
+{
+"id": "Les_Voleurs_d_empires",
+"title": "Les Voleurs d'empires",
+"rel": "Les Voleurs d'empires",
+"file": "Les_Voleurs_d'empires_Tome_03_Un_sale_métier.pdf",
+"index": 2,
+"out": "Les_Voleurs_d_empires_003.jpg"
+},
+{
+"id": "Les_Voleurs_d_empires",
+"title": "Les Voleurs d'empires",
+"rel": "Les Voleurs d'empires",
+"file": "Les_Voleurs_d'empires_Tome_04_Frappe_misère.pdf",
+"index": 3,
+"out": "Les_Voleurs_d_empires_004.jpg"
+},
+{
+"id": "Les_Voleurs_d_empires",
+"title": "Les Voleurs d'empires",
+"rel": "Les Voleurs d'empires",
+"file": "Les_Voleurs_d'empires_Tome_05_Chat_qui_mord.pdf",
+"index": 4,
+"out": "Les_Voleurs_d_empires_005.jpg"
+},
+{
+"id": "Les_Voleurs_d_empires",
+"title": "Les Voleurs d'empires",
+"rel": "Les Voleurs d'empires",
+"file": "Les_Voleurs_d'empires_Tome_06_La_Semaine_sanglante.pdf",
+"index": 5,
+"out": "Les_Voleurs_d_empires_006.jpg"
+},
+{
+"id": "Les_Voleurs_d_empires",
+"title": "Les Voleurs d'empires",
+"rel": "Les Voleurs d'empires",
+"file": "Les_Voleurs_d'empires_Tome_07_Derrière_le_masque.pdf",
+"index": 6,
+"out": "Les_Voleurs_d_empires_007.jpg"
+},
+{
+"id": "Lost_Atlantide",
+"title": "Lost Atlantide",
+"rel": "Lost Atlantide",
+"file": "Lost_Atlantide_Tome_01_Sibyl.pdf",
+"index": 0,
+"out": "Lost_Atlantide_001.jpg"
+},
+{
+"id": "Lost_Atlantide",
+"title": "Lost Atlantide",
+"rel": "Lost Atlantide",
+"file": "Lost_Atlantide_Tome_02_Maelström.pdf",
+"index": 1,
+"out": "Lost_Atlantide_002.jpg"
+},
+{
+"id": "Lost_Atlantide",
+"title": "Lost Atlantide",
+"rel": "Lost Atlantide",
+"file": "Lost_Atlantide_Tome_03_Abel_et_Caïn.pdf",
+"index": 2,
+"out": "Lost_Atlantide_003.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_HS_Tome_01_Meurtre_à_la_FNAC.pdf",
+"index": 0,
+"out": "Leo_Loden_30-30_2-5_HS_001.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_HS_Tome_02_Leo_Loden_et_Jules_sauvent_la_coupe_du_monde.pdf",
+"index": 1,
+"out": "Leo_Loden_30-30_2-5_HS_002.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_01_Terminus_Canebière.pdf",
+"index": 2,
+"out": "Leo_Loden_30-30_2-5_HS_003.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_02_Les_sirènes_du_Vieux_Port.pdf",
+"index": 3,
+"out": "Leo_Loden_30-30_2-5_HS_004.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_03_Adieu_ma_Joliette.pdf",
+"index": 4,
+"out": "Leo_Loden_30-30_2-5_HS_005.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_04_Grillade_provençale.pdf",
+"index": 5,
+"out": "Leo_Loden_30-30_2-5_HS_006.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_05_Kabbale_dans_les_traboules.pdf",
+"index": 6,
+"out": "Leo_Loden_30-30_2-5_HS_007.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_06_Pizza_aux_pruneaux.pdf",
+"index": 7,
+"out": "Leo_Loden_30-30_2-5_HS_008.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_07_Propergol_sur_le_Capitole.pdf",
+"index": 8,
+"out": "Leo_Loden_30-30_2-5_HS_009.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_08_Vodka_mauresque.pdf",
+"index": 9,
+"out": "Leo_Loden_30-30_2-5_HS_010.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_09_Chaud_Beffroi.pdf",
+"index": 10,
+"out": "Leo_Loden_30-30_2-5_HS_011.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_10_Testament_et_Figatelli.pdf",
+"index": 11,
+"out": "Leo_Loden_30-30_2-5_HS_012.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_11_Diamants_noirs_sur_canapé.pdf",
+"index": 12,
+"out": "Leo_Loden_30-30_2-5_HS_013.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_12_Tirs_à_vue.pdf",
+"index": 13,
+"out": "Leo_Loden_30-30_2-5_HS_014.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_13_Bretzel_f@tal.pdf",
+"index": 14,
+"out": "Leo_Loden_30-30_2-5_HS_015.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_14_Calissons_et_lumières.pdf",
+"index": 15,
+"out": "Leo_Loden_30-30_2-5_HS_016.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_15_Macchabées_à_l'escabèche.pdf",
+"index": 16,
+"out": "Leo_Loden_30-30_2-5_HS_017.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_16_Froide_Vendange.pdf",
+"index": 17,
+"out": "Leo_Loden_30-30_2-5_HS_018.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_17_Helico_Pesto.pdf",
+"index": 18,
+"out": "Leo_Loden_30-30_2-5_HS_019.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_18_Tapas,_ou_ça_casse!!!.pdf",
+"index": 19,
+"out": "Leo_Loden_30-30_2-5_HS_020.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_19_Spéculoos_à_la_plancha.pdf",
+"index": 20,
+"out": "Leo_Loden_30-30_2-5_HS_021.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_20_Langoustines_breizhées.pdf",
+"index": 21,
+"out": "Leo_Loden_30-30_2-5_HS_022.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_21_Barigoule_au_Frioul.pdf",
+"index": 22,
+"out": "Leo_Loden_30-30_2-5_HS_023.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_22_Tropézienne_dum_dum.pdf",
+"index": 23,
+"out": "Leo_Loden_30-30_2-5_HS_024.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_23_Brouillades_aux_embrouilles.pdf",
+"index": 24,
+"out": "Leo_Loden_30-30_2-5_HS_025.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_24_Les_Cigales_du_Pharaon.pdf",
+"index": 25,
+"out": "Leo_Loden_30-30_2-5_HS_026.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_25_Massilia_Aeterna.pdf",
+"index": 26,
+"out": "Leo_Loden_30-30_2-5_HS_027.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_26_Fugue_en_rave_mineure.pdf",
+"index": 27,
+"out": "Leo_Loden_30-30_2-5_HS_028.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_27_Sète_à_huîtres.pdf",
+"index": 28,
+"out": "Leo_Loden_30-30_2-5_HS_029.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_28_Carmina_Burrata.pdf",
+"index": 29,
+"out": "Leo_Loden_30-30_2-5_HS_030.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_29_Privé_boucané.pdf",
+"index": 30,
+"out": "Leo_Loden_30-30_2-5_HS_031.jpg"
+},
+{
+"id": "Léo_Loden_30-30_2-5_HS",
+"title": "Léo Loden (30-30 + 2-5 HS)",
+"rel": "Léo Loden (30-30 + 2-5 HS)",
+"file": "Léo_Loden_Tome_30_Bubonic_et_vieilles_dentelles.pdf",
+"index": 31,
+"out": "Leo_Loden_30-30_2-5_HS_032.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_01_Leonard_est_un_génie.pdf",
+"index": 0,
+"out": "Leonard_30-57_0-9_HS_001.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_02_Leonard_est_toujours_un_génie.pdf",
+"index": 1,
+"out": "Leonard_30-57_0-9_HS_002.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_03_C'est_un_quoi,_déjà.pdf",
+"index": 2,
+"out": "Leonard_30-57_0-9_HS_003.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_04_Hi_Fi_Génie.pdf",
+"index": 3,
+"out": "Leonard_30-57_0-9_HS_004.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_05_Génie_à_toute_heure.pdf",
+"index": 4,
+"out": "Leonard_30-57_0-9_HS_005.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_06_Génie_en_balade.pdf",
+"index": 5,
+"out": "Leonard_30-57_0-9_HS_006.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_07_Y_a_t_il_un_génie_dans_la_salle.pdf",
+"index": 6,
+"out": "Leonard_30-57_0-9_HS_007.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_08_Coup_de_génie.pdf",
+"index": 7,
+"out": "Leonard_30-57_0-9_HS_008.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_09_Génie_Civil.pdf",
+"index": 8,
+"out": "Leonard_30-57_0-9_HS_009.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_10_La_guerre_des_génies.pdf",
+"index": 9,
+"out": "Leonard_30-57_0-9_HS_010.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_11_Génie_du_bal.pdf",
+"index": 10,
+"out": "Leonard_30-57_0-9_HS_011.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_12_Trait_de_genie.pdf",
+"index": 11,
+"out": "Leonard_30-57_0-9_HS_012.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_13_Génie_en_herbe.pdf",
+"index": 12,
+"out": "Leonard_30-57_0-9_HS_013.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_14_Le_poids_du_génie.pdf",
+"index": 13,
+"out": "Leonard_30-57_0-9_HS_014.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_15_Crie_ô_génie!.pdf",
+"index": 14,
+"out": "Leonard_30-57_0-9_HS_015.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_16_Génie_à_revendre.pdf",
+"index": 15,
+"out": "Leonard_30-57_0-9_HS_016.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_17_Ohé_du_génie.pdf",
+"index": 16,
+"out": "Leonard_30-57_0-9_HS_017.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_18_Génie_en_sous_sol.pdf",
+"index": 17,
+"out": "Leonard_30-57_0-9_HS_018.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_19_Flagrant_génie.pdf",
+"index": 18,
+"out": "Leonard_30-57_0-9_HS_019.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_20_Ciel,_mon_génie!.pdf",
+"index": 19,
+"out": "Leonard_30-57_0-9_HS_020.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_21_Un_air_de_génie.pdf",
+"index": 20,
+"out": "Leonard_30-57_0-9_HS_021.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_22_Cadeau_de_génie.pdf",
+"index": 21,
+"out": "Leonard_30-57_0-9_HS_022.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_23_Poil_au_génie.pdf",
+"index": 22,
+"out": "Leonard_30-57_0-9_HS_023.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_24_Temps_de_génie.pdf",
+"index": 23,
+"out": "Leonard_30-57_0-9_HS_024.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_25_D’où_viens_tu_génie.pdf",
+"index": 24,
+"out": "Leonard_30-57_0-9_HS_025.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_26_Génie_or_not_génie.pdf",
+"index": 25,
+"out": "Leonard_30-57_0-9_HS_026.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_27_On_a_marché_sur_le_génie!.pdf",
+"index": 26,
+"out": "Leonard_30-57_0-9_HS_027.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_28_Génie_toujours..._prêt!.pdf",
+"index": 27,
+"out": "Leonard_30-57_0-9_HS_028.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_29_Les_bons_contes_font_les_bons_génies.pdf",
+"index": 28,
+"out": "Leonard_30-57_0-9_HS_029.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_30_Génie_du_foot.pdf",
+"index": 29,
+"out": "Leonard_30-57_0-9_HS_030.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_31_Dodo_de_génie.pdf",
+"index": 30,
+"out": "Leonard_30-57_0-9_HS_031.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_32_Magic_génie.pdf",
+"index": 31,
+"out": "Leonard_30-57_0-9_HS_032.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_33_Y_a_du_génie_dans_l’air.pdf",
+"index": 32,
+"out": "Leonard_30-57_0-9_HS_033.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_34_Docteur_génie_et_Mister_Aie.pdf",
+"index": 33,
+"out": "Leonard_30-57_0-9_HS_034.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_35_Le_génie_donne_sa_langue_au_chat.pdf",
+"index": 34,
+"out": "Leonard_30-57_0-9_HS_035.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_36_Le_génie_se_gondole.pdf",
+"index": 35,
+"out": "Leonard_30-57_0-9_HS_036.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_37_C'est_parti,_mon_génie!.pdf",
+"index": 36,
+"out": "Leonard_30-57_0-9_HS_037.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_38_Y_a_t_il_un_génie_pour_sauver_la_planète.pdf",
+"index": 37,
+"out": "Leonard_30-57_0-9_HS_038.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_39_Loué_soit_le_génie.pdf",
+"index": 38,
+"out": "Leonard_30-57_0-9_HS_039.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_40_Trésor_de_génie.pdf",
+"index": 39,
+"out": "Leonard_30-57_0-9_HS_040.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_41_Génie_du_stop.pdf",
+"index": 40,
+"out": "Leonard_30-57_0-9_HS_041.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_42_Le_génie_des_grandeurs.pdf",
+"index": 41,
+"out": "Leonard_30-57_0-9_HS_042.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_43_Super_génie.pdf",
+"index": 42,
+"out": "Leonard_30-57_0-9_HS_043.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_44_Tour_de_génie.pdf",
+"index": 43,
+"out": "Leonard_30-57_0-9_HS_044.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_45_Génie_de_l'insomnie.pdf",
+"index": 44,
+"out": "Leonard_30-57_0-9_HS_045.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_46_Le_génie_crève_l'écran.pdf",
+"index": 45,
+"out": "Leonard_30-57_0-9_HS_046.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_47_Master_génie.pdf",
+"index": 46,
+"out": "Leonard_30-57_0-9_HS_047.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_48_Mon_papa_est_un_génie!.pdf",
+"index": 47,
+"out": "Leonard_30-57_0-9_HS_048.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_49_Génie_militaire.pdf",
+"index": 48,
+"out": "Leonard_30-57_0-9_HS_049.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_50_Génie,_Vidi,_Vinci!.pdf",
+"index": 49,
+"out": "Leonard_30-57_0-9_HS_050.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_51_Génie_du_crime.pdf",
+"index": 50,
+"out": "Leonard_30-57_0-9_HS_051.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_52_Vacances_de_génie.pdf",
+"index": 51,
+"out": "Leonard_30-57_0-9_HS_052.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_53_Un_amour_de_génie.pdf",
+"index": 52,
+"out": "Leonard_30-57_0-9_HS_053.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_54_Debout_génie!.pdf",
+"index": 53,
+"out": "Leonard_30-57_0-9_HS_054.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_55_Génie_Circus.pdf",
+"index": 54,
+"out": "Leonard_30-57_0-9_HS_055.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_56_Éclair_de_génie.pdf",
+"index": 55,
+"out": "Leonard_30-57_0-9_HS_056.jpg"
+},
+{
+"id": "Léonard_30-57_0-9_HS",
+"title": "Léonard (30-57 + 0-9 HS)",
+"rel": "Léonard (30-57 + 0-9 HS)",
+"file": "Léonard_Tome_57_Génialement_vôtre.pdf",
+"index": 56,
+"out": "Leonard_30-57_0-9_HS_057.jpg"
+},
+{
+"id": "Léviathan",
+"title": "Léviathan",
+"rel": "Léviathan",
+"file": "Léviathan_Tome_01_Après_la_fin_du_monde.pdf",
+"index": 0,
+"out": "Leviathan_001.jpg"
+},
+{
+"id": "Léviathan",
+"title": "Léviathan",
+"rel": "Léviathan",
+"file": "Léviathan_Tome_02_Quelque_chose_sous_nos_pieds.pdf",
+"index": 1,
+"out": "Leviathan_002.jpg"
+},
+{
+"id": "Magic_7",
+"title": "Magic 7",
+"rel": "Magic 7",
+"file": "Magic_7_Tome_01_Jamais_seuls.pdf",
+"index": 0,
+"out": "Magic_7_001.jpg"
+},
+{
+"id": "Magic_7",
+"title": "Magic 7",
+"rel": "Magic 7",
+"file": "Magic_7_Tome_02_Contre_tous.pdf",
+"index": 1,
+"out": "Magic_7_002.jpg"
+},
+{
+"id": "Magic_7",
+"title": "Magic 7",
+"rel": "Magic 7",
+"file": "Magic_7_Tome_03_Le_retour_de_la_bête!.pdf",
+"index": 2,
+"out": "Magic_7_003.jpg"
+},
+{
+"id": "Magic_7",
+"title": "Magic 7",
+"rel": "Magic 7",
+"file": "Magic_7_Tome_04_Vérités.pdf",
+"index": 3,
+"out": "Magic_7_004.jpg"
+},
+{
+"id": "Magic_7",
+"title": "Magic 7",
+"rel": "Magic 7",
+"file": "Magic_7_Tome_05_La_séparation.pdf",
+"index": 4,
+"out": "Magic_7_005.jpg"
+},
+{
+"id": "Magic_7",
+"title": "Magic 7",
+"rel": "Magic 7",
+"file": "Magic_7_Tome_06_Le_Village_des_Damnés.pdf",
+"index": 5,
+"out": "Magic_7_006.jpg"
+},
+{
+"id": "Mangetrouille",
+"title": "Mangetrouille",
+"rel": "Mangetrouille",
+"file": "Mangetrouille_Tome_01_Frousses_frissons_et_fringales.pdf",
+"index": 0,
+"out": "Mangetrouille_001.jpg"
+},
+{
+"id": "Mangetrouille",
+"title": "Mangetrouille",
+"rel": "Mangetrouille",
+"file": "Mangetrouille_Tome_02_Grande_peur_et_petit_creux.pdf",
+"index": 1,
+"out": "Mangetrouille_002.jpg"
+},
+{
+"id": "Mangetrouille",
+"title": "Mangetrouille",
+"rel": "Mangetrouille",
+"file": "Mangetrouille_Tome_03_Coquillages_chocottes_et_clapotis.pdf",
+"index": 2,
+"out": "Mangetrouille_003.jpg"
+},
+{
+"id": "Mercenaires",
+"title": "Mercenaires",
+"rel": "Mercenaires",
+"file": "Mercenaires_Tome_01_La_Meute_du_Griffon.pdf",
+"index": 0,
+"out": "Mercenaires_001.jpg"
+},
+{
+"id": "Mercenaires",
+"title": "Mercenaires",
+"rel": "Mercenaires",
+"file": "Mercenaires_Tome_02_Le_Seigneur_des_Trois_Cités.pdf",
+"index": 1,
+"out": "Mercenaires_002.jpg"
+},
+{
+"id": "Metropolia",
+"title": "Metropolia",
+"rel": "Metropolia",
+"file": "Metropolia_Tome_01_Berlin_2099.pdf",
+"index": 0,
+"out": "Metropolia_001.jpg"
+},
+{
+"id": "Metropolia",
+"title": "Metropolia",
+"rel": "Metropolia",
+"file": "Metropolia_Tome_02_Les_Bordures_extérieures.pdf",
+"index": 1,
+"out": "Metropolia_002.jpg"
+},
+{
+"id": "Millénium",
+"title": "Millénium",
+"rel": "Millénium",
+"file": "Millénium_Tome_01_Les_hommes_qui_n'aimaient_pas_les_femmes_Première_partie.pdf",
+"index": 0,
+"out": "Millenium_001.jpg"
+},
+{
+"id": "Millénium",
+"title": "Millénium",
+"rel": "Millénium",
+"file": "Millénium_Tome_02_Les_hommes_qui_n'aimaient_pas_les_femmes_Seconde_partie.pdf",
+"index": 1,
+"out": "Millenium_002.jpg"
+},
+{
+"id": "Millénium",
+"title": "Millénium",
+"rel": "Millénium",
+"file": "Millénium_Tome_03_La_fille_qui_rêvait_d'un_bidon_d'essence_et_d'une_allumette_Première_partie.pdf",
+"index": 2,
+"out": "Millenium_003.jpg"
+},
+{
+"id": "Millénium",
+"title": "Millénium",
+"rel": "Millénium",
+"file": "Millénium_Tome_04_La_fille_qui_rêvait_d'un_bidon_d'essence_et_d'une_allumette_Seconde_partie.pdf",
+"index": 3,
+"out": "Millenium_004.jpg"
+},
+{
+"id": "Millénium",
+"title": "Millénium",
+"rel": "Millénium",
+"file": "Millénium_Tome_05_La_reine_dans_le_palais_des_courants_d'air_Première_partie.pdf",
+"index": 4,
+"out": "Millenium_005.jpg"
+},
+{
+"id": "Molières",
+"title": "Molières",
+"rel": "Molières",
+"file": "Molière_Tome_01_À_l'école_des_femmes.pdf",
+"index": 0,
+"out": "Molieres_001.jpg"
+},
+{
+"id": "Molières",
+"title": "Molières",
+"rel": "Molières",
+"file": "Molière_Tome_02_Le_scandale_Tartuffe.pdf",
+"index": 1,
+"out": "Molieres_002.jpg"
+},
+{
+"id": "Molières",
+"title": "Molières",
+"rel": "Molières",
+"file": "Molière_Tome_03_Survivre_à_Jean_Baptiste.pdf",
+"index": 2,
+"out": "Molieres_003.jpg"
+},
+{
+"id": "Molly_West",
+"title": "Molly West",
+"rel": "Molly West",
+"file": "Molly_West_Tome_01_Le_diable_en_jupons.pdf",
+"index": 0,
+"out": "Molly_West_001.jpg"
+},
+{
+"id": "Molly_West",
+"title": "Molly West",
+"rel": "Molly West",
+"file": "Molly_West_Tome_02_La_vengeance_du_diable.pdf",
+"index": 1,
+"out": "Molly_West_002.jpg"
+},
+{
+"id": "Monster",
+"title": "Monster",
+"rel": "Monster",
+"file": "Monster_Tome_01.pdf",
+"index": 0,
+"out": "Monster_001.jpg"
+},
+{
+"id": "Monster",
+"title": "Monster",
+"rel": "Monster",
+"file": "Monster_Tome_02.pdf",
+"index": 1,
+"out": "Monster_002.jpg"
+},
+{
+"id": "Monster",
+"title": "Monster",
+"rel": "Monster",
+"file": "Monster_Tome_03.pdf",
+"index": 2,
+"out": "Monster_003.jpg"
+},
+{
+"id": "Monster",
+"title": "Monster",
+"rel": "Monster",
+"file": "Monster_Tome_05.pdf",
+"index": 3,
+"out": "Monster_004.jpg"
+},
+{
+"id": "Monster",
+"title": "Monster",
+"rel": "Monster",
+"file": "Monster_Tome_06.pdf",
+"index": 4,
+"out": "Monster_005.jpg"
+},
+{
+"id": "Monster",
+"title": "Monster",
+"rel": "Monster",
+"file": "Monster_Tome_07.pdf",
+"index": 5,
+"out": "Monster_006.jpg"
+},
+{
+"id": "Monster",
+"title": "Monster",
+"rel": "Monster",
+"file": "Monster_Tome_08.pdf",
+"index": 6,
+"out": "Monster_007.jpg"
+},
+{
+"id": "Monster",
+"title": "Monster",
+"rel": "Monster",
+"file": "Monster_Tome_09.pdf",
+"index": 7,
+"out": "Monster_008.jpg"
+},
+{
+"id": "Monstre",
+"title": "Monstre",
+"rel": "Monstre",
+"file": "Monstre_Tome_01_Le_Sommeil_du_Monstre.pdf",
+"index": 0,
+"out": "Monstre_001.jpg"
+},
+{
+"id": "Monstre",
+"title": "Monstre",
+"rel": "Monstre",
+"file": "Monstre_Tome_02_Trente_deux_Décembre.pdf",
+"index": 1,
+"out": "Monstre_002.jpg"
+},
+{
+"id": "Monstre",
+"title": "Monstre",
+"rel": "Monstre",
+"file": "Monstre_Tome_03_Rendez_vous_à_Paris.pdf",
+"index": 2,
+"out": "Monstre_003.jpg"
+},
+{
+"id": "Monstre",
+"title": "Monstre",
+"rel": "Monstre",
+"file": "Monstre_Tome_04_Quatre.pdf",
+"index": 3,
+"out": "Monstre_004.jpg"
+},
+{
+"id": "Mortesève",
+"title": "Mortesève",
+"rel": "Mortesève",
+"file": "Mortesève_Tome_01_Hang_&_Orgue.pdf",
+"index": 0,
+"out": "Morteseve_001.jpg"
+},
+{
+"id": "Mortesève",
+"title": "Mortesève",
+"rel": "Mortesève",
+"file": "Mortesève_Tome_02_Au_rythme_de_Harpe.pdf",
+"index": 1,
+"out": "Morteseve_002.jpg"
+},
+{
+"id": "Muraille",
+"title": "Muraille",
+"rel": "Muraille",
+"file": "Muraille_01_Immobile.pdf",
+"index": 0,
+"out": "Muraille_001.jpg"
+},
+{
+"id": "Muraille",
+"title": "Muraille",
+"rel": "Muraille",
+"file": "Muraille_02_Gynécée.pdf",
+"index": 1,
+"out": "Muraille_002.jpg"
+},
+{
+"id": "Nanami",
+"title": "Nanami",
+"rel": "Nanami",
+"file": "Nanami_Tome_01_Le_théâtre_du_vent.pdf",
+"index": 0,
+"out": "Nanami_001.jpg"
+},
+{
+"id": "Nanami",
+"title": "Nanami",
+"rel": "Nanami",
+"file": "Nanami_Tome_02_L'inconnu.pdf",
+"index": 1,
+"out": "Nanami_002.jpg"
+},
+{
+"id": "Nanami",
+"title": "Nanami",
+"rel": "Nanami",
+"file": "Nanami_Tome_03_Le_royaume_invisible.pdf",
+"index": 2,
+"out": "Nanami_003.jpg"
+},
+{
+"id": "Nanami",
+"title": "Nanami",
+"rel": "Nanami",
+"file": "Nanami_Tome_04_Le_prince_noir.pdf",
+"index": 3,
+"out": "Nanami_004.jpg"
+},
+{
+"id": "Nanami",
+"title": "Nanami",
+"rel": "Nanami",
+"file": "Nanami_Tome_05_Le_combat_final.pdf",
+"index": 4,
+"out": "Nanami_005.jpg"
+},
+{
+"id": "Noir_Horizon",
+"title": "Noir Horizon",
+"rel": "Noir Horizon",
+"file": "Noir_Horizon_Tome_01_Sitra_Ahara.pdf",
+"index": 0,
+"out": "Noir_Horizon_001.jpg"
+},
+{
+"id": "Noir_Horizon",
+"title": "Noir Horizon",
+"rel": "Noir Horizon",
+"file": "Noir_Horizon_Tome_02_Hosanna.pdf",
+"index": 1,
+"out": "Noir_Horizon_002.jpg"
+},
+{
+"id": "Nunuche",
+"title": "Nunuche",
+"rel": "Nunuche",
+"file": "Nunuche_Tome_03_Crise_aigue_de_nougatine.pdf",
+"index": 2,
+"out": "Nunuche_003.jpg"
+},
+{
+"id": "Olive",
+"title": "Olive",
+"rel": "Olive",
+"file": "Olive_Tome_01_Une_lune_bleue_dans_la_tête.pdf",
+"index": 0,
+"out": "Olive_001.jpg"
+},
+{
+"id": "Olive",
+"title": "Olive",
+"rel": "Olive",
+"file": "Olive_Tome_02_Allo_la_terre.pdf",
+"index": 1,
+"out": "Olive_002.jpg"
+},
+{
+"id": "Olive",
+"title": "Olive",
+"rel": "Olive",
+"file": "Olive_Tome_03_Sur_les_traces_du_Nerpa.pdf",
+"index": 2,
+"out": "Olive_003.jpg"
+},
+{
+"id": "Olive",
+"title": "Olive",
+"rel": "Olive",
+"file": "Olive_Tome_04_Retour_sur_terre.pdf",
+"index": 3,
+"out": "Olive_004.jpg"
+},
+{
+"id": "Outcast",
+"title": "Outcast",
+"rel": "Outcast",
+"file": "Outcast_Tome_01_Possession.pdf",
+"index": 0,
+"out": "Outcast_001.jpg"
+},
+{
+"id": "Outcast",
+"title": "Outcast",
+"rel": "Outcast",
+"file": "Outcast_Tome_02_Souffrance.pdf",
+"index": 1,
+"out": "Outcast_002.jpg"
+},
+{
+"id": "Outcast",
+"title": "Outcast",
+"rel": "Outcast",
+"file": "Outcast_Tome_03_Une_Petite_Lueur.pdf",
+"index": 2,
+"out": "Outcast_003.jpg"
+},
+{
+"id": "Outcast",
+"title": "Outcast",
+"rel": "Outcast",
+"file": "Outcast_Tome_04_Sous_l'Aile_du_DIable.pdf",
+"index": 3,
+"out": "Outcast_004.jpg"
+},
+{
+"id": "Outcast",
+"title": "Outcast",
+"rel": "Outcast",
+"file": "Outcast_Tome_05_Une_Nouvelle_Voie.pdf",
+"index": 4,
+"out": "Outcast_005.jpg"
+},
+{
+"id": "Outcast",
+"title": "Outcast",
+"rel": "Outcast",
+"file": "Outcast_Tome_06_Invasion.pdf",
+"index": 5,
+"out": "Outcast_006.jpg"
+},
+{
+"id": "Outcast",
+"title": "Outcast",
+"rel": "Outcast",
+"file": "Outcast_Tome_07_L'Emprise_des_Ténèbres.pdf",
+"index": 6,
+"out": "Outcast_007.jpg"
+},
+{
+"id": "Outcast",
+"title": "Outcast",
+"rel": "Outcast",
+"file": "Outcast_Tome_08_La_Fusion.pdf",
+"index": 7,
+"out": "Outcast_008.jpg"
+},
+{
+"id": "Paroles_de_Poilus_1914_1918",
+"title": "Paroles de Poilus 1914 1918",
+"rel": "Paroles de Poilus 1914 1918",
+"file": "Paroles_de_Poilus_1914_1918_Tome_01_Lettres_et_Carnets_du_front.pdf",
+"index": 0,
+"out": "Paroles_de_Poilus_1914_1918_001.jpg"
+},
+{
+"id": "Paroles_de_Poilus_1914_1918",
+"title": "Paroles de Poilus 1914 1918",
+"rel": "Paroles de Poilus 1914 1918",
+"file": "Paroles_de_Poilus_1914_1918_Tome_02_Mon_papa_en_guerre.pdf",
+"index": 1,
+"out": "Paroles_de_Poilus_1914_1918_002.jpg"
+},
+{
+"id": "Pour_un_peu_de_bonheur",
+"title": "Pour un peu de bonheur",
+"rel": "Pour un peu de bonheur",
+"file": "Pour_un_peu_de_bonheur_Tome_01_Félix.pdf",
+"index": 0,
+"out": "Pour_un_peu_de_bonheur_001.jpg"
+},
+{
+"id": "Pour_un_peu_de_bonheur",
+"title": "Pour un peu de bonheur",
+"rel": "Pour un peu de bonheur",
+"file": "Pour_un_peu_de_bonheur_Tome_02_Aurélien.pdf",
+"index": 1,
+"out": "Pour_un_peu_de_bonheur_002.jpg"
+},
+{
+"id": "Ray_Ringo",
+"title": "Ray Ringo",
+"rel": "Ray Ringo",
+"file": "Ray_Ringo_Tome_02_La_Captive.pdf",
+"index": 0,
+"out": "Ray_Ringo_001.jpg"
+},
+{
+"id": "Ray_Ringo",
+"title": "Ray Ringo",
+"rel": "Ray Ringo",
+"file": "Ray_Ringo_Tome_1_La_porte_du_diable.pdf",
+"index": 1,
+"out": "Ray_Ringo_002.jpg"
+},
+{
+"id": "Renégat",
+"title": "Renégat",
+"rel": "Renégat",
+"file": "Renégat_Tome_01_Genèse.pdf",
+"index": 0,
+"out": "Renegat_001.jpg"
+},
+{
+"id": "Renégat",
+"title": "Renégat",
+"rel": "Renégat",
+"file": "Renégat_Tome_02_Héritage.pdf",
+"index": 1,
+"out": "Renegat_002.jpg"
+},
+{
+"id": "Renégat",
+"title": "Renégat",
+"rel": "Renégat",
+"file": "Renégat_Tome_03_Rédemption.pdf",
+"index": 2,
+"out": "Renegat_003.jpg"
+},
+{
+"id": "Roger_et_ses_humains",
+"title": "Roger et ses humains",
+"rel": "Roger et ses humains",
+"file": "Roger_et_ses_humains_Tome_01.pdf",
+"index": 0,
+"out": "Roger_et_ses_humains_001.jpg"
+},
+{
+"id": "Roger_et_ses_humains",
+"title": "Roger et ses humains",
+"rel": "Roger et ses humains",
+"file": "Roger_et_ses_humains_Tome_02.pdf",
+"index": 1,
+"out": "Roger_et_ses_humains_002.jpg"
+},
+{
+"id": "Roger_et_ses_humains",
+"title": "Roger et ses humains",
+"rel": "Roger et ses humains",
+"file": "Roger_et_ses_humains_Tome_03.pdf",
+"index": 2,
+"out": "Roger_et_ses_humains_003.jpg"
+},
+{
+"id": "Rose_Crow",
+"title": "Rose Crow",
+"rel": "Rose Crow",
+"file": "Rose_Crow_Tome_01.pdf",
+"index": 0,
+"out": "Rose_Crow_001.jpg"
+},
+{
+"id": "Rose_Crow",
+"title": "Rose Crow",
+"rel": "Rose Crow",
+"file": "Rose_Crow_Tome_02.pdf",
+"index": 1,
+"out": "Rose_Crow_002.jpg"
+},
+{
+"id": "Rose_Crow",
+"title": "Rose Crow",
+"rel": "Rose Crow",
+"file": "Rose_Crow_Tome_03.pdf",
+"index": 2,
+"out": "Rose_Crow_003.jpg"
+},
+{
+"id": "Rose_Crow",
+"title": "Rose Crow",
+"rel": "Rose Crow",
+"file": "Rose_Crow_Tome_04.pdf",
+"index": 3,
+"out": "Rose_Crow_004.jpg"
+},
+{
+"id": "Rose_Crow",
+"title": "Rose Crow",
+"rel": "Rose Crow",
+"file": "Rose_Crow_Tome_05.pdf",
+"index": 4,
+"out": "Rose_Crow_005.jpg"
+},
+{
+"id": "Royal_city",
+"title": "Royal city",
+"rel": "Royal city",
+"file": "Royal_city_Tome_01_Famille_décomposée.pdf",
+"index": 0,
+"out": "Royal_city_001.jpg"
+},
+{
+"id": "Royal_city",
+"title": "Royal city",
+"rel": "Royal city",
+"file": "Royal_city_Tome_02_Sonic_Youth.pdf",
+"index": 1,
+"out": "Royal_city_002.jpg"
+},
+{
+"id": "Royal_city",
+"title": "Royal city",
+"rel": "Royal city",
+"file": "Royal_city_Tome_03_On_flotte_tous_en_bas.pdf",
+"index": 2,
+"out": "Royal_city_003.jpg"
+},
+{
+"id": "Rue_de_la_grande_truanderie",
+"title": "Rue de la grande truanderie",
+"rel": "Rue de la grande truanderie",
+"file": "Rue_de_la_grande_truanderie_Tome_01_Une_enfance_au_Familistère.pdf",
+"index": 0,
+"out": "Rue_de_la_grande_truanderie_001.jpg"
+},
+{
+"id": "Rue_de_la_grande_truanderie",
+"title": "Rue de la grande truanderie",
+"rel": "Rue de la grande truanderie",
+"file": "Rue_de_la_grande_truanderie_Tome_02_La_mort_de_l'utopie.pdf",
+"index": 1,
+"out": "Rue_de_la_grande_truanderie_002.jpg"
+},
+{
+"id": "Résilience",
+"title": "Résilience",
+"rel": "Résilience",
+"file": "Résilience_Tome_01_Les_terres_mortes.pdf",
+"index": 0,
+"out": "Resilience_001.jpg"
+},
+{
+"id": "Résilience",
+"title": "Résilience",
+"rel": "Résilience",
+"file": "Résilience_Tome_02_La_vallée_trahie.pdf",
+"index": 1,
+"out": "Resilience_002.jpg"
+},
+{
+"id": "Résilience",
+"title": "Résilience",
+"rel": "Résilience",
+"file": "Résilience_Tome_03_La_mer_de_plastique.pdf",
+"index": 2,
+"out": "Resilience_003.jpg"
+},
+{
+"id": "Résilience",
+"title": "Résilience",
+"rel": "Résilience",
+"file": "Résilience_Tome_04_Le_tombeau_des_glaces.pdf",
+"index": 3,
+"out": "Resilience_004.jpg"
+},
+{
+"id": "Révolutionnaires",
+"title": "Révolutionnaires!",
+"rel": "Révolutionnaires!",
+"file": "Révolutionnaires!_Tome_01_Les_Princes_Misère.pdf",
+"index": 0,
+"out": "Revolutionnaires_001.jpg"
+},
+{
+"id": "Révolutionnaires",
+"title": "Révolutionnaires!",
+"rel": "Révolutionnaires!",
+"file": "Révolutionnaires!_Tome_02_Le_grand_désordre_de_l'an_1.pdf",
+"index": 1,
+"out": "Revolutionnaires_002.jpg"
+},
+{
+"id": "Révolutionnaires",
+"title": "Révolutionnaires!",
+"rel": "Révolutionnaires!",
+"file": "Révolutionnaires!_Tome_03_Le_roi_est_mort_vive_la_République!.pdf",
+"index": 2,
+"out": "Revolutionnaires_003.jpg"
+},
+{
+"id": "Révolutionnaires",
+"title": "Révolutionnaires!",
+"rel": "Révolutionnaires!",
+"file": "Révolutionnaires!_Tome_04_Tous_à_Machecoul!.pdf",
+"index": 3,
+"out": "Revolutionnaires_004.jpg"
+},
+{
+"id": "Révolutionnaires",
+"title": "Révolutionnaires!",
+"rel": "Révolutionnaires!",
+"file": "Révolutionnaires!_Tome_05_Pornic.pdf",
+"index": 4,
+"out": "Revolutionnaires_005.jpg"
+},
+{
+"id": "Sa_majesté_des_ours",
+"title": "Sa majesté des ours",
+"rel": "Sa majesté des ours",
+"file": "Sa_majesté_des_ours_Tome_01_Les_Colonnes_de_Garuda.pdf",
+"index": 0,
+"out": "Sa_majeste_des_ours_001.jpg"
+},
+{
+"id": "Sa_majesté_des_ours",
+"title": "Sa majesté des ours",
+"rel": "Sa majesté des ours",
+"file": "Sa_majesté_des_ours_Tome_02_Nous_tomberons_ensemble.pdf",
+"index": 1,
+"out": "Sa_majeste_des_ours_002.jpg"
+},
+{
+"id": "Sept_jours_pour_une_éternité",
+"title": "Sept jours pour une éternité",
+"rel": "Sept jours pour une éternité",
+"file": "Sept_jours_pour_une_éternité_Tome_01.pdf",
+"index": 0,
+"out": "Sept_jours_pour_une_eternite_001.jpg"
+},
+{
+"id": "Sept_jours_pour_une_éternité",
+"title": "Sept jours pour une éternité",
+"rel": "Sept jours pour une éternité",
+"file": "Sept_jours_pour_une_éternité_Tome_02.pdf",
+"index": 1,
+"out": "Sept_jours_pour_une_eternite_002.jpg"
+},
+{
+"id": "Servitudes",
+"title": "Servitudes",
+"rel": "Servitudes",
+"file": "Servitude_Tome_01_Le_Chant_d'Anorœr.pdf",
+"index": 0,
+"out": "Servitudes_001.jpg"
+},
+{
+"id": "Servitudes",
+"title": "Servitudes",
+"rel": "Servitudes",
+"file": "Servitude_Tome_02_Drekkars.pdf",
+"index": 1,
+"out": "Servitudes_002.jpg"
+},
+{
+"id": "Servitudes",
+"title": "Servitudes",
+"rel": "Servitudes",
+"file": "Servitude_Tome_03_L'Adieu_aux_Rois.pdf",
+"index": 2,
+"out": "Servitudes_003.jpg"
+},
+{
+"id": "Servitudes",
+"title": "Servitudes",
+"rel": "Servitudes",
+"file": "Servitude_Tome_04_Iccrins.pdf",
+"index": 3,
+"out": "Servitudes_004.jpg"
+},
+{
+"id": "Servitudes",
+"title": "Servitudes",
+"rel": "Servitudes",
+"file": "Servitude_Tome_05_Shalin_(Première_partie).pdf",
+"index": 4,
+"out": "Servitudes_005.jpg"
+},
+{
+"id": "Servitudes",
+"title": "Servitudes",
+"rel": "Servitudes",
+"file": "Servitude_Tome_06_Shalin_(Seconde_partie).pdf",
+"index": 5,
+"out": "Servitudes_006.jpg"
+},
+{
+"id": "Seuls_16-16",
+"title": "Seuls (16-16)",
+"rel": "Seuls (16-16)",
+"file": "Seuls_Tome_01_La_disparition.pdf",
+"index": 0,
+"out": "Seuls_16-16_001.jpg"
+},
+{
+"id": "Seuls_16-16",
+"title": "Seuls (16-16)",
+"rel": "Seuls (16-16)",
+"file": "Seuls_Tome_02_Le_maître_des_couteaux.pdf",
+"index": 1,
+"out": "Seuls_16-16_002.jpg"
+},
+{
+"id": "Seuls_16-16",
+"title": "Seuls (16-16)",
+"rel": "Seuls (16-16)",
+"file": "Seuls_Tome_03_Le_clan_du_requin.pdf",
+"index": 2,
+"out": "Seuls_16-16_003.jpg"
+},
+{
+"id": "Seuls_16-16",
+"title": "Seuls (16-16)",
+"rel": "Seuls (16-16)",
+"file": "Seuls_Tome_04_Les_cairns_rouges.pdf",
+"index": 3,
+"out": "Seuls_16-16_004.jpg"
+},
+{
+"id": "Seuls_16-16",
+"title": "Seuls (16-16)",
+"rel": "Seuls (16-16)",
+"file": "Seuls_Tome_05_Au_cœur_du_maelström.pdf",
+"index": 4,
+"out": "Seuls_16-16_005.jpg"
+},
+{
+"id": "Seuls_16-16",
+"title": "Seuls (16-16)",
+"rel": "Seuls (16-16)",
+"file": "Seuls_Tome_06_La_quatrième_dimension_et_demie.pdf",
+"index": 5,
+"out": "Seuls_16-16_006.jpg"
+},
+{
+"id": "Seuls_16-16",
+"title": "Seuls (16-16)",
+"rel": "Seuls (16-16)",
+"file": "Seuls_Tome_07_Les_Terres_Basses.pdf",
+"index": 6,
+"out": "Seuls_16-16_007.jpg"
+},
+{
+"id": "Seuls_16-16",
+"title": "Seuls (16-16)",
+"rel": "Seuls (16-16)",
+"file": "Seuls_Tome_08_Les_Arènes.pdf",
+"index": 7,
+"out": "Seuls_16-16_008.jpg"
+},
+{
+"id": "Seuls_16-16",
+"title": "Seuls (16-16)",
+"rel": "Seuls (16-16)",
+"file": "Seuls_Tome_09_Avant_l'Enfant_Minuit.pdf",
+"index": 8,
+"out": "Seuls_16-16_009.jpg"
+},
+{
+"id": "Seuls_16-16",
+"title": "Seuls (16-16)",
+"rel": "Seuls (16-16)",
+"file": "Seuls_Tome_10_La_machine_à_Démourir.pdf",
+"index": 9,
+"out": "Seuls_16-16_010.jpg"
+},
+{
+"id": "Seuls_16-16",
+"title": "Seuls (16-16)",
+"rel": "Seuls (16-16)",
+"file": "Seuls_Tome_11_Les_Cloueurs_de_Nuit.pdf",
+"index": 10,
+"out": "Seuls_16-16_011.jpg"
+},
+{
+"id": "Seuls_16-16",
+"title": "Seuls (16-16)",
+"rel": "Seuls (16-16)",
+"file": "Seuls_Tome_12_Les_révoltés_de_Néosalem.pdf",
+"index": 11,
+"out": "Seuls_16-16_012.jpg"
+},
+{
+"id": "Seuls_16-16",
+"title": "Seuls (16-16)",
+"rel": "Seuls (16-16)",
+"file": "Seuls_Tome_13_Les_Âmes_tigrées.pdf",
+"index": 12,
+"out": "Seuls_16-16_013.jpg"
+},
+{
+"id": "Seuls_16-16",
+"title": "Seuls (16-16)",
+"rel": "Seuls (16-16)",
+"file": "Seuls_Tome_14_Les_Protecteurs.pdf",
+"index": 13,
+"out": "Seuls_16-16_014.jpg"
+},
+{
+"id": "Seuls_16-16",
+"title": "Seuls (16-16)",
+"rel": "Seuls (16-16)",
+"file": "Seuls_Tome_15_L'hôtel_au_bord_du_monde.pdf",
+"index": 14,
+"out": "Seuls_16-16_015.jpg"
+},
+{
+"id": "Seuls_16-16",
+"title": "Seuls (16-16)",
+"rel": "Seuls (16-16)",
+"file": "Seuls_Tome_16_La_prisonnière_d'Antésalem.pdf",
+"index": 15,
+"out": "Seuls_16-16_016.jpg"
+},
+{
+"id": "Si_seulement",
+"title": "Si seulement",
+"rel": "Si seulement",
+"file": "Si_seulement_Tome_01_Si_seulement....pdf",
+"index": 0,
+"out": "Si_seulement_001.jpg"
+},
+{
+"id": "Si_seulement",
+"title": "Si seulement",
+"rel": "Si seulement",
+"file": "Si_seulement_Tome_02_Si_seulement.pdf",
+"index": 1,
+"out": "Si_seulement_002.jpg"
+},
+{
+"id": "Solo",
+"title": "Solo",
+"rel": "Solo",
+"file": "Solo_Tome_01_Les_survivants_du_chaos.pdf",
+"index": 0,
+"out": "Solo_001.jpg"
+},
+{
+"id": "Solo",
+"title": "Solo",
+"rel": "Solo",
+"file": "Solo_Tome_02_Le_Cœur_et_le_Sang.pdf",
+"index": 1,
+"out": "Solo_002.jpg"
+},
+{
+"id": "Solo",
+"title": "Solo",
+"rel": "Solo",
+"file": "Solo_Tome_03_Le_Monde_cannibale.pdf",
+"index": 2,
+"out": "Solo_003.jpg"
+},
+{
+"id": "Solo",
+"title": "Solo",
+"rel": "Solo",
+"file": "Solo_Tome_04_Legatus.pdf",
+"index": 3,
+"out": "Solo_004.jpg"
+},
+{
+"id": "Solo",
+"title": "Solo",
+"rel": "Solo",
+"file": "Solo_Tome_05_Marcher_sans_soulever_de_poussière.pdf",
+"index": 4,
+"out": "Solo_005.jpg"
+},
+{
+"id": "Solo",
+"title": "Solo",
+"rel": "Solo",
+"file": "Solo_Tome_06_La_fin_d'un_cercle_infini.pdf",
+"index": 5,
+"out": "Solo_006.jpg"
+},
+{
+"id": "Star_Wars_Mini_Séries",
+"title": "Star Wars Mini Séries",
+"rel": "Star Wars Mini Séries",
+"file": "Star_Wars_Mini_Séries_Tome_01_Princesse_Leia_L'Héritage_d'Aldorande.pdf",
+"index": 0,
+"out": "Star_Wars_Mini_Series_001.jpg"
+},
+{
+"id": "Star_Wars_Mini_Séries",
+"title": "Star Wars Mini Séries",
+"rel": "Star Wars Mini Séries",
+"file": "Star_Wars_Mini_Séries_Tome_02_Lando_Le_Casse_du_Siècle.pdf",
+"index": 1,
+"out": "Star_Wars_Mini_Series_002.jpg"
+},
+{
+"id": "Star_Wars_Mini_Séries",
+"title": "Star Wars Mini Séries",
+"rel": "Star Wars Mini Séries",
+"file": "Star_Wars_Mini_Séries_Tome_03_Chewbacca_Les_Mines_d'Andelm.pdf",
+"index": 2,
+"out": "Star_Wars_Mini_Series_003.jpg"
+},
+{
+"id": "Star_Wars_Mini_Séries",
+"title": "Star Wars Mini Séries",
+"rel": "Star Wars Mini Séries",
+"file": "Star_Wars_Mini_Séries_Tome_04_Obi_Wan_et_Anakin_Réceptifs_et_Hermétiques.pdf",
+"index": 3,
+"out": "Star_Wars_Mini_Series_004.jpg"
+},
+{
+"id": "Star_Wars_Mini_Séries",
+"title": "Star Wars Mini Séries",
+"rel": "Star Wars Mini Séries",
+"file": "Star_Wars_Mini_Séries_Tome_06_Lando_Quitte_ou_Double.pdf",
+"index": 4,
+"out": "Star_Wars_Mini_Series_005.jpg"
+},
+{
+"id": "Star_Wars_Mini_Séries",
+"title": "Star Wars Mini Séries",
+"rel": "Star Wars Mini Séries",
+"file": "Star_Wars_Mini_Séries_Tome_07_Han_Solo_Cadet_Impérial.pdf",
+"index": 5,
+"out": "Star_Wars_Mini_Series_006.jpg"
+},
+{
+"id": "Star_Wars_Mini_Séries",
+"title": "Star Wars Mini Séries",
+"rel": "Star Wars Mini Séries",
+"file": "Star_Wars_Mini_Séries_Tome_08_TIE_Fighter.pdf",
+"index": 6,
+"out": "Star_Wars_Mini_Series_007.jpg"
+},
+{
+"id": "Star_Wars_Mini_Séries",
+"title": "Star Wars Mini Séries",
+"rel": "Star Wars Mini Séries",
+"file": "Star_Wars_Mini_Séries_Tome_09_Jedi_Fallen_Order_Dark_Temple.pdf",
+"index": 7,
+"out": "Star_Wars_Mini_Series_008.jpg"
+},
+{
+"id": "Star_Wars_Mini_Séries",
+"title": "Star Wars Mini Séries",
+"rel": "Star Wars Mini Séries",
+"file": "Star_Wars_Mini_Séries_Tome_10_Galaxy's_Edge.pdf",
+"index": 8,
+"out": "Star_Wars_Mini_Series_009.jpg"
+},
+{
+"id": "Star_Wars_Mini_Séries",
+"title": "Star Wars Mini Séries",
+"rel": "Star Wars Mini Séries",
+"file": "Star_Wars_Mini_Séries_Tome_11_Vador_Sombres_Visions.pdf",
+"index": 9,
+"out": "Star_Wars_Mini_Series_010.jpg"
+},
+{
+"id": "Star_Wars_Mini_Séries",
+"title": "Star Wars Mini Séries",
+"rel": "Star Wars Mini Séries",
+"file": "Star_Wars_Mini_Séries_Tome_13_Cible_Vador.pdf",
+"index": 10,
+"out": "Star_Wars_Mini_Series_011.jpg"
+},
+{
+"id": "Star_Wars_Mini_Séries",
+"title": "Star Wars Mini Séries",
+"rel": "Star Wars Mini Séries",
+"file": "Star_Wars_Mini_Séries_Tome_14_Les_Secrets_de_la_Galaxie.pdf",
+"index": 11,
+"out": "Star_Wars_Mini_Series_012.jpg"
+},
+{
+"id": "Star_Wars_Mini_Séries",
+"title": "Star Wars Mini Séries",
+"rel": "Star Wars Mini Séries",
+"file": "Star_Wars_Mini_Séries_Tome_15_Halcyon_Legacy.pdf",
+"index": 12,
+"out": "Star_Wars_Mini_Series_013.jpg"
+},
+{
+"id": "Star_Wars_Mini_Séries",
+"title": "Star Wars Mini Séries",
+"rel": "Star Wars Mini Séries",
+"file": "Star_Wars_Mini_Séries_Tome_17_Yoda_La_Taille_Importe_Peu.pdf",
+"index": 13,
+"out": "Star_Wars_Mini_Series_014.jpg"
+},
+{
+"id": "Star_Wars_Mini_Séries",
+"title": "Star Wars Mini Séries",
+"rel": "Star Wars Mini Séries",
+"file": "Star_Wars_Mini_Séries_Tome_18_Sana_Starros.pdf",
+"index": 14,
+"out": "Star_Wars_Mini_Series_015.jpg"
+},
+{
+"id": "Star_Wars_Mini_Séries",
+"title": "Star Wars Mini Séries",
+"rel": "Star Wars Mini Séries",
+"file": "Star_Wars_Mini_Séries_Tome_19_Dark_Droids_D_Squad.pdf",
+"index": 15,
+"out": "Star_Wars_Mini_Series_016.jpg"
+},
+{
+"id": "Star_Wars_Mini_Séries",
+"title": "Star Wars Mini Séries",
+"rel": "Star Wars Mini Séries",
+"file": "Star_Wars_Mini_Séries_Tome_20_Obi_Wan_Kenobi.pdf",
+"index": 16,
+"out": "Star_Wars_Mini_Series_017.jpg"
+},
+{
+"id": "Star_Wars_Mini_Séries",
+"title": "Star Wars Mini Séries",
+"rel": "Star Wars Mini Séries",
+"file": "Star_Wars_Verse_Tome_02_Luke_Skywalker.pdf",
+"index": 17,
+"out": "Star_Wars_Mini_Series_018.jpg"
+},
+{
+"id": "Star_Wars_Mini_Séries",
+"title": "Star Wars Mini Séries",
+"rel": "Star Wars Mini Séries",
+"file": "Star_Wars_Verse_Tome_03_Han_Solo.pdf",
+"index": 18,
+"out": "Star_Wars_Mini_Series_019.jpg"
+},
+{
+"id": "Stern",
+"title": "Stern",
+"rel": "Stern",
+"file": "Stern_Tome_06_Hors_du_monde.pdf",
+"index": 5,
+"out": "Stern_006.jpg"
+},
+{
+"id": "Tango",
+"title": "Tango",
+"rel": "Tango",
+"file": "Tango_Tome_07_La_flèche_de_Magellan.pdf",
+"index": 6,
+"out": "Tango_007.jpg"
+},
+{
+"id": "Tango",
+"title": "Tango",
+"rel": "Tango",
+"file": "Tango_Tome_08_Ballade_de_la_Mer_de_Sulu.pdf",
+"index": 7,
+"out": "Tango_008.jpg"
+},
+{
+"id": "Tango",
+"title": "Tango",
+"rel": "Tango",
+"file": "Tango_Tome_09_Faux_Frères.pdf",
+"index": 8,
+"out": "Tango_009.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_HS_L'avion_qui_tuait_ses_pilotes.pdf",
+"index": 6,
+"out": "Tanguy_et_Laverdure_007.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_HS_Michel_Tanguy_L'école_des_Aigles.pdf",
+"index": 7,
+"out": "Tanguy_et_Laverdure_008.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_07_Cap_zéro.pdf",
+"index": 8,
+"out": "Tanguy_et_Laverdure_009.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_08_Pirates_du_ciel.pdf",
+"index": 9,
+"out": "Tanguy_et_Laverdure_010.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_11_Destination_Pacifique.pdf",
+"index": 10,
+"out": "Tanguy_et_Laverdure_011.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_12_Menace_sur_Mururoa.pdf",
+"index": 11,
+"out": "Tanguy_et_Laverdure_012.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_13_Lieutenant_Double_Bang.pdf",
+"index": 12,
+"out": "Tanguy_et_Laverdure_013.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_14_Baroud_sur_le_désert.pdf",
+"index": 13,
+"out": "Tanguy_et_Laverdure_014.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_15_Les_Vampires_attaquent_la_nuit.pdf",
+"index": 14,
+"out": "Tanguy_et_Laverdure_015.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_16_La_terreur_vient_du_ciel.pdf",
+"index": 15,
+"out": "Tanguy_et_Laverdure_016.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_17_Mission_Dernière_chance.pdf",
+"index": 16,
+"out": "Tanguy_et_Laverdure_017.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_18_Un_DC_8_a_disparu.pdf",
+"index": 17,
+"out": "Tanguy_et_Laverdure_018.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_19_La_mystérieuse_escadre_Delta.pdf",
+"index": 18,
+"out": "Tanguy_et_Laverdure_019.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_20_Opération_Tonnerre.pdf",
+"index": 19,
+"out": "Tanguy_et_Laverdure_020.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_21_Premières_missions.pdf",
+"index": 20,
+"out": "Tanguy_et_Laverdure_021.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_22_Station_brouillard.pdf",
+"index": 21,
+"out": "Tanguy_et_Laverdure_022.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_23_Plan_de_vol_pour_l'enfer.pdf",
+"index": 22,
+"out": "Tanguy_et_Laverdure_023.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_24_L'espion_venu_du_ciel.pdf",
+"index": 23,
+"out": "Tanguy_et_Laverdure_024.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_25_Survol_interdit.pdf",
+"index": 24,
+"out": "Tanguy_et_Laverdure_025.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_26_Prisonniers_des_Serbes.pdf",
+"index": 25,
+"out": "Tanguy_et_Laverdure_026.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_27_Opération_opium.pdf",
+"index": 26,
+"out": "Tanguy_et_Laverdure_027.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_28_Le_vol_501.pdf",
+"index": 27,
+"out": "Tanguy_et_Laverdure_028.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_29_Taïaut_sur_bandits.pdf",
+"index": 28,
+"out": "Tanguy_et_Laverdure_029.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_30_Rencontre_de_trois_types.pdf",
+"index": 29,
+"out": "Tanguy_et_Laverdure_030.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_31_Diamants_de_sable.pdf",
+"index": 30,
+"out": "Tanguy_et_Laverdure_031.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_32_Le_sabre_du_désert.pdf",
+"index": 31,
+"out": "Tanguy_et_Laverdure_032.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_33_Retour_aux_Cigognes.pdf",
+"index": 32,
+"out": "Tanguy_et_Laverdure_033.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_34_Tanguy_sv_Laverdure.pdf",
+"index": 33,
+"out": "Tanguy_et_Laverdure_034.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_35_Une_frontière_obscure.pdf",
+"index": 34,
+"out": "Tanguy_et_Laverdure_035.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_36_Marée_rouge_en_mer_Noire.pdf",
+"index": 35,
+"out": "Tanguy_et_Laverdure_036.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_37_Trahison.pdf",
+"index": 36,
+"out": "Tanguy_et_Laverdure_037.jpg"
+},
+{
+"id": "Tanguy_et_Laverdure",
+"title": "Tanguy et Laverdure",
+"rel": "Tanguy et Laverdure",
+"file": "Tanguy_et_Laverdure_Tome_38_Opération_Aube_Rouge.pdf",
+"index": 37,
+"out": "Tanguy_et_Laverdure_038.jpg"
+},
+{
+"id": "Terra_Prime",
+"title": "Terra Prime",
+"rel": "Terra Prime",
+"file": "Terra_prime_Tome_01_La_colonie.pdf",
+"index": 0,
+"out": "Terra_Prime_001.jpg"
+},
+{
+"id": "Terra_Prime",
+"title": "Terra Prime",
+"rel": "Terra Prime",
+"file": "Terra_prime_Tome_02_Déicide.pdf",
+"index": 1,
+"out": "Terra_Prime_002.jpg"
+},
+{
+"id": "Terra_Prime",
+"title": "Terra Prime",
+"rel": "Terra Prime",
+"file": "Terra_prime_Tome_03_Deuil.pdf",
+"index": 2,
+"out": "Terra_Prime_003.jpg"
+},
+{
+"id": "Terra_Prime",
+"title": "Terra Prime",
+"rel": "Terra Prime",
+"file": "Terra_prime_Tome_04_Le_Dieu.pdf",
+"index": 3,
+"out": "Terra_Prime_004.jpg"
+},
+{
+"id": "Terres_d_Ynuma",
+"title": "Terres d'Ynuma",
+"rel": "Terres d'Ynuma",
+"file": "Terres_d'Ynuma_Tome_01_Samouraï_Rouge.pdf",
+"index": 0,
+"out": "Terres_d_Ynuma_001.jpg"
+},
+{
+"id": "Terres_d_Ynuma",
+"title": "Terres d'Ynuma",
+"rel": "Terres d'Ynuma",
+"file": "Terres_d'Ynuma_Tome_02_Hijo.pdf",
+"index": 1,
+"out": "Terres_d_Ynuma_002.jpg"
+},
+{
+"id": "The_Prism",
+"title": "The Prism",
+"rel": "The Prism",
+"file": "The_Prism_Tome_02_Red_Shift.pdf",
+"index": 0,
+"out": "The_Prism_001.jpg"
+},
+{
+"id": "Tiago_Solan",
+"title": "Tiago Solan",
+"rel": "Tiago Solan",
+"file": "Tiago_Solan_Tome_01_Rançon_d'état.pdf",
+"index": 0,
+"out": "Tiago_Solan_001.jpg"
+},
+{
+"id": "Tiago_Solan",
+"title": "Tiago Solan",
+"rel": "Tiago Solan",
+"file": "Tiago_Solan_Tome_02_Bouzkachi.pdf",
+"index": 1,
+"out": "Tiago_Solan_002.jpg"
+},
+{
+"id": "Totem_MANQUE_CDS",
+"title": "Totem MANQUE CDS",
+"rel": "Totem MANQUE CDS",
+"file": "Totem_Tome_01_Premier_niveau.pdf",
+"index": 0,
+"out": "Totem_MANQUE_CDS_001.jpg"
+},
+{
+"id": "Totem_MANQUE_CDS",
+"title": "Totem MANQUE CDS",
+"rel": "Totem MANQUE CDS",
+"file": "Totem_Tome_02_Deuxième_niveau.pdf",
+"index": 1,
+"out": "Totem_MANQUE_CDS_002.jpg"
+},
+{
+"id": "Totem_MANQUE_CDS",
+"title": "Totem MANQUE CDS",
+"rel": "Totem MANQUE CDS",
+"file": "Totem_Tome_03_Game_Over.pdf",
+"index": 2,
+"out": "Totem_MANQUE_CDS_003.jpg"
+},
+{
+"id": "Tracnar_Faribol",
+"title": "Tracnar Faribol",
+"rel": "Tracnar Faribol",
+"file": "Tracnar_Faribol_Tome_01_Vagabondage_en_contrées_légendaires.pdf",
+"index": 0,
+"out": "Tracnar_Faribol_001.jpg"
+},
+{
+"id": "Tracnar_Faribol",
+"title": "Tracnar Faribol",
+"rel": "Tracnar Faribol",
+"file": "Tracnar_Faribol_Tome_02_Stratus.pdf",
+"index": 1,
+"out": "Tracnar_Faribol_002.jpg"
+},
+{
+"id": "Travis_16-18",
+"title": "Travis (16-18)",
+"rel": "Travis (16-18)",
+"file": "Travis_Tome_01_Huracan.pdf",
+"index": 0,
+"out": "Travis_16-18_001.jpg"
+},
+{
+"id": "Travis_16-18",
+"title": "Travis (16-18)",
+"rel": "Travis (16-18)",
+"file": "Travis_Tome_02_Opération_minautore.pdf",
+"index": 1,
+"out": "Travis_16-18_002.jpg"
+},
+{
+"id": "Travis_16-18",
+"title": "Travis (16-18)",
+"rel": "Travis (16-18)",
+"file": "Travis_Tome_03_Agent_du_chaos.pdf",
+"index": 2,
+"out": "Travis_16-18_003.jpg"
+},
+{
+"id": "Travis_16-18",
+"title": "Travis (16-18)",
+"rel": "Travis (16-18)",
+"file": "Travis_Tome_04_Protocole_Oslo.pdf",
+"index": 3,
+"out": "Travis_16-18_004.jpg"
+},
+{
+"id": "Travis_16-18",
+"title": "Travis (16-18)",
+"rel": "Travis (16-18)",
+"file": "Travis_Tome_05_Cybernation.pdf",
+"index": 4,
+"out": "Travis_16-18_005.jpg"
+},
+{
+"id": "Travis_16-18",
+"title": "Travis (16-18)",
+"rel": "Travis (16-18)",
+"file": "Travis_Tome_06.1_Le_hameau_des_chênes.pdf",
+"index": 5,
+"out": "Travis_16-18_006.jpg"
+},
+{
+"id": "Travis_16-18",
+"title": "Travis (16-18)",
+"rel": "Travis (16-18)",
+"file": "Travis_Tome_06.2_Topkapi.pdf",
+"index": 6,
+"out": "Travis_16-18_007.jpg"
+},
+{
+"id": "Travis_16-18",
+"title": "Travis (16-18)",
+"rel": "Travis (16-18)",
+"file": "Travis_Tome_07_La_tarantule.pdf",
+"index": 7,
+"out": "Travis_16-18_008.jpg"
+},
+{
+"id": "Travis_16-18",
+"title": "Travis (16-18)",
+"rel": "Travis (16-18)",
+"file": "Travis_Tome_08_L'or_bleu.pdf",
+"index": 8,
+"out": "Travis_16-18_009.jpg"
+},
+{
+"id": "Travis_16-18",
+"title": "Travis (16-18)",
+"rel": "Travis (16-18)",
+"file": "Travis_Tome_09_Dommy.pdf",
+"index": 9,
+"out": "Travis_16-18_010.jpg"
+},
+{
+"id": "Travis_16-18",
+"title": "Travis (16-18)",
+"rel": "Travis (16-18)",
+"file": "Travis_Tome_10_New_York_Delaware.pdf",
+"index": 10,
+"out": "Travis_16-18_011.jpg"
+},
+{
+"id": "Travis_16-18",
+"title": "Travis (16-18)",
+"rel": "Travis (16-18)",
+"file": "Travis_Tome_11_Les_enfants_de_Marcos.pdf",
+"index": 11,
+"out": "Travis_16-18_012.jpg"
+},
+{
+"id": "Travis_16-18",
+"title": "Travis (16-18)",
+"rel": "Travis (16-18)",
+"file": "Travis_Tome_12_Les_tueurs_de_fer.pdf",
+"index": 12,
+"out": "Travis_16-18_013.jpg"
+},
+{
+"id": "Travis_16-18",
+"title": "Travis (16-18)",
+"rel": "Travis (16-18)",
+"file": "Travis_Tome_13_Serpent_à_plumes.pdf",
+"index": 13,
+"out": "Travis_16-18_014.jpg"
+},
+{
+"id": "Travis_16-18",
+"title": "Travis (16-18)",
+"rel": "Travis (16-18)",
+"file": "Travis_Tome_14_Europe.pdf",
+"index": 14,
+"out": "Travis_16-18_015.jpg"
+},
+{
+"id": "Travis_16-18",
+"title": "Travis (16-18)",
+"rel": "Travis (16-18)",
+"file": "Travis_Tome_15_La_femme_qui_en_savait_trop.pdf",
+"index": 15,
+"out": "Travis_16-18_016.jpg"
+},
+{
+"id": "Travis_16-18",
+"title": "Travis (16-18)",
+"rel": "Travis (16-18)",
+"file": "Travis_Tome_16_Opération_Gorgone.pdf",
+"index": 16,
+"out": "Travis_16-18_017.jpg"
+},
+{
+"id": "Travis_16-18",
+"title": "Travis (16-18)",
+"rel": "Travis (16-18)",
+"file": "Travis_Tome_17_Les_Pluies_sèches.pdf",
+"index": 17,
+"out": "Travis_16-18_018.jpg"
+},
+{
+"id": "Travis_16-18",
+"title": "Travis (16-18)",
+"rel": "Travis (16-18)",
+"file": "Travis_Tome_18_Bleu_hydrogène.pdf",
+"index": 18,
+"out": "Travis_16-18_019.jpg"
+},
+{
+"id": "Trilogie_du_Moi",
+"title": "Trilogie du Moi",
+"rel": "Trilogie du Moi",
+"file": "Trilogie_du_Moi_Tome_01_Moi_assassin.pdf",
+"index": 0,
+"out": "Trilogie_du_Moi_001.jpg"
+},
+{
+"id": "Trilogie_du_Moi",
+"title": "Trilogie du Moi",
+"rel": "Trilogie du Moi",
+"file": "Trilogie_du_Moi_Tome_02_Moi_fou.pdf",
+"index": 1,
+"out": "Trilogie_du_Moi_002.jpg"
+},
+{
+"id": "Trilogie_du_Moi",
+"title": "Trilogie du Moi",
+"rel": "Trilogie du Moi",
+"file": "Trilogie_du_Moi_Tome_03_Moi_menteur.pdf",
+"index": 2,
+"out": "Trilogie_du_Moi_003.jpg"
+},
+{
+"id": "Triple_galop",
+"title": "Triple galop",
+"rel": "Triple galop",
+"file": "Triple_galop_Tome_01.pdf",
+"index": 0,
+"out": "Triple_galop_001.jpg"
+},
+{
+"id": "Triple_galop",
+"title": "Triple galop",
+"rel": "Triple galop",
+"file": "Triple_galop_Tome_02.pdf",
+"index": 1,
+"out": "Triple_galop_002.jpg"
+},
+{
+"id": "Triple_galop",
+"title": "Triple galop",
+"rel": "Triple galop",
+"file": "Triple_galop_Tome_03.pdf",
+"index": 2,
+"out": "Triple_galop_003.jpg"
+},
+{
+"id": "Triple_galop",
+"title": "Triple galop",
+"rel": "Triple galop",
+"file": "Triple_galop_Tome_04.pdf",
+"index": 3,
+"out": "Triple_galop_004.jpg"
+},
+{
+"id": "Une_aventure_Classic_de_Tanguy_et_Laverdure",
+"title": "Une aventure «Classic» de Tanguy et Laverdure",
+"rel": "Une aventure «Classic» de Tanguy et Laverdure",
+"file": "Une_aventure_«Classic»_de_Tanguy_et_Laverdure_Tome_01_Menace_sur_Mirage_F1.pdf",
+"index": 0,
+"out": "Une_aventure_Classic_de_Tanguy_et_Laverdure_001.jpg"
+},
+{
+"id": "Une_aventure_Classic_de_Tanguy_et_Laverdure",
+"title": "Une aventure «Classic» de Tanguy et Laverdure",
+"rel": "Une aventure «Classic» de Tanguy et Laverdure",
+"file": "Une_aventure_«Classic»_de_Tanguy_et_Laverdure_Tome_02_L'avion_qui_tuait_ses_pilotes.pdf",
+"index": 1,
+"out": "Une_aventure_Classic_de_Tanguy_et_Laverdure_002.jpg"
+},
+{
+"id": "Une_aventure_Classic_de_Tanguy_et_Laverdure",
+"title": "Une aventure «Classic» de Tanguy et Laverdure",
+"rel": "Une aventure «Classic» de Tanguy et Laverdure",
+"file": "Une_aventure_«Classic»_de_Tanguy_et_Laverdure_Tome_03_Coups_de_feu_dans_les_Alpes.pdf",
+"index": 2,
+"out": "Une_aventure_Classic_de_Tanguy_et_Laverdure_003.jpg"
+},
+{
+"id": "Une_aventure_Classic_de_Tanguy_et_Laverdure",
+"title": "Une aventure «Classic» de Tanguy et Laverdure",
+"rel": "Une aventure «Classic» de Tanguy et Laverdure",
+"file": "Une_aventure_«Classic»_de_Tanguy_et_Laverdure_Tome_04_Le_Pilote_qui_en_savait_de_trop.pdf",
+"index": 3,
+"out": "Une_aventure_Classic_de_Tanguy_et_Laverdure_004.jpg"
+},
+{
+"id": "Une_aventure_Classic_de_Tanguy_et_Laverdure",
+"title": "Une aventure «Classic» de Tanguy et Laverdure",
+"rel": "Une aventure «Classic» de Tanguy et Laverdure",
+"file": "Une_aventure_«Classic»_de_Tanguy_et_Laverdure_Tome_05_Le_mystere_du_Sabre_jaune.pdf",
+"index": 4,
+"out": "Une_aventure_Classic_de_Tanguy_et_Laverdure_005.jpg"
+},
+{
+"id": "Une_aventure_Classic_de_Tanguy_et_Laverdure",
+"title": "Une aventure «Classic» de Tanguy et Laverdure",
+"rel": "Une aventure «Classic» de Tanguy et Laverdure",
+"file": "Une_aventure_«Classic»_de_Tanguy_et_Laverdure_Tome_07_Une_taupe_chez_les_Cigognes.pdf",
+"index": 5,
+"out": "Une_aventure_Classic_de_Tanguy_et_Laverdure_006.jpg"
+},
+{
+"id": "Universal_War_One",
+"title": "Universal War One",
+"rel": "Universal War One",
+"file": "Universal_War_One_Tome_01_La_génèse.pdf",
+"index": 0,
+"out": "Universal_War_One_001.jpg"
+},
+{
+"id": "Universal_War_One",
+"title": "Universal War One",
+"rel": "Universal War One",
+"file": "Universal_War_One_Tome_02_Le_Fruit_de_la_Connaissance.pdf",
+"index": 1,
+"out": "Universal_War_One_002.jpg"
+},
+{
+"id": "Universal_War_One",
+"title": "Universal War One",
+"rel": "Universal War One",
+"file": "Universal_War_One_Tome_03_Caïn_et_Abel.pdf",
+"index": 2,
+"out": "Universal_War_One_003.jpg"
+},
+{
+"id": "Universal_War_One",
+"title": "Universal War One",
+"rel": "Universal War One",
+"file": "Universal_War_One_Tome_04_Le_déluge.pdf",
+"index": 3,
+"out": "Universal_War_One_004.jpg"
+},
+{
+"id": "Universal_War_One",
+"title": "Universal War One",
+"rel": "Universal War One",
+"file": "Universal_War_One_Tome_05_Babel.pdf",
+"index": 4,
+"out": "Universal_War_One_005.jpg"
+},
+{
+"id": "Universal_War_One",
+"title": "Universal War One",
+"rel": "Universal War One",
+"file": "Universal_War_One_Tome_06_Le_Patriarche.pdf",
+"index": 5,
+"out": "Universal_War_One_006.jpg"
+},
+{
+"id": "Universal_War_Two",
+"title": "Universal War Two",
+"rel": "Universal War Two",
+"file": "Universal_War_Two_Tome_01_Le_temps_du_désert.pdf",
+"index": 0,
+"out": "Universal_War_Two_001.jpg"
+},
+{
+"id": "Universal_War_Two",
+"title": "Universal War Two",
+"rel": "Universal War Two",
+"file": "Universal_War_Two_Tome_02_La_terre_promise.pdf",
+"index": 1,
+"out": "Universal_War_Two_002.jpg"
+},
+{
+"id": "Universal_War_Two",
+"title": "Universal War Two",
+"rel": "Universal War Two",
+"file": "Universal_War_Two_Tome_03_L'Exode.pdf",
+"index": 2,
+"out": "Universal_War_Two_003.jpg"
+},
+{
+"id": "Verdun",
+"title": "Verdun",
+"rel": "Verdun",
+"file": "Verdun_Tome_01_Avant_l'orage.pdf",
+"index": 0,
+"out": "Verdun_001.jpg"
+},
+{
+"id": "Verdun",
+"title": "Verdun",
+"rel": "Verdun",
+"file": "Verdun_Tome_02_L'Agonie_du_fort_de_Vaux.pdf",
+"index": 1,
+"out": "Verdun_002.jpg"
+},
+{
+"id": "Verdun",
+"title": "Verdun",
+"rel": "Verdun",
+"file": "Verdun_Tome_03_Les_Fusillés_de_Fleury.pdf",
+"index": 2,
+"out": "Verdun_003.jpg"
+},
+{
+"id": "Vikings",
+"title": "Vikings",
+"rel": "Vikings",
+"file": "Vikings_Tome_01_Au_Nom_des_Dieux.pdf",
+"index": 0,
+"out": "Vikings_001.jpg"
+},
+{
+"id": "Vikings",
+"title": "Vikings",
+"rel": "Vikings",
+"file": "Vikings_Tome_02_Insurrection.pdf",
+"index": 1,
+"out": "Vikings_002.jpg"
+},
+{
+"id": "Vikings_dans_la_brume",
+"title": "Vikings dans la brume",
+"rel": "Vikings dans la brume",
+"file": "Vikings_dans_la_brume_Tome_03.pdf",
+"index": 2,
+"out": "Vikings_dans_la_brume_003.jpg"
+},
+{
+"id": "W_I_T_C_H",
+"title": "W.I.T.C.H",
+"rel": "W.I.T.C.H",
+"file": "W.I.T.C.H._Tome_01_Halloween.pdf",
+"index": 0,
+"out": "W_I_T_C_H_001.jpg"
+},
+{
+"id": "W_I_T_C_H",
+"title": "W.I.T.C.H",
+"rel": "W.I.T.C.H",
+"file": "W.I.T.C.H._Tome_02_Les_douze_portails.pdf",
+"index": 1,
+"out": "W_I_T_C_H_002.jpg"
+},
+{
+"id": "W_I_T_C_H",
+"title": "W.I.T.C.H",
+"rel": "W.I.T.C.H",
+"file": "W.I.T.C.H._Tome_03_L'autre_dimension.pdf",
+"index": 2,
+"out": "W_I_T_C_H_003.jpg"
+},
+{
+"id": "W_I_T_C_H",
+"title": "W.I.T.C.H",
+"rel": "W.I.T.C.H",
+"file": "W.I.T.C.H._Tome_04_Le_pouvoir_du_feu.pdf",
+"index": 3,
+"out": "W_I_T_C_H_004.jpg"
+},
+{
+"id": "W_I_T_C_H",
+"title": "W.I.T.C.H",
+"rel": "W.I.T.C.H",
+"file": "W.I.T.C.H._Tome_05_La_dernière_Larme.pdf",
+"index": 4,
+"out": "W_I_T_C_H_005.jpg"
+},
+{
+"id": "W_I_T_C_H",
+"title": "W.I.T.C.H",
+"rel": "W.I.T.C.H",
+"file": "W.I.T.C.H._Tome_06_Illusions_et_Mensonges.pdf",
+"index": 5,
+"out": "W_I_T_C_H_006.jpg"
+},
+{
+"id": "West_Fantasy",
+"title": "West Fantasy",
+"rel": "West Fantasy",
+"file": "West_Fantasy_Tome_05_L'assassin_le_rônin_et_la_catin.pdf",
+"index": 4,
+"out": "West_Fantasy_005.jpg"
+},
+{
+"id": "West_Fantasy",
+"title": "West Fantasy",
+"rel": "West Fantasy",
+"file": "West_Fantasy_Tome_06_Le_Barbier_le_Prêcheur_et_la_Dame_de_pique.pdf",
+"index": 5,
+"out": "West_Fantasy_006.jpg"
+},
+{
+"id": "Western_Love",
+"title": "Western Love",
+"rel": "Western Love",
+"file": "Western_Love_Tome_01_La_Teigne_et_le_gentil.pdf",
+"index": 0,
+"out": "Western_Love_001.jpg"
+},
+{
+"id": "Western_Love",
+"title": "Western Love",
+"rel": "Western Love",
+"file": "Western_Love_Tome_02_Noël_en_famille.pdf",
+"index": 1,
+"out": "Western_Love_002.jpg"
+},
+{
+"id": "Yvain_le_chevalier_au_lion",
+"title": "Yvain le chevalier au lion",
+"rel": "Yvain le chevalier au lion",
+"file": "Yvain_le_chevalier_au_lion_Tome_01_La_fontaine_magique.pdf",
+"index": 0,
+"out": "Yvain_le_chevalier_au_lion_001.jpg"
+},
+{
+"id": "Yvain_le_chevalier_au_lion",
+"title": "Yvain le chevalier au lion",
+"rel": "Yvain le chevalier au lion",
+"file": "Yvain_le_chevalier_au_lion_Tome_02_Le_serment_du_preux.pdf",
+"index": 1,
+"out": "Yvain_le_chevalier_au_lion_002.jpg"
+},
+{
+"id": "Zoé_baby_sitter",
+"title": "Zoé baby sitter",
+"rel": "Zoé baby sitter",
+"file": "Zoé_baby_sitter_Tome_01_C'est_pas_moi!.pdf",
+"index": 0,
+"out": "Zoe_baby_sitter_001.jpg"
+},
+{
+"id": "Zoé_baby_sitter",
+"title": "Zoé baby sitter",
+"rel": "Zoé baby sitter",
+"file": "Zoé_baby_sitter_Tome_02_Restons_Zen.pdf",
+"index": 1,
+"out": "Zoe_baby_sitter_002.jpg"
+},
+{
+"id": "Œil_De_Dragon",
+"title": "Œil De Dragon",
+"rel": "Œil De Dragon",
+"file": "Œil_De_Dragon_Tome_01_L'exil.pdf",
+"index": 0,
+"out": "il_De_Dragon_001.jpg"
+},
+{
+"id": "Œil_De_Dragon",
+"title": "Œil De Dragon",
+"rel": "Œil De Dragon",
+"file": "Œil_De_Dragon_Tome_03_Le_Piège.pdf",
+"index": 1,
+"out": "il_De_Dragon_002.jpg"
+},
+{
+"id": "Œil_De_Dragon",
+"title": "Œil De Dragon",
+"rel": "Œil De Dragon",
+"file": "Œil_de_dragon_Tome_02_L'attaque.pdf",
+"index": 2,
+"out": "il_De_Dragon_003.jpg"
+}
+]

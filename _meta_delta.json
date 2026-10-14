@@ -1,0 +1,602 @@
+{
+"Alika": {
+"author": "John-Simon Loche, Frédéric Brrémaud",
+"raw": "John-Simon Loche, Frédéric Brrémaud"
+},
+"Alzéor Mondraggo": {
+"author": "Pierre Makyo, David Caryn",
+"raw": "Pierre Makyo, David Caryn"
+},
+"Anta": {
+"author": "Anaële Hermans, Gaspard Talmasse, Nour Diop",
+"raw": "Anaële Hermans, Gaspard Talmasse, Nour Diop"
+},
+"Antichristus": {
+"author": "Bruno Falba, Vladimir Aleksic",
+"raw": "Bruno Falba, Vladimir Aleksic"
+},
+"Archipel": {
+"author": "Eric Corbeyran, Yohan Barbay",
+"raw": "Eric Corbeyran, Yohan Barbay"
+},
+"Arctica (13-14)": {
+"author": "Daniel Pecqueur, Bojan Kovacevic",
+"raw": "Daniel Pecqueur, Bojan Kovacevic"
+},
+"Atana": {
+"author": "Vivian Zhou",
+"raw": "Vivian Zhou"
+},
+"Aven": {
+"author": "Stefan Astier, Laurent Astier",
+"raw": "Stefan Astier, Laurent Astier"
+},
+"Aya de Yopougon": {
+"author": "Marguerite Abouet, Clément Oubrerie",
+"raw": "Marguerite Abouet, Clément Oubrerie"
+},
+"Azaqi": {
+"author": "Nicolas Jarry, Gianluca Maconi",
+"raw": "Nicolas Jarry, Gianluca Maconi"
+},
+"Azur": {
+"author": "Philippe Ogaki",
+"raw": "Philippe Ogaki"
+},
+"Basil Victoria MANQUE CDS": {
+"author": "Yann, Edith",
+"raw": "Yann, Edith"
+},
+"Belem": {
+"author": "Jean-Yves Delitte",
+"raw": "Jean-Yves Delitte"
+},
+"Black Hammer": {
+"author": "Jeff Lemire, Dean Ormston",
+"raw": "Jeff Lemire, Dean Ormston"
+},
+"Breizh Histoire de la Bretagne": {
+"author": "Nicolas Jarry, Thierry Jigourel, Daniel Brecht",
+"raw": "Nicolas Jarry, Thierry Jigourel, Daniel Brecht"
+},
+"Cellule Poison": {
+"author": "Laurent Astier",
+"raw": "Laurent Astier"
+},
+"Chasseurs d'Héritiers": {
+"author": "Nicolas Jarry, Benoît Rivière, Guillaume Tavernier",
+"raw": "Nicolas Jarry, Benoît Rivière, Guillaume Tavernier"
+},
+"Chiens & Loups": {
+"author": "Noël Simsolo, Dominique Hé",
+"raw": "Noël Simsolo, Dominique Hé"
+},
+"Chroniques de la guerre des fées": {
+"author": "Thomas Mosdi, Kyko Duarte",
+"raw": "Thomas Mosdi, Kyko Duarte"
+},
+"Cirk": {
+"author": "Laurent Astier",
+"raw": "Laurent Astier"
+},
+"Codex Sinaïticus": {
+"author": "Arnaud Delalande, Yvon Bertorello, Alessio Lapo, Giuseppe Quattrocchi",
+"raw": "Arnaud Delalande, Yvon Bertorello, Alessio Lapo, Giuseppe Quattrocchi"
+},
+"Colt Pepper": {
+"author": "Darko Macan, Igor Kordey",
+"raw": "Darko Macan, Igor Kordey"
+},
+"Cosmopirates": {
+"author": "Alejandro Jodorowsky, Pete Woods",
+"raw": "Alejandro Jodorowsky, Pete Woods"
+},
+"Creepy Past": {
+"author": "Bruno Enna, Giovanni Di Gregorio, Giovanni Rigano",
+"raw": "Bruno Enna, Giovanni Di Gregorio, Giovanni Rigano"
+},
+"Criminal": {
+"author": "Ed Brubaker, Sean Phillips",
+"raw": "Ed Brubaker, Sean Phillips"
+},
+"Croquemitaines": {
+"author": "Djet, Mathieu Salvia",
+"raw": "Djet, Mathieu Salvia"
+},
+"Crusades": {
+"author": "Izu, Alex Nikolavitch, Zhang Xiaoyu",
+"raw": "Izu, Alex Nikolavitch, Zhang Xiaoyu"
+},
+"Dantès": {
+"author": "Pierre Boisserie, Philippe Guillaume, Erik Juszezak",
+"raw": "Pierre Boisserie, Philippe Guillaume, Erik Juszezak"
+},
+"Dawn of Superman": {
+"author": "Joshua Williamson, Phillip Kennedy Johnson",
+"raw": "Joshua Williamson, Phillip Kennedy Johnson"
+},
+"De bruit & de fureur": {
+"author": "Philippe Pelaez, Éric Liberge",
+"raw": "Philippe Pelaez, Éric Liberge"
+},
+"Descender": {
+"author": "Jeff Lemire, Dustin Nguyen",
+"raw": "Jeff Lemire, Dustin Nguyen"
+},
+"Donnington": {
+"author": "Philippe Richelle, Jean-Yves Delitte",
+"raw": "Philippe Richelle, Jean-Yves Delitte"
+},
+"Durandal MANQUE CDS": {
+"author": "Nicolas Jarry, Michel Lemercier",
+"raw": "Nicolas Jarry, Michel Lemercier"
+},
+"Elecboy": {
+"author": "Jaouen Salaün",
+"raw": "Jaouen Salaün"
+},
+"Empire USA": {
+"author": "Stephen Desberg, Griffo",
+"raw": "Stephen Desberg, Griffo"
+},
+"Fang": {
+"author": "Joe Kelly, Niko Henrichon",
+"raw": "Joe Kelly, Niko Henrichon"
+},
+"Femmes en résistance": {
+"author": "Emmanuelle Polack, Régis Hautière, Francis Laboutique, Pierre Wachs",
+"raw": "Emmanuelle Polack, Régis Hautière, Francis Laboutique, Pierre Wachs"
+},
+"Gideon Falls": {
+"author": "Jeff Lemire, Andrea Sorrentino",
+"raw": "Jeff Lemire, Andrea Sorrentino"
+},
+"Happy End": {
+"author": "Olivier Jouvray, Benjamin Jurdic",
+"raw": "Olivier Jouvray, Benjamin Jurdic"
+},
+"Havana Split": {
+"author": "Frédéric Brrémaud, Vic Macioci",
+"raw": "Frédéric Brrémaud, Vic Macioci"
+},
+"In nomine": {
+"author": "Olivier Peru, Denis Bechu",
+"raw": "Olivier Peru, Denis Bechu"
+},
+"Je suis Cathare MANQUE CDS": {
+"author": "Pierre Makyo, Alessandro Calore",
+"raw": "Pierre Makyo, Alessandro Calore"
+},
+"Jeanne des Embruns": {
+"author": "Jean-Christophe Deveney, Valentin Varrel",
+"raw": "Jean-Christophe Deveney, Valentin Varrel"
+},
+"Kaël": {
+"author": "Olivier Gay, Kan-J",
+"raw": "Olivier Gay, Kan-J"
+},
+"Kaplan Masson": {
+"author": "Didier Convard, Jean-Christophe Thibert",
+"raw": "Didier Convard, Jean-Christophe Thibert"
+},
+"Katsuo": {
+"author": "Franck Dumanche, Stéphane Tamaillon",
+"raw": "Franck Dumanche, Stéphane Tamaillon"
+},
+"Kaya": {
+"author": "Wes Craig",
+"raw": "Wes Craig"
+},
+"L'Affaire des affaires": {
+"author": "Laurent Astier, Denis Robert, Yan Lindingre",
+"raw": "Laurent Astier, Denis Robert, Yan Lindingre"
+},
+"L'âge d'or": {
+"author": "Cyril Pedrosa, Roxanne Moreil",
+"raw": "Cyril Pedrosa, Roxanne Moreil"
+},
+"L'ambulance 13": {
+"author": "Patrick Cothias, Patrice Ordas, Alain Mounier",
+"raw": "Patrick Cothias, Patrice Ordas, Alain Mounier"
+},
+"L'ange corse": {
+"author": "Loulou Dédola, Luca Ferrara",
+"raw": "Loulou Dédola, Luca Ferrara"
+},
+"L'ennemi": {
+"author": "Thierry Robberecht, Alberto Pagliaro",
+"raw": "Thierry Robberecht, Alberto Pagliaro"
+},
+"L'Epervier": {
+"author": "Patrice Pellerin",
+"raw": "Patrice Pellerin"
+},
+"L'Evangile selon Satan": {
+"author": "Antoine Maurel, David Cerqueira",
+"raw": "Antoine Maurel, David Cerqueira"
+},
+"L'île de minuit": {
+"author": "Lylian, Nicolas Grebil",
+"raw": "Lylian, Nicolas Grebil"
+},
+"L'ombre des lumières": {
+"author": "Alain Ayroles, Richard Guérineau",
+"raw": "Alain Ayroles, Richard Guérineau"
+},
+"L'or des Belges": {
+"author": "Pierre Boisserie, Philippe Guillaume, Stéphane Brangier",
+"raw": "Pierre Boisserie, Philippe Guillaume, Stéphane Brangier"
+},
+"L'ordre de Cicéron": {
+"author": "Richard Malka, Paul Gillon",
+"raw": "Richard Malka, Paul Gillon"
+},
+"La 6e Heure": {
+"author": "Nicolas Pona, Juan Ferreyra",
+"raw": "Nicolas Pona, Juan Ferreyra"
+},
+"La brigade des cauchemars": {
+"author": "Franck Thilliez, Yomgui Dumont",
+"raw": "Franck Thilliez, Yomgui Dumont"
+},
+"La cour des miracles": {
+"author": "Stéphane Piatzszek, Julien Maffre",
+"raw": "Stéphane Piatzszek, Julien Maffre"
+},
+"La Duelliste": {
+"author": "Francesco Trifogli, Andrea Celestini",
+"raw": "Francesco Trifogli, Andrea Celestini"
+},
+"La main de Dieu": {
+"author": "Marc Védrines",
+"raw": "Marc Védrines"
+},
+"La Mondaine": {
+"author": "Zidrou, Jordi Lafebre",
+"raw": "Zidrou, Jordi Lafebre"
+},
+"La Rose et la Croix": {
+"author": "Nicolas Jarry, France Richemond, Luigi Critone",
+"raw": "Nicolas Jarry, France Richemond, Luigi Critone"
+},
+"La venin": {
+"author": "Laurent Astier",
+"raw": "Laurent Astier"
+},
+"Le 3e œil": {
+"author": "Eric Corbeyran, Espé",
+"raw": "Eric Corbeyran, Espé"
+},
+"Le Cinquième évangile": {
+"author": "Jean-Luc Istin, Thimothée Montaigne, Élodie Jacquemoire",
+"raw": "Jean-Luc Istin, Thimothée Montaigne, Élodie Jacquemoire"
+},
+"Le coeur en braille": {
+"author": "Joris Chamblain, Anne-Lise Nalin, Pascal Ruter",
+"raw": "Joris Chamblain, Anne-Lise Nalin, Pascal Ruter"
+},
+"Le Crépuscule des dieux": {
+"author": "Nicolas Jarry, Djief, Gwendal Lemercier, Jean-Luc Istin",
+"raw": "Nicolas Jarry, Djief, Gwendal Lemercier, Jean-Luc Istin"
+},
+"Le Décalogue": {
+"author": "Frank Giroud, Joseph Béhé",
+"raw": "Frank Giroud, Joseph Béhé"
+},
+"Le grimoire d'Elfie MANQUE CDS": {
+"author": "Christophe Arleston, Audrey Alwett, Mini Ludvin",
+"raw": "Christophe Arleston, Audrey Alwett, Mini Ludvin"
+},
+"Le monde de Charline": {
+"author": "Raoul Paoli",
+"raw": "Raoul Paoli"
+},
+"Le Petit Prince": {
+"author": null,
+"raw": "Régis Loisel, Didier Poli, Moebius, Nikolas Kéramidas, Tebo, Didier Convard, Griffo, Matthieu Bonhomme, Makyo, Olivier Supiot, Jérôme Jouvray, Jacques Lamontagne, Philipe Adamov, Ptiluc, Éric Adam, Hugnes Micol, André Juillard"
+},
+"Le Prince de la Nuit": {
+"author": "Yves Swolfs",
+"raw": "Yves Swolfs"
+},
+"Le révérend": {
+"author": "Augustin Lebon, Lylian",
+"raw": "Augustin Lebon, Lylian"
+},
+"Le Territoire": {
+"author": "Eric Corbeyran, Espé",
+"raw": "Eric Corbeyran, Espé"
+},
+"Le Trône d'argile": {
+"author": "Nicolas Jarry, France Richemond, Theo Caneschi",
+"raw": "Nicolas Jarry, France Richemond, Theo Caneschi"
+},
+"Léo Loden (30-30 + 2-5 HS)": {
+"author": "Christophe Arleston, Serge Carrère",
+"raw": "Christophe Arleston, Serge Carrère"
+},
+"Léonard (30-57 + 0-9 HS)": {
+"author": "Turk, Bob de Groot",
+"raw": "Turk, Bob de Groot"
+},
+"Les Amazones": {
+"author": "Clarke, Ludowick Borecki",
+"raw": "Clarke, Ludowick Borecki"
+},
+"Les Chevaliers d'Émeraude": {
+"author": "Anne Robillard, Tiburce Oger",
+"raw": "Anne Robillard, Tiburce Oger"
+},
+"Les Druides": {
+"author": "Jean-Luc Istin, Thierry Jigourel, Jacques Lamontagne",
+"raw": "Jean-Luc Istin, Thierry Jigourel, Jacques Lamontagne"
+},
+"Les enquêtes de Gabriel Joly": {
+"author": "Philippe Thirault, Jacob Damien, Henri Lœvenbruck",
+"raw": "Philippe Thirault, Jacob Damien, Henri Lœvenbruck"
+},
+"Les Enquêtes du FBI": {
+"author": "Tom Sullivan",
+"raw": "Tom Sullivan"
+},
+"Les Fleury Nadal": {
+"author": "Frank Giroud, Lucien Rollin",
+"raw": "Frank Giroud, Lucien Rollin"
+},
+"Les Foot furieux MANQUE LE 28": {
+"author": "Gurcan Gursel",
+"raw": "Gurcan Gursel"
+},
+"Les légendes de Clash": {
+"author": "Gene Luen Yang, Les McClaine, Alison Acton",
+"raw": "Gene Luen Yang, Les McClaine, Alison Acton"
+},
+"Les nuits écorchées": {
+"author": "Régis Penet",
+"raw": "Régis Penet"
+},
+"Les Ogres Dieux": {
+"author": "Hubert, Bertrand Gatignol",
+"raw": "Hubert, Bertrand Gatignol"
+},
+"Les pionniers": {
+"author": "Guillaume Dorison, Damien Maric, Jean-Baptiste Hostache",
+"raw": "Guillaume Dorison, Damien Maric, Jean-Baptiste Hostache"
+},
+"Les Princes d'Ambre": {
+"author": "Nicolas Jarry, Benoît Dellac, Roger Zelazny",
+"raw": "Nicolas Jarry, Benoît Dellac, Roger Zelazny"
+},
+"Les Rois Forgerons": {
+"author": "Nicolas Jarry, Tregis",
+"raw": "Nicolas Jarry, Tregis"
+},
+"Les sortilèges de Zora MANQUE CDS": {
+"author": "Judith Peignen, Ariane Delrieu",
+"raw": "Judith Peignen, Ariane Delrieu"
+},
+"Les souliers rouges": {
+"author": "Gérard Cousseau, Damien Cuvillier",
+"raw": "Gérard Cousseau, Damien Cuvillier"
+},
+"Les souris du Louvre": {
+"author": "Joris Chamblain, Sandrine Goalec, Drac",
+"raw": "Joris Chamblain, Sandrine Goalec, Drac"
+},
+"Les Voleurs d'empires": {
+"author": "Jean Dufaux, Martin Jamar",
+"raw": "Jean Dufaux, Martin Jamar"
+},
+"Léviathan": {
+"author": "Luc Brunschwig, Florent Bossard, Aurélien Ducoudray",
+"raw": "Luc Brunschwig, Florent Bossard, Aurélien Ducoudray"
+},
+"Lost Atlantide": {
+"author": "Thomas Mosdi, Majo, Mambba",
+"raw": "Thomas Mosdi, Majo, Mambba"
+},
+"Magic 7": {
+"author": "Kid Toussaint, Giuseppe Quattrocchi, Rosa La Barbera",
+"raw": "Kid Toussaint, Giuseppe Quattrocchi, Rosa La Barbera"
+},
+"Mangetrouille": {
+"author": "Jean-Christophe Deveney, Sébastien Spagnolo",
+"raw": "Jean-Christophe Deveney, Sébastien Spagnolo"
+},
+"Mercenaires": {
+"author": "Nicolas Jarry, Paolo Deplano",
+"raw": "Nicolas Jarry, Paolo Deplano"
+},
+"Metropolia": {
+"author": "Fred Duval, Ingo Römling",
+"raw": "Fred Duval, Ingo Römling"
+},
+"Millénium": {
+"author": "Sylvain Runberg, José Homs, Stieg Larsson",
+"raw": "Sylvain Runberg, José Homs, Stieg Larsson"
+},
+"Molières": {
+"author": "Vincent Delmas, Sergio Gerasi",
+"raw": "Vincent Delmas, Sergio Gerasi"
+},
+"Molly West": {
+"author": "Philippe Charlot, Xavier Fourquemin",
+"raw": "Philippe Charlot, Xavier Fourquemin"
+},
+"Monster": {
+"author": "Naoki Urasawa",
+"raw": "Naoki Urasawa"
+},
+"Monstre": {
+"author": "Enki Bilal",
+"raw": "Enki Bilal"
+},
+"Mortesève": {
+"author": "Quentin Rigaud",
+"raw": "Quentin Rigaud"
+},
+"Muraille": {
+"author": "Francis Laboutique, Iñaki Holgado",
+"raw": "Francis Laboutique, Iñaki Holgado"
+},
+"Nanami": {
+"author": "Nauriel, Amélie Sarn, Eric Corbeyran",
+"raw": "Nauriel, Amélie Sarn, Eric Corbeyran"
+},
+"Noir Horizon": {
+"author": "Philippe Pelaez, Benjamin Blasco-Martinez",
+"raw": "Philippe Pelaez, Benjamin Blasco-Martinez"
+},
+"Œil De Dragon": {
+"author": "Cha Sandmæl",
+"raw": "Cha Sandmæl"
+},
+"Olive": {
+"author": "Véronique Cazot, Lucy Mazel",
+"raw": "Véronique Cazot, Lucy Mazel"
+},
+"Outcast": {
+"author": "Robert Kirkman, Paul Azaceta",
+"raw": "Robert Kirkman, Paul Azaceta"
+},
+"Paroles de Poilus 1914 1918": {
+"author": "Jean-Pierre Guéno",
+"raw": "Jean-Pierre Guéno"
+},
+"Pour un peu de bonheur": {
+"author": "Laurent Galandon, A. Dan",
+"raw": "Laurent Galandon, A. Dan"
+},
+"Ray Ringo": {
+"author": "Eric Corbeyran, Roman Surzhenko",
+"raw": "Eric Corbeyran, Roman Surzhenko"
+},
+"Renégat": {
+"author": "Carlos Estefan, Pedor Mauro",
+"raw": "Carlos Estefan, Pedor Mauro"
+},
+"Résilience": {
+"author": "Augustin Lebon, Louise Joor",
+"raw": "Augustin Lebon, Louise Joor"
+},
+"Révolutionnaires!": {
+"author": "Régis Hautière, Xavier Fourquemin",
+"raw": "Régis Hautière, Xavier Fourquemin"
+},
+"Roger et ses humains": {
+"author": "Paka, Cyprien Iov",
+"raw": "Paka, Cyprien Iov"
+},
+"Rose Crow": {
+"author": "Amélie Sarn, Lise Garçon",
+"raw": "Amélie Sarn, Lise Garçon"
+},
+"Royal city": {
+"author": "Jeff Lemire",
+"raw": "Jeff Lemire"
+},
+"Rue de la grande truanderie": {
+"author": "Jean-David Morvan, Romain Rousseaux Perin",
+"raw": "Jean-David Morvan, Romain Rousseaux Perin"
+},
+"Sa majesté des ours": {
+"author": "Olivier Vatine, Dobbs, Didier Cassegrain",
+"raw": "Olivier Vatine, Dobbs, Didier Cassegrain"
+},
+"Sept jours pour une éternité": {
+"author": "Marc Levy, Espé, Eric Corbeyran",
+"raw": "Marc Levy, Espé, Eric Corbeyran"
+},
+"Servitudes": {
+"author": "Fabrice David, Eric Bourgier",
+"raw": "Fabrice David, Eric Bourgier"
+},
+"Seuls (16-16)": {
+"author": "Fabien Vehlmann, Bruno Gazzotti",
+"raw": "Fabien Vehlmann, Bruno Gazzotti"
+},
+"Si seulement": {
+"author": "Rodolphe, Lounis Chabane",
+"raw": "Rodolphe, Lounis Chabane"
+},
+"Solo": {
+"author": "Oscar Martin",
+"raw": "Oscar Martin"
+},
+"Star Wars Mini Séries": {
+"author": "Mark Waid, Terry Dodson",
+"raw": "Mark Waid, Terry Dodson"
+},
+"Terra Prime": {
+"author": "Philippe Ogaki",
+"raw": "Philippe Ogaki"
+},
+"Terres d'Ynuma": {
+"author": "Nicolas Jarry, Vax",
+"raw": "Nicolas Jarry, Vax"
+},
+"The Prism": {
+"author": "Matteo de Longis",
+"raw": "Matteo de Longis"
+},
+"Tiago Solan": {
+"author": "Nathalie Sergeef, Fabio Pezzi",
+"raw": "Nathalie Sergeef, Fabio Pezzi"
+},
+"Totem MANQUE CDS": {
+"author": "Kid Toussaint, James Christ",
+"raw": "Kid Toussaint, James Christ"
+},
+"Tracnar Faribol": {
+"author": "Benoit du Peloux",
+"raw": "Benoit du Peloux"
+},
+"Travis (16-18)": {
+"author": "Fred Duval, Christophe Quet",
+"raw": "Fred Duval, Christophe Quet"
+},
+"Trilogie du Moi": {
+"author": "Antonio Altarriba, Keko",
+"raw": "Antonio Altarriba, Keko"
+},
+"Triple galop": {
+"author": "Benoit du Peloux, Rodrique",
+"raw": "Benoit du Peloux, Rodrique"
+},
+"Une aventure «Classic» de Tanguy et Laverdure": {
+"author": "Patrice Buendia, Jean-Michel Charlier, Matthieu Durand",
+"raw": "Patrice Buendia, Jean-Michel Charlier, Matthieu Durand"
+},
+"Universal War One": {
+"author": "Denis Bajram",
+"raw": "Denis Bajram"
+},
+"Universal War Two": {
+"author": "Denis Bajram",
+"raw": "Denis Bajram"
+},
+"Verdun": {
+"author": "Jean-Yves Le Naour, Marko, Iñaki Holgado",
+"raw": "Jean-Yves Le Naour, Marko, Iñaki Holgado"
+},
+"Vikings": {
+"author": "Cavan Scott, Staz Johnson",
+"raw": "Cavan Scott, Staz Johnson"
+},
+"W.I.T.C.H": {
+"author": "Elisabetta Gnone, Donald Soffritti, Francesco Artibani, Alessandro Barbucci",
+"raw": "Elisabetta Gnone, Donald Soffritti, Francesco Artibani, Alessandro Barbucci"
+},
+"Western Love": {
+"author": "Augustin Lebon",
+"raw": "Augustin Lebon"
+},
+"Yvain le chevalier au lion": {
+"author": "Luc Ferry, Clotilde Bruneau, Diego Oddi",
+"raw": "Luc Ferry, Clotilde Bruneau, Diego Oddi"
+},
+"Zoé baby sitter": {
+"author": "Audrey Alwett, Benjamin Jurdic",
+"raw": "Audrey Alwett, Benjamin Jurdic"
+}
+}
