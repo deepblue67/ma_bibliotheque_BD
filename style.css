@@ -806,3 +806,36 @@ main { max-width: 1400px; margin: 0 auto; padding: 32px 20px 80px; }
 .theme-card[aria-pressed="true"] .tc-check { display: flex; }
 
 .settings-foot { margin-top: 22px; font-size: 11.5px; color: var(--muted); }
+
+/* =====================================================================
+   MODE PROPRIÉTAIRE
+   ===================================================================== */
+/* Tout ce qui montre ou modifie un statut est réservé au propriétaire. */
+html:not(.is-owner) .owner-only { display: none !important; }
+
+.owner-status { font-size: 13px; color: var(--text); margin: 0 0 12px; line-height: 1.4; }
+.owner-status.on { border-left: 4px solid var(--read); padding-left: 10px; }
+.owner-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.owner-form { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 6px; }
+.owner-input {
+  flex: 1 1 180px; min-width: 0;
+  font: 600 14px var(--font-body);
+  padding: 10px 12px;
+  border: var(--bw-m) solid var(--line);
+  border-radius: var(--r-field);
+  background: var(--surface); color: var(--text);
+  box-shadow: var(--sh-field);
+}
+.btn-ghost { background: transparent; box-shadow: none; }
+.owner-gen { margin-top: 14px; }
+.owner-gen[hidden], .owner-out[hidden] { display: none; }
+.owner-msg { font-size: 12.5px; font-weight: 700; min-height: 16px; margin: 4px 0 0; color: var(--text-soft); }
+.owner-msg.err { color: var(--fav); }
+.owner-out { margin-top: 10px; }
+.owner-line {
+  font: 12px ui-monospace, Menlo, Consolas, monospace;
+  background: var(--surface); color: var(--text);
+  border: 1px dashed var(--line); border-radius: 6px;
+  padding: 10px; white-space: pre-wrap; word-break: break-all; margin: 8px 0 10px;
+}
+.settings-hint code, .owner-status code { font-size: 12px; }

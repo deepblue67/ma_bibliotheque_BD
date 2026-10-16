@@ -6,3 +6,9 @@ window.BD_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJz
 // Les couvertures sont hébergées sur Supabase Storage (bucket public "covers"),
 // pas dans le dépôt Git — le site les charge depuis cette base d'URL.
 window.BD_IMAGE_BASE = "https://aotudxyifqhyazluxhko.supabase.co/storage/v1/object/public/covers/";
+
+// Mode propriétaire : empreinte (PBKDF2) du code propriétaire, PAS le code lui-même.
+// Vide = mode propriétaire non configuré : l'appli est en lecture seule pour tout le
+// monde. Pour la remplir : Réglages → Mode propriétaire → « Générer l'empreinte », puis
+// recopier ici la ligne affichée et publier.
+window.BD_OWNER_HASH = "ff4fc89ec7b3ecf298f13defaa78e242e59e4a3c66d92e8ae4159f40e3d10e1a";

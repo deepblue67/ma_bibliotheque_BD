@@ -10,7 +10,7 @@ Catalogue personnel de bandes dessinées de Christophe (**1003 séries, 968 one-
 - **Design** : 10 thèmes au choix (roue crantée → Réglages), voir la section « Thèmes et réglages ». Le thème par défaut reste la direction d'origine, "Kiosque BD" — style comic pulpe (police Bangers pour les titres, Archivo pour le reste, palette crème/rouge/noir, fond à trame demi-teinte dans le header). Les 3 directions écartées au départ ("Bibliothèque" épurée, "Atelier Noir" sombre, "Fiche d'Archive" catalogue) sont devenues des thèmes.
 - **Données** : `data/catalog.json`, généré une fois par un pipeline de scripts Python (voir plus bas), à régénérer à chaque ajout/retrait de BD dans la collection source.
 - **Couvertures** : hébergées sur **Supabase Storage** (pas dans le dépôt Git — trop de fichiers, voir section dédiée), **une par tome** (extraites automatiquement depuis la première page de chaque fichier PDF/cbz).
-- **Synchro "lu"/"favoris"** : deux tables Postgres sur **Supabase** (`bd_volume_status` pour le "lu" par tome, `bd_status` pour les favoris par titre), lues/écrites en direct par le navigateur (clé publique "anon"), avec Realtime pour propager les changements entre appareils sans recharger la page. Pas d'authentification (usage personnel mono-utilisateur).
+- **Synchro "lu"/"favoris"** : deux tables Postgres sur **Supabase** (`bd_volume_status` pour le "lu" par tome, `bd_status` pour les favoris par titre), lues/écrites en direct par le navigateur (clé publique "anon"), avec Realtime pour propager les changements entre appareils sans recharger la page. Pas d'authentification Supabase : l'accès aux statuts est filtré côté appli par le **mode propriétaire** (code), voir la section dédiée.
 
 ## Structure des fichiers du site
 
@@ -25,12 +25,14 @@ ma-bibliotheque-bd/
 │                        #   rendu grille + fiche détail, lu par tome (calcul du "lu" titre),
 │                        #   favoris par titre, aperçu couverture par tome, sync Supabase
 ├── config.js            # identifiants Supabase (URL + clé anon — publics, sans risque)
+│                        #   + BD_OWNER_HASH (empreinte du code propriétaire, pas le code)
 │                        #   + BD_IMAGE_BASE (préfixe des couvertures sur Supabase Storage)
 ├── apple-touch-icon.png  # icône écran d'accueil iPad/iPhone (180×180, convention racine)
 ├── favicon.ico           # favicon multi-résolution (onglet navigateur)
 ├── site.webmanifest      # manifest PWA (icônes Android/Chrome, nom, couleurs)
 ├── icons/                 # déclinaisons de tailles de l'icône (apple-touch-icon-*, favicon-*,
 │                        #   android-chrome-*) — voir section dédiée plus bas
+├── masquages.json         # fiches masquées à l'import (doublons) — voir « Fiches masquées »
 ├── genre_map.json         # id -> {genres, confidence, source} — modifiable à la main,
 │                        #   lu par build_public_catalog_v2.py (voir section "Genres")
 ├── genre_taxonomy.json    # liste fixe des genres, informatif (la vraie source pour l'appli
@@ -227,7 +229,7 @@ L'index de recherche est calculé une seule fois, au chargement du catalogue. La
 
 ## Thèmes et réglages
 
-La roue crantée, en haut à droite, ouvre le panneau **Réglages**. Pour l'instant il ne contient que le choix du thème ; le mode propriétaire viendra s'y ajouter. Les 10 thèmes : *Kiosque BD* (défaut, l'original), *Atelier noir*, *Bibliothèque*, *Fiche d'archive*, *Ligne claire*, *Manga*, *Comics US*, *Western*, *Néon SF*, *Pastel jeunesse*.
+La roue crantée, en haut à droite, ouvre le panneau **Réglages**. Il contient le choix du thème et le **mode propriétaire** (section suivante). Les 10 thèmes : *Kiosque BD* (défaut, l'original), *Atelier noir*, *Bibliothèque*, *Fiche d'archive*, *Ligne claire*, *Manga*, *Comics US*, *Western*, *Néon SF*, *Pastel jeunesse*.
 
 Fonctionnement :
 - `style.css` ne contient plus aucune couleur en dur. Tout passe par une quarantaine de variables (`--bg`, `--accent`, `--line`, `--bw-l`, `--sh-card`, `--font-display`…) définies dans `:root` pour le thème par défaut, puis redéfinies dans un bloc `[data-theme="…"]` par thème. Un thème change aussi les épaisseurs de trait, les ombres, les arrondis et les polices, pas seulement les couleurs. **Pour ajouter un thème** : un bloc dans `style.css` et une ligne dans `themes.js`.
@@ -236,6 +238,44 @@ Fonctionnement :
 - Le choix est mémorisé **par appareil** (`localStorage`, clé `bd_theme_v1`), sans synchronisation Supabase : ton iPhone et ton PC peuvent avoir chacun le leur. Il suffirait d'une colonne dans Supabase pour synchroniser le thème si on le voulait un jour.
 - Toutes les polices retenues contiennent les caractères français (vérifié glyphe par glyphe : É, È, Ç, Œ, œ, ’, « »…).
 - Le zoom plein écran sur une couverture garde volontairement un fond noir quel que soit le thème.
+
+## Mode propriétaire
+
+Choix validé avec Christophe : la protection est un **code**. C'est un garde-fou contre les fausses manipulations, pas une serrure, et il en a été informé.
+
+**Ce que voit chacun.** Sur un appareil en **mode visiteur** (par défaut), l'appli montre la bibliothèque et rien d'autre : pas de pastilles Lu / En cours / ★, pas de puces Lus / En cours / Non lus / Favoris, pas de cases à cocher sur les tomes, pas de boutons « marquer comme lu » / favoris. Les statuts ne sont même **pas téléchargés** depuis Supabase, et le cache local n'est pas lu. Sur un appareil en **mode propriétaire**, tout réapparaît et la synchro Supabase fonctionne comme avant. Mécanique : une classe `is-owner` sur `<html>` ; tout élément marqué `owner-only` est masqué sans elle, et `app.js` teste `IS_OWNER` avant chaque affichage de statut.
+
+**Comment c'est vérifié.** Le code n'est enregistré nulle part. `config.js` contient `window.BD_OWNER_HASH`, une empreinte **PBKDF2-SHA-256** (200 000 itérations, sel fixe `ma-bibliotheque-bd/owner/v1`) calculée dans le navigateur avec `crypto.subtle`, qui exige une page en https. À la saisie du bon code, l'appareil garde cette même empreinte dans son `localStorage` (clé `bd_owner_v1`) et reste déverrouillé. « Quitter le mode propriétaire » l'efface. Si l'empreinte de `config.js` change (changement de code), **tous** les appareils repassent automatiquement en visiteur.
+
+**Limite assumée.** Les règles Supabase (RLS) acceptent toujours les écritures avec la clé publique, et la clé anon permet aussi de lire les statuts. Quelqu'un qui lit le code source peut donc lire ou écrire les statuts directement dans la base. Pour un vrai verrou, il faudrait l'authentification Supabase (lien magique par e-mail) et des règles RLS réservées au compte de Christophe. Cette option (b) a été écartée pour l'instant.
+
+**Mise en service (deux publications) :**
+1. Publier l'appli avec `BD_OWNER_HASH = ""` : elle est alors en lecture seule pour **tout le monde**, Christophe compris. C'est voulu : mieux vaut un défaut fermé.
+2. Sur le site : Réglages → Mode propriétaire → saisir deux fois le code (6 caractères minimum) → « Générer l'empreinte » → copier la ligne `window.BD_OWNER_HASH = "…";` affichée.
+3. La recopier dans `config.js` **et incrémenter `config.js?v=` dans `index.html`** (sinon des appareils peuvent garder l'ancien `config.js` en cache), puis publier. Plus simple : envoyer la ligne à Claude, qui fait les deux. L'empreinte n'est pas un secret, puisqu'elle est de toute façon publique dans `config.js` sur GitHub.
+4. Sur chaque appareil : Réglages → saisir le code → « Déverrouiller ».
+
+**Variante sans double publication** : calculer l'empreinte **sur le PC**, avant la première publication, avec la commande PowerShell ci-dessous (Windows 10/11, sans rien installer). Le code est demandé de façon masquée, n'est pas affiché et ne reste pas dans l'historique. Il ne faut **jamais** taper son code dans un site « calculateur de hash » en ligne. Copier ensuite la ligne affichée dans `config.js` (ou l'envoyer à Claude), puis publier une seule fois.
+
+```powershell
+$c = Read-Host "Code propriétaire" -AsSecureString; $p = [Runtime.InteropServices.Marshal]::PtrToStringBSTR([Runtime.InteropServices.Marshal]::SecureStringToBSTR($c)); $k = New-Object Security.Cryptography.Rfc2898DeriveBytes(([Text.Encoding]::UTF8.GetBytes($p)), ([Text.Encoding]::UTF8.GetBytes('ma-bibliotheque-bd/owner/v1')), 200000, ([Security.Cryptography.HashAlgorithmName]::SHA256)); 'window.BD_OWNER_HASH = "' + (($k.GetBytes(32) | ForEach-Object { $_.ToString('x2') }) -join '') + '";'
+```
+
+Résultat vérifié identique à l'appli, y compris avec des accents dans le code. Équivalent en Python : `hashlib.pbkdf2_hmac('sha256', code.encode(), b'ma-bibliotheque-bd/owner/v1', 200000).hex()`.
+
+**Pourquoi PBKDF2 et pas un simple SHA-256 de `préfixe:code`** (méthode utilisée sur l'autre appli de Christophe) : l'empreinte est publique, puisqu'elle est dans `config.js` sur GitHub. Avec un SHA-256 simple, un code de 6 à 8 caractères se retrouve par force brute en quelques minutes ; PBKDF2 à 200 000 itérations rend chaque essai 200 000 fois plus coûteux. L'enjeu n'est pas l'appli elle-même, puisque le mode propriétaire n'est qu'un garde-fou, mais le code : on réutilise souvent un même code ailleurs. La contrepartie est qu'un calculateur SHA-256 « ordinaire » ne suffit plus, d'où la commande PowerShell.
+
+**Changer de code** : en mode propriétaire, « Changer de code… » génère une nouvelle ligne, à publier de la même façon. **Code oublié** : générer une nouvelle empreinte depuis n'importe quel appareil et la publier. Le générateur n'a besoin d'aucun droit, puisque c'est la publication sur GitHub qui fait foi.
+
+## Fiches masquées (`masquages.json`)
+
+Une fiche **masquée** reste dans `data/catalog.json`, avec `"hidden": true` et une `hidden_reason`, mais l'appli ne l'affiche ni ne la compte jamais. C'est voulu : le prochain import la retrouve, la reconnaît et ne la réinsère pas. `masquages.json` est la liste de référence (id → fiche qui la remplace, raison, date) : tout import doit la réappliquer. **Pour démasquer** une fiche, la retirer de `masquages.json` et régénérer le catalogue.
+
+Premier usage (octobre 2026) : les **7 séries en double** créées par l'import d'octobre, qui avait ajouté les nouveaux dossiers d'une série au lieu de remplacer les anciens. Dans chaque cas, le dossier gardé contient **tous** les fichiers de l'ancien (vérifié fichier par fichier) plus un tome : *Arctica (13-13)*, *Les Foot furieux* (gardé : *MANQUE LE 28*, qui a le tome 29), *Léo Loden (29-29…)*, *Léonard (30-56…)*, *Seuls (15-15)*, *Travis (16-17)*. S'y ajoute *Légendes de la table ronde bis*, copie identique. Aucune de ces fiches n'avait de favori ni de tome coché (vérifié dans Supabase), donc rien n'a été perdu.
+
+**Pas un doublon** : *Ulysse* et *Ulysse (Tabou)*. Même dessinateur (Cosimo Ferri), mais des albums entièrement différents : *Tabou* est l'édition adulte. Les deux restent visibles.
+
+Ce masquage « à l'import » est géré par Claude. Le futur masquage **depuis l'appli**, en mode propriétaire, sera stocké dans Supabase, rattaché aux mêmes identifiants.
 
 ## One-shots (dossier `BD Unique`)
 
@@ -310,3 +350,5 @@ Ou plus simple : pousser directement sur GitHub Pages (qui sert en https, aucun 
 - Import des **one-shots** (octobre 2026) : +968 one-shots et +1 série (*Le Transperceneige*), soit 1971 entrées et 8101 albums. Mélangés avec les séries, avec une mention « One-shot » et des puces de filtre *Séries* / *One-shots*. Détails dans la section « One-shots ». L'interface gagne un **chargement différé fiable** des vignettes (IntersectionObserver), indispensable au-delà de ~1000 vignettes. Les 3 séries qui ont des tomes cochés (*Alter Ego*, *Lloyd Singer - Makabi*, *Louise Beauvoir*) n'ont pas été touchées. Le doublon de *Louise Beauvoir* trouvé dans `BD Unique` a été écarté plutôt qu'ajouté à la série, ce qui évitait au passage de décaler ses index.
 - Piège rencontré (et corrigé avant tout envoi) : **Windows ne distingue pas les majuscules dans les noms de fichiers**. La couverture du one-shot `Le_petit_Prince_001.jpg` a donc écrasé, dans `volume_covers/`, celle de la série `Le_Petit_Prince_001.jpg`, alors que les deux noms semblaient différents dans le conteneur Linux. Restaurée depuis la copie de la VM (vérifiée par empreinte md5) et renommée `Le_petit_Prince_2_001.jpg`. Règle désormais appliquée : **l'unicité des noms de couverture (et des `id`) se vérifie sans tenir compte de la casse**. Supabase Storage, lui, distingue la casse, ce qui explique que le problème ne se voie qu'en local.
 - Recherche améliorée et thèmes (octobre 2026) : la recherche porte désormais aussi sur les titres de tomes, accepte plusieurs mots dans le désordre et ignore apostrophes et ponctuation (section « Recherche »). Ajout d'une roue crantée et d'un panneau Réglages avec 10 thèmes visuels (section « Thèmes et réglages »). Le thème par défaut est l'ancien design, inchangé à un détail près : le bandeau d'info sombre des vignettes s'étend désormais jusqu'en bas de la carte. Les 10 thèmes ont été contrôlés à l'écran avec les vraies polices ; c'est ce contrôle qui a fait corriger deux problèmes de contraste avant livraison (la mention « One-shot » dorée était illisible sur les vignettes à fond blanc, d'où la variable dédiée `--card-oneshot`, et le titre blanc était trop pâle sur le rose du thème Pastel). Pas de changement de catalogue ni de Supabase pour ce lot.
+- **Mode propriétaire** et **masquage des doublons** (octobre 2026) : protection par code choisie (option a), statuts invisibles pour les visiteurs, thème par appareil (déjà le cas), et 7 séries en double masquées dès maintenant. L'appli affiche 996 séries, 968 one-shots et 7930 albums visibles. Test en navigateur des cinq situations : non configuré, visiteur, mauvais code refusé, propriétaire, retour en visiteur après « Quitter » ou après un changement d'empreinte.
+- Mode propriétaire **mis en service** (16 octobre 2026) par la variante sans double publication : empreinte calculée par Christophe sur son PC avec la commande PowerShell, puis inscrite dans `config.js` (`config.js?v=4`). Le code n'a jamais transité par la conversation, seule l'empreinte y est passée. Leçon au passage : un envoi de fichier vers le PC a deux fois écrit **l'ancienne version** d'un fichier sans signaler d'erreur (`config.js`, puis `README.md`). Depuis, chaque livraison est contrôlée en comparant l'empreinte md5 des fichiers sur le PC à celle des fichiers préparés.

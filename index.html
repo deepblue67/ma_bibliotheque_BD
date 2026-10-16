@@ -25,7 +25,7 @@
 <!-- themes.js est volontairement bloquant et placé AVANT style.css : il pose le thème
      mémorisé (et charge ses polices) avant le premier affichage. -->
 <script src="themes.js?v=1"></script>
-<link rel="stylesheet" href="style.css?v=7">
+<link rel="stylesheet" href="style.css?v=8">
 </head>
 <body>
 
@@ -55,11 +55,11 @@
         </select>
       </div>
       <div class="chips">
-        <button class="chip toggle" id="filter-read">Lus</button>
-        <button class="chip toggle" id="filter-inprogress">En cours</button>
-        <button class="chip toggle" id="filter-unread">Non lus</button>
-        <button class="chip toggle" id="filter-fav">★ Favoris</button>
-        <span class="chip-sep" aria-hidden="true"></span>
+        <button class="chip toggle owner-only" id="filter-read">Lus</button>
+        <button class="chip toggle owner-only" id="filter-inprogress">En cours</button>
+        <button class="chip toggle owner-only" id="filter-unread">Non lus</button>
+        <button class="chip toggle owner-only" id="filter-fav">★ Favoris</button>
+        <span class="chip-sep owner-only" aria-hidden="true"></span>
         <button class="chip toggle" id="filter-series">Séries</button>
         <button class="chip toggle" id="filter-oneshot">One-shots</button>
       </div>
@@ -90,7 +90,7 @@
         <div id="sheet-author" class="sheet-author"></div>
         <div id="sheet-meta" class="sheet-meta"></div>
         <div id="sheet-genres" class="sheet-genres"></div>
-        <div class="sheet-actions">
+        <div class="sheet-actions owner-only">
           <button id="btn-read" class="btn btn-outline">Marquer comme lu</button>
           <button id="btn-fav" class="btn btn-outline">★ Ajouter aux favoris</button>
         </div>
@@ -115,6 +115,10 @@
         <p class="settings-hint">Le changement est immédiat. Le thème est mémorisé sur cet appareil : ton iPhone et ton PC peuvent avoir chacun le leur.</p>
         <div id="theme-grid" class="theme-grid"></div>
       </section>
+      <section class="settings-section">
+        <h3 class="settings-h">Mode propriétaire</h3>
+        <div id="owner-panel"></div>
+      </section>
       <p class="settings-foot">Ma Bibliothèque BD</p>
     </div>
   </div>
@@ -128,7 +132,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=2"></script>
-<script src="app.js?v=8"></script>
+<script src="config.js?v=4"></script>
+<script src="app.js?v=9"></script>
 </body>
 </html>

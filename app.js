@@ -9,6 +9,32 @@
     "Jeunesse", "Policier / Thriller", "Science-fiction", "Super-héros", "Western"
   ];
 
+  // ---------- mode propriétaire ----------
+  // Garde-fou, pas une serrure : sans le code, les statuts (lu, en cours, favoris) ne
+  // sont ni lus ni affichés, et les commandes qui écrivent dans Supabase n'apparaissent
+  // pas. Mais les règles Supabase restent ouvertes en écriture à la clé publique : quelqu'un
+  // qui lit le code source peut toujours écrire dans la base. Le code n'est stocké nulle
+  // part. config.js ne contient que son empreinte PBKDF2 (BD_OWNER_HASH), et l'appareil
+  // déverrouillé garde cette même empreinte dans son localStorage.
+  var OWNER_KEY = "bd_owner_v1";
+  var OWNER_SALT = "ma-bibliotheque-bd/owner/v1";
+  var OWNER_ITER = 200000;
+  function ownerHashConfigured() { return (window.BD_OWNER_HASH || "").trim().toLowerCase(); }
+  function ownerHashStored() { try { return localStorage.getItem(OWNER_KEY) || ""; } catch (e) { return ""; } }
+  var IS_OWNER = !!ownerHashConfigured() && ownerHashStored() === ownerHashConfigured();
+  document.documentElement.classList.toggle("is-owner", IS_OWNER);
+
+  function deriveOwnerHash(code) {
+    var enc = new TextEncoder();
+    return crypto.subtle.importKey("raw", enc.encode(code), "PBKDF2", false, ["deriveBits"])
+      .then(function (key) {
+        return crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt: enc.encode(OWNER_SALT), iterations: OWNER_ITER }, key, 256);
+      })
+      .then(function (bits) {
+        return Array.prototype.map.call(new Uint8Array(bits), function (b) { return ("0" + b.toString(16)).slice(-2); }).join("");
+      });
+  }
+
   var state = {
     catalog: [],
     favorites: {},     // titleId -> { is_favorite }
@@ -218,11 +244,14 @@
     fetch("data/catalog.json?t=" + Date.now(), { cache: "no-store" })
       .then(function (r) { return r.json(); })
       .then(function (data) {
-        state.catalog = data.entries;
+        // "hidden" : fiche masquée (ex : ancien dossier d'une série remplacé par un plus
+        // complet). Elle reste dans le catalogue pour que le prochain import la reconnaisse
+        // et ne la réinsère pas, mais elle n'est jamais affichée ni comptée.
+        state.catalog = data.entries.filter(function (e) { return !e.hidden; });
         buildSearchIndex(state.catalog);
-        var nOne = data.entries.filter(function (e) { return e.one_shot; }).length;
-        var nSer = data.entries.length - nOne;
-        var nVol = data.entries.reduce(function (t, e) { return t + e.volume_count; }, 0);
+        var nOne = state.catalog.filter(function (e) { return e.one_shot; }).length;
+        var nSer = state.catalog.length - nOne;
+        var nVol = state.catalog.reduce(function (t, e) { return t + e.volume_count; }, 0);
         els.stats.textContent = nSer + " séries · " + nOne + " one-shots · " + nVol + " albums";
         renderGrid();
       })
@@ -275,12 +304,13 @@
     if (state.filters.title && !hasAllWords(entry._qAll, state.filters.title)) return false;
     if (state.filters.author && !hasAllWords(entry._qAuthor, state.filters.author)) return false;
     if (state.filters.genre && (entry.genre || []).indexOf(state.filters.genre) === -1) return false;
-    if (state.filters.read && !read) return false;
-    if (state.filters.inprogress && !inProgress) return false;
+    if (!IS_OWNER) { /* visiteur : filtres de statut ignorés (et masqués) */ }
+    else if (state.filters.read && !read) return false;
+    if (IS_OWNER && state.filters.inprogress && !inProgress) return false;
     if (state.filters.kind === "oneshot" && !entry.one_shot) return false;
     if (state.filters.kind === "series" && entry.one_shot) return false;
-    if (state.filters.unread && readCount > 0) return false;
-    if (state.filters.fav && !fav.is_favorite) return false;
+    if (IS_OWNER && state.filters.unread && readCount > 0) return false;
+    if (IS_OWNER && state.filters.fav && !fav.is_favorite) return false;
     return true;
   }
 
@@ -367,10 +397,12 @@
       });
       badges.appendChild(zoomBtn);
     }
-    if (fav.is_favorite) {
+    if (IS_OWNER && fav.is_favorite) {
       var bf = document.createElement("span"); bf.className = "badge fav"; bf.textContent = "★"; badges.appendChild(bf);
     }
-    if (read) {
+    if (!IS_OWNER) {
+      // visiteur : pas de pastille de statut
+    } else if (read) {
       var br = document.createElement("span"); br.className = "badge read"; br.textContent = "Lu"; badges.appendChild(br);
     } else if (inProgress) {
       var bp = document.createElement("span"); bp.className = "badge inprogress"; bp.textContent = readCount + "/" + entry.volume_count + " lus"; badges.appendChild(bp);
@@ -467,7 +499,7 @@
     els.volumeList.innerHTML = "";
     entry.volumes.forEach(function (v, i) {
       var li = document.createElement("li");
-      li.className = "vol-row" + (isVolumeRead(entry.id, i) ? " is-read" : "") + (i === state.activeVolIdx ? " active" : "");
+      li.className = "vol-row" + (IS_OWNER && isVolumeRead(entry.id, i) ? " is-read" : "") + (i === state.activeVolIdx ? " active" : "");
 
       var check = document.createElement("button");
       check.type = "button";
@@ -483,7 +515,7 @@
       num.textContent = String(i + 1).padStart(2, "0");
       var label = document.createElement("span"); label.className = "vol-label"; label.textContent = v.label;
 
-      li.appendChild(check);
+      if (IS_OWNER) li.appendChild(check);
       li.appendChild(num);
       li.appendChild(label);
       li.addEventListener("click", function () {
@@ -617,9 +649,96 @@
     });
   }
 
+  function esc(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+
+  function renderOwnerPanel() {
+    var box = document.getElementById("owner-panel");
+    if (!box) return;
+    if (!window.crypto || !crypto.subtle) {
+      box.innerHTML = '<p class="settings-hint">Ce navigateur ne permet pas le mode propriétaire (il faut une page en https).</p>';
+      return;
+    }
+    var configured = !!ownerHashConfigured();
+    var html = "";
+    if (IS_OWNER) {
+      html += '<p class="owner-status on">Mode propriétaire actif sur cet appareil : tu peux cocher les statuts. Tes visiteurs, eux, ne voient que la bibliothèque.</p>' +
+              '<div class="owner-row"><button type="button" class="btn" id="owner-quit">Quitter le mode propriétaire</button>' +
+              '<button type="button" class="btn btn-ghost" id="owner-change">Changer de code…</button></div>';
+    } else if (configured) {
+      html += '<p class="owner-status">Cet appareil est en mode visiteur. Saisis ton code pour retrouver tes statuts et pouvoir les modifier.</p>' +
+              '<form id="owner-unlock" class="owner-form" autocomplete="on">' +
+              '<input type="password" id="owner-code" class="owner-input" placeholder="Code propriétaire" autocomplete="current-password" required>' +
+              '<button type="submit" class="btn">Déverrouiller</button></form>' +
+              '<p id="owner-msg" class="owner-msg" role="status"></p>';
+    } else {
+      html += '<p class="owner-status">Le mode propriétaire n\'est pas encore configuré : l\'appli est en lecture seule pour tout le monde, toi compris.</p>';
+    }
+    if (!configured || IS_OWNER) {
+      html += '<div id="owner-gen" class="owner-gen"' + (IS_OWNER ? ' hidden' : '') + '>' +
+              '<p class="settings-hint">' + (configured ? 'Choisis un nouveau code.' : 'Choisis ton code (au moins 6 caractères).') +
+              ' L\'appli en calcule une empreinte, qu\'il faudra recopier dans <code>config.js</code> puis publier. Le code lui-même n\'est enregistré nulle part.</p>' +
+              '<form id="owner-genform" class="owner-form" autocomplete="off">' +
+              '<input type="password" id="owner-new1" class="owner-input" placeholder="Code" autocomplete="new-password" minlength="6" required>' +
+              '<input type="password" id="owner-new2" class="owner-input" placeholder="Confirme le code" autocomplete="new-password" minlength="6" required>' +
+              '<button type="submit" class="btn">Générer l\'empreinte</button></form>' +
+              '<p id="owner-genmsg" class="owner-msg" role="status"></p>' +
+              '<div id="owner-out" class="owner-out" hidden></div></div>';
+    }
+    box.innerHTML = html;
+
+    var quit = document.getElementById("owner-quit");
+    if (quit) quit.addEventListener("click", function () {
+      try { localStorage.removeItem(OWNER_KEY); } catch (e) {}
+      location.reload();
+    });
+    var change = document.getElementById("owner-change");
+    if (change) change.addEventListener("click", function () {
+      document.getElementById("owner-gen").hidden = false; change.hidden = true;
+    });
+    var unlock = document.getElementById("owner-unlock");
+    if (unlock) unlock.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var msg = document.getElementById("owner-msg");
+      msg.textContent = "Vérification…"; msg.className = "owner-msg";
+      deriveOwnerHash(document.getElementById("owner-code").value).then(function (h) {
+        if (h === ownerHashConfigured()) {
+          try { localStorage.setItem(OWNER_KEY, h); } catch (e2) {}
+          location.reload();
+        } else {
+          msg.textContent = "Code incorrect."; msg.className = "owner-msg err";
+        }
+      });
+    });
+    var gen = document.getElementById("owner-genform");
+    if (gen) gen.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var a = document.getElementById("owner-new1").value, b = document.getElementById("owner-new2").value;
+      var msg = document.getElementById("owner-genmsg"), out = document.getElementById("owner-out");
+      out.hidden = true;
+      if (a.length < 6) { msg.textContent = "Le code doit faire au moins 6 caractères."; msg.className = "owner-msg err"; return; }
+      if (a !== b) { msg.textContent = "Les deux saisies ne sont pas identiques."; msg.className = "owner-msg err"; return; }
+      msg.textContent = "Calcul…"; msg.className = "owner-msg";
+      deriveOwnerHash(a).then(function (h) {
+        var line = 'window.BD_OWNER_HASH = "' + h + '";';
+        msg.textContent = "";
+        out.innerHTML = '<p class="settings-hint">Remplace la ligne <code>window.BD_OWNER_HASH</code> de <code>config.js</code> par celle-ci, puis publie (commit + push). Ensuite, reviens ici et saisis ton code pour déverrouiller.</p>' +
+                        '<pre class="owner-line">' + esc(line) + '</pre><button type="button" class="btn" id="owner-copy">Copier la ligne</button>';
+        out.hidden = false;
+        document.getElementById("owner-copy").addEventListener("click", function () {
+          var btn = this;
+          (navigator.clipboard ? navigator.clipboard.writeText(line) : Promise.reject()).then(
+            function () { btn.textContent = "✓ Copiée"; },
+            function () { btn.textContent = "Sélectionne et copie la ligne"; });
+        });
+        document.getElementById("owner-new1").value = ""; document.getElementById("owner-new2").value = "";
+      });
+    });
+  }
+
   function openSettings() {
     if (window.BD_THEMES) window.BD_THEMES.loadAllFonts();
     renderThemeGrid();
+    renderOwnerPanel();
     settingsEls.overlay.hidden = false;
     document.body.style.overflow = "hidden";
   }
@@ -650,8 +769,10 @@
 
   // ---------- boot ----------
   populateGenreFilter();
-  state.favorites = loadLocalFavorites();
-  state.volumeRead = loadLocalVolumeRead();
+  if (IS_OWNER) {
+    state.favorites = loadLocalFavorites();
+    state.volumeRead = loadLocalVolumeRead();
+  }
   loadCatalog();
-  initSupabase();
+  if (IS_OWNER) initSupabase();
 })();

@@ -1,0 +1,40 @@
+{
+ "_comment": "Fiches masquées par l'import : elles restent dans data/catalog.json avec \"hidden\": true (pour que le prochain import les reconnaisse et ne les réinsère pas) mais l'appli ne les affiche jamais. Pour démasquer une fiche : la retirer d'ici et demander une régénération du catalogue.",
+ "masquees": {
+  "Arctica_13-13": {
+   "remplacee_par": "Arctica_13-14",
+   "raison": "ancien dossier, remplacé par « Arctica (13-14) » qui contient les 13 mêmes tomes + le tome 14",
+   "date": "2026-10"
+  },
+  "Les_Foot_furieux": {
+   "remplacee_par": "Les_Foot_furieux_MANQUE_LE_28",
+   "raison": "ancien dossier, remplacé par « Les Foot furieux MANQUE LE 28 » qui contient les 35 mêmes tomes + le tome 29",
+   "date": "2026-10"
+  },
+  "Légendes_de_la_table_ronde_bis": {
+   "remplacee_par": "Légendes_de_la_Table_Ronde",
+   "raison": "copie à l'identique (mêmes 3 fichiers) de « Légendes de la Table Ronde »",
+   "date": "2026-10"
+  },
+  "Léo_Loden_29-29_2-5_HS": {
+   "remplacee_par": "Léo_Loden_30-30_2-5_HS",
+   "raison": "ancien dossier, remplacé par « Léo Loden (30-30 + 2-5 HS) » qui contient les 31 mêmes tomes + le tome 30",
+   "date": "2026-10"
+  },
+  "Léonard_30-56_0-9_HS": {
+   "remplacee_par": "Léonard_30-57_0-9_HS",
+   "raison": "ancien dossier, remplacé par « Léonard (30-57 + 0-9 HS) » qui contient les 56 mêmes tomes + le tome 57",
+   "date": "2026-10"
+  },
+  "Seuls_15-15": {
+   "remplacee_par": "Seuls_16-16",
+   "raison": "ancien dossier, remplacé par « Seuls (16-16) » qui contient les 15 mêmes tomes + le tome 16",
+   "date": "2026-10"
+  },
+  "Travis_16-17": {
+   "remplacee_par": "Travis_16-18",
+   "raison": "ancien dossier, remplacé par « Travis (16-18) » qui contient les 18 mêmes tomes + le tome 18",
+   "date": "2026-10"
+  }
+ }
+}
