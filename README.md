@@ -1,6 +1,6 @@
 # Ma Bibliothèque BD
 
-Catalogue personnel de bandes dessinées de Christophe (**1002 séries, 7130 albums**) : recherche par titre/auteur/genre, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
+Catalogue personnel de bandes dessinées de Christophe (**1003 séries, 968 one-shots, 8101 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
 
 > **À faire vivre** : ce fichier doit être mis à jour à chaque changement fonctionnel, visuel ou technique. Il sert de mémoire au propriétaire du projet et de point de reprise rapide pour Claude/Codex lors d'une prochaine session.
 
@@ -33,20 +33,23 @@ ma-bibliotheque-bd/
 ├── genre_taxonomy.json    # liste fixe des genres, informatif (la vraie source pour l'appli
 │                        #   est le tableau GENRES dans app.js)
 ├── data/
-│   └── catalog.json     # catalogue généré (1002 entrées) — voir schéma plus bas
+│   └── catalog.json     # catalogue généré (1971 entrées : 1003 séries + 968 one-shots)
 ├── pending_covers.json   # FICHIER DE TRAVAIL d'une mise à jour "delta" : liste des tomes
 │                        #   dont la couverture reste à extraire (voir "Mise à jour du
 │                        #   catalogue en mode delta"). Peut être supprimé une fois
 │                        #   l'extraction terminée.
-├── volume_covers/        # copie locale des couvertures (une par TOME, ~7082 fichiers)
+├── pending_oneshots.json # FICHIERS DE TRAVAIL de l'import des one-shots (oct. 2026) et
+├── pending_missing.json  #   de la récupération des couvertures .cbr — supprimables
+├── volume_covers_oneshots/ # les 1018 couvertures de l'import one-shots, à envoyer via
+│                        #   uploader.html — GITIGNORÉ, supprimable une fois envoyé
+├── volume_covers/        # copie locale des couvertures (une par TOME, ~8100 fichiers)
 │                        #   — GITIGNORÉ, ne sert qu'à alimenter uploader.html
 ├── covers/               # ancien dossier (couverture par TITRE) — obsolète, gardé
 │                        #   gitignoré, peut être supprimé
 ├── uploader.html         # outil pour envoyer les couvertures vers Supabase Storage
 │                        #   (sélectionner "volume_covers") — GITIGNORÉ, jamais publié
-└── .gitignore            # exclut covers/, volume_covers/, uploader.html et les
-                         #   fichiers de travail d'une mise à jour delta (pending_covers.json,
-                         #   _*.json, _to_delete/)
+└── .gitignore            # exclut covers/, volume_covers*/, uploader.html et les
+                         #   fichiers de travail (pending_*.json, _*.json, _to_delete/)
 ```
 
 ### Schéma d'une entrée de `data/catalog.json`
@@ -65,9 +68,12 @@ Depuis le passage au **suivi de lecture par tome**, chaque volume a sa propre co
   ],
   "cover": "Thorgal_001.jpg",       // = volumes[0].cover, utilisé pour la vignette de la grille
   "parent_series": null,            // ex: "Thorgal" pour l'entrée "Thorgal - Les mondes de Thorgal"
-  "genre": ["Fantasy", "Aventure"]  // 0 à 2 valeurs, tirées de la liste fixe — voir section "Genres"
+  "genre": ["Fantasy", "Aventure"], // 0 à 2 valeurs, tirées de la liste fixe — voir section "Genres"
+  "one_shot": true                  // PRÉSENT UNIQUEMENT sur les one-shots (absent = série)
 }
 ```
+
+Un **one-shot** est une entrée ordinaire avec un seul tome, dont le libellé est le titre de l'album, et `one_shot: true`. Il passe donc par exactement le même code que les séries : coche « lu » sur son unique tome (clé Supabase `"<id>::0"`), favoris, genre, recherche. Aucune table ni colonne Supabase n'a été ajoutée pour eux.
 
 `cover` (au niveau tome ou titre) peut être `null` si l'extraction a échoué pour ce fichier (ex : `.cbr`, PDF corrompu) — l'appli affiche alors une case vide à la place de l'image.
 
@@ -206,6 +212,26 @@ Cette liste vit à deux endroits qui doivent rester synchronisés : `genre_taxon
 
 Résultat : `genre_map.json` (id → `{genres, confidence, source}`) — `confidence: "low"` signale un genre à prendre avec réserve. Contrairement aux autres manifestes du pipeline (qui restent sur la VM Linux locale, invisibles depuis Windows), **`genre_map.json` et `genre_taxonomy.json` sont placés directement à la racine du dossier `ma-bibliotheque-bd`**, donc visibles et modifiables dans l'Explorateur — c'est fait exprès, puisque c'est le seul fichier du pipeline pensé pour être corrigé à la main. Si tu repères une erreur en parcourant l'appli, le plus simple reste de me le signaler, mais tu peux aussi éditer directement la ligne correspondante dans `genre_map.json` toi-même — il suffit ensuite de redemander à Claude de relancer `build_public_catalog_v2.py` (script resté côté VM) pour régénérer `data/catalog.json`. Ces deux fichiers ne sont pas gitignorés : ils partent avec le reste du dépôt lors du push (ce sont de petits fichiers texte, sans problème de volume comme les couvertures).
 
+## One-shots (dossier `BD Unique`)
+
+Depuis octobre 2026, `D:\Christophe\Mes BD\BD Unique` contient les BD **sans suite** (un seul album) : 989 fichiers au premier import. Choix validé avec Christophe : elles sont **mélangées avec les séries** (même grille, même recherche, même tri alphabétique), avec la mention « One-shot » sur la vignette et dans la fiche, et deux puces de filtre **Séries** / **One-shots**, qui s'excluent mutuellement, pour les isoler à la demande.
+
+⚠️ **`BD Unique` est un dossier DANS `Mes BD`** : tout futur scan des séries doit l'**exclure**, au même titre que `1 2 3 A CLASSER` et `1 2 3 A TRIER`, sinon il deviendrait une « série » de 989 tomes. Le statut « one-shot » vient du **dossier** et pas du nombre de tomes : certaines séries n'ont qu'un tome chez Christophe (*The Prism*, dont il n'a que le tome 2) sans être des one-shots.
+
+**Tri du premier import** — sur les 989 fichiers, **968 one-shots** ont été retenus, plus :
+- *Le Transperceneige* (`01`, `02`, `03`) → **série** de 3 tomes, malgré son rangement dans `BD Unique` ;
+- *Survivants – Anomalies quantiques, Épisode 5* → **rattaché** à la série existante, dont il est l'épisode manquant (épisodes 1 à 4 déjà présents ; ajouté en fin de liste, aucun index existant décalé) ;
+- **17 fichiers écartés** : 6 non-BD — dont **2 documents personnels** (un historique de commandes Uber Eats et une fiche technique produit, à ne surtout pas publier puisque le catalogue est sur GitHub) et 4 magazines (*Mieux Vivre Votre Argent*, *Valeurs Actuelles*, 2 × *Twenty*) —, 5 doublons d'albums déjà dans une série (*Roxelane 1*, *Louise Beauvoir – Disparition en Corse*, *Éclore*, l'intégrale de *Crusades*, *Jour J – Kennedy* qui réunit les tomes 5 et 10), et 6 doublons internes (même album en `.pdf` et `.cbz`, ou deux noms de fichier). Les revues **de BD** (*Topo*, *La Revue Dessinée*, *Nemu*) sont gardées, comme *Le Journal de Spirou* et *Le journal de Mickey*.
+- **Homonymes conservés comme œuvres distinctes**, après vérification des auteurs et du nombre de pages : *Angor* (Thilliez, ≠ série de Gaudin), *Kaya* (Barbato, ≠ série de Wes Craig), *Le petit Prince* (Sfar, ≠ série Dorison/Bruneau), deux *Dracula* (Tynion IV / Georges-Bess) et deux *Hitler* (Mizuki / Croci). Règle : même titre **et** auteurs différents ⇒ deux œuvres.
+
+**Titres** : on prend le titre des métadonnées PDF quand il correspond au nom de fichier (vérifié par similarité), car il garde la ponctuation que le nom de fichier perd (« Natacha & Co », « Forever, bitch », « Mon ami Kim Jong-un ») ; sinon on prend le nom de fichier nettoyé (`_CDS_`, `fr.downmagaz.net`, `[2021]`… retirés).
+**Auteurs** : 912/968 venaient des métadonnées PDF (ou du nom de fichier), 6 ont été complétés par connaissance, soit 918 en tout, et **50 restent vides**, sans qu'aucun ait été deviné.
+**Genres** : 961/968 classés par une passe « connaissance » sur titre + auteur. **633 sur 969 sont en `confidence: "low"`** dans `genre_map.json` (genre déduit plutôt que connu, `source: "oneshot_pass1"`). C'est la partie la moins fiable du catalogue, à corriger au fil de l'eau.
+
+**Côté appli**, le passage de ~1000 à ~2000 vignettes a imposé un **chargement différé** : tout charger à l'ouverture aurait représenté ~140 Mo sur l'iPhone. On n'utilise volontairement **pas** `loading="lazy"` (natif), qui s'était montré peu fiable ici, mais un `IntersectionObserver` explicite (marge de 800 px) dans `app.js`, avec un repli sur le chargement direct pour les navigateurs qui ne le connaissent pas. Mesuré au test : 35 vignettes chargées à l'ouverture au lieu de 1971. La recherche texte attend aussi 150 ms après la dernière frappe avant de reconstruire la grille.
+
+**Couvertures `.cbr` enfin lisibles** : le pipeline initial ne savait pas ouvrir les archives RAR (pas d'`unrar` sur la VM). Le paquet Python `libarchive-c`, qui s'appuie sur `libarchive` déjà présent, les lit très bien. `extract_covers_generic.py` (VM, `~/bd-catalog/`) gère donc PDF, CBZ et CBR à partir d'un fichier `pending_*.json`. Effet de bord : **46 des 48 tomes anciens restés sans couverture** en ont maintenant une (dont les 37 *Astérix*). Les 2 restants sont des **fichiers abîmés sur le disque** : `Jeremiah/Divers/Le monde selon Jeremiah.pdf` ne contient que des zéros, et l'intégrale 4 de *The Boys* est un PDF sans aucune page. Un `.cbz` de *La geste des chevaliers dragons* était en réalité une archive RAR renommée.
+
 ## Points restés ouverts (au moment de la rédaction)
 
 **46 BD sans genre identifié** (toutes antérieures à octobre 2026 : les 150 séries ajoutées ensuite ont toutes au moins un genre) (voir section "Genres" ci-dessus pour la méthode) — champ `genre: []`, invisibles au filtre genre tant qu'elles n'ont pas été classées manuellement dans `genre_map.json`. Par ailleurs, une bonne partie des genres non vérifiés en ligne (`confidence: "low"` dans `genre_map.json`) restent des estimations à corriger au fil de l'eau si une erreur saute aux yeux.
@@ -233,7 +259,7 @@ Ou plus simple : pousser directement sur GitHub Pages (qui sert en https, aucun 
 
 ## Déploiement
 
-1. `covers/`, `volume_covers/`, `uploader.html` et les fichiers de travail d'une mise à jour delta sont exclus via `.gitignore` — le commit ne contient que le code + `data/catalog.json` (~715 Ko).
+1. `covers/`, les dossiers `volume_covers*/`, `uploader.html` et les fichiers de travail sont exclus via `.gitignore` — le commit ne contient que le code + `data/catalog.json` (~1 Mo).
 2. Pousser sur GitHub (dépôt `ma-bibliotheque-bd`, via GitHub Desktop).
 3. Settings → Pages → source = branche `main`, dossier racine.
 4. Site en ligne à `https://<pseudo-github>.github.io/ma-bibliotheque-bd/` après 1-2 minutes.
@@ -256,3 +282,5 @@ Ou plus simple : pousser directement sur GitHub Pages (qui sert en https, aucun 
 - Leçon technique de cette mise à jour : les noms de fichiers et de dossiers de Windows arrivent tantôt en **NFC**, tantôt en **NFD** (`é` en un seul caractère, ou `e` + accent combinant). Deux conséquences vécues : un dossier (`Le Complexe du chimpanzé`) restait introuvable alors qu'il apparaissait dans la liste de son parent, et deux PDF refusaient de s'ouvrir par leur chemin reconstruit. Règle à suivre : **comparer les noms en NFC, mais toujours ouvrir les fichiers avec le nom brut lu sur le disque** (ou le retrouver en comparant les formes NFC du contenu réel du dossier).
 - Suite de la mise à jour d'octobre 2026 : Christophe a préféré **les tomes dans l'ordre** plutôt que les nouveautés ajoutées en fin de liste. Vérification faite dans Supabase, **3 séries seulement** avaient des tomes cochés (*Alter Ego*, *Lloyd Singer - Makabi*, *Louise Beauvoir*) et aucune n'était touchée par le tri : la remise en ordre s'est donc faite sans écrire une seule ligne dans `bd_volume_status`. Les 806 couvertures déjà extraites ont été **réutilisées telles quelles**, en les rattachant par *fichier source* et non par position — sans ça, le tri aurait décalé les couvertures d'un tome. Aucune ré-extraction, aucun renvoi vers Supabase Storage.
 - Bug corrigé au passage (et vrai piège à retenir) : la première version du rapprochement a **dupliqué un tome** de *Le Réseau Papillon*, qui s'est retrouvée avec 10 tomes pour 9 fichiers. Cause : son tome 07 est nommé `Le_Reseau_Papillon_...` sans accent et son tome 06 est encodé en NFD, deux cas où l'ancien script avait stocké le **nom de fichier entier** comme libellé — forme que mon rapprochement n'essayait pas. Détecté par un contrôle simple qu'il faut garder systématiquement : *nombre de tomes d'une série simple == nombre de fichiers album dans son dossier*. Les deux autres contrôles utiles : aucune couverture d'origine ne disparaît, et les couvertures d'origine restent en ordre numérique croissant au sein d'une série (sinon une couverture s'est rattachée au mauvais tome).
+- Import des **one-shots** (octobre 2026) : +968 one-shots et +1 série (*Le Transperceneige*), soit 1971 entrées et 8101 albums. Mélangés avec les séries, avec une mention « One-shot » et des puces de filtre *Séries* / *One-shots*. Détails dans la section « One-shots ». L'interface gagne un **chargement différé fiable** des vignettes (IntersectionObserver), indispensable au-delà de ~1000 vignettes. Les 3 séries qui ont des tomes cochés (*Alter Ego*, *Lloyd Singer - Makabi*, *Louise Beauvoir*) n'ont pas été touchées. Le doublon de *Louise Beauvoir* trouvé dans `BD Unique` a été écarté plutôt qu'ajouté à la série, ce qui évitait au passage de décaler ses index.
+- Piège rencontré (et corrigé avant tout envoi) : **Windows ne distingue pas les majuscules dans les noms de fichiers**. La couverture du one-shot `Le_petit_Prince_001.jpg` a donc écrasé, dans `volume_covers/`, celle de la série `Le_Petit_Prince_001.jpg`, alors que les deux noms semblaient différents dans le conteneur Linux. Restaurée depuis la copie de la VM (vérifiée par empreinte md5) et renommée `Le_petit_Prince_2_001.jpg`. Règle désormais appliquée : **l'unicité des noms de couverture (et des `id`) se vérifie sans tenir compte de la casse**. Supabase Storage, lui, distingue la casse, ce qui explique que le problème ne se voie qu'en local.

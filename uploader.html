@@ -16,7 +16,7 @@
 </head>
 <body>
 <h1>Envoi unique des couvertures vers Supabase Storage</h1>
-<p>Cette page sert à transférer les images de couverture vers ton bucket Supabase (bucket "covers"). Sélectionne le dossier <code>volume_covers/</code> (une couverture par tome, ~7082 fichiers) — tu peux relancer cet envoi à chaque fois que tu ajoutes des BD, tout est réenvoyé mais rien ne casse grâce à <code>upsert:true</code>. <strong>Plus rapide après un ajout :</strong> si un dossier <code>volume_covers_nouveaux/</code> existe, il ne contient que les couvertures de la dernière mise à jour — sélectionne celui-là, l'envoi ne porte alors que sur ces fichiers (le nom de fichier seul sert de clé dans le bucket, le dossier d'origine n'a aucune importance). Ce fichier ne fait pas partie du site final et ne doit jamais être publié sur GitHub.</p>
+<p>Cette page sert à transférer les images de couverture vers ton bucket Supabase (bucket "covers"). Sélectionne le dossier <code>volume_covers/</code> (une couverture par tome, ~8100 fichiers) — tu peux relancer cet envoi à chaque fois que tu ajoutes des BD, tout est réenvoyé mais rien ne casse grâce à <code>upsert:true</code>. <strong>Plus rapide après un ajout :</strong> les dossiers <code>volume_covers_nouveaux/</code> (octobre 2026, 807 couvertures) et <code>volume_covers_oneshots/</code> (import des one-shots, 1018 couvertures) ne contiennent que les couvertures d'une mise à jour donnée — sélectionne celui-là, l'envoi ne porte alors que sur ces fichiers (le nom de fichier seul sert de clé dans le bucket, le dossier d'origine n'a aucune importance). Ce fichier ne fait pas partie du site final et ne doit jamais être publié sur GitHub.</p>
 <p class="warn">La clé "service_role" que tu colles ci-dessous est secrète (contrairement à la clé "anon" du site) : ne la mets jamais dans le code du site, ne la commite jamais sur GitHub. Elle ne sert qu'ici, dans ton navigateur, pour cet envoi ponctuel.</p>
 
 <label for="url">Project URL</label>
@@ -25,7 +25,7 @@
 <label for="key">Clé "service_role" (Project Settings → API Keys)</label>
 <input id="key" type="password" placeholder="colle la clé service_role ici">
 
-<label for="folder">Dossier des couvertures ("volume_covers_nouveaux" après un ajout, sinon "volume_covers")</label>
+<label for="folder">Dossier des couvertures ("volume_covers_oneshots" pour le dernier import, sinon "volume_covers")</label>
 <input id="folder" type="file" webkitdirectory multiple>
 
 <button id="go">Envoyer vers Supabase</button>

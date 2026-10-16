@@ -117,6 +117,7 @@ html, body {
   transition: transform .08s ease;
 }
 .chip:active { transform: scale(0.95); }
+.chip-sep { width: 2px; align-self: stretch; background: rgba(0,0,0,.25); border-radius: 2px; margin: 4px 2px; }
 .chip[data-active="true"] {
   background: var(--ink);
   color: #fff;
@@ -183,6 +184,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 32px 20px 80px; }
 .card-title { color: #fff; font-size: 12.5px; font-weight: 700; line-height: 1.2; }
 .card-author { color: var(--tan); font-size: 10.5px; margin-top: 3px; }
 .card-count { color: #d8cfbe; font-size: 10px; margin-top: 2px; }
+.card-count.oneshot { color: var(--gold); font-weight: 800; letter-spacing: .3px; }
 
 .empty-state {
   text-align: center;

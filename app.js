@@ -13,7 +13,7 @@
     catalog: [],
     favorites: {},     // titleId -> { is_favorite }
     volumeRead: {},    // "titleId::idx" -> true
-    filters: { title: "", author: "", read: false, unread: false, inprogress: false, fav: false, genre: "" },
+    filters: { title: "", author: "", read: false, unread: false, inprogress: false, fav: false, genre: "", kind: "" },
     activeId: null,
     activeVolIdx: 0,
   };
@@ -36,6 +36,8 @@
     filterInprogress: document.getElementById("filter-inprogress"),
     filterUnread: document.getElementById("filter-unread"),
     filterFav: document.getElementById("filter-fav"),
+    filterSeries: document.getElementById("filter-series"),
+    filterOneshot: document.getElementById("filter-oneshot"),
     overlay: document.getElementById("overlay"),
     sheetClose: document.getElementById("sheet-close"),
     sheetCover: document.getElementById("sheet-cover"),
@@ -217,7 +219,10 @@
       .then(function (r) { return r.json(); })
       .then(function (data) {
         state.catalog = data.entries;
-        els.stats.textContent = data.generated_count + " séries · " + data.total_volumes + " albums";
+        var nOne = data.entries.filter(function (e) { return e.one_shot; }).length;
+        var nSer = data.entries.length - nOne;
+        var nVol = data.entries.reduce(function (t, e) { return t + e.volume_count; }, 0);
+        els.stats.textContent = nSer + " séries · " + nOne + " one-shots · " + nVol + " albums";
         renderGrid();
       })
       .catch(function () {
@@ -242,6 +247,8 @@
     if (state.filters.genre && (entry.genre || []).indexOf(state.filters.genre) === -1) return false;
     if (state.filters.read && !read) return false;
     if (state.filters.inprogress && !inProgress) return false;
+    if (state.filters.kind === "oneshot" && !entry.one_shot) return false;
+    if (state.filters.kind === "series" && entry.one_shot) return false;
     if (state.filters.unread && readCount > 0) return false;
     if (state.filters.fav && !fav.is_favorite) return false;
     return true;
@@ -256,9 +263,34 @@
     });
   }
 
+  // ---------- chargement differe des vignettes ----------
+  var lazyObserver = ("IntersectionObserver" in window) ? new IntersectionObserver(function (items) {
+    items.forEach(function (it) {
+      if (!it.isIntersecting) return;
+      var im = it.target;
+      im.src = im.getAttribute("data-src");
+      im.removeAttribute("data-src");
+      lazyObserver.unobserve(im);
+    });
+  }, { rootMargin: "800px 0px" }) : null;
+
+  function lazyImage(img, url) {
+    if (!url) return;
+    if (!lazyObserver) { img.src = url; return; }   // navigateur ancien : chargement direct
+    img.setAttribute("data-src", url);
+    lazyObserver.observe(img);
+  }
+
+  var renderTimer = null;
+  function renderGridSoon() {
+    clearTimeout(renderTimer);
+    renderTimer = setTimeout(renderGrid, 150);
+  }
+
   // ---------- render ----------
   function renderGrid() {
     var list = state.catalog.filter(matches);
+    if (lazyObserver) lazyObserver.disconnect();
     els.grid.innerHTML = "";
     els.empty.hidden = list.length > 0;
     var frag = document.createDocumentFragment();
@@ -284,7 +316,10 @@
     // chargent jamais, même visibles à l'écran) — chargement immédiat, plus
     // sûr, quitte à consommer un peu plus de bande passante à l'ouverture.
     img.alt = entry.title;
-    img.src = coverUrl(entry.cover);
+    // Chargement differe : avec ~2000 vignettes, tout charger a l'ouverture pesait
+    // ~140 Mo. On n'utilise PAS loading="lazy" (natif), qui s'etait revele peu fiable
+    // ici (vignettes jamais chargees), mais un IntersectionObserver explicite.
+    lazyImage(img, coverUrl(entry.cover));
     if (!entry.cover) img.style.display = "none";
     coverWrap.appendChild(img);
 
@@ -316,7 +351,7 @@
     info.className = "card-info";
     var t = document.createElement("div"); t.className = "card-title"; t.textContent = entry.title;
     var a = document.createElement("div"); a.className = "card-author"; a.textContent = entry.author || "Auteur non renseigné";
-    var c = document.createElement("div"); c.className = "card-count"; c.textContent = entry.volume_count + (entry.volume_count > 1 ? " tomes" : " tome");
+    var c = document.createElement("div"); c.className = "card-count" + (entry.one_shot ? " oneshot" : ""); c.textContent = entry.one_shot ? "One-shot" : entry.volume_count + (entry.volume_count > 1 ? " tomes" : " tome");
     info.appendChild(t); info.appendChild(a); info.appendChild(c);
 
     card.appendChild(coverWrap);
@@ -337,7 +372,7 @@
     state.activeVolIdx = 0;
     els.sheetTitle.textContent = entry.title;
     els.sheetAuthor.textContent = entry.author || "Auteur non renseigné";
-    els.sheetMeta.textContent = entry.volume_count + (entry.volume_count > 1 ? " tomes" : " tome") + (entry.parent_series ? " · série liée à " + entry.parent_series : "");
+    els.sheetMeta.textContent = (entry.one_shot ? "One-shot · album unique" : entry.volume_count + (entry.volume_count > 1 ? " tomes" : " tome")) + (entry.parent_series ? " · série liée à " + entry.parent_series : "");
     renderSheetGenres(entry);
     setActiveCover(entry, 0);
     renderVolumeList();
@@ -445,7 +480,8 @@
     if (!entry) return;
     var allRead = isTitleRead(entry);
     els.btnRead.setAttribute("data-on", allRead ? "true" : "false");
-    els.btnRead.textContent = allRead ? "✓ Tout marquer comme non lu" : "Tout marquer comme lu";
+    if (entry.one_shot) els.btnRead.textContent = allRead ? "✓ Lu — marquer comme non lu" : "Marquer comme lu";
+    else els.btnRead.textContent = allRead ? "✓ Tout marquer comme non lu" : "Tout marquer comme lu";
 
     var fav = state.favorites[entry.id] || { is_favorite: false };
     els.btnFav.setAttribute("data-on", fav.is_favorite ? "true" : "false");
@@ -488,8 +524,8 @@
   }
 
   // ---------- wiring ----------
-  els.searchTitle.addEventListener("input", function () { state.filters.title = els.searchTitle.value; renderGrid(); });
-  els.searchAuthor.addEventListener("input", function () { state.filters.author = els.searchAuthor.value; renderGrid(); });
+  els.searchTitle.addEventListener("input", function () { state.filters.title = els.searchTitle.value; renderGridSoon(); });
+  els.searchAuthor.addEventListener("input", function () { state.filters.author = els.searchAuthor.value; renderGridSoon(); });
   els.filterGenre.addEventListener("change", function () { state.filters.genre = els.filterGenre.value; renderGrid(); });
 
   function toggleChip(el, key) {
@@ -503,6 +539,17 @@
   toggleChip(els.filterInprogress, "inprogress");
   toggleChip(els.filterUnread, "unread");
   toggleChip(els.filterFav, "fav");
+
+  function kindChip(el, kind) {
+    el.addEventListener("click", function () {
+      state.filters.kind = state.filters.kind === kind ? "" : kind;
+      els.filterSeries.setAttribute("data-active", state.filters.kind === "series" ? "true" : "false");
+      els.filterOneshot.setAttribute("data-active", state.filters.kind === "oneshot" ? "true" : "false");
+      renderGrid();
+    });
+  }
+  kindChip(els.filterSeries, "series");
+  kindChip(els.filterOneshot, "oneshot");
 
   els.sheetClose.addEventListener("click", closeSheet);
   els.overlay.addEventListener("click", function (e) { if (e.target === els.overlay) closeSheet(); });
