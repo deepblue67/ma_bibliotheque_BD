@@ -7,7 +7,7 @@ Catalogue personnel de bandes dessinées de Christophe (**1003 séries, 968 one-
 ## Vue d'ensemble de l'architecture
 
 - **Site** : HTML/CSS/JS vanilla, aucun framework, aucune étape de build. Hébergé sur GitHub Pages.
-- **Design** : direction "Kiosque BD" — style comic pulpe (police Bangers pour les titres, Archivo pour le reste, palette crème/rouge/noir, fond à trame demi-teinte dans le header). Choisie parmi 4 propositions présentées via un canvas Design (voir historique de conversation si besoin de revoir les 3 autres directions écartées : "Bibliothèque" épurée, "Atelier Noir" sombre, "Fiche d'Archive" catalogue).
+- **Design** : 10 thèmes au choix (roue crantée → Réglages), voir la section « Thèmes et réglages ». Le thème par défaut reste la direction d'origine, "Kiosque BD" — style comic pulpe (police Bangers pour les titres, Archivo pour le reste, palette crème/rouge/noir, fond à trame demi-teinte dans le header). Les 3 directions écartées au départ ("Bibliothèque" épurée, "Atelier Noir" sombre, "Fiche d'Archive" catalogue) sont devenues des thèmes.
 - **Données** : `data/catalog.json`, généré une fois par un pipeline de scripts Python (voir plus bas), à régénérer à chaque ajout/retrait de BD dans la collection source.
 - **Couvertures** : hébergées sur **Supabase Storage** (pas dans le dépôt Git — trop de fichiers, voir section dédiée), **une par tome** (extraites automatiquement depuis la première page de chaque fichier PDF/cbz).
 - **Synchro "lu"/"favoris"** : deux tables Postgres sur **Supabase** (`bd_volume_status` pour le "lu" par tome, `bd_status` pour les favoris par titre), lues/écrites en direct par le navigateur (clé publique "anon"), avec Realtime pour propager les changements entre appareils sans recharger la page. Pas d'authentification (usage personnel mono-utilisateur).
@@ -17,7 +17,10 @@ Catalogue personnel de bandes dessinées de Christophe (**1003 séries, 968 one-
 ```
 ma-bibliotheque-bd/
 ├── index.html          # structure de la page (header recherche, grille, fiche détail)
-├── style.css           # design "Kiosque BD", responsive (grid auto-fill, breakpoints mobile)
+├── themes.js           # registre des 10 thèmes (nom, polices, couleur de barre d'état) ;
+│                        #   chargé AVANT style.css pour appliquer le thème sans flash
+├── style.css           # toute la mise en forme, pilotée par des variables CSS ; un bloc
+│                        #   [data-theme="…"] par thème ; responsive (grid auto-fill)
 ├── app.js              # toute la logique : chargement catalogue, recherche/filtres,
 │                        #   rendu grille + fiche détail, lu par tome (calcul du "lu" titre),
 │                        #   favoris par titre, aperçu couverture par tome, sync Supabase
@@ -154,7 +157,7 @@ Toutes ces images sont générées depuis un seul visuel maître 1024×1024 (scr
 
 ## Cache navigateur — convention de version
 
-`index.html` charge `style.css`, `config.js` et `app.js` avec un suffixe `?v=N` (ex: `app.js?v=2`). **À chaque modification de l'un de ces trois fichiers, il faut incrémenter son `?v=` dans `index.html`**, sinon certains navigateurs continuent de servir l'ancienne version en cache après un simple rechargement (vécu : un `app.js` mis à jour restait invisible malgré plusieurs rechargements, jusqu'à un vidage de cache complet). `data/catalog.json` n'a pas ce problème : il est chargé via `fetch(..., { cache: "no-store" })` dans `app.js`, donc toujours à jour sans rien à incrémenter.
+`index.html` charge `themes.js`, `style.css`, `config.js` et `app.js` avec un suffixe `?v=N` (ex: `app.js?v=2`). **À chaque modification de l'un de ces fichiers, il faut incrémenter son `?v=` dans `index.html`**, sinon certains navigateurs continuent de servir l'ancienne version en cache après un simple rechargement (vécu : un `app.js` mis à jour restait invisible malgré plusieurs rechargements, jusqu'à un vidage de cache complet). `data/catalog.json` n'a pas ce problème : il est chargé via `fetch(..., { cache: "no-store" })` dans `app.js`, donc toujours à jour sans rien à incrémenter.
 
 ## Pipeline de génération des données
 
@@ -211,6 +214,28 @@ Cette liste vit à deux endroits qui doivent rester synchronisés : `genre_taxon
 2. **Passe 2 — recherche web ciblée** : pour les ~510 titres restants (peu/pas connus, souvent avec `author: null`), des agents ont cherché chaque titre sur bedetheque.com, bdgest.com, Wikipedia, etc. Le quota de recherche web de la session a été atteint avant la fin (partagé entre tous les agents en parallèle) : 174 titres ont pu être vérifiés en ligne ; pour le reste, l'estimation de la passe 1 a été conservée telle quelle (non vérifiée) ; 46 titres restent sans genre du tout (aucune piste trouvable — souvent des titres génériques ou très confidentiels).
 
 Résultat : `genre_map.json` (id → `{genres, confidence, source}`) — `confidence: "low"` signale un genre à prendre avec réserve. Contrairement aux autres manifestes du pipeline (qui restent sur la VM Linux locale, invisibles depuis Windows), **`genre_map.json` et `genre_taxonomy.json` sont placés directement à la racine du dossier `ma-bibliotheque-bd`**, donc visibles et modifiables dans l'Explorateur — c'est fait exprès, puisque c'est le seul fichier du pipeline pensé pour être corrigé à la main. Si tu repères une erreur en parcourant l'appli, le plus simple reste de me le signaler, mais tu peux aussi éditer directement la ligne correspondante dans `genre_map.json` toi-même — il suffit ensuite de redemander à Claude de relancer `build_public_catalog_v2.py` (script resté côté VM) pour régénérer `data/catalog.json`. Ces deux fichiers ne sont pas gitignorés : ils partent avec le reste du dépôt lors du push (ce sont de petits fichiers texte, sans problème de volume comme les couvertures).
+
+## Recherche
+
+Le champ « titre » cherche dans le nom de la série **et dans le titre de tous ses tomes** : « magicienne trahie » trouve *Thorgal*. Les deux champs, titre et auteur, suivent les mêmes règles (fonction `normalize()` dans `app.js`) :
+- les **accents** sont ignorés (« etrange » → *Étrange*), tout comme `œ`/`æ` (« oeil » → *Œil de dragon*) ;
+- les apostrophes droites et courbes sont confondues, puis supprimées (« l'arabe » → *L’Arabe du futur*) ;
+- toute **ponctuation** compte comme un espace (« kim jong un » → *Kim Jong-un*, « jean marc » → *Jean-Marc*) ;
+- **plusieurs mots** peuvent être tapés **dans n'importe quel ordre** : tous doivent être présents (« terre pilliers » → *Les pilliers de la terre*).
+
+L'index de recherche est calculé une seule fois, au chargement du catalogue. La grille n'est reconstruite que 150 ms après la dernière frappe. Ce qu'on ne rattrape pas, ce sont les fautes de frappe dans les noms de fichiers : « piliers » ne trouve pas « pilliers ». C'est le rôle de la future fonction « corriger le titre ».
+
+## Thèmes et réglages
+
+La roue crantée, en haut à droite, ouvre le panneau **Réglages**. Pour l'instant il ne contient que le choix du thème ; le mode propriétaire viendra s'y ajouter. Les 10 thèmes : *Kiosque BD* (défaut, l'original), *Atelier noir*, *Bibliothèque*, *Fiche d'archive*, *Ligne claire*, *Manga*, *Comics US*, *Western*, *Néon SF*, *Pastel jeunesse*.
+
+Fonctionnement :
+- `style.css` ne contient plus aucune couleur en dur. Tout passe par une quarantaine de variables (`--bg`, `--accent`, `--line`, `--bw-l`, `--sh-card`, `--font-display`…) définies dans `:root` pour le thème par défaut, puis redéfinies dans un bloc `[data-theme="…"]` par thème. Un thème change aussi les épaisseurs de trait, les ombres, les arrondis et les polices, pas seulement les couleurs. **Pour ajouter un thème** : un bloc dans `style.css` et une ligne dans `themes.js`.
+- Ces blocs s'appliquent à **n'importe quel élément** portant `data-theme`, et pas seulement à `<html>`. C'est ce qui permet à chaque carte d'aperçu des Réglages de se dessiner dans son propre thème, sans code spécifique.
+- `themes.js` est chargé de façon **bloquante, avant `style.css`**. Il pose le thème mémorisé sur `<html>` et charge ses deux polices Google Fonts avant le premier affichage, ce qui évite de voir défiler le thème par défaut au démarrage. Seules les polices du thème actif sont chargées ; les autres ne sont chargées qu'à l'ouverture des Réglages, pour les aperçus. Il met aussi à jour la couleur de la barre d'état (`meta theme-color`) sur iPhone et Android.
+- Le choix est mémorisé **par appareil** (`localStorage`, clé `bd_theme_v1`), sans synchronisation Supabase : ton iPhone et ton PC peuvent avoir chacun le leur. Il suffirait d'une colonne dans Supabase pour synchroniser le thème si on le voulait un jour.
+- Toutes les polices retenues contiennent les caractères français (vérifié glyphe par glyphe : É, È, Ç, Œ, œ, ’, « »…).
+- Le zoom plein écran sur une couverture garde volontairement un fond noir quel que soit le thème.
 
 ## One-shots (dossier `BD Unique`)
 
@@ -284,3 +309,4 @@ Ou plus simple : pousser directement sur GitHub Pages (qui sert en https, aucun 
 - Bug corrigé au passage (et vrai piège à retenir) : la première version du rapprochement a **dupliqué un tome** de *Le Réseau Papillon*, qui s'est retrouvée avec 10 tomes pour 9 fichiers. Cause : son tome 07 est nommé `Le_Reseau_Papillon_...` sans accent et son tome 06 est encodé en NFD, deux cas où l'ancien script avait stocké le **nom de fichier entier** comme libellé — forme que mon rapprochement n'essayait pas. Détecté par un contrôle simple qu'il faut garder systématiquement : *nombre de tomes d'une série simple == nombre de fichiers album dans son dossier*. Les deux autres contrôles utiles : aucune couverture d'origine ne disparaît, et les couvertures d'origine restent en ordre numérique croissant au sein d'une série (sinon une couverture s'est rattachée au mauvais tome).
 - Import des **one-shots** (octobre 2026) : +968 one-shots et +1 série (*Le Transperceneige*), soit 1971 entrées et 8101 albums. Mélangés avec les séries, avec une mention « One-shot » et des puces de filtre *Séries* / *One-shots*. Détails dans la section « One-shots ». L'interface gagne un **chargement différé fiable** des vignettes (IntersectionObserver), indispensable au-delà de ~1000 vignettes. Les 3 séries qui ont des tomes cochés (*Alter Ego*, *Lloyd Singer - Makabi*, *Louise Beauvoir*) n'ont pas été touchées. Le doublon de *Louise Beauvoir* trouvé dans `BD Unique` a été écarté plutôt qu'ajouté à la série, ce qui évitait au passage de décaler ses index.
 - Piège rencontré (et corrigé avant tout envoi) : **Windows ne distingue pas les majuscules dans les noms de fichiers**. La couverture du one-shot `Le_petit_Prince_001.jpg` a donc écrasé, dans `volume_covers/`, celle de la série `Le_Petit_Prince_001.jpg`, alors que les deux noms semblaient différents dans le conteneur Linux. Restaurée depuis la copie de la VM (vérifiée par empreinte md5) et renommée `Le_petit_Prince_2_001.jpg`. Règle désormais appliquée : **l'unicité des noms de couverture (et des `id`) se vérifie sans tenir compte de la casse**. Supabase Storage, lui, distingue la casse, ce qui explique que le problème ne se voie qu'en local.
+- Recherche améliorée et thèmes (octobre 2026) : la recherche porte désormais aussi sur les titres de tomes, accepte plusieurs mots dans le désordre et ignore apostrophes et ponctuation (section « Recherche »). Ajout d'une roue crantée et d'un panneau Réglages avec 10 thèmes visuels (section « Thèmes et réglages »). Le thème par défaut est l'ancien design, inchangé à un détail près : le bandeau d'info sombre des vignettes s'étend désormais jusqu'en bas de la carte. Les 10 thèmes ont été contrôlés à l'écran avec les vraies polices ; c'est ce contrôle qui a fait corriger deux problèmes de contraste avant livraison (la mention « One-shot » dorée était illisible sur les vignettes à fond blanc, d'où la variable dédiée `--card-oneshot`, et le titre blanc était trop pâle sur le rose du thème Pastel). Pas de changement de catalogue ni de Supabase pour ce lot.

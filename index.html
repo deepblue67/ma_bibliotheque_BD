@@ -22,8 +22,10 @@
 <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
 <link rel="manifest" href="site.webmanifest">
 
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Archivo:wght@500;600;700;800&display=swap">
-<link rel="stylesheet" href="style.css?v=6">
+<!-- themes.js est volontairement bloquant et placé AVANT style.css : il pose le thème
+     mémorisé (et charge ses polices) avant le premier affichage. -->
+<script src="themes.js?v=1"></script>
+<link rel="stylesheet" href="style.css?v=7">
 </head>
 <body>
 
@@ -32,12 +34,15 @@
     <div class="brand-row">
       <h1 class="brand">MA BIBLIOTHÈQUE BD</h1>
       <span id="stats" class="stats">…</span>
+      <button id="settings-open" class="gear-btn" type="button" aria-label="Réglages" title="Réglages">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
     </div>
 
     <div class="controls">
       <div class="field">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input id="search-title" type="text" placeholder="Rechercher un titre…" autocomplete="off">
+        <input id="search-title" type="text" placeholder="Titre de série ou de tome…" autocomplete="off">
       </div>
       <div class="field">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
@@ -98,6 +103,23 @@
   </div>
 </div>
 
+<div id="settings-overlay" class="overlay" hidden>
+  <div class="sheet settings-sheet" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+    <button id="settings-close" class="sheet-close" aria-label="Fermer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="settings-body">
+      <h2 id="settings-title" class="sheet-title">Réglages</h2>
+      <section class="settings-section">
+        <h3 class="settings-h">Thème</h3>
+        <p class="settings-hint">Le changement est immédiat. Le thème est mémorisé sur cet appareil : ton iPhone et ton PC peuvent avoir chacun le leur.</p>
+        <div id="theme-grid" class="theme-grid"></div>
+      </section>
+      <p class="settings-foot">Ma Bibliothèque BD</p>
+    </div>
+  </div>
+</div>
+
 <div id="zoom-overlay" class="zoom-overlay" hidden>
   <button id="zoom-close" class="zoom-close" aria-label="Fermer">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -107,6 +129,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="config.js?v=2"></script>
-<script src="app.js?v=7"></script>
+<script src="app.js?v=8"></script>
 </body>
 </html>

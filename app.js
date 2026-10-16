@@ -219,6 +219,7 @@
       .then(function (r) { return r.json(); })
       .then(function (data) {
         state.catalog = data.entries;
+        buildSearchIndex(state.catalog);
         var nOne = data.entries.filter(function (e) { return e.one_shot; }).length;
         var nSer = data.entries.length - nOne;
         var nVol = data.entries.reduce(function (t, e) { return t + e.volume_count; }, 0);
@@ -232,9 +233,38 @@
   }
 
   // ---------- filtering ----------
+  // Normalisation pour la recherche : minuscules, sans accents, apostrophes droites
+  // ou courbes confondues, et toute ponctuation (tirets, points, deux-points…) vue
+  // comme un espace. « kim jong un » trouve donc « Kim Jong-un », et « l'arabe »
+  // trouve « L’Arabe ».
   function normalize(s) {
     return (s || "").toString().toLowerCase()
-      .normalize("NFD").replace(/[̀-ͯ]/g, "");
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/[\u2019\u2018\u02bc\u0060\u00b4]/g, "'")
+      .replace(/œ/g, "oe").replace(/æ/g, "ae")
+      .replace(/[^a-z0-9']+/g, " ")
+      .replace(/'/g, "")
+      .replace(/\s+/g, " ").trim();
+  }
+
+  // Index de recherche precalcule une fois au chargement : titre de la serie
+  // + titres de tous ses tomes (on retrouve Thorgal en tapant « magicienne trahie »).
+  function buildSearchIndex(entries) {
+    entries.forEach(function (e) {
+      var labels = (e.volumes || []).map(function (v) { return v.label; }).join(" ");
+      e._qTitle = " " + normalize(e.title) + " ";
+      e._qAll = " " + normalize(e.title + " " + labels) + " ";
+      e._qAuthor = " " + normalize(e.author || "") + " ";
+    });
+  }
+
+  // Tous les mots tapes doivent se retrouver, dans n'importe quel ordre.
+  function hasAllWords(haystack, query) {
+    var words = normalize(query).split(" ");
+    for (var i = 0; i < words.length; i++) {
+      if (words[i] && haystack.indexOf(words[i]) === -1) return false;
+    }
+    return true;
   }
 
   function matches(entry) {
@@ -242,8 +272,8 @@
     var read = isTitleRead(entry);
     var readCount = countRead(entry);
     var inProgress = isInProgress(entry);
-    if (state.filters.title && normalize(entry.title).indexOf(normalize(state.filters.title)) === -1) return false;
-    if (state.filters.author && normalize(entry.author || "").indexOf(normalize(state.filters.author)) === -1) return false;
+    if (state.filters.title && !hasAllWords(entry._qAll, state.filters.title)) return false;
+    if (state.filters.author && !hasAllWords(entry._qAuthor, state.filters.author)) return false;
     if (state.filters.genre && (entry.genre || []).indexOf(state.filters.genre) === -1) return false;
     if (state.filters.read && !read) return false;
     if (state.filters.inprogress && !inProgress) return false;
@@ -551,11 +581,62 @@
   kindChip(els.filterSeries, "series");
   kindChip(els.filterOneshot, "oneshot");
 
+  // ---------- réglages ----------
+  var settingsEls = {
+    overlay: document.getElementById("settings-overlay"),
+    open: document.getElementById("settings-open"),
+    close: document.getElementById("settings-close"),
+    grid: document.getElementById("theme-grid"),
+  };
+
+  function renderThemeGrid() {
+    var T = window.BD_THEMES;
+    if (!T) return;
+    var cur = T.current();
+    settingsEls.grid.innerHTML = "";
+    T.list.forEach(function (t) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "theme-card";
+      b.setAttribute("data-theme", t.id);      // la carte se dessine dans son propre thème
+      b.setAttribute("aria-pressed", t.id === cur ? "true" : "false");
+      b.innerHTML =
+        '<div class="tc-bar">Mes BD</div>' +
+        '<div class="tc-body"><div class="tc-mini"></div><div class="tc-mini"></div><div class="tc-mini"></div></div>' +
+        '<div class="tc-foot"><div class="tc-name"></div><div class="tc-desc"></div></div>' +
+        '<span class="tc-check" aria-hidden="true">✓</span>';
+      b.querySelector(".tc-name").textContent = t.name;
+      b.querySelector(".tc-desc").textContent = t.desc;
+      b.addEventListener("click", function () {
+        T.apply(t.id, true);
+        Array.prototype.forEach.call(settingsEls.grid.children, function (c) {
+          c.setAttribute("aria-pressed", c.getAttribute("data-theme") === t.id ? "true" : "false");
+        });
+      });
+      settingsEls.grid.appendChild(b);
+    });
+  }
+
+  function openSettings() {
+    if (window.BD_THEMES) window.BD_THEMES.loadAllFonts();
+    renderThemeGrid();
+    settingsEls.overlay.hidden = false;
+    document.body.style.overflow = "hidden";
+  }
+  function closeSettings() {
+    settingsEls.overlay.hidden = true;
+    if (els.overlay.hidden) document.body.style.overflow = "";
+  }
+  settingsEls.open.addEventListener("click", openSettings);
+  settingsEls.close.addEventListener("click", closeSettings);
+  settingsEls.overlay.addEventListener("click", function (e) { if (e.target === settingsEls.overlay) closeSettings(); });
+
   els.sheetClose.addEventListener("click", closeSheet);
   els.overlay.addEventListener("click", function (e) { if (e.target === els.overlay) closeSheet(); });
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
-    if (!els.zoomOverlay.hidden) closeZoom();
+    if (!settingsEls.overlay.hidden) closeSettings();
+    else if (!els.zoomOverlay.hidden) closeZoom();
     else closeSheet();
   });
   els.btnRead.addEventListener("click", toggleAllVolumesRead);
