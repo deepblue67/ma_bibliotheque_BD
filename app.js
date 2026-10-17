@@ -36,7 +36,10 @@
   }
 
   var state = {
-    catalog: [],
+    raw: [],           // catalogue tel que généré (data/catalog.json), jamais modifié
+    catalog: [],       // fiches visibles, corrections appliquées (voir applyOverrides)
+    hiddenList: [],    // fiches masquées (import ou propriétaire)
+    overrides: {},     // corrections : "id" ou "id::index" -> { hidden, title, author, genre }
     favorites: {},     // titleId -> { is_favorite }
     volumeRead: {},    // "titleId::idx" -> true
     filters: { title: "", author: "", read: false, unread: false, inprogress: false, fav: false, genre: "", kind: "" },
@@ -108,39 +111,157 @@
   function isVolumeRead(titleId, idx) {
     return state.volumeRead[volKey(titleId, idx)] === true;
   }
+  // entry._vis = index D'ORIGINE des tomes visibles (un tome masqué garde sa place :
+  // les clés "id::index" de bd_volume_status ne bougent donc jamais).
   function isTitleRead(entry) {
-    if (!entry.volume_count) return false;
-    for (var i = 0; i < entry.volume_count; i++) {
-      if (!isVolumeRead(entry.id, i)) return false;
+    var v = entry._vis || [];
+    if (!v.length) return false;
+    for (var k = 0; k < v.length; k++) {
+      if (!isVolumeRead(entry.id, v[k])) return false;
     }
     return true;
   }
   function countRead(entry) {
-    var n = 0;
-    for (var i = 0; i < entry.volume_count; i++) {
-      if (isVolumeRead(entry.id, i)) n++;
+    var v = entry._vis || [], n = 0;
+    for (var k = 0; k < v.length; k++) {
+      if (isVolumeRead(entry.id, v[k])) n++;
     }
     return n;
   }
   function isInProgress(entry) {
     var c = countRead(entry);
-    return c > 0 && c < entry.volume_count;
+    return c > 0 && c < (entry._vis || []).length;
+  }
+
+  // ---------- corrections (masquer / corriger) ----------
+  // Le catalogue n'est jamais modifié : les corrections sont stockées à part (Supabase,
+  // table bd_overrides, + copie locale) et appliquées par-dessus, pour tout le monde.
+  // Clé = id de fiche, ou "id::index" pour un tome. Comme le prochain import garde les
+  // mêmes identifiants, une correction ou un masquage n'est jamais écrasé par un réimport.
+  var LOCAL_OV_KEY = "bd_overrides_cache_v1";
+  function loadLocalOverrides() {
+    try { var raw = localStorage.getItem(LOCAL_OV_KEY); return raw ? JSON.parse(raw) : {}; } catch (e) { return {}; }
+  }
+  function saveLocalOverrides() {
+    try { localStorage.setItem(LOCAL_OV_KEY, JSON.stringify(state.overrides)); } catch (e) {}
+  }
+  function sameGenres(a, b) {
+    a = (a || []).slice().sort(); b = (b || []).slice().sort();
+    return a.length === b.length && a.every(function (x, i) { return x === b[i]; });
+  }
+
+  function applyOverrides() {
+    var list = [], hidden = [];
+    state.raw.forEach(function (r) {
+      var o = state.overrides[r.id] || {};
+      var isHidden = (o.hidden === true || o.hidden === false) ? o.hidden : !!r.hidden;
+      var labels = [], vis = [], hid = [];
+      (r.volumes || []).forEach(function (v, i) {
+        var vo = state.overrides[volKey(r.id, i)] || {};
+        labels.push(vo.title || v.label);
+        if (vo.hidden === true) hid.push(i); else vis.push(i);
+      });
+      var first = vis.length ? r.volumes[vis[0]] : null;
+      var e = {
+        id: r.id,
+        title: o.title || r.title,
+        author: o.author || r.author,
+        genre: Array.isArray(o.genre) ? o.genre : (r.genre || []),
+        one_shot: r.one_shot,
+        parent_series: r.parent_series,
+        volumes: r.volumes,
+        cover: (first && first.cover) || null,
+        volume_count: vis.length,
+        _labels: labels, _vis: vis, _hidVols: hid, _raw: r,
+        _edited: !!(o.title || o.author || Array.isArray(o.genre))
+      };
+      (isHidden ? hidden : list).push(e);
+    });
+    var cmp = function (a, b) { return a.title.localeCompare(b.title, "fr", { sensitivity: "base", numeric: true }); };
+    list.sort(cmp); hidden.sort(cmp);
+    buildSearchIndex(list);
+    state.catalog = list;
+    state.hiddenList = hidden;
+    var nOne = list.filter(function (e) { return e.one_shot; }).length;
+    var nVol = list.reduce(function (t, e) { return t + e.volume_count; }, 0);
+    els.stats.textContent = (list.length - nOne) + " séries · " + nOne + " one-shots · " + nVol + " albums";
+  }
+
+  function refreshAll() {
+    if (!state.raw.length) return;
+    applyOverrides();
+    renderGrid();
+    if (state.activeId) {
+      if (currentEntry()) refreshSheet(); else closeSheet();
+    }
+    if (settingsEls && !settingsEls.overlay.hidden) renderHiddenList();
+  }
+
+  // Enregistre une correction (fusionnée avec l'existante). Appliquée tout de suite à
+  // l'écran, puis envoyée à Supabase ; en cas d'échec, on revient en arrière.
+  function saveOverride(key, patch, onOk) {
+    var prev = state.overrides[key] ? JSON.parse(JSON.stringify(state.overrides[key])) : null;
+    var cur = { hidden: null, title: null, author: null, genre: null };
+    if (prev) Object.keys(cur).forEach(function (k) { if (prev[k] !== undefined) cur[k] = prev[k]; });
+    Object.keys(patch).forEach(function (k) { cur[k] = patch[k]; });
+    var empty = cur.hidden === null && !cur.title && !cur.author && !Array.isArray(cur.genre);
+    if (empty) delete state.overrides[key]; else state.overrides[key] = cur;
+    saveLocalOverrides();
+    refreshAll();
+    function rollback(msg) {
+      if (prev) state.overrides[key] = prev; else delete state.overrides[key];
+      saveLocalOverrides();
+      refreshAll();
+      toast("Non enregistré : " + msg);
+    }
+    if (!supabase) { rollback("synchronisation indisponible."); return; }
+    var q = empty
+      ? supabase.from("bd_overrides").delete().eq("id", key)
+      : supabase.from("bd_overrides").upsert({ id: key, hidden: cur.hidden, title: cur.title || null,
+          author: cur.author || null, genre: Array.isArray(cur.genre) ? cur.genre : null, updated_at: new Date().toISOString() });
+    q.then(function (res) {
+      if (res.error) rollback(res.error.message || "erreur Supabase");
+      else if (onOk) onOk();
+    }).catch(function (err) { rollback((err && err.message) || "hors ligne"); });
+  }
+
+  function fetchOverrides() {
+    supabase.from("bd_overrides").select("id,hidden,title,author,genre")
+      .then(function (res) {
+        if (res.error) {
+          if (IS_OWNER) setSyncNote("Corrections indisponibles : la table bd_overrides n'existe pas encore dans Supabase (voir README).");
+          return;
+        }
+        var map = {};
+        (res.data || []).forEach(function (row) {
+          map[row.id] = { hidden: row.hidden, title: row.title, author: row.author, genre: row.genre };
+        });
+        state.overrides = map;
+        saveLocalOverrides();
+        refreshAll();
+      })
+      .catch(function () {});
   }
 
   // ---------- supabase ----------
   var supabase = null;
   function initSupabase() {
     if (!window.supabase || !window.BD_SUPABASE_URL || !window.BD_SUPABASE_ANON_KEY) {
-      setSyncNote("Synchronisation indisponible (config manquante) — mode local uniquement.");
+      if (IS_OWNER) setSyncNote("Synchronisation indisponible (config manquante) — mode local uniquement.");
       return;
     }
     try {
       supabase = window.supabase.createClient(window.BD_SUPABASE_URL, window.BD_SUPABASE_ANON_KEY);
-      fetchRemoteFavorites();
-      fetchRemoteVolumeStatus();
-      subscribeRealtime();
+      // les corrections concernent tout le monde (titres corrigés, fiches masquées)…
+      fetchOverrides();
+      // …les statuts et la synchro en direct, seulement le propriétaire
+      if (IS_OWNER) {
+        fetchRemoteFavorites();
+        fetchRemoteVolumeStatus();
+        subscribeRealtime();
+      }
     } catch (e) {
-      setSyncNote("Synchronisation indisponible — mode local uniquement.");
+      if (IS_OWNER) setSyncNote("Synchronisation indisponible — mode local uniquement.");
     }
   }
 
@@ -203,6 +324,18 @@
         }
       })
       .subscribe();
+    // canal séparé : si la table bd_overrides n'existe pas encore, seul ce canal échoue
+    // et la synchro des statuts continue de fonctionner.
+    supabase.channel("bd_overrides_changes")
+      .on("postgres_changes", { event: "*", schema: "public", table: "bd_overrides" }, function (payload) {
+        var row = payload.new && Object.keys(payload.new).length ? payload.new : payload.old;
+        if (!row || !row.id) return;
+        if (payload.eventType === "DELETE") delete state.overrides[row.id];
+        else state.overrides[row.id] = { hidden: row.hidden, title: row.title, author: row.author, genre: row.genre };
+        saveLocalOverrides();
+        refreshAll();
+      })
+      .subscribe();
   }
 
   function pushFavorite(titleId) {
@@ -225,13 +358,12 @@
     }).catch(function () {});
   }
 
-  function pushVolumeStatusBulk(titleId, count, read) {
+  function pushVolumeStatusBulk(titleId, indices, read) {
     if (!supabase) return;
-    var rows = [];
     var now = new Date().toISOString();
-    for (var i = 0; i < count; i++) {
-      rows.push({ id: volKey(titleId, i), title_id: titleId, is_read: read, updated_at: now });
-    }
+    var rows = indices.map(function (i) {
+      return { id: volKey(titleId, i), title_id: titleId, is_read: read, updated_at: now };
+    });
     supabase.from("bd_volume_status").upsert(rows).then(function (res) {
       if (res.error) setSyncNote("Dernière modification pas encore synchronisée (réessaiera).");
     }).catch(function () {});
@@ -247,12 +379,8 @@
         // "hidden" : fiche masquée (ex : ancien dossier d'une série remplacé par un plus
         // complet). Elle reste dans le catalogue pour que le prochain import la reconnaisse
         // et ne la réinsère pas, mais elle n'est jamais affichée ni comptée.
-        state.catalog = data.entries.filter(function (e) { return !e.hidden; });
-        buildSearchIndex(state.catalog);
-        var nOne = state.catalog.filter(function (e) { return e.one_shot; }).length;
-        var nSer = state.catalog.length - nOne;
-        var nVol = state.catalog.reduce(function (t, e) { return t + e.volume_count; }, 0);
-        els.stats.textContent = nSer + " séries · " + nOne + " one-shots · " + nVol + " albums";
+        state.raw = data.entries;
+        applyOverrides();
         renderGrid();
       })
       .catch(function () {
@@ -280,9 +408,10 @@
   // + titres de tous ses tomes (on retrouve Thorgal en tapant « magicienne trahie »).
   function buildSearchIndex(entries) {
     entries.forEach(function (e) {
-      var labels = (e.volumes || []).map(function (v) { return v.label; }).join(" ");
+      var labels = (e._vis || []).map(function (i) { return e._labels[i]; }).join(" ");
+      var orig = e._raw && e._raw.title !== e.title ? " " + e._raw.title : "";
       e._qTitle = " " + normalize(e.title) + " ";
-      e._qAll = " " + normalize(e.title + " " + labels) + " ";
+      e._qAll = " " + normalize(e.title + orig + " " + labels) + " ";
       e._qAuthor = " " + normalize(e.author || "") + " ";
     });
   }
@@ -431,16 +560,37 @@
     var entry = state.catalog.find(function (e) { return e.id === id; });
     if (!entry) return;
     state.activeId = id;
-    state.activeVolIdx = 0;
+    state.activeVolIdx = entry._vis.length ? entry._vis[0] : 0;
+    state.editVol = null;
+    closeEditor();
+    refreshSheet();
+    els.overlay.hidden = false;
+    document.body.style.overflow = "hidden";
+  }
+
+  // Remplit la fiche ouverte à partir de l'état courant (appelé aussi après une correction).
+  function refreshSheet() {
+    var entry = currentEntry();
+    if (!entry) return;
+    if (entry._vis.indexOf(state.activeVolIdx) === -1 && !(IS_OWNER && entry._hidVols.indexOf(state.activeVolIdx) !== -1)) {
+      state.activeVolIdx = entry._vis.length ? entry._vis[0] : 0;
+    }
     els.sheetTitle.textContent = entry.title;
     els.sheetAuthor.textContent = entry.author || "Auteur non renseigné";
     els.sheetMeta.textContent = (entry.one_shot ? "One-shot · album unique" : entry.volume_count + (entry.volume_count > 1 ? " tomes" : " tome")) + (entry.parent_series ? " · série liée à " + entry.parent_series : "");
+    var orig = document.getElementById("sheet-orig");
+    if (orig) {
+      var r = entry._raw, bits = [];
+      if (r.title !== entry.title) bits.push("titre « " + r.title + " »");
+      if ((r.author || "") !== (entry.author || "")) bits.push("auteur « " + (r.author || "non renseigné") + " »");
+      if (!sameGenres(r.genre, entry.genre)) bits.push("genres « " + ((r.genre || []).join(", ") || "aucun") + " »");
+      orig.textContent = bits.length ? "Corrigé par toi — d'origine : " + bits.join(", ") : "";
+      orig.hidden = !bits.length;
+    }
     renderSheetGenres(entry);
-    setActiveCover(entry, 0);
+    setActiveCover(entry, state.activeVolIdx);
     renderVolumeList();
     renderSheetActions();
-    els.overlay.hidden = false;
-    document.body.style.overflow = "hidden";
   }
 
   function renderSheetGenres(entry) {
@@ -460,7 +610,7 @@
     state.activeVolIdx = idx;
     var vol = entry.volumes[idx];
     var cover = (vol && vol.cover) || entry.cover;
-    var alt = entry.title + (vol ? " — " + vol.label : "");
+    var alt = entry.title + (vol ? " — " + (entry._labels ? entry._labels[idx] : vol.label) : "");
     if (cover) {
       els.sheetCover.src = coverUrl(cover);
       els.sheetCover.style.display = "";
@@ -497,33 +647,107 @@
     var entry = currentEntry();
     if (!entry) return;
     els.volumeList.innerHTML = "";
-    entry.volumes.forEach(function (v, i) {
+    // visiteur : tomes visibles seulement ; propriétaire : tous, les masqués grisés
+    var order = IS_OWNER ? entry.volumes.map(function (_, i) { return i; }) : entry._vis;
+    var pos = 0;
+    order.forEach(function (i) {
+      var hiddenVol = entry._hidVols.indexOf(i) !== -1;
+      if (!hiddenVol) pos++;
       var li = document.createElement("li");
-      li.className = "vol-row" + (IS_OWNER && isVolumeRead(entry.id, i) ? " is-read" : "") + (i === state.activeVolIdx ? " active" : "");
+      li.className = "vol-row" + (IS_OWNER && !hiddenVol && isVolumeRead(entry.id, i) ? " is-read" : "") +
+                     (hiddenVol ? " is-hidden" : "") + (i === state.activeVolIdx ? " active" : "");
 
-      var check = document.createElement("button");
-      check.type = "button";
-      check.className = "vol-check";
-      check.setAttribute("aria-label", "Marquer ce tome comme lu");
-      check.textContent = isVolumeRead(entry.id, i) ? "✓" : "";
-      check.addEventListener("click", function (e) {
-        e.stopPropagation();
-        toggleVolumeRead(entry.id, i);
-      });
+      if (IS_OWNER && !hiddenVol) {
+        var check = document.createElement("button");
+        check.type = "button";
+        check.className = "vol-check";
+        check.setAttribute("aria-label", "Marquer ce tome comme lu");
+        check.textContent = isVolumeRead(entry.id, i) ? "✓" : "";
+        check.addEventListener("click", function (e) {
+          e.stopPropagation();
+          toggleVolumeRead(entry.id, i);
+        });
+        li.appendChild(check);
+      } else if (IS_OWNER) {
+        var gap = document.createElement("span"); gap.className = "vol-check-gap"; li.appendChild(gap);
+      }
 
       var num = document.createElement("span"); num.className = "num";
-      num.textContent = String(i + 1).padStart(2, "0");
-      var label = document.createElement("span"); label.className = "vol-label"; label.textContent = v.label;
-
-      if (IS_OWNER) li.appendChild(check);
+      num.textContent = hiddenVol ? "––" : String(pos).padStart(2, "0");
+      var label = document.createElement("span"); label.className = "vol-label";
+      label.textContent = entry._labels[i] + (hiddenVol ? "  (masqué)" : "");
       li.appendChild(num);
       li.appendChild(label);
+
+      if (IS_OWNER) {
+        var pen = document.createElement("button");
+        pen.type = "button";
+        pen.className = "vol-edit";
+        pen.setAttribute("aria-label", "Corriger ou masquer ce tome");
+        pen.title = "Corriger ou masquer ce tome";
+        pen.textContent = "✎";
+        pen.addEventListener("click", function (e) {
+          e.stopPropagation();
+          state.editVol = state.editVol === i ? null : i;
+          renderVolumeList();
+        });
+        li.appendChild(pen);
+      }
       li.addEventListener("click", function () {
         setActiveCover(entry, i);
         renderVolumeList();
       });
       els.volumeList.appendChild(li);
+      if (IS_OWNER && state.editVol === i) els.volumeList.appendChild(renderVolEditor(entry, i, hiddenVol));
     });
+  }
+
+  // Petit éditeur sous un tome (propriétaire) : libellé, rétablir, masquer / ré-afficher.
+  function renderVolEditor(entry, i, hiddenVol) {
+    var key = volKey(entry.id, i);
+    var o = state.overrides[key] || {};
+    var original = entry.volumes[i].label;
+    var li = document.createElement("li");
+    li.className = "vol-editor";
+    li.innerHTML =
+      '<form class="vol-editor-form">' +
+      '<input type="text" class="owner-input vol-editor-input" aria-label="Titre du tome">' +
+      '<button type="submit" class="btn">Enregistrer</button>' +
+      '<button type="button" class="btn btn-ghost" data-act="cancel">Annuler</button></form>' +
+      '<div class="vol-editor-row"></div>' +
+      '<p class="edit-orig"></p>';
+    var input = li.querySelector("input");
+    input.value = entry._labels[i];
+    input.placeholder = original;
+    var row = li.querySelector(".vol-editor-row");
+    if (o.title) {
+      li.querySelector(".edit-orig").textContent = "Sur le disque : « " + original + " »";
+      var rb = document.createElement("button"); rb.type = "button"; rb.className = "btn btn-ghost"; rb.textContent = "Rétablir le titre d'origine";
+      rb.addEventListener("click", function () { state.editVol = null; saveOverride(key, { title: null }, function () { toast("Titre du tome rétabli."); }); });
+      row.appendChild(rb);
+    }
+    if (!entry.one_shot) {
+      var hb = document.createElement("button"); hb.type = "button";
+      hb.className = hiddenVol ? "btn" : "btn btn-danger";
+      hb.textContent = hiddenVol ? "Ré-afficher ce tome" : "Masquer ce tome";
+      hb.addEventListener("click", function () {
+        state.editVol = null;
+        saveOverride(key, { hidden: hiddenVol ? null : true }, function () {
+          toast(hiddenVol ? "Tome ré-affiché." : "Tome masqué.", hiddenVol ? null : "Annuler",
+                function () { saveOverride(key, { hidden: null }); });
+        });
+      });
+      row.appendChild(hb);
+    }
+    li.querySelector('[data-act="cancel"]').addEventListener("click", function () { state.editVol = null; renderVolumeList(); });
+    li.querySelector("form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var v = input.value.trim();
+      state.editVol = null;
+      saveOverride(key, { title: (!v || v === original) ? null : v }, function () { toast("Titre du tome enregistré."); });
+    });
+    setTimeout(function () { input.focus(); input.select(); }, 0);
+    return li;
   }
 
   function toggleVolumeRead(titleId, idx) {
@@ -551,6 +775,8 @@
   }
 
   function closeSheet() {
+    closeEditor();
+    state.editVol = null;
     if (!els.zoomOverlay.hidden) closeZoom();
     els.overlay.hidden = true;
     state.activeId = null;
@@ -561,16 +787,16 @@
     var entry = currentEntry();
     if (!entry) return;
     var makeRead = !isTitleRead(entry);
-    for (var i = 0; i < entry.volume_count; i++) {
+    entry._vis.forEach(function (i) {
       var key = volKey(entry.id, i);
       if (makeRead) state.volumeRead[key] = true;
       else delete state.volumeRead[key];
-    }
+    });
     saveLocalVolumeRead();
     renderVolumeList();
     renderSheetActions();
     renderGrid();
-    pushVolumeStatusBulk(entry.id, entry.volume_count, makeRead);
+    pushVolumeStatusBulk(entry.id, entry._vis, makeRead);
   }
 
   function toggleFavorite() {
@@ -583,6 +809,98 @@
     renderSheetActions();
     renderGrid();
     pushFavorite(entry.id);
+  }
+
+  // ---------- édition d'une fiche (propriétaire) ----------
+  var edit = {
+    box: document.getElementById("sheet-edit"),
+    form: document.getElementById("edit-form"),
+    title: document.getElementById("edit-title"),
+    author: document.getElementById("edit-author"),
+    g1: document.getElementById("edit-genre1"),
+    g2: document.getElementById("edit-genre2"),
+    reset: document.getElementById("edit-reset"),
+    cancel: document.getElementById("edit-cancel"),
+    hide: document.getElementById("edit-hide"),
+    confirm: document.getElementById("edit-hide-confirm"),
+    yes: document.getElementById("edit-hide-yes"),
+    no: document.getElementById("edit-hide-no"),
+    btn: document.getElementById("btn-edit"),
+  };
+  [edit.g1, edit.g2].forEach(function (sel) {
+    var o0 = document.createElement("option"); o0.value = ""; o0.textContent = "— aucun —"; sel.appendChild(o0);
+    GENRES.forEach(function (g) { var o = document.createElement("option"); o.value = g; o.textContent = g; sel.appendChild(o); });
+  });
+  function closeEditor() {
+    if (!edit.box) return;
+    edit.box.hidden = true;
+    edit.confirm.hidden = true;
+    edit.hide.hidden = false;
+    if (edit.btn) edit.btn.setAttribute("data-on", "false");
+  }
+  function openEditor() {
+    var entry = currentEntry();
+    if (!entry) return;
+    edit.title.value = entry.title;     edit.title.placeholder = entry._raw.title;
+    edit.author.value = entry.author || ""; edit.author.placeholder = entry._raw.author || "Auteur";
+    edit.g1.value = entry.genre[0] || ""; edit.g2.value = entry.genre[1] || "";
+    edit.reset.hidden = !entry._edited;
+    edit.confirm.hidden = true; edit.hide.hidden = false;
+    edit.box.hidden = false;
+    edit.btn.setAttribute("data-on", "true");
+    edit.title.focus();
+  }
+  edit.btn.addEventListener("click", function () { if (edit.box.hidden) openEditor(); else closeEditor(); });
+  edit.cancel.addEventListener("click", closeEditor);
+  edit.form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var entry = currentEntry(); if (!entry) return;
+    var r = entry._raw;
+    var t = edit.title.value.trim(), a = edit.author.value.trim();
+    var g = [edit.g1.value, edit.g2.value].filter(function (x, i, arr) { return x && arr.indexOf(x) === i; });
+    closeEditor();
+    saveOverride(entry.id, {
+      title: (!t || t === r.title) ? null : t,
+      author: (!a || a === (r.author || "")) ? null : a,
+      genre: sameGenres(g, r.genre) ? null : g
+    }, function () { toast("Modifications enregistrées."); });
+  });
+  edit.reset.addEventListener("click", function () {
+    var entry = currentEntry(); if (!entry) return;
+    closeEditor();
+    saveOverride(entry.id, { title: null, author: null, genre: null }, function () { toast("Fiche rétablie telle que sur le disque."); });
+  });
+  edit.hide.addEventListener("click", function () {
+    var entry = currentEntry(); if (!entry) return;
+    edit.confirm.querySelector(".confirm-title").textContent = entry.title;
+    edit.hide.hidden = true; edit.confirm.hidden = false;
+  });
+  edit.no.addEventListener("click", function () { edit.confirm.hidden = true; edit.hide.hidden = false; });
+  edit.yes.addEventListener("click", function () {
+    var entry = currentEntry(); if (!entry) return;
+    var id = entry.id, title = entry.title;
+    var before = (state.overrides[id] || {}).hidden;
+    before = (before === true || before === false) ? before : null;
+    closeSheet();
+    saveOverride(id, { hidden: true }, function () {
+      toast("« " + title + " » est masquée.", "Annuler", function () { saveOverride(id, { hidden: before }); });
+    });
+  });
+
+  // ---------- message temporaire (avec action facultative) ----------
+  var toastEl = document.getElementById("toast"), toastTimer = null;
+  function toast(msg, actionLabel, action) {
+    if (!toastEl) return;
+    clearTimeout(toastTimer);
+    toastEl.innerHTML = "";
+    var span = document.createElement("span"); span.textContent = msg; toastEl.appendChild(span);
+    if (actionLabel && action) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "toast-btn"; b.textContent = actionLabel;
+      b.addEventListener("click", function () { toastEl.hidden = true; action(); });
+      toastEl.appendChild(b);
+    }
+    toastEl.hidden = false;
+    toastTimer = setTimeout(function () { toastEl.hidden = true; }, actionLabel ? 8000 : 3500);
   }
 
   // ---------- wiring ----------
@@ -661,7 +979,7 @@
     var configured = !!ownerHashConfigured();
     var html = "";
     if (IS_OWNER) {
-      html += '<p class="owner-status on">Mode propriétaire actif sur cet appareil : tu peux cocher les statuts. Tes visiteurs, eux, ne voient que la bibliothèque.</p>' +
+      html += '<p class="owner-status on">Mode propriétaire actif sur cet appareil : tu peux corriger un titre, masquer une fiche et cocher les statuts. Tes visiteurs, eux, ne voient que la bibliothèque.</p>' +
               '<div class="owner-row"><button type="button" class="btn" id="owner-quit">Quitter le mode propriétaire</button>' +
               '<button type="button" class="btn btn-ghost" id="owner-change">Changer de code…</button></div>';
     } else if (configured) {
@@ -735,10 +1053,34 @@
     });
   }
 
+  function renderHiddenList() {
+    var box = document.getElementById("hidden-list");
+    if (!box || !IS_OWNER) return;
+    box.innerHTML = "";
+    if (!state.hiddenList.length) { box.innerHTML = '<p class="settings-hint">Aucune fiche masquée.</p>'; return; }
+    var ul = document.createElement("ul"); ul.className = "hidden-list";
+    state.hiddenList.forEach(function (e) {
+      var li = document.createElement("li");
+      var o = state.overrides[e.id] || {};
+      var byImport = e._raw.hidden && o.hidden !== true;
+      li.innerHTML = '<div class="hl-text"><div class="hl-title"></div><div class="hl-why"></div></div>';
+      li.querySelector(".hl-title").textContent = e.title;
+      li.querySelector(".hl-why").textContent = byImport ? "Doublon écarté à l'import — " + (e._raw.hidden_reason || "") : "Masquée par toi";
+      var b = document.createElement("button"); b.type = "button"; b.className = "btn"; b.textContent = "Ré-afficher";
+      b.addEventListener("click", function () {
+        saveOverride(e.id, { hidden: e._raw.hidden ? false : null }, function () { toast("« " + e.title + " » est de nouveau visible."); });
+      });
+      li.appendChild(b);
+      ul.appendChild(li);
+    });
+    box.appendChild(ul);
+  }
+
   function openSettings() {
     if (window.BD_THEMES) window.BD_THEMES.loadAllFonts();
     renderThemeGrid();
     renderOwnerPanel();
+    renderHiddenList();
     settingsEls.overlay.hidden = false;
     document.body.style.overflow = "hidden";
   }
@@ -769,10 +1111,11 @@
 
   // ---------- boot ----------
   populateGenreFilter();
+  state.overrides = loadLocalOverrides();
   if (IS_OWNER) {
     state.favorites = loadLocalFavorites();
     state.volumeRead = loadLocalVolumeRead();
   }
   loadCatalog();
-  if (IS_OWNER) initSupabase();
+  initSupabase();
 })();

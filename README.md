@@ -11,6 +11,7 @@ Catalogue personnel de bandes dessinées de Christophe (**1003 séries, 968 one-
 - **Données** : `data/catalog.json`, généré une fois par un pipeline de scripts Python (voir plus bas), à régénérer à chaque ajout/retrait de BD dans la collection source.
 - **Couvertures** : hébergées sur **Supabase Storage** (pas dans le dépôt Git — trop de fichiers, voir section dédiée), **une par tome** (extraites automatiquement depuis la première page de chaque fichier PDF/cbz).
 - **Synchro "lu"/"favoris"** : deux tables Postgres sur **Supabase** (`bd_volume_status` pour le "lu" par tome, `bd_status` pour les favoris par titre), lues/écrites en direct par le navigateur (clé publique "anon"), avec Realtime pour propager les changements entre appareils sans recharger la page. Pas d'authentification Supabase : l'accès aux statuts est filtré côté appli par le **mode propriétaire** (code), voir la section dédiée.
+- **Corrections faites depuis l'appli** (titre, auteur, genres, libellé de tome, masquage) : une troisième table, `bd_overrides`, appliquée **par-dessus** `catalog.json` au chargement. Le catalogue n'est jamais modifié par l'appli, et les corrections survivent donc aux réimports. Voir « Corriger et masquer depuis l'appli ».
 
 ## Structure des fichiers du site
 
@@ -23,7 +24,8 @@ ma-bibliotheque-bd/
 │                        #   [data-theme="…"] par thème ; responsive (grid auto-fill)
 ├── app.js              # toute la logique : chargement catalogue, recherche/filtres,
 │                        #   rendu grille + fiche détail, lu par tome (calcul du "lu" titre),
-│                        #   favoris par titre, aperçu couverture par tome, sync Supabase
+│                        #   favoris par titre, aperçu couverture par tome, sync Supabase,
+│                        #   corrections/masquages (bd_overrides) appliqués au chargement
 ├── config.js            # identifiants Supabase (URL + clé anon — publics, sans risque)
 │                        #   + BD_OWNER_HASH (empreinte du code propriétaire, pas le code)
 │                        #   + BD_IMAGE_BASE (préfixe des couvertures sur Supabase Storage)
@@ -32,6 +34,8 @@ ma-bibliotheque-bd/
 ├── site.webmanifest      # manifest PWA (icônes Android/Chrome, nom, couleurs)
 ├── icons/                 # déclinaisons de tailles de l'icône (apple-touch-icon-*, favicon-*,
 │                        #   android-chrome-*) — voir section dédiée plus bas
+├── supabase_bd_overrides.sql # script à exécuter UNE fois dans le SQL Editor de Supabase :
+│                        #   crée la table bd_overrides (corrections depuis l'appli)
 ├── masquages.json         # fiches masquées à l'import (doublons) — voir « Fiches masquées »
 ├── genre_map.json         # id -> {genres, confidence, source} — modifiable à la main,
 │                        #   lu par build_public_catalog_v2.py (voir section "Genres")
@@ -86,7 +90,7 @@ Un **one-shot** est une entrée ordinaire avec un seul tome, dont le libellé es
 
 - Projet : `ma-bibliotheque-bd` (org `deepblue67`), ref `aotudxyifqhyazluxhko`, région `eu-west-1` (Irlande).
 - Project URL : `https://aotudxyifqhyazluxhko.supabase.co`
-- La clé **anon** (publique, dans `config.js`) est protégée par les policies RLS ci-dessous — elle ne donne accès qu'aux tables `bd_status` / `bd_volume_status` et à la lecture du bucket `covers`.
+- La clé **anon** (publique, dans `config.js`) est protégée par les policies RLS ci-dessous — elle ne donne accès qu'aux tables `bd_status` / `bd_volume_status` / `bd_overrides` et à la lecture du bucket `covers`.
 - La clé **service_role** (secrète) n'est utilisée QUE ponctuellement dans `uploader.html`, en local, jamais commitée. Si besoin de la retrouver : Project Settings → API Keys.
 
 ### Table `bd_status` (favoris — au niveau du titre)
@@ -129,6 +133,27 @@ alter publication supabase_realtime add table bd_volume_status;
 ```
 
 Le titre est affiché "Lu" dans l'appli quand **tous** ses tomes sont marqués lus (calculé côté client dans `app.js`, `isTitleRead()`) — rien à stocker côté titre pour ça.
+
+### Table `bd_overrides` (corrections et masquages faits depuis l'appli)
+
+Script complet, commenté et relançable sans risque : `supabase_bd_overrides.sql` (à coller dans Supabase → SQL Editor → New query → Run).
+
+```sql
+create table if not exists public.bd_overrides (
+  id          text primary key,   -- id de fiche ("Thorgal") ou de tome ("Thorgal::2", index d'origine)
+  hidden      boolean,            -- true = masqué, false = démasqué exprès, null = valeur du catalogue
+  title       text,               -- titre de fiche ou libellé de tome (null = celui du catalogue)
+  author      text,               -- fiches seulement
+  genre       text[],             -- fiches seulement, 0 à 2 genres de la liste fixe
+  updated_at  timestamptz not null default now()
+);
+-- RLS : lecture, insertion, modification et suppression publiques (comme les deux autres tables)
+-- + ajout à la publication supabase_realtime
+```
+
+Une ligne n'existe que tant qu'il reste quelque chose à corriger : quand tous les champs reviennent à « valeur du catalogue », l'appli **supprime** la ligne (d'où la policy `delete`, que les deux autres tables n'ont pas).
+
+Contrairement aux statuts, cette table est lue **par tout le monde**, visiteurs compris : un visiteur doit voir les titres corrigés et ne pas voir les fiches masquées. Elle n'est **écrite** qu'en mode propriétaire, avec la même limite que pour les statuts : le garde-fou est dans l'interface, pas dans la base (voir « Mode propriétaire »).
 
 ### Bucket Storage `covers`
 
@@ -197,6 +222,8 @@ La mise à jour d'octobre 2026 a dû se faire autrement, parce que les montages 
    - la série a des tomes cochés **et** son ordre ne change pas → rien à faire non plus ;
    - la série a des tomes cochés **et** son ordre change → il faut migrer les lignes `bd_volume_status` (recalculer `is_read` pour chaque index), et cela ne se fait **qu'avec l'accord explicite de Christophe**, puisque ça écrit dans ses données.
 
+   **Même règle pour `bd_overrides`** (depuis octobre 2026) : les lignes de **tome** (`"<titleId>::<index>"`, libellé corrigé ou tome masqué) sont, elles aussi, rattachées à l'index. Avant de réordonner une série, il faut donc lister aussi les lignes `bd_overrides` dont l'id contient `::` pour cette série et, si l'ordre change, les déplacer avec le même accord. Les lignes de **fiche** (id sans `::`) ne dépendent que de l'id de la fiche ; elles ne sont concernées que si une fiche change d'id (renommage du dossier) : la ligne serait alors orpheline et la correction à refaire, ou la ligne à renommer.
+
    En octobre 2026, seules 3 séries avaient des tomes cochés (*Alter Ego*, *Lloyd Singer - Makabi*, *Louise Beauvoir*) et aucune n'était concernée par le tri : aucune migration n'a été nécessaire. Note pratique : le conteneur cloud et la VM locale n'ont **pas** d'accès réseau à `*.supabase.co` ; pour interroger la base il faut exécuter le `fetch` depuis la page du site elle-même, via le navigateur (outil `Claude_Browser__javascript_tool`), où la clé anon est déjà chargée.
 
    Les numéros des fichiers de couverture (`_001`, `_002`…) ne suivent plus forcément la position du tome après un tri : c'est sans conséquence, le nom du fichier n'est qu'une clé de stockage et chaque couple (tome, couverture) se déplace d'un bloc. Ce qui doit rester vrai, et qui est contrôlé, c'est que les couvertures **d'origine** restent en ordre numérique croissant au sein d'une série.
@@ -243,7 +270,7 @@ Fonctionnement :
 
 Choix validé avec Christophe : la protection est un **code**. C'est un garde-fou contre les fausses manipulations, pas une serrure, et il en a été informé.
 
-**Ce que voit chacun.** Sur un appareil en **mode visiteur** (par défaut), l'appli montre la bibliothèque et rien d'autre : pas de pastilles Lu / En cours / ★, pas de puces Lus / En cours / Non lus / Favoris, pas de cases à cocher sur les tomes, pas de boutons « marquer comme lu » / favoris. Les statuts ne sont même **pas téléchargés** depuis Supabase, et le cache local n'est pas lu. Sur un appareil en **mode propriétaire**, tout réapparaît et la synchro Supabase fonctionne comme avant. Mécanique : une classe `is-owner` sur `<html>` ; tout élément marqué `owner-only` est masqué sans elle, et `app.js` teste `IS_OWNER` avant chaque affichage de statut.
+**Ce que voit chacun.** Sur un appareil en **mode visiteur** (par défaut), l'appli montre la bibliothèque et rien d'autre : pas de pastilles Lu / En cours / ★, pas de puces Lus / En cours / Non lus / Favoris, pas de cases à cocher sur les tomes, pas de boutons « marquer comme lu » / favoris. Les statuts ne sont même **pas téléchargés** depuis Supabase, et le cache local n'est pas lu. (Seule la table des corrections, `bd_overrides`, est lue par les visiteurs, pour qu'ils voient les titres corrigés et pas les fiches masquées.) Le propriétaire peut en plus corriger et masquer des fiches et des tomes, voir « Corriger et masquer depuis l'appli ». Sur un appareil en **mode propriétaire**, tout réapparaît et la synchro Supabase fonctionne comme avant. Mécanique : une classe `is-owner` sur `<html>` ; tout élément marqué `owner-only` est masqué sans elle, et `app.js` teste `IS_OWNER` avant chaque affichage de statut.
 
 **Comment c'est vérifié.** Le code n'est enregistré nulle part. `config.js` contient `window.BD_OWNER_HASH`, une empreinte **PBKDF2-SHA-256** (200 000 itérations, sel fixe `ma-bibliotheque-bd/owner/v1`) calculée dans le navigateur avec `crypto.subtle`, qui exige une page en https. À la saisie du bon code, l'appareil garde cette même empreinte dans son `localStorage` (clé `bd_owner_v1`) et reste déverrouillé. « Quitter le mode propriétaire » l'efface. Si l'empreinte de `config.js` change (changement de code), **tous** les appareils repassent automatiquement en visiteur.
 
@@ -275,7 +302,25 @@ Premier usage (octobre 2026) : les **7 séries en double** créées par l'import
 
 **Pas un doublon** : *Ulysse* et *Ulysse (Tabou)*. Même dessinateur (Cosimo Ferri), mais des albums entièrement différents : *Tabou* est l'édition adulte. Les deux restent visibles.
 
-Ce masquage « à l'import » est géré par Claude. Le futur masquage **depuis l'appli**, en mode propriétaire, sera stocké dans Supabase, rattaché aux mêmes identifiants.
+Ce masquage « à l'import » est géré par Claude. Depuis octobre 2026, on peut aussi masquer **depuis l'appli** (mode propriétaire), et même ré-afficher une fiche masquée à l'import sans toucher au catalogue : voir la section suivante. Les deux mécanismes coexistent. `masquages.json` reste la trace des doublons décidés à l'import ; `bd_overrides` contient ce que Christophe a décidé dans l'appli, et **c'est lui qui l'emporte** (`hidden: false` dans `bd_overrides` ré-affiche une fiche marquée `hidden: true` dans le catalogue).
+
+## Corriger et masquer depuis l'appli
+
+Réservé au **mode propriétaire**. Toutes ces corrections sont stockées dans la table Supabase `bd_overrides` et appliquées **par-dessus** `data/catalog.json` à chaque chargement (`applyOverrides()` dans `app.js`). Le catalogue, lui, n'est jamais modifié. Un réimport régénère donc `catalog.json` sans rien effacer, tant que les identifiants restent stables (voir la règle des index plus haut).
+
+**Corriger une fiche** : ouvrir la fiche → **✎ Modifier** → titre, auteur(s), un ou deux genres → Enregistrer. Un champ remis à sa valeur d'origine (ou vidé) n'est plus stocké comme correction. Une fois corrigée, la fiche affiche en petit « Corrigé par toi — d'origine : … », et le bouton **Rétablir l'original** efface toutes ses corrections d'un coup. La recherche trouve la fiche sous son titre corrigé **et** sous son titre d'origine.
+
+**Corriger ou masquer un tome** : dans la liste des tomes, le petit **✎** au bout de la ligne ouvre un mini-éditeur : libellé du tome, « Rétablir le titre d'origine », « Masquer ce tome » / « Ré-afficher ce tome ». Un tome masqué disparaît pour les visiteurs. Le propriétaire le voit encore, grisé, marqué « (masqué) » et sans numéro, pour pouvoir le ré-afficher. Il ne compte plus dans le nombre de tomes, ni dans le calcul « lu / en cours », ni dans « Tout marquer comme lu ». Les tomes d'un one-shot ne se masquent pas : on masque la fiche entière.
+
+**Masquer une fiche** : ✎ Modifier → **Masquer cette fiche…** → confirmation. La fiche disparaît aussitôt de la grille, pour tout le monde. Un bandeau en bas d'écran propose **Annuler** pendant 8 secondes.
+
+**Retrouver ce qui est masqué** : Réglages → **Fiches masquées** (visible en mode propriétaire seulement). On y trouve les doublons écartés à l'import, avec la raison, et les fiches masquées depuis l'appli, chacune avec un bouton **Ré-afficher**.
+
+**Les coches de lecture ne bougent pas** : masquer ou renommer un tome ne change pas son index. Les clés `bd_volume_status` (`"<id>::<index>"`) restent donc valables, et un tome ré-affiché retrouve sa coche. La numérotation affichée (01, 02…) est recalculée sur les seuls tomes visibles. Elle peut donc différer de l'index stocké.
+
+**Synchro** : les corrections arrivent en direct sur les autres appareils ouverts (Realtime, sur un canal séparé de celui des statuts : si la table n'existe pas, la synchro des statuts continue de fonctionner). Chaque modification s'affiche immédiatement. Si Supabase la refuse (hors ligne, table absente), elle est annulée à l'écran avec le message « Non enregistré : … ». Une copie locale (`localStorage`, clé `bd_overrides_cache_v1`) permet d'afficher les corrections avant la réponse de Supabase au démarrage.
+
+**Prérequis, une seule fois** : exécuter `supabase_bd_overrides.sql` dans le SQL Editor de Supabase. Sans la table, l'appli fonctionne comme avant ; le propriétaire voit seulement la note « Corrections indisponibles : la table bd_overrides n'existe pas encore ».
 
 ## One-shots (dossier `BD Unique`)
 
@@ -351,4 +396,5 @@ Ou plus simple : pousser directement sur GitHub Pages (qui sert en https, aucun 
 - Piège rencontré (et corrigé avant tout envoi) : **Windows ne distingue pas les majuscules dans les noms de fichiers**. La couverture du one-shot `Le_petit_Prince_001.jpg` a donc écrasé, dans `volume_covers/`, celle de la série `Le_Petit_Prince_001.jpg`, alors que les deux noms semblaient différents dans le conteneur Linux. Restaurée depuis la copie de la VM (vérifiée par empreinte md5) et renommée `Le_petit_Prince_2_001.jpg`. Règle désormais appliquée : **l'unicité des noms de couverture (et des `id`) se vérifie sans tenir compte de la casse**. Supabase Storage, lui, distingue la casse, ce qui explique que le problème ne se voie qu'en local.
 - Recherche améliorée et thèmes (octobre 2026) : la recherche porte désormais aussi sur les titres de tomes, accepte plusieurs mots dans le désordre et ignore apostrophes et ponctuation (section « Recherche »). Ajout d'une roue crantée et d'un panneau Réglages avec 10 thèmes visuels (section « Thèmes et réglages »). Le thème par défaut est l'ancien design, inchangé à un détail près : le bandeau d'info sombre des vignettes s'étend désormais jusqu'en bas de la carte. Les 10 thèmes ont été contrôlés à l'écran avec les vraies polices ; c'est ce contrôle qui a fait corriger deux problèmes de contraste avant livraison (la mention « One-shot » dorée était illisible sur les vignettes à fond blanc, d'où la variable dédiée `--card-oneshot`, et le titre blanc était trop pâle sur le rose du thème Pastel). Pas de changement de catalogue ni de Supabase pour ce lot.
 - **Mode propriétaire** et **masquage des doublons** (octobre 2026) : protection par code choisie (option a), statuts invisibles pour les visiteurs, thème par appareil (déjà le cas), et 7 séries en double masquées dès maintenant. L'appli affiche 996 séries, 968 one-shots et 7930 albums visibles. Test en navigateur des cinq situations : non configuré, visiteur, mauvais code refusé, propriétaire, retour en visiteur après « Quitter » ou après un changement d'empreinte.
+- **Corriger et masquer depuis l'appli** (17 octobre 2026) : nouvelle table `bd_overrides` appliquée par-dessus le catalogue, pour que les corrections survivent aux réimports. On peut corriger le titre, l'auteur et les genres d'une fiche ou le libellé d'un tome, masquer une fiche (avec « Annuler ») ou un tome, et ré-afficher depuis Réglages → Fiches masquées, y compris les doublons écartés à l'import. Les index de tomes ne changent jamais, donc les coches de lecture restent en place. `app.js?v=10`, `style.css?v=9`. Testé en navigateur avec le vrai client supabase-js et une base simulée : visiteur (corrections visibles, aucun bouton d'édition, tomes masqués absents), propriétaire (édition d'une fiche puis rétablissement, masquage d'une fiche puis annulation, masquage/démasquage d'un tome, « tout marquer lu » limité aux tomes visibles, ré-affichage d'un doublon d'import, annulation à l'écran si Supabase refuse l'écriture), en thème clair et sombre, sur PC et sur mobile.
 - Mode propriétaire **mis en service** (16 octobre 2026) par la variante sans double publication : empreinte calculée par Christophe sur son PC avec la commande PowerShell, puis inscrite dans `config.js` (`config.js?v=4`). Le code n'a jamais transité par la conversation, seule l'empreinte y est passée. Leçon au passage : un envoi de fichier vers le PC a deux fois écrit **l'ancienne version** d'un fichier sans signaler d'erreur (`config.js`, puis `README.md`). Depuis, chaque livraison est contrôlée en comparant l'empreinte md5 des fichiers sur le PC à celle des fichiers préparés.

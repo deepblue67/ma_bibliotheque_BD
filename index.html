@@ -25,7 +25,7 @@
 <!-- themes.js est volontairement bloquant et placé AVANT style.css : il pose le thème
      mémorisé (et charge ses polices) avant le premier affichage. -->
 <script src="themes.js?v=1"></script>
-<link rel="stylesheet" href="style.css?v=8">
+<link rel="stylesheet" href="style.css?v=9">
 </head>
 <body>
 
@@ -88,11 +88,37 @@
       <div class="sheet-info">
         <div id="sheet-title" class="sheet-title"></div>
         <div id="sheet-author" class="sheet-author"></div>
+        <p id="sheet-orig" class="sheet-orig owner-only" hidden></p>
         <div id="sheet-meta" class="sheet-meta"></div>
         <div id="sheet-genres" class="sheet-genres"></div>
         <div class="sheet-actions owner-only">
           <button id="btn-read" class="btn btn-outline">Marquer comme lu</button>
           <button id="btn-fav" class="btn btn-outline">★ Ajouter aux favoris</button>
+          <button id="btn-edit" class="btn btn-outline" type="button">✎ Modifier</button>
+        </div>
+        <div id="sheet-edit" class="sheet-edit owner-only" hidden>
+          <form id="edit-form" class="edit-form" autocomplete="off">
+            <label class="edit-field"><span>Titre</span>
+              <input id="edit-title" class="owner-input" type="text"></label>
+            <label class="edit-field"><span>Auteur(s)</span>
+              <input id="edit-author" class="owner-input" type="text"></label>
+            <div class="edit-genres">
+              <label class="edit-field"><span>Genre 1</span><select id="edit-genre1" class="owner-input"></select></label>
+              <label class="edit-field"><span>Genre 2</span><select id="edit-genre2" class="owner-input"></select></label>
+            </div>
+            <div class="edit-buttons">
+              <button type="submit" class="btn">Enregistrer</button>
+              <button id="edit-cancel" type="button" class="btn btn-ghost">Annuler</button>
+              <button id="edit-reset" type="button" class="btn btn-ghost" hidden>Rétablir l'original</button>
+            </div>
+          </form>
+          <div class="edit-danger">
+            <button id="edit-hide" type="button" class="btn btn-danger">Masquer cette fiche…</button>
+            <span id="edit-hide-confirm" class="edit-confirm" hidden>Masquer « <span class="confirm-title"></span> » ?
+              <button id="edit-hide-yes" type="button" class="btn btn-danger">Oui, masquer</button>
+              <button id="edit-hide-no" type="button" class="btn btn-ghost">Non</button></span>
+            <p class="settings-hint">Une fiche masquée disparaît pour tout le monde, mais rien n'est effacé : tu la retrouves dans Réglages → Fiches masquées.</p>
+          </div>
         </div>
         <div class="sheet-volumes">
           <div class="sheet-volumes-label">Tomes</div>
@@ -119,6 +145,11 @@
         <h3 class="settings-h">Mode propriétaire</h3>
         <div id="owner-panel"></div>
       </section>
+      <section class="settings-section owner-only">
+        <h3 class="settings-h">Fiches masquées</h3>
+        <p class="settings-hint">Doublons écartés à l'import et fiches que tu as masquées. Elles restent invisibles pour tout le monde jusqu'à ce que tu les ré-affiches.</p>
+        <div id="hidden-list"></div>
+      </section>
       <p class="settings-foot">Ma Bibliothèque BD</p>
     </div>
   </div>
@@ -131,8 +162,10 @@
   <img id="zoom-img" class="zoom-img" alt="">
 </div>
 
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="config.js?v=4"></script>
-<script src="app.js?v=9"></script>
+<script src="app.js?v=10"></script>
 </body>
 </html>
