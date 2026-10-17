@@ -25,7 +25,7 @@
 <!-- themes.js est volontairement bloquant et placé AVANT style.css : il pose le thème
      mémorisé (et charge ses polices) avant le premier affichage. -->
 <script src="themes.js?v=1"></script>
-<link rel="stylesheet" href="style.css?v=9">
+<link rel="stylesheet" href="style.css?v=10">
 </head>
 <body>
 
@@ -89,6 +89,7 @@
         <div id="sheet-title" class="sheet-title"></div>
         <div id="sheet-author" class="sheet-author"></div>
         <p id="sheet-orig" class="sheet-orig owner-only" hidden></p>
+        <p id="sheet-merged" class="sheet-merged owner-only" hidden></p>
         <div id="sheet-meta" class="sheet-meta"></div>
         <div id="sheet-genres" class="sheet-genres"></div>
         <div class="sheet-actions owner-only">
@@ -112,6 +113,20 @@
               <button id="edit-reset" type="button" class="btn btn-ghost" hidden>Rétablir l'original</button>
             </div>
           </form>
+          <div class="edit-merge">
+            <button id="merge-open" type="button" class="btn btn-ghost">Fusionner une autre fiche dans celle-ci…</button>
+            <div id="merge-picker" class="merge-picker" hidden>
+              <label class="edit-field"><span>Fiche à intégrer dans celle-ci</span>
+                <input id="merge-q" class="owner-input" type="text" placeholder="Tape une partie de son titre…" autocomplete="off"></label>
+              <ul id="merge-results" class="merge-results"></ul>
+              <div id="merge-confirm" class="merge-confirm" hidden>
+                <p id="merge-confirm-text"></p>
+                <button id="merge-yes" type="button" class="btn">Oui, fusionner</button>
+                <button id="merge-no" type="button" class="btn btn-ghost">Non</button>
+              </div>
+              <button id="merge-cancel" type="button" class="btn btn-ghost">Fermer</button>
+            </div>
+          </div>
           <div class="edit-danger">
             <button id="edit-hide" type="button" class="btn btn-danger">Masquer cette fiche…</button>
             <span id="edit-hide-confirm" class="edit-confirm" hidden>Masquer « <span class="confirm-title"></span> » ?
@@ -146,12 +161,26 @@
         <div id="owner-panel"></div>
       </section>
       <section class="settings-section owner-only">
-        <h3 class="settings-h">Fiches masquées</h3>
-        <p class="settings-hint">Doublons écartés à l'import et fiches que tu as masquées. Elles restent invisibles pour tout le monde jusqu'à ce que tu les ré-affiches.</p>
+        <h3 class="settings-h">Doublons probables</h3>
+        <p class="settings-hint">Fiches au titre très proche, tomes en double dans une série, one-shots qui ressemblent à un tome : l'appli te les propose, tu tranches (fusionner, masquer ou « pas un doublon »).</p>
+        <div class="owner-row"><button id="dups-open" type="button" class="btn">Examiner les doublons</button> <span id="dups-count" class="dups-count"></span></div>
+      </section>
+      <section class="settings-section owner-only">
+        <h3 class="settings-h">Fiches masquées et fusionnées</h3>
+        <p class="settings-hint">Doublons écartés à l'import, fiches que tu as masquées ou fusionnées dans une autre. Elles restent invisibles pour tout le monde jusqu'à ce que tu les ré-affiches ou les sépares.</p>
         <div id="hidden-list"></div>
       </section>
       <p class="settings-foot">Ma Bibliothèque BD</p>
     </div>
+  </div>
+</div>
+
+<div id="dups-overlay" class="overlay" hidden>
+  <div class="sheet settings-sheet dups-sheet" role="dialog" aria-modal="true" aria-label="Doublons probables">
+    <button id="dups-close" class="sheet-close" aria-label="Fermer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div id="dups-body" class="settings-body dups-body"></div>
   </div>
 </div>
 
@@ -166,6 +195,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="config.js?v=4"></script>
-<script src="app.js?v=10"></script>
+<script src="app.js?v=11"></script>
 </body>
 </html>

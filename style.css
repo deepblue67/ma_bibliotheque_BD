@@ -916,3 +916,60 @@ html:not(.is-owner) .owner-only { display: none !important; }
 .hl-title { font-size: 13.5px; font-weight: 800; color: var(--text); }
 .hl-why { font-size: 11.5px; color: var(--text-soft); margin-top: 2px; overflow-wrap: anywhere; }
 .hidden-list .btn { flex-shrink: 0; padding: 8px 11px; font-size: 12px; }
+
+/* =====================================================================
+   FUSION ET DOUBLONS PROBABLES (propriétaire)
+   ===================================================================== */
+.sheet-merged { font-size: 12px; color: var(--text-soft); margin: 6px 0 0; line-height: 1.5; }
+.sheet-merged[hidden], .merge-picker[hidden], .merge-confirm[hidden], #merge-open[hidden] { display: none; }
+.merged-item { white-space: nowrap; }
+.link-btn {
+  background: none; border: 0; padding: 0; cursor: pointer;
+  font: 700 12px var(--font-body); color: var(--fav); text-decoration: underline;
+}
+.edit-merge { margin-top: 14px; padding-top: 12px; border-top: 1px dotted var(--divider-strong); }
+.merge-picker { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.merge-picker .edit-field { width: 100%; }
+.merge-results { list-style: none; margin: 0; padding: 0; width: 100%; display: flex; flex-direction: column; gap: 4px; }
+.merge-hit {
+  width: 100%; text-align: left; cursor: pointer;
+  font: 600 12.5px var(--font-body); color: var(--text);
+  background: var(--surface); border: 1px solid var(--divider); border-radius: 6px; padding: 8px 10px;
+}
+.merge-hit:hover, .merge-hit:focus-visible { border-color: var(--line); background: var(--tan); color: var(--chip-text); }
+.merge-none { font-size: 12px; color: var(--muted); }
+.merge-confirm { width: 100%; box-sizing: border-box; padding: 10px; border: var(--bw-s) solid var(--line); border-radius: var(--r-field); background: var(--surface); }
+.merge-confirm p { margin: 0 0 10px; font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.4; }
+
+.dups-count { font-size: 12.5px; font-weight: 700; color: var(--text-soft); align-self: center; }
+.dups-sheet { max-width: 860px; }
+.dup-section { margin-top: 24px; }
+.dup-empty { font-size: 13px; color: var(--muted); margin: 0; }
+.dup-item {
+  margin-top: 10px; padding: 12px;
+  border: 1px solid var(--divider); border-radius: var(--r-field);
+  background: var(--surface); color: var(--text);
+}
+.dup-pair { display: flex; flex-wrap: wrap; gap: 12px; }
+.dup-col { flex: 1 1 260px; min-width: 0; display: flex; gap: 10px; align-items: flex-start; }
+.dup-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; align-items: flex-start; }
+.dup-info .btn { margin-top: 6px; padding: 8px 11px; font-size: 12px; }
+.dup-title { font-size: 13.5px; font-weight: 800; color: var(--text); overflow-wrap: anywhere; }
+.dup-meta { font-size: 11.5px; color: var(--text-soft); overflow-wrap: anywhere; }
+.dup-tomes { font-size: 11.5px; font-style: italic; color: var(--muted); overflow-wrap: anywhere; }
+.dup-thumb {
+  flex-shrink: 0; width: 64px; height: 88px; padding: 0; cursor: zoom-in;
+  border: 1px solid var(--line); border-radius: var(--r-cover); overflow: hidden;
+  background: var(--card-placeholder);
+  display: flex; align-items: center; justify-content: center;
+}
+.dup-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.dup-thumb:disabled { cursor: default; }
+.dup-nocover { font-size: 9.5px; color: var(--muted); text-align: center; padding: 4px; }
+.dup-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 8px; }
+.dup-tome { width: 120px; display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+.dup-tome .dup-thumb { width: 84px; height: 116px; }
+.dup-label { font-size: 11.5px; font-weight: 600; color: var(--text); overflow-wrap: anywhere; }
+.dup-tome .btn { padding: 7px 10px; font-size: 11.5px; }
+.dup-foot { flex-basis: 100%; display: flex; justify-content: flex-end; margin-top: 6px; }
+.dup-foot .btn { padding: 7px 10px; font-size: 12px; }

@@ -11,7 +11,7 @@ Catalogue personnel de bandes dessinées de Christophe (**1003 séries, 968 one-
 - **Données** : `data/catalog.json`, généré une fois par un pipeline de scripts Python (voir plus bas), à régénérer à chaque ajout/retrait de BD dans la collection source.
 - **Couvertures** : hébergées sur **Supabase Storage** (pas dans le dépôt Git — trop de fichiers, voir section dédiée), **une par tome** (extraites automatiquement depuis la première page de chaque fichier PDF/cbz).
 - **Synchro "lu"/"favoris"** : deux tables Postgres sur **Supabase** (`bd_volume_status` pour le "lu" par tome, `bd_status` pour les favoris par titre), lues/écrites en direct par le navigateur (clé publique "anon"), avec Realtime pour propager les changements entre appareils sans recharger la page. Pas d'authentification Supabase : l'accès aux statuts est filtré côté appli par le **mode propriétaire** (code), voir la section dédiée.
-- **Corrections faites depuis l'appli** (titre, auteur, genres, libellé de tome, masquage) : une troisième table, `bd_overrides`, appliquée **par-dessus** `catalog.json` au chargement. Le catalogue n'est jamais modifié par l'appli, et les corrections survivent donc aux réimports. Voir « Corriger et masquer depuis l'appli ».
+- **Corrections faites depuis l'appli** (titre, auteur, genres, libellé de tome, masquage, fusion de fiches, « pas un doublon ») : une troisième table, `bd_overrides`, appliquée **par-dessus** `catalog.json` au chargement. Le catalogue n'est jamais modifié par l'appli, et les corrections survivent donc aux réimports. Voir « Corriger et masquer depuis l'appli ».
 
 ## Structure des fichiers du site
 
@@ -25,7 +25,8 @@ ma-bibliotheque-bd/
 ├── app.js              # toute la logique : chargement catalogue, recherche/filtres,
 │                        #   rendu grille + fiche détail, lu par tome (calcul du "lu" titre),
 │                        #   favoris par titre, aperçu couverture par tome, sync Supabase,
-│                        #   corrections/masquages (bd_overrides) appliqués au chargement
+│                        #   corrections/masquages/fusions (bd_overrides) appliqués au
+│                        #   chargement, écran « doublons probables » (propriétaire)
 ├── config.js            # identifiants Supabase (URL + clé anon — publics, sans risque)
 │                        #   + BD_OWNER_HASH (empreinte du code propriétaire, pas le code)
 │                        #   + BD_IMAGE_BASE (préfixe des couvertures sur Supabase Storage)
@@ -34,8 +35,9 @@ ma-bibliotheque-bd/
 ├── site.webmanifest      # manifest PWA (icônes Android/Chrome, nom, couleurs)
 ├── icons/                 # déclinaisons de tailles de l'icône (apple-touch-icon-*, favicon-*,
 │                        #   android-chrome-*) — voir section dédiée plus bas
-├── supabase_bd_overrides.sql # script à exécuter UNE fois dans le SQL Editor de Supabase :
-│                        #   crée la table bd_overrides (corrections depuis l'appli)
+├── supabase_bd_overrides.sql # script du SQL Editor de Supabase : crée/complète la table
+│                        #   bd_overrides (corrections depuis l'appli) — relançable,
+│                        #   à relancer après chaque lot qui le modifie
 ├── masquages.json         # fiches masquées à l'import (doublons) — voir « Fiches masquées »
 ├── genre_map.json         # id -> {genres, confidence, source} — modifiable à la main,
 │                        #   lu par build_public_catalog_v2.py (voir section "Genres")
@@ -145,11 +147,16 @@ create table if not exists public.bd_overrides (
   title       text,               -- titre de fiche ou libellé de tome (null = celui du catalogue)
   author      text,               -- fiches seulement
   genre       text[],             -- fiches seulement, 0 à 2 genres de la liste fixe
+  merged_into text,               -- fiches seulement : id de la fiche qui l'absorbe (fusion)
+  not_dup     boolean,            -- lignes "nodup:<clé1>|<clé2>" : « pas un doublon »
   updated_at  timestamptz not null default now()
 );
+-- + "alter table … add column if not exists" pour les colonnes ajoutées après coup
 -- RLS : lecture, insertion, modification et suppression publiques (comme les deux autres tables)
 -- + ajout à la publication supabase_realtime
 ```
+
+Les colonnes `merged_into` et `not_dup` ont été ajoutées au lot « fusion et doublons probables ». L'appli ne les envoie que lorsqu'elles servent : tant que le script n'a pas été relancé, les corrections simples continuent de marcher, et seules la fusion et « pas un doublon » échouent avec un message qui demande de relancer le script.
 
 Une ligne n'existe que tant qu'il reste quelque chose à corriger : quand tous les champs reviennent à « valeur du catalogue », l'appli **supprime** la ligne (d'où la policy `delete`, que les deux autres tables n'ont pas).
 
@@ -222,7 +229,7 @@ La mise à jour d'octobre 2026 a dû se faire autrement, parce que les montages 
    - la série a des tomes cochés **et** son ordre ne change pas → rien à faire non plus ;
    - la série a des tomes cochés **et** son ordre change → il faut migrer les lignes `bd_volume_status` (recalculer `is_read` pour chaque index), et cela ne se fait **qu'avec l'accord explicite de Christophe**, puisque ça écrit dans ses données.
 
-   **Même règle pour `bd_overrides`** (depuis octobre 2026) : les lignes de **tome** (`"<titleId>::<index>"`, libellé corrigé ou tome masqué) sont, elles aussi, rattachées à l'index. Avant de réordonner une série, il faut donc lister aussi les lignes `bd_overrides` dont l'id contient `::` pour cette série et, si l'ordre change, les déplacer avec le même accord. Les lignes de **fiche** (id sans `::`) ne dépendent que de l'id de la fiche ; elles ne sont concernées que si une fiche change d'id (renommage du dossier) : la ligne serait alors orpheline et la correction à refaire, ou la ligne à renommer.
+   **Même règle pour `bd_overrides`** (depuis octobre 2026) : les lignes de **tome** (`"<titleId>::<index>"`, libellé corrigé ou tome masqué) sont, elles aussi, rattachées à l'index, de même que les décisions « pas un doublon » portant sur des tomes (`"nodup:<clé>|<clé>"`). Avant de réordonner une série, il faut donc lister aussi les lignes `bd_overrides` dont l'id contient `::` pour cette série et, si l'ordre change, les déplacer avec le même accord. Les lignes de **fiche** (id sans `::`) ne dépendent que de l'id de la fiche ; elles ne sont concernées que si une fiche change d'id (renommage du dossier) : la ligne serait alors orpheline et la correction à refaire, ou la ligne à renommer. Même chose pour une **fusion** (`merged_into` pointe vers l'id de la fiche d'accueil) : si la fiche d'accueil disparaît du catalogue, la fiche fusionnée réapparaît simplement toute seule, rien n'est perdu.
 
    En octobre 2026, seules 3 séries avaient des tomes cochés (*Alter Ego*, *Lloyd Singer - Makabi*, *Louise Beauvoir*) et aucune n'était concernée par le tri : aucune migration n'a été nécessaire. Note pratique : le conteneur cloud et la VM locale n'ont **pas** d'accès réseau à `*.supabase.co` ; pour interroger la base il faut exécuter le `fetch` depuis la page du site elle-même, via le navigateur (outil `Claude_Browser__javascript_tool`), où la clé anon est déjà chargée.
 
@@ -314,13 +321,22 @@ Réservé au **mode propriétaire**. Toutes ces corrections sont stockées dans 
 
 **Masquer une fiche** : ✎ Modifier → **Masquer cette fiche…** → confirmation. La fiche disparaît aussitôt de la grille, pour tout le monde. Un bandeau en bas d'écran propose **Annuler** pendant 8 secondes.
 
-**Retrouver ce qui est masqué** : Réglages → **Fiches masquées** (visible en mode propriétaire seulement). On y trouve les doublons écartés à l'import, avec la raison, et les fiches masquées depuis l'appli, chacune avec un bouton **Ré-afficher**.
+**Retrouver ce qui est masqué** : Réglages → **Fiches masquées et fusionnées** (visible en mode propriétaire seulement). On y trouve les doublons écartés à l'import, avec la raison, et les fiches masquées depuis l'appli, chacune avec un bouton **Ré-afficher**.
 
 **Les coches de lecture ne bougent pas** : masquer ou renommer un tome ne change pas son index. Les clés `bd_volume_status` (`"<id>::<index>"`) restent donc valables, et un tome ré-affiché retrouve sa coche. La numérotation affichée (01, 02…) est recalculée sur les seuls tomes visibles. Elle peut donc différer de l'index stocké.
 
 **Synchro** : les corrections arrivent en direct sur les autres appareils ouverts (Realtime, sur un canal séparé de celui des statuts : si la table n'existe pas, la synchro des statuts continue de fonctionner). Chaque modification s'affiche immédiatement. Si Supabase la refuse (hors ligne, table absente), elle est annulée à l'écran avec le message « Non enregistré : … ». Une copie locale (`localStorage`, clé `bd_overrides_cache_v1`) permet d'afficher les corrections avant la réponse de Supabase au démarrage.
 
-**Prérequis, une seule fois** : exécuter `supabase_bd_overrides.sql` dans le SQL Editor de Supabase. Sans la table, l'appli fonctionne comme avant ; le propriétaire voit seulement la note « Corrections indisponibles : la table bd_overrides n'existe pas encore ».
+**Fusionner deux fiches** : ouvrir la fiche **à garder** → ✎ Modifier → **Fusionner une autre fiche dans celle-ci…** → taper une partie du titre de l'autre fiche → la choisir → confirmer. Les tomes de l'autre fiche s'ajoutent **à la fin** de celle-ci, et l'autre fiche disparaît de la grille (et de la recherche, mais on retrouve la fiche d'accueil en tapant le titre de la fiche absorbée ou de ses tomes). Le titre, l'auteur et les genres restent ceux de la fiche gardée. Rien n'est recopié : la fusion est une simple ligne `merged_into` dans `bd_overrides`, et chaque tome garde sa clé d'origine (`"<fiche d'origine>::<index>"`). Ses coches de lecture, son libellé corrigé et son masquage éventuel suivent donc sans migration. Pour défaire : « séparer » dans la fiche (ligne « Fiche fusionnée ici »), ou Réglages → Fiches masquées et fusionnées → **Séparer**. Si on masque une fiche, les fiches qui y sont fusionnées sont masquées avec elle. Une fusion de deux one-shots donne une fiche de deux tomes, comptée comme une série ; pour deux one-shots identiques, mieux vaut en masquer un.
+
+**Doublons probables** : Réglages → Doublons probables → **Examiner les doublons**. L'écran est calculé à la volée sur le catalogue affiché (corrections et fusions comprises), donc toujours à jour après un réimport, sans fichier à régénérer. Trois familles de suggestions :
+- **Fiches qui se ressemblent** : titres presque identiques une fois retirés accents, ponctuation, mentions entre parenthèses ou crochets et mots « bis / intégrale / HD / tome » (distance de Levenshtein ≤ 15 %, ou titre court de 3 mots et plus contenu dans l'autre), **et** auteurs compatibles (au moins un en commun, ou l'un des deux inconnu). Les homonymes vérifiés à l'import (*Angor*, *Kaya*, *Le petit Prince*, *Hitler*) ont des auteurs différents et ne remontent donc pas. *Dracula* remonte quand même, Bram Stoker étant crédité des deux côtés : c'est le cas typique du « pas un doublon ». Actions : « Fusionner ici » entre deux séries ou une série et un one-shot, « Garder celle-ci » entre deux one-shots (masque l'autre), « Masquer celle-ci » côté one-shot face à une série.
+- **Tomes en double dans une même fiche** : même libellé (normalisé) plusieurs fois. Chaque tome a son bouton « Masquer ».
+- **One-shots qui sont peut-être un tome d'une série** : le titre du one-shot est le libellé d'un tome de série (4 lettres au moins, auteurs compatibles). Action : « Masquer le one-shot ».
+
+Chaque suggestion a un bouton **Pas un doublon** : la décision est stockée (`"nodup:<clé1>|<clé2>"`, `not_dup = true`) et la suggestion ne revient plus. Les couvertures se touchent pour s'agrandir. Toutes les actions passent par `bd_overrides` et proposent « Annuler ». Au premier passage (octobre 2026), l'écran proposait 51 suggestions : 8 paires de fiches, 40 groupes de tomes au libellé identique (dont 14 pour *La geste des chevaliers dragons*) et 3 one-shots (*Black Widow*, *La petite reine*, *Le Lion*). Les libellés identiques ne sont pas toujours des doublons : *1984* ou *Le clan des Otori* ont plusieurs tomes au même libellé parce que le nom de fichier ne contenait que le numéro. D'où l'affichage des couvertures, pour trancher.
+
+**Prérequis** : exécuter (ou relancer, s'il l'a déjà été au lot précédent) `supabase_bd_overrides.sql` dans le SQL Editor de Supabase. Sans la table, l'appli fonctionne comme avant ; le propriétaire voit seulement la note « Corrections indisponibles : la table bd_overrides n'existe pas encore ».
 
 ## One-shots (dossier `BD Unique`)
 
@@ -396,5 +412,6 @@ Ou plus simple : pousser directement sur GitHub Pages (qui sert en https, aucun 
 - Piège rencontré (et corrigé avant tout envoi) : **Windows ne distingue pas les majuscules dans les noms de fichiers**. La couverture du one-shot `Le_petit_Prince_001.jpg` a donc écrasé, dans `volume_covers/`, celle de la série `Le_Petit_Prince_001.jpg`, alors que les deux noms semblaient différents dans le conteneur Linux. Restaurée depuis la copie de la VM (vérifiée par empreinte md5) et renommée `Le_petit_Prince_2_001.jpg`. Règle désormais appliquée : **l'unicité des noms de couverture (et des `id`) se vérifie sans tenir compte de la casse**. Supabase Storage, lui, distingue la casse, ce qui explique que le problème ne se voie qu'en local.
 - Recherche améliorée et thèmes (octobre 2026) : la recherche porte désormais aussi sur les titres de tomes, accepte plusieurs mots dans le désordre et ignore apostrophes et ponctuation (section « Recherche »). Ajout d'une roue crantée et d'un panneau Réglages avec 10 thèmes visuels (section « Thèmes et réglages »). Le thème par défaut est l'ancien design, inchangé à un détail près : le bandeau d'info sombre des vignettes s'étend désormais jusqu'en bas de la carte. Les 10 thèmes ont été contrôlés à l'écran avec les vraies polices ; c'est ce contrôle qui a fait corriger deux problèmes de contraste avant livraison (la mention « One-shot » dorée était illisible sur les vignettes à fond blanc, d'où la variable dédiée `--card-oneshot`, et le titre blanc était trop pâle sur le rose du thème Pastel). Pas de changement de catalogue ni de Supabase pour ce lot.
 - **Mode propriétaire** et **masquage des doublons** (octobre 2026) : protection par code choisie (option a), statuts invisibles pour les visiteurs, thème par appareil (déjà le cas), et 7 séries en double masquées dès maintenant. L'appli affiche 996 séries, 968 one-shots et 7930 albums visibles. Test en navigateur des cinq situations : non configuré, visiteur, mauvais code refusé, propriétaire, retour en visiteur après « Quitter » ou après un changement d'empreinte.
+- **Fusion et doublons probables** (17 octobre 2026) : fusion d'une fiche dans une autre depuis l'éditeur de fiche (ligne `merged_into`, les tomes gardent leur clé d'origine), « séparer » depuis la fiche ou les Réglages, et écran **Doublons probables** calculé à la volée (fiches proches, tomes au même libellé, one-shot = tome), avec « pas un doublon » mémorisé. Deux colonnes ajoutées à `bd_overrides` (script SQL à relancer). `app.js?v=11`, `style.css?v=10`. Test en navigateur (vrai supabase-js, base simulée) : fusion depuis l'écran des doublons et depuis l'éditeur, coche de lecture d'un tome absorbé écrite sous sa clé d'origine, recherche par un tome absorbé, séparation, masquage d'un tome en double et d'un one-shot, « pas un doublon », visiteur (fusion visible, aucun outil propriétaire), et base **sans** les nouvelles colonnes (les corrections simples passent, la fusion est refusée proprement). Le test du lot 3 repasse à l'identique.
 - **Corriger et masquer depuis l'appli** (17 octobre 2026) : nouvelle table `bd_overrides` appliquée par-dessus le catalogue, pour que les corrections survivent aux réimports. On peut corriger le titre, l'auteur et les genres d'une fiche ou le libellé d'un tome, masquer une fiche (avec « Annuler ») ou un tome, et ré-afficher depuis Réglages → Fiches masquées, y compris les doublons écartés à l'import. Les index de tomes ne changent jamais, donc les coches de lecture restent en place. `app.js?v=10`, `style.css?v=9`. Testé en navigateur avec le vrai client supabase-js et une base simulée : visiteur (corrections visibles, aucun bouton d'édition, tomes masqués absents), propriétaire (édition d'une fiche puis rétablissement, masquage d'une fiche puis annulation, masquage/démasquage d'un tome, « tout marquer lu » limité aux tomes visibles, ré-affichage d'un doublon d'import, annulation à l'écran si Supabase refuse l'écriture), en thème clair et sombre, sur PC et sur mobile.
 - Mode propriétaire **mis en service** (16 octobre 2026) par la variante sans double publication : empreinte calculée par Christophe sur son PC avec la commande PowerShell, puis inscrite dans `config.js` (`config.js?v=4`). Le code n'a jamais transité par la conversation, seule l'empreinte y est passée. Leçon au passage : un envoi de fichier vers le PC a deux fois écrit **l'ancienne version** d'un fichier sans signaler d'erreur (`config.js`, puis `README.md`). Depuis, chaque livraison est contrôlée en comparant l'empreinte md5 des fichiers sur le PC à celle des fichiers préparés.

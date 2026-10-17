@@ -39,7 +39,9 @@
     raw: [],           // catalogue tel que généré (data/catalog.json), jamais modifié
     catalog: [],       // fiches visibles, corrections appliquées (voir applyOverrides)
     hiddenList: [],    // fiches masquées (import ou propriétaire)
-    overrides: {},     // corrections : "id" ou "id::index" -> { hidden, title, author, genre }
+    overrides: {},     // corrections : "id" ou "id::index" -> { hidden, title, author, genre, merged_into }
+                       //   + décisions « pas un doublon » : "nodup:clé1|clé2" -> { not_dup: true }
+    mergedList: [],    // fiches fusionnées dans une autre (propriétaire : Réglages)
     favorites: {},     // titleId -> { is_favorite }
     volumeRead: {},    // "titleId::idx" -> true
     filters: { title: "", author: "", read: false, unread: false, inprogress: false, fav: false, genre: "", kind: "" },
@@ -108,23 +110,25 @@
   }
 
   // ---------- computed read status ----------
-  function isVolumeRead(titleId, idx) {
-    return state.volumeRead[volKey(titleId, idx)] === true;
-  }
-  // entry._vis = index D'ORIGINE des tomes visibles (un tome masqué garde sa place :
-  // les clés "id::index" de bd_volume_status ne bougent donc jamais).
+  // Chaque tome affiché garde la clé de SA fiche d'origine ("idFiche::index d'origine"),
+  // même quand il est masqué ou que sa fiche a été fusionnée dans une autre :
+  // entry._keys[i] est cette clé, et c'est elle qu'on lit/écrit dans bd_volume_status.
+  function isKeyRead(key) { return state.volumeRead[key] === true; }
+  function isVolumeRead(entry, i) { return isKeyRead(entry._keys[i]); }
+  function titleOfKey(key) { return key.slice(0, key.lastIndexOf("::")); }
+  // entry._vis = positions des tomes visibles (les masqués gardent leur place).
   function isTitleRead(entry) {
     var v = entry._vis || [];
     if (!v.length) return false;
     for (var k = 0; k < v.length; k++) {
-      if (!isVolumeRead(entry.id, v[k])) return false;
+      if (!isVolumeRead(entry, v[k])) return false;
     }
     return true;
   }
   function countRead(entry) {
     var v = entry._vis || [], n = 0;
     for (var k = 0; k < v.length; k++) {
-      if (isVolumeRead(entry.id, v[k])) n++;
+      if (isVolumeRead(entry, v[k])) n++;
     }
     return n;
   }
@@ -150,38 +154,75 @@
     return a.length === b.length && a.every(function (x, i) { return x === b[i]; });
   }
 
+  function isRawHidden(r) {
+    var o = state.overrides[r.id] || {};
+    return (o.hidden === true || o.hidden === false) ? o.hidden : !!r.hidden;
+  }
+
+  // Fiche d'accueil réelle d'une fiche fusionnée (suit les chaînes A→B→C). Renvoie null
+  // si la fiche n'est pas fusionnée, ou si la cible n'existe plus (réimport) ou boucle :
+  // la fiche réapparaît alors normalement, rien n'est jamais perdu.
+  function mergeTarget(id, byId) {
+    var seen = {}, cur = id, hops = 0;
+    while (true) {
+      var o = state.overrides[cur];
+      if (!o || !o.merged_into || o.merged_into === cur) break;
+      if (seen[cur] || ++hops > 8) return null;
+      seen[cur] = true;
+      cur = o.merged_into;
+      if (!byId[cur]) return null;
+    }
+    return cur === id ? null : cur;     // cible masquée : la fiche fusionnée l'est avec elle
+  }
+
   function applyOverrides() {
-    var list = [], hidden = [];
+    var list = [], hidden = [], merged = [];
+    var byId = {}, absorbed = {};      // id cible -> [fiches brutes fusionnées dedans]
+    state.raw.forEach(function (r) { byId[r.id] = r; });
+    var target = {};
     state.raw.forEach(function (r) {
+      var t = mergeTarget(r.id, byId);
+      if (t) { target[r.id] = t; (absorbed[t] = absorbed[t] || []).push(r); }
+    });
+    var cmp = function (a, b) { return a.title.localeCompare(b.title, "fr", { sensitivity: "base", numeric: true }); };
+    state.raw.forEach(function (r) {
+      if (target[r.id]) {
+        merged.push({ id: r.id, title: (state.overrides[r.id] || {}).title || r.title, into: target[r.id], _raw: r });
+        return;
+      }
       var o = state.overrides[r.id] || {};
-      var isHidden = (o.hidden === true || o.hidden === false) ? o.hidden : !!r.hidden;
-      var labels = [], vis = [], hid = [];
-      (r.volumes || []).forEach(function (v, i) {
-        var vo = state.overrides[volKey(r.id, i)] || {};
-        labels.push(vo.title || v.label);
-        if (vo.hidden === true) hid.push(i); else vis.push(i);
+      var srcs = [r].concat((absorbed[r.id] || []).sort(function (a, b) { return cmp(a, b); }));
+      var vols = [], keys = [], labels = [], vis = [], hid = [];
+      srcs.forEach(function (sr) {
+        (sr.volumes || []).forEach(function (v, i) {
+          var k = volKey(sr.id, i), vo = state.overrides[k] || {};
+          var pos = vols.length;
+          vols.push(v); keys.push(k); labels.push(vo.title || v.label);
+          if (vo.hidden === true) hid.push(pos); else vis.push(pos);
+        });
       });
-      var first = vis.length ? r.volumes[vis[0]] : null;
+      var first = vis.length ? vols[vis[0]] : null;
       var e = {
         id: r.id,
         title: o.title || r.title,
         author: o.author || r.author,
         genre: Array.isArray(o.genre) ? o.genre : (r.genre || []),
-        one_shot: r.one_shot,
+        one_shot: r.one_shot && srcs.length === 1,
         parent_series: r.parent_series,
-        volumes: r.volumes,
+        volumes: vols,
         cover: (first && first.cover) || null,
         volume_count: vis.length,
-        _labels: labels, _vis: vis, _hidVols: hid, _raw: r,
+        _keys: keys, _labels: labels, _vis: vis, _hidVols: hid, _raw: r,
+        _merged: srcs.slice(1),
         _edited: !!(o.title || o.author || Array.isArray(o.genre))
       };
-      (isHidden ? hidden : list).push(e);
+      (isRawHidden(r) ? hidden : list).push(e);
     });
-    var cmp = function (a, b) { return a.title.localeCompare(b.title, "fr", { sensitivity: "base", numeric: true }); };
-    list.sort(cmp); hidden.sort(cmp);
+    list.sort(cmp); hidden.sort(cmp); merged.sort(cmp);
     buildSearchIndex(list);
     state.catalog = list;
     state.hiddenList = hidden;
+    state.mergedList = merged;
     var nOne = list.filter(function (e) { return e.one_shot; }).length;
     var nVol = list.reduce(function (t, e) { return t + e.volume_count; }, 0);
     els.stats.textContent = (list.length - nOne) + " séries · " + nOne + " one-shots · " + nVol + " albums";
@@ -195,16 +236,17 @@
       if (currentEntry()) refreshSheet(); else closeSheet();
     }
     if (settingsEls && !settingsEls.overlay.hidden) renderHiddenList();
+    if (dupEls && !dupEls.overlay.hidden) renderDups();
   }
 
   // Enregistre une correction (fusionnée avec l'existante). Appliquée tout de suite à
   // l'écran, puis envoyée à Supabase ; en cas d'échec, on revient en arrière.
   function saveOverride(key, patch, onOk) {
     var prev = state.overrides[key] ? JSON.parse(JSON.stringify(state.overrides[key])) : null;
-    var cur = { hidden: null, title: null, author: null, genre: null };
-    if (prev) Object.keys(cur).forEach(function (k) { if (prev[k] !== undefined) cur[k] = prev[k]; });
+    var cur = { hidden: null, title: null, author: null, genre: null, merged_into: null, not_dup: null };
+    if (prev) Object.keys(cur).forEach(function (k) { if (prev[k] !== undefined && prev[k] !== null) cur[k] = prev[k]; });
     Object.keys(patch).forEach(function (k) { cur[k] = patch[k]; });
-    var empty = cur.hidden === null && !cur.title && !cur.author && !Array.isArray(cur.genre);
+    var empty = cur.hidden === null && !cur.title && !cur.author && !Array.isArray(cur.genre) && !cur.merged_into && !cur.not_dup;
     if (empty) delete state.overrides[key]; else state.overrides[key] = cur;
     saveLocalOverrides();
     refreshAll();
@@ -215,18 +257,31 @@
       toast("Non enregistré : " + msg);
     }
     if (!supabase) { rollback("synchronisation indisponible."); return; }
+    var row = { id: key, hidden: cur.hidden, title: cur.title || null,
+          author: cur.author || null, genre: Array.isArray(cur.genre) ? cur.genre : null, updated_at: new Date().toISOString() };
+    // colonnes ajoutées au lot « fusion » : envoyées seulement quand elles servent, pour que
+    // les corrections simples marchent même si le script SQL du lot n'a pas encore été passé.
+    ["merged_into", "not_dup"].forEach(function (k) {
+      if (cur[k] || (prev && prev[k])) row[k] = cur[k] || null;
+    });
     var q = empty
       ? supabase.from("bd_overrides").delete().eq("id", key)
-      : supabase.from("bd_overrides").upsert({ id: key, hidden: cur.hidden, title: cur.title || null,
-          author: cur.author || null, genre: Array.isArray(cur.genre) ? cur.genre : null, updated_at: new Date().toISOString() });
+      : supabase.from("bd_overrides").upsert(row);
     q.then(function (res) {
-      if (res.error) rollback(res.error.message || "erreur Supabase");
+      var m = res.error ? (res.error.message || "erreur Supabase") : "";
+      if (/merged_into|not_dup/.test(m)) m = "relance le script supabase_bd_overrides.sql dans Supabase (voir README).";
+      if (res.error) rollback(m);
       else if (onOk) onOk();
     }).catch(function (err) { rollback((err && err.message) || "hors ligne"); });
   }
 
+  function rowToOverride(row) {
+    return { hidden: row.hidden, title: row.title, author: row.author, genre: row.genre,
+             merged_into: row.merged_into || null, not_dup: row.not_dup || null };
+  }
+
   function fetchOverrides() {
-    supabase.from("bd_overrides").select("id,hidden,title,author,genre")
+    supabase.from("bd_overrides").select("*")
       .then(function (res) {
         if (res.error) {
           if (IS_OWNER) setSyncNote("Corrections indisponibles : la table bd_overrides n'existe pas encore dans Supabase (voir README).");
@@ -234,7 +289,7 @@
         }
         var map = {};
         (res.data || []).forEach(function (row) {
-          map[row.id] = { hidden: row.hidden, title: row.title, author: row.author, genre: row.genre };
+          map[row.id] = rowToOverride(row);
         });
         state.overrides = map;
         saveLocalOverrides();
@@ -318,7 +373,8 @@
         else { state.volumeRead[row.id] = true; }
         saveLocalVolumeRead();
         renderGrid();
-        if (state.activeId && row.id.indexOf(state.activeId + "::") === 0) {
+        var act = state.activeId && currentEntry();
+        if (act && act._keys.indexOf(row.id) !== -1) {
           renderVolumeList();
           renderSheetActions();
         }
@@ -331,7 +387,7 @@
         var row = payload.new && Object.keys(payload.new).length ? payload.new : payload.old;
         if (!row || !row.id) return;
         if (payload.eventType === "DELETE") delete state.overrides[row.id];
-        else state.overrides[row.id] = { hidden: row.hidden, title: row.title, author: row.author, genre: row.genre };
+        else state.overrides[row.id] = rowToOverride(row);
         saveLocalOverrides();
         refreshAll();
       })
@@ -348,21 +404,20 @@
     }).catch(function () {});
   }
 
-  function pushVolumeStatus(titleId, idx) {
+  function pushVolumeStatus(key) {
     if (!supabase) return;
-    var read = isVolumeRead(titleId, idx);
     supabase.from("bd_volume_status").upsert({
-      id: volKey(titleId, idx), title_id: titleId, is_read: read, updated_at: new Date().toISOString()
+      id: key, title_id: titleOfKey(key), is_read: isKeyRead(key), updated_at: new Date().toISOString()
     }).then(function (res) {
       if (res.error) setSyncNote("Dernière modification pas encore synchronisée (réessaiera).");
     }).catch(function () {});
   }
 
-  function pushVolumeStatusBulk(titleId, indices, read) {
-    if (!supabase) return;
+  function pushVolumeStatusBulk(keys, read) {
+    if (!supabase || !keys.length) return;
     var now = new Date().toISOString();
-    var rows = indices.map(function (i) {
-      return { id: volKey(titleId, i), title_id: titleId, is_read: read, updated_at: now };
+    var rows = keys.map(function (k) {
+      return { id: k, title_id: titleOfKey(k), is_read: read, updated_at: now };
     });
     supabase.from("bd_volume_status").upsert(rows).then(function (res) {
       if (res.error) setSyncNote("Dernière modification pas encore synchronisée (réessaiera).");
@@ -410,6 +465,7 @@
     entries.forEach(function (e) {
       var labels = (e._vis || []).map(function (i) { return e._labels[i]; }).join(" ");
       var orig = e._raw && e._raw.title !== e.title ? " " + e._raw.title : "";
+      (e._merged || []).forEach(function (m) { orig += " " + m.title; });
       e._qTitle = " " + normalize(e.title) + " ";
       e._qAll = " " + normalize(e.title + orig + " " + labels) + " ";
       e._qAuthor = " " + normalize(e.author || "") + " ";
@@ -587,10 +643,35 @@
       orig.textContent = bits.length ? "Corrigé par toi — d'origine : " + bits.join(", ") : "";
       orig.hidden = !bits.length;
     }
+    renderMergedInfo(entry);
     renderSheetGenres(entry);
     setActiveCover(entry, state.activeVolIdx);
     renderVolumeList();
     renderSheetActions();
+  }
+
+  // Propriétaire : fiches fusionnées dans celle-ci, avec « Séparer » pour défaire.
+  function renderMergedInfo(entry) {
+    var box = document.getElementById("sheet-merged");
+    if (!box) return;
+    box.innerHTML = "";
+    if (!IS_OWNER || !entry._merged.length) { box.hidden = true; return; }
+    box.hidden = false;
+    var lead = document.createElement("span");
+    lead.textContent = entry._merged.length > 1 ? "Fiches fusionnées ici : " : "Fiche fusionnée ici : ";
+    box.appendChild(lead);
+    entry._merged.forEach(function (m, k) {
+      var mt = (state.overrides[m.id] || {}).title || m.title;
+      var item = document.createElement("span"); item.className = "merged-item";
+      var name = document.createElement("span"); name.textContent = "« " + mt + " » (" + (m.volumes || []).length + ")";
+      var b = document.createElement("button"); b.type = "button"; b.className = "link-btn"; b.textContent = "séparer";
+      b.addEventListener("click", function () {
+        saveOverride(m.id, { merged_into: null }, function () { toast("« " + mt + " » est de nouveau une fiche à part."); });
+      });
+      item.appendChild(name); item.appendChild(document.createTextNode(" ")); item.appendChild(b);
+      if (k) box.appendChild(document.createTextNode(" · "));
+      box.appendChild(item);
+    });
   }
 
   function renderSheetGenres(entry) {
@@ -640,7 +721,7 @@
     els.zoomImg.removeAttribute("src");
     // le sheet reste ouvert derrière le zoom : ne restaure le scroll que si
     // aucune autre couche modale n'est ouverte.
-    if (els.overlay.hidden) document.body.style.overflow = "";
+    if (els.overlay.hidden && settingsEls.overlay.hidden && dupEls.overlay.hidden) document.body.style.overflow = "";
   }
 
   function renderVolumeList() {
@@ -654,7 +735,7 @@
       var hiddenVol = entry._hidVols.indexOf(i) !== -1;
       if (!hiddenVol) pos++;
       var li = document.createElement("li");
-      li.className = "vol-row" + (IS_OWNER && !hiddenVol && isVolumeRead(entry.id, i) ? " is-read" : "") +
+      li.className = "vol-row" + (IS_OWNER && !hiddenVol && isVolumeRead(entry, i) ? " is-read" : "") +
                      (hiddenVol ? " is-hidden" : "") + (i === state.activeVolIdx ? " active" : "");
 
       if (IS_OWNER && !hiddenVol) {
@@ -662,10 +743,10 @@
         check.type = "button";
         check.className = "vol-check";
         check.setAttribute("aria-label", "Marquer ce tome comme lu");
-        check.textContent = isVolumeRead(entry.id, i) ? "✓" : "";
+        check.textContent = isVolumeRead(entry, i) ? "✓" : "";
         check.addEventListener("click", function (e) {
           e.stopPropagation();
-          toggleVolumeRead(entry.id, i);
+          toggleVolumeRead(entry, i);
         });
         li.appendChild(check);
       } else if (IS_OWNER) {
@@ -704,7 +785,7 @@
 
   // Petit éditeur sous un tome (propriétaire) : libellé, rétablir, masquer / ré-afficher.
   function renderVolEditor(entry, i, hiddenVol) {
-    var key = volKey(entry.id, i);
+    var key = entry._keys[i];
     var o = state.overrides[key] || {};
     var original = entry.volumes[i].label;
     var li = document.createElement("li");
@@ -750,15 +831,15 @@
     return li;
   }
 
-  function toggleVolumeRead(titleId, idx) {
-    var key = volKey(titleId, idx);
+  function toggleVolumeRead(entry, i) {
+    var key = entry._keys[i];
     if (state.volumeRead[key]) delete state.volumeRead[key];
     else state.volumeRead[key] = true;
     saveLocalVolumeRead();
     renderVolumeList();
     renderSheetActions();
     renderGrid();
-    pushVolumeStatus(titleId, idx);
+    pushVolumeStatus(key);
   }
 
   function renderSheetActions() {
@@ -788,7 +869,7 @@
     if (!entry) return;
     var makeRead = !isTitleRead(entry);
     entry._vis.forEach(function (i) {
-      var key = volKey(entry.id, i);
+      var key = entry._keys[i];
       if (makeRead) state.volumeRead[key] = true;
       else delete state.volumeRead[key];
     });
@@ -796,7 +877,7 @@
     renderVolumeList();
     renderSheetActions();
     renderGrid();
-    pushVolumeStatusBulk(entry.id, entry._vis, makeRead);
+    pushVolumeStatusBulk(entry._vis.map(function (i) { return entry._keys[i]; }), makeRead);
   }
 
   function toggleFavorite() {
@@ -846,6 +927,7 @@
     edit.g1.value = entry.genre[0] || ""; edit.g2.value = entry.genre[1] || "";
     edit.reset.hidden = !entry._edited;
     edit.confirm.hidden = true; edit.hide.hidden = false;
+    resetMergePicker();
     edit.box.hidden = false;
     edit.btn.setAttribute("data-on", "true");
     edit.title.focus();
@@ -876,6 +958,71 @@
     edit.hide.hidden = true; edit.confirm.hidden = false;
   });
   edit.no.addEventListener("click", function () { edit.confirm.hidden = true; edit.hide.hidden = false; });
+  // ---------- fusion : intégrer une autre fiche dans celle-ci ----------
+  var mp = {
+    open: document.getElementById("merge-open"),
+    box: document.getElementById("merge-picker"),
+    q: document.getElementById("merge-q"),
+    res: document.getElementById("merge-results"),
+    confirm: document.getElementById("merge-confirm"),
+    text: document.getElementById("merge-confirm-text"),
+    yes: document.getElementById("merge-yes"),
+    no: document.getElementById("merge-no"),
+    pick: null,
+  };
+  function resetMergePicker() {
+    if (!mp.box) return;
+    mp.box.hidden = true; mp.confirm.hidden = true; mp.open.hidden = false;
+    mp.q.value = ""; mp.res.innerHTML = ""; mp.pick = null;
+  }
+  function mergeDesc(e) {
+    return e.one_shot ? "one-shot" : e.volume_count + (e.volume_count > 1 ? " tomes" : " tome");
+  }
+  function renderMergeResults() {
+    var entry = currentEntry(); if (!entry) return;
+    mp.res.innerHTML = "";
+    var q = mp.q.value.trim();
+    if (normalize(q).length < 2) return;
+    var hits = state.catalog.filter(function (e) { return e.id !== entry.id && hasAllWords(e._qTitle, q); }).slice(0, 8);
+    if (!hits.length) { mp.res.innerHTML = '<li class="merge-none">Aucune fiche ne correspond.</li>'; return; }
+    hits.forEach(function (e) {
+      var li = document.createElement("li");
+      var b = document.createElement("button"); b.type = "button"; b.className = "merge-hit";
+      b.textContent = e.title + " — " + mergeDesc(e) + (e.author ? " — " + e.author : "");
+      b.addEventListener("click", function () { askMerge(e, entry); });
+      li.appendChild(b); mp.res.appendChild(li);
+    });
+  }
+  function askMerge(src, dst) {
+    mp.pick = { src: src.id, dst: dst.id };
+    mp.text.textContent = "Ajouter les " + src.volumes.length + " tome(s) de « " + src.title + " » à la fin de « " +
+      dst.title + " » ? « " + src.title + " » disparaîtra de la grille (tu pourras séparer à nouveau).";
+    mp.confirm.hidden = false;
+  }
+  // Fusionne la fiche srcId dans dstId (utilisé aussi par l'écran des doublons).
+  function doMerge(srcId, dstId, srcTitle, dstTitle) {
+    saveOverride(srcId, { merged_into: dstId }, function () {
+      toast("« " + srcTitle + " » est fusionnée dans « " + dstTitle + " ».", "Annuler",
+            function () { saveOverride(srcId, { merged_into: null }); });
+    });
+  }
+  if (mp.open) {
+    mp.open.addEventListener("click", function () {
+      mp.open.hidden = true; mp.box.hidden = false; mp.q.focus();
+    });
+    mp.q.addEventListener("input", function () { mp.confirm.hidden = true; renderMergeResults(); });
+    mp.no.addEventListener("click", function () { mp.confirm.hidden = true; mp.pick = null; });
+    document.getElementById("merge-cancel").addEventListener("click", resetMergePicker);
+    mp.yes.addEventListener("click", function () {
+      if (!mp.pick) return;
+      var src = state.catalog.find(function (e) { return e.id === mp.pick.src; });
+      var dst = currentEntry();
+      if (!src || !dst) return;
+      closeEditor();
+      doMerge(src.id, dst.id, src.title, dst.title);
+    });
+  }
+
   edit.yes.addEventListener("click", function () {
     var entry = currentEntry(); if (!entry) return;
     var id = entry.id, title = entry.title;
@@ -1057,8 +1204,21 @@
     var box = document.getElementById("hidden-list");
     if (!box || !IS_OWNER) return;
     box.innerHTML = "";
-    if (!state.hiddenList.length) { box.innerHTML = '<p class="settings-hint">Aucune fiche masquée.</p>'; return; }
+    if (!state.hiddenList.length && !state.mergedList.length) { box.innerHTML = '<p class="settings-hint">Aucune fiche masquée ni fusionnée.</p>'; return; }
     var ul = document.createElement("ul"); ul.className = "hidden-list";
+    state.mergedList.forEach(function (m) {
+      var li = document.createElement("li");
+      var into = state.catalog.find(function (e) { return e.id === m.into; });
+      li.innerHTML = '<div class="hl-text"><div class="hl-title"></div><div class="hl-why"></div></div>';
+      li.querySelector(".hl-title").textContent = m.title;
+      li.querySelector(".hl-why").textContent = "Fusionnée dans « " + (into ? into.title : m.into) + " »";
+      var b = document.createElement("button"); b.type = "button"; b.className = "btn"; b.textContent = "Séparer";
+      b.addEventListener("click", function () {
+        saveOverride(m.id, { merged_into: null }, function () { toast("« " + m.title + " » est de nouveau une fiche à part."); });
+      });
+      li.appendChild(b);
+      ul.appendChild(li);
+    });
     state.hiddenList.forEach(function (e) {
       var li = document.createElement("li");
       var o = state.overrides[e.id] || {};
@@ -1076,11 +1236,301 @@
     box.appendChild(ul);
   }
 
+  // =====================================================================
+  // DOUBLONS PROBABLES (propriétaire)
+  // Calculés à la volée sur le catalogue affiché (corrections et fusions comprises),
+  // donc toujours à jour après un réimport. Trois familles :
+  //   1. deux fiches au titre très proche (et auteurs compatibles) ;
+  //   2. dans une même fiche, plusieurs tomes au libellé identique ;
+  //   3. un one-shot qui porte le titre d'un tome d'une série (auteurs compatibles).
+  // « Pas un doublon » est mémorisé (ligne "nodup:clé1|clé2", not_dup = true) et la
+  // suggestion ne revient plus.
+  // =====================================================================
+  var DUP_STOP = { bis: 1, integrale: 1, hd: 1, tome: 1, t: 1 };
+  var AUTH_SKIP = { collectif: 1, "inconnu e": 1, inconnu: 1, anonyme: 1 };
+  function dnorm(s) { return normalize((s || "").replace(/['’]/g, " ")); }
+  function dupBase(title) {
+    return dnorm((title || "").replace(/\([^)]*\)|\[[^\]]*\]/g, " "))
+      .split(" ").filter(function (w) { return w && !DUP_STOP[w]; }).join(" ");
+  }
+  function authorSet(a) {
+    var set = {};
+    (a || "").split(/[,&;\/]| et /).forEach(function (x) { x = dnorm(x); if (x && !AUTH_SKIP[x]) set[x] = 1; });
+    return set;
+  }
+  function authorsCompatible(a, b) {
+    var A = authorSet(a), B = authorSet(b), ka = Object.keys(A), kb = Object.keys(B);
+    if (!ka.length || !kb.length) return true;
+    return ka.some(function (x) { return B[x]; });
+  }
+  function levenshtein(a, b) {
+    var p = [], i, j;
+    for (j = 0; j <= b.length; j++) p[j] = j;
+    for (i = 1; i <= a.length; i++) {
+      var c = [i];
+      for (j = 1; j <= b.length; j++) c[j] = Math.min(p[j] + 1, c[j - 1] + 1, p[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      p = c;
+    }
+    return p[b.length];
+  }
+  function titleSimilarity(a, b) {
+    var sa = a.replace(/ /g, ""), sb = b.replace(/ /g, "");
+    if (sa === sb) return 1;
+    var r = 1 - levenshtein(sa, sb) / Math.max(sa.length, sb.length);
+    var sh = a.length <= b.length ? a : b, lo = a.length <= b.length ? b : a;
+    if (r < 0.85 && sh.split(" ").length >= 3 && (" " + lo + " ").indexOf(" " + sh + " ") !== -1 && sh.length / lo.length >= 0.6) r = 0.9;
+    return r;
+  }
+  function pairKey(a, b) { return "nodup:" + [a, b].sort().join("|"); }
+  function isDismissed(key) { return !!(state.overrides[key] && state.overrides[key].not_dup); }
+
+  function computeDups() {
+    var cat = state.catalog, out = { entries: [], tomes: [], oneshots: [] };
+    // 1. fiches proches : on ne compare que les fiches qui partagent un mot rare du titre
+    //    ou le même début (évite ~2 millions de comparaisons).
+    var bases = cat.map(function (e) { return dupBase(e.title); });
+    var buckets = {};
+    bases.forEach(function (b, k) {
+      if (b.length < 4) return;
+      var keys = {};
+      b.split(" ").forEach(function (w) { if (w.length >= 4) keys["w:" + w] = 1; });
+      keys["p:" + b.replace(/ /g, "").slice(0, 6)] = 1;
+      Object.keys(keys).forEach(function (x) { (buckets[x] = buckets[x] || []).push(k); });
+    });
+    var seen = {};
+    Object.keys(buckets).forEach(function (x) {
+      var L = buckets[x];
+      if (L.length > 60) return;
+      for (var i = 0; i < L.length; i++) for (var j = i + 1; j < L.length; j++) {
+        var a = L[i], b = L[j], id = a < b ? a + "," + b : b + "," + a;
+        if (seen[id]) continue;
+        seen[id] = 1;
+        var ea = cat[a], eb = cat[b];
+        if (!authorsCompatible(ea.author, eb.author)) continue;
+        var r = titleSimilarity(bases[a], bases[b]);
+        if (r < 0.85) continue;
+        var key = pairKey(ea.id, eb.id);
+        if (!isDismissed(key)) out.entries.push({ key: key, a: ea, b: eb, score: r });
+      }
+    });
+    out.entries.sort(function (x, y) { return y.score - x.score || x.a.title.localeCompare(y.a.title, "fr"); });
+
+    // 2. tomes au libellé identique dans une même fiche
+    var tomeIndex = {};
+    cat.forEach(function (e) {
+      var groups = {};
+      e._vis.forEach(function (i) {
+        var n = dnorm(e._labels[i]);
+        if (!n) return;
+        (groups[n] = groups[n] || []).push(i);
+        if (!e.one_shot && n.length >= 4) (tomeIndex[n] = tomeIndex[n] || []).push({ e: e, i: i });
+      });
+      Object.keys(groups).forEach(function (n) {
+        var pos = groups[n];
+        if (pos.length < 2) return;
+        var key = "nodup:" + pos.map(function (i) { return e._keys[i]; }).sort().join("|");
+        if (!isDismissed(key)) out.tomes.push({ key: key, e: e, pos: pos });
+      });
+    });
+
+    // 3. one-shot = tome d'une série
+    cat.forEach(function (os) {
+      if (!os.one_shot) return;
+      (tomeIndex[dnorm(os.title)] || []).forEach(function (t) {
+        if (t.e.id === os.id || !authorsCompatible(os.author, t.e.author)) return;
+        var key = pairKey(os.id, t.e._keys[t.i]);
+        if (!isDismissed(key)) out.oneshots.push({ key: key, os: os, e: t.e, i: t.i });
+      });
+    });
+    return out;
+  }
+
+  var dupEls = {
+    overlay: document.getElementById("dups-overlay"),
+    body: document.getElementById("dups-body"),
+    close: document.getElementById("dups-close"),
+    open: document.getElementById("dups-open"),
+    count: document.getElementById("dups-count"),
+  };
+  dupEls.sheet = dupEls.overlay ? dupEls.overlay.querySelector(".sheet") : null;
+
+  function dupCount(d) { return d.entries.length + d.tomes.length + d.oneshots.length; }
+  function updateDupButton() {
+    if (!IS_OWNER || !dupEls.count || !state.catalog.length) return;
+    var n = dupCount(computeDups());
+    dupEls.count.textContent = n ? n + " à examiner" : "rien à examiner";
+  }
+
+  function el(tag, cls, text) {
+    var x = document.createElement(tag);
+    if (cls) x.className = cls;
+    if (text !== undefined) x.textContent = text;
+    return x;
+  }
+  function dupThumb(cover, alt) {
+    var w = el("button", "dup-thumb");
+    w.type = "button";
+    w.setAttribute("aria-label", "Agrandir la couverture");
+    if (cover) {
+      var im = document.createElement("img"); im.alt = "";
+      lazyImage(im, coverUrl(cover)); w.appendChild(im);
+      w.addEventListener("click", function () { openZoom(coverUrl(cover), alt); });
+    } else { w.disabled = true; w.appendChild(el("span", "dup-nocover", "pas de couverture")); }
+    return w;
+  }
+  function entryDesc(e) {
+    return (e.one_shot ? "One-shot" : e.volume_count + (e.volume_count > 1 ? " tomes" : " tome")) + " · " + (e.author || "auteur non renseigné");
+  }
+  function hideEntryWithUndo(e) {
+    var before = (state.overrides[e.id] || {}).hidden;
+    before = (before === true || before === false) ? before : null;
+    saveOverride(e.id, { hidden: true }, function () {
+      toast("« " + e.title + " » est masquée.", "Annuler", function () { saveOverride(e.id, { hidden: before }); });
+    });
+  }
+  function notDupButton(key) {
+    var b = el("button", "btn btn-ghost", "Pas un doublon"); b.type = "button";
+    b.addEventListener("click", function () {
+      saveOverride(key, { not_dup: true }, function () {
+        toast("Noté : cette suggestion ne reviendra plus.", "Annuler", function () { saveOverride(key, { not_dup: null }); });
+      });
+    });
+    return b;
+  }
+  function dupSection(title, hint, items, render) {
+    var sec = el("section", "dup-section");
+    sec.appendChild(el("h3", "settings-h", title + " (" + items.length + ")"));
+    sec.appendChild(el("p", "settings-hint", hint));
+    if (!items.length) sec.appendChild(el("p", "dup-empty", "Rien à examiner."));
+    items.forEach(function (it) { sec.appendChild(render(it)); });
+    return sec;
+  }
+
+  function renderDups() {
+    if (!IS_OWNER || !dupEls.body) return;
+    var d = computeDups();
+    var keepScroll = dupEls.sheet.scrollTop;
+    dupEls.body.innerHTML = "";
+    dupEls.body.appendChild(el("h2", "sheet-title", "Doublons probables"));
+    dupEls.body.appendChild(el("p", "settings-hint",
+      "Suggestions calculées automatiquement : à toi de trancher. Touche une couverture pour l'agrandir. " +
+      "Rien n'est effacé : tout se défait depuis la fiche ou depuis Réglages → Fiches masquées."));
+
+    dupEls.body.appendChild(dupSection("Fiches qui se ressemblent",
+      "« Fusionner ici » ajoute les tomes de l'autre fiche à la fin de celle-ci, et l'autre disparaît de la grille. Entre deux one-shots, « Garder celle-ci » masque l'autre.",
+      d.entries, function (it) {
+        var box = el("div", "dup-item dup-pair");
+        [[it.a, it.b], [it.b, it.a]].forEach(function (pr) {
+          var e = pr[0], other = pr[1];
+          var col = el("div", "dup-col");
+          col.appendChild(dupThumb(e.cover, e.title));
+          var info = el("div", "dup-info");
+          info.appendChild(el("div", "dup-title", e.title));
+          info.appendChild(el("div", "dup-meta", entryDesc(e)));
+          var firsts = e._vis.slice(0, 3).map(function (i) { return e._labels[i]; }).join(" · ");
+          if (!e.one_shot && firsts) info.appendChild(el("div", "dup-tomes", firsts + (e._vis.length > 3 ? " …" : "")));
+          // deux one-shots : on garde l'un et on masque l'autre (une fusion ferait une
+          // « série » de deux fois le même album) ; un one-shot face à une série : on peut
+          // le fusionner dans la série, ou le masquer ; deux séries : fusion.
+          var b;
+          if (e.one_shot && other.one_shot) {
+            b = el("button", "btn", "Garder celle-ci");
+            b.title = "Masquer « " + other.title + " »";
+            b.addEventListener("click", function () { hideEntryWithUndo(other); });
+          } else if (e.one_shot) {
+            b = el("button", "btn btn-danger", "Masquer celle-ci");
+            b.addEventListener("click", function () { hideEntryWithUndo(e); });
+          } else {
+            b = el("button", "btn", "Fusionner ici");
+            b.title = "Ajouter les tomes de « " + other.title + " » à « " + e.title + " »";
+            b.addEventListener("click", function () { doMerge(other.id, e.id, other.title, e.title); });
+          }
+          b.type = "button";
+          info.appendChild(b);
+          col.appendChild(info);
+          box.appendChild(col);
+        });
+        var foot = el("div", "dup-foot"); foot.appendChild(notDupButton(it.key)); box.appendChild(foot);
+        return box;
+      }));
+
+    dupEls.body.appendChild(dupSection("Tomes en double dans une même fiche",
+      "Même libellé plusieurs fois dans la même série. Masque celui ou ceux en trop ; la coche « lu » d'un tome masqué est conservée.",
+      d.tomes, function (it) {
+        var box = el("div", "dup-item");
+        box.appendChild(el("div", "dup-title", it.e.title));
+        var row = el("div", "dup-row");
+        it.pos.forEach(function (i) {
+          var pos = it.e._vis.indexOf(i) + 1;
+          var c = el("div", "dup-tome");
+          c.appendChild(dupThumb(it.e.volumes[i].cover, it.e._labels[i]));
+          c.appendChild(el("div", "dup-meta", "n° " + String(pos).padStart(2, "0") + (isVolumeRead(it.e, i) ? " · lu" : "")));
+          c.appendChild(el("div", "dup-label", it.e._labels[i]));
+          var b = el("button", "btn btn-danger", "Masquer"); b.type = "button";
+          b.addEventListener("click", function () {
+            var key = it.e._keys[i];
+            saveOverride(key, { hidden: true }, function () {
+              toast("Tome masqué.", "Annuler", function () { saveOverride(key, { hidden: null }); });
+            });
+          });
+          c.appendChild(b);
+          row.appendChild(c);
+        });
+        box.appendChild(row);
+        var foot = el("div", "dup-foot"); foot.appendChild(notDupButton(it.key)); box.appendChild(foot);
+        return box;
+      }));
+
+    dupEls.body.appendChild(dupSection("One-shots qui sont peut-être un tome d'une série",
+      "Le one-shot porte le titre d'un tome de la série. Si c'est le même album, masque le one-shot.",
+      d.oneshots, function (it) {
+        var box = el("div", "dup-item dup-pair");
+        var c1 = el("div", "dup-col");
+        c1.appendChild(dupThumb(it.os.cover, it.os.title));
+        var i1 = el("div", "dup-info");
+        i1.appendChild(el("div", "dup-title", it.os.title));
+        i1.appendChild(el("div", "dup-meta", entryDesc(it.os)));
+        var bh = el("button", "btn btn-danger", "Masquer le one-shot"); bh.type = "button";
+        bh.addEventListener("click", function () { hideEntryWithUndo(it.os); });
+        i1.appendChild(bh); c1.appendChild(i1); box.appendChild(c1);
+        var c2 = el("div", "dup-col");
+        c2.appendChild(dupThumb(it.e.volumes[it.i].cover, it.e._labels[it.i]));
+        var i2 = el("div", "dup-info");
+        i2.appendChild(el("div", "dup-title", it.e.title + " — tome " + String(it.e._vis.indexOf(it.i) + 1).padStart(2, "0")));
+        i2.appendChild(el("div", "dup-meta", it.e._labels[it.i]));
+        i2.appendChild(el("div", "dup-meta", it.e.author || "auteur non renseigné"));
+        c2.appendChild(i2); box.appendChild(c2);
+        var foot = el("div", "dup-foot"); foot.appendChild(notDupButton(it.key)); box.appendChild(foot);
+        return box;
+      }));
+    dupEls.sheet.scrollTop = keepScroll;
+    if (dupEls.count) dupEls.count.textContent = dupCount(d) ? dupCount(d) + " à examiner" : "rien à examiner";
+  }
+
+  function openDups() {
+    if (!IS_OWNER) return;
+    closeSettings();
+    dupEls.sheet.scrollTop = 0;
+    renderDups();
+    dupEls.overlay.hidden = false;
+    document.body.style.overflow = "hidden";
+  }
+  function closeDups() {
+    dupEls.overlay.hidden = true;
+    if (els.overlay.hidden && settingsEls.overlay.hidden) document.body.style.overflow = "";
+  }
+  if (dupEls.overlay) {
+    dupEls.open.addEventListener("click", openDups);
+    dupEls.close.addEventListener("click", closeDups);
+    dupEls.overlay.addEventListener("click", function (e) { if (e.target === dupEls.overlay) closeDups(); });
+  }
+
   function openSettings() {
     if (window.BD_THEMES) window.BD_THEMES.loadAllFonts();
     renderThemeGrid();
     renderOwnerPanel();
     renderHiddenList();
+    updateDupButton();
     settingsEls.overlay.hidden = false;
     document.body.style.overflow = "hidden";
   }
@@ -1096,8 +1546,9 @@
   els.overlay.addEventListener("click", function (e) { if (e.target === els.overlay) closeSheet(); });
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
-    if (!settingsEls.overlay.hidden) closeSettings();
-    else if (!els.zoomOverlay.hidden) closeZoom();
+    if (!els.zoomOverlay.hidden) closeZoom();
+    else if (!settingsEls.overlay.hidden) closeSettings();
+    else if (dupEls.overlay && !dupEls.overlay.hidden) closeDups();
     else closeSheet();
   });
   els.btnRead.addEventListener("click", toggleAllVolumesRead);
