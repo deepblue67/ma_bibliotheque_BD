@@ -25,7 +25,7 @@
 <!-- themes.js est volontairement bloquant et placé AVANT style.css : il pose le thème
      mémorisé (et charge ses polices) avant le premier affichage. -->
 <script src="themes.js?v=1"></script>
-<link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="style.css?v=11">
 </head>
 <body>
 
@@ -170,6 +170,139 @@
         <p class="settings-hint">Doublons écartés à l'import, fiches que tu as masquées ou fusionnées dans une autre. Elles restent invisibles pour tout le monde jusqu'à ce que tu les ré-affiches ou les sépares.</p>
         <div id="hidden-list"></div>
       </section>
+        <section class="settings-section owner-only">
+          <h3 class="settings-h">Aide — mode d'emploi propriétaire</h3>
+          <p class="settings-hint">Visible seulement en mode propriétaire. Touche un sujet pour le déplier.</p>
+          <div class="help">
+            <details class="help-item" id="aide-acces">
+              <summary>Passer en mode propriétaire</summary>
+              <div class="help-body">
+              <p>Le mode propriétaire se règle <b>appareil par appareil</b> : il faut le faire une fois sur le PC, une fois sur l'iPhone, etc.</p>
+              <ol>
+              <li>Touche la <b>roue crantée</b> en haut à droite pour ouvrir les Réglages.</li>
+              <li>Section <b>Mode propriétaire</b> : saisis ton code, puis <b>Déverrouiller</b>.</li>
+              <li>La page se recharge : les statuts, les filtres et les outils de correction apparaissent.</li>
+              </ol>
+              <p><b>Quitter</b> : Réglages → <b>Quitter le mode propriétaire</b>. L'appareil redevient visiteur. Fais-le sur un appareil qui n'est pas le tien.</p>
+              <p><b>Changer de code</b> : Réglages → <b>Changer de code…</b>. Saisis deux fois le nouveau code, puis copie la ligne <code>window.BD_OWNER_HASH = "…";</code> affichée. Elle doit remplacer celle de <code>config.js</code>, puis il faut publier sur GitHub. Ensuite, <b>tous</b> tes appareils repassent en visiteur : déverrouille-les avec le nouveau code.</p>
+              <p><b>Code oublié</b> : même chose que « changer de code », depuis n'importe quel appareil. Aucun code n'est stocké nulle part, seule son empreinte l'est.</p>
+              </div>
+            </details>
+            <details class="help-item" id="aide-lecture">
+              <summary>Suivre tes lectures</summary>
+              <div class="help-body">
+              <ul>
+              <li><b>Cocher un tome lu</b> : dans une fiche, touche le rond au début de la ligne du tome. Touche-le à nouveau pour décocher.</li>
+              <li><b>Toute la série</b> : bouton <b>Tout marquer comme lu</b>, ou <b>Tout marquer comme non lu</b>. Pour un one-shot, le bouton s'appelle <b>Marquer comme lu</b>.</li>
+              <li><b>Favori</b> : bouton <b>★ Ajouter aux favoris</b> dans la fiche.</li>
+              <li><b>Sur la vignette</b> : une pastille <b>Lu</b> quand tous les tomes sont lus, <b>3/12 lus</b> quand la lecture est en cours, et <b>★</b> pour un favori.</li>
+              <li><b>Filtres</b> du haut de page : <b>Lus</b>, <b>En cours</b>, <b>Non lus</b>, <b>★ Favoris</b>. Ils se combinent avec la recherche, le genre et <b>Séries</b> / <b>One-shots</b>.</li>
+              </ul>
+              <p>Tout se synchronise tout seul entre tes appareils. Un tome masqué ne compte pas dans « lu / en cours », mais sa coche est conservée.</p>
+              </div>
+            </details>
+            <details class="help-item" id="aide-fiche">
+              <summary>Corriger une fiche</summary>
+              <div class="help-body">
+              <ol>
+              <li>Ouvre la fiche, puis touche <b>✎ Modifier</b>.</li>
+              <li>Change le <b>titre</b>, le ou les <b>auteurs</b>, et jusqu'à <b>deux genres</b>.</li>
+              <li>Touche <b>Enregistrer</b>.</li>
+              </ol>
+              <p>Sous l'auteur, une petite ligne rappelle ce qui a été corrigé (« Corrigé par toi — d'origine : … »). <b>Rétablir l'original</b> efface toutes les corrections de la fiche d'un coup.</p>
+              <p>La recherche trouve la fiche sous son nouveau titre <b>et</b> sous l'ancien. Tes corrections ne sont jamais écrasées quand de nouvelles BD sont importées.</p>
+              </div>
+            </details>
+            <details class="help-item" id="aide-tome">
+              <summary>Corriger ou masquer un tome</summary>
+              <div class="help-body">
+              <p>Dans la liste des tomes, touche le petit <b>✎</b> au bout de la ligne. Un mini-éditeur s'ouvre sous le tome :</p>
+              <ul>
+              <li><b>Renommer</b> : change le libellé, puis <b>Enregistrer</b>. <b>Rétablir le titre d'origine</b> revient au nom du fichier.</li>
+              <li><b>Masquer ce tome</b> : il disparaît pour tes visiteurs. Toi, tu le vois encore, grisé et marqué « (masqué) ». Il ne compte plus dans le nombre de tomes.</li>
+              <li><b>Ré-afficher ce tome</b> : même bouton, sur un tome masqué.</li>
+              </ul>
+              <p>Les numéros 01, 02… ne comptent que les tomes visibles. On ne masque pas le tome d'un one-shot : on masque la fiche entière.</p>
+              </div>
+            </details>
+            <details class="help-item" id="aide-masquer">
+              <summary>Masquer une fiche et la retrouver</summary>
+              <div class="help-body">
+              <ol>
+              <li>Ouvre la fiche → <b>✎ Modifier</b> → <b>Masquer cette fiche…</b> → <b>Oui, masquer</b>.</li>
+              <li>Elle disparaît aussitôt, pour tout le monde. Le bandeau en bas d'écran propose <b>Annuler</b> pendant 8 secondes.</li>
+              </ol>
+              <p><b>Pour la retrouver</b> : Réglages → <b>Fiches masquées et fusionnées</b>. Ce panneau liste les fiches que tu as masquées, celles qui ont été fusionnées et les doublons écartés à l'import, chacune avec le bouton <b>Ré-afficher</b> ou <b>Séparer</b>.</p>
+              <p>Rien n'est jamais effacé : masquer, c'est seulement ne plus afficher.</p>
+              </div>
+            </details>
+            <details class="help-item" id="aide-fusion">
+              <summary>Fusionner deux fiches</summary>
+              <div class="help-body">
+              <p>Quand une même série existe en deux fiches (deux dossiers sur le disque) :</p>
+              <ol>
+              <li>Ouvre la fiche <b>à garder</b> → <b>✎ Modifier</b> → <b>Fusionner une autre fiche dans celle-ci…</b></li>
+              <li>Tape une partie du titre de l'autre fiche, puis touche-la dans la liste.</li>
+              <li>Vérifie le message, puis <b>Oui, fusionner</b>.</li>
+              </ol>
+              <p>Les tomes de l'autre fiche s'ajoutent <b>à la fin</b> de celle-ci, avec leurs coches de lecture. L'autre fiche disparaît de la grille. Le titre, l'auteur et les genres restent ceux de la fiche gardée.</p>
+              <p><b>Défaire</b> : dans la fiche, ligne « Fiche fusionnée ici », touche <b>séparer</b>. Tu peux aussi passer par Réglages → Fiches masquées et fusionnées → <b>Séparer</b>.</p>
+              <p>Si tu masques une fiche, les fiches qui y sont fusionnées sont masquées avec elle. Pour deux one-shots identiques, masque plutôt l'un des deux : une fusion en ferait une « série » de deux albums.</p>
+              </div>
+            </details>
+            <details class="help-item" id="aide-doublons">
+              <summary>Examiner les doublons probables</summary>
+              <div class="help-body">
+              <p>Réglages → <b>Doublons probables</b> → <b>Examiner les doublons</b>. L'appli propose trois sortes de suggestions :</p>
+              <ul>
+              <li><b>Fiches qui se ressemblent</b> : titres presque identiques et auteurs compatibles. Les boutons sont <b>Fusionner ici</b> entre deux séries, <b>Garder celle-ci</b> entre deux one-shots (l'autre est masqué) et <b>Masquer celle-ci</b> pour un one-shot face à une série.</li>
+              <li><b>Tomes en double dans une même fiche</b> : même libellé plusieurs fois. Touche <b>Masquer</b> sous celui en trop.</li>
+              <li><b>One-shots qui sont peut-être un tome d'une série</b> : touche <b>Masquer le one-shot</b> si c'est le même album.</li>
+              </ul>
+              <p>Touche une couverture pour l'agrandir et comparer. Si ce n'est pas un doublon, touche <b>Pas un doublon</b> : la suggestion ne reviendra plus.</p>
+              <p>Ce sont des suggestions, pas des certitudes. Des tomes de <i>1984</i> ou du <i>Clan des Otori</i> portent le même libellé tout en étant des tomes différents. Chaque action propose <b>Annuler</b>.</p>
+              </div>
+            </details>
+            <details class="help-item" id="aide-visiteurs">
+              <summary>Ce que voient tes visiteurs</summary>
+              <div class="help-body">
+              <p>Sur un appareil qui n'est pas déverrouillé, l'appli montre la bibliothèque <b>et rien d'autre</b> :</p>
+              <ul>
+              <li>pas de pastilles Lu / En cours / ★, pas de filtres de statut, pas de cases à cocher ;</li>
+              <li>aucun bouton ✎, ni l'écran des doublons, ni l'aide que tu lis ;</li>
+              <li>les titres corrigés, sans les fiches ni les tomes masqués ;</li>
+              <li>les fiches fusionnées, déjà regroupées.</li>
+              </ul>
+              <p>Ils peuvent chercher, filtrer par genre, Séries / One-shots, ouvrir une fiche, agrandir une couverture et choisir un thème.</p>
+              </div>
+            </details>
+            <details class="help-item" id="aide-ajout">
+              <summary>Ajouter de nouvelles BD</summary>
+              <div class="help-body">
+              <p>L'appli ne lit pas ton disque elle-même. Pour ajouter des BD :</p>
+              <ol>
+              <li>Range-les dans <code>D:\Christophe\Mes BD</code> : une série par dossier, et les albums sans suite dans <code>BD Unique</code>.</li>
+              <li>Demande à Claude un <b>import « delta »</b> : seules les nouveautés sont ajoutées, sans toucher à ce qui existe. Les dossiers <code>1 2 3 A CLASSER</code>, <code>1 2 3 A TRIER</code> et <code>Nouveau dossier…</code> sont ignorés.</li>
+              <li>Publie sur GitHub les fichiers indiqués, surtout <code>data/catalog.json</code>, et envoie les nouvelles couvertures avec <code>uploader.html</code>.</li>
+              </ol>
+              <p>Tes corrections, masquages, fusions et coches survivent à l'import.</p>
+              </div>
+            </details>
+            <details class="help-item" id="aide-pratique">
+              <summary>Bon à savoir</summary>
+              <div class="help-body">
+              <ul>
+              <li><b>Synchronisation</b> : une modification faite sur le PC apparaît sur l'iPhone sans recharger la page, et inversement.</li>
+              <li><b>Thème</b> : il est choisi appareil par appareil, dans Réglages → Thème.</li>
+              <li><b>« Non enregistré : … »</b> : la modification n'a pas pu être envoyée, par exemple parce que tu es hors ligne. Elle est annulée à l'écran : il suffit de recommencer plus tard.</li>
+              <li><b>« … relance le script supabase_bd_overrides.sql »</b> : la base n'est pas à jour. Ouvre Supabase → SQL Editor, colle le contenu de ce fichier, puis <b>Run</b>. On peut le relancer sans risque.</li>
+              <li><b>Une modification n'apparaît pas après une publication</b> : recharge la page. Si besoin, vide le cache du navigateur.</li>
+              <li><b>Rien n'est effacé depuis l'appli</b> : tout se défait, depuis la fiche ou depuis Réglages.</li>
+              </ul>
+              </div>
+            </details>
+          </div>
+        </section>
       <p class="settings-foot">Ma Bibliothèque BD</p>
     </div>
   </div>
