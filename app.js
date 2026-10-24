@@ -1053,6 +1053,20 @@
   // ---------- wiring ----------
   els.searchTitle.addEventListener("input", function () { state.filters.title = els.searchTitle.value; renderGridSoon(); });
   els.searchAuthor.addEventListener("input", function () { state.filters.author = els.searchAuthor.value; renderGridSoon(); });
+
+  // Petite croix dans chaque champ : apparait des qu'il y a du texte, vide le champ et le filtre.
+  function wireClear(input, apply) {
+    var btn = input.parentNode.querySelector(".field-clear");
+    if (!btn) return;
+    var sync = function () { btn.hidden = !input.value; };
+    input.addEventListener("input", sync);
+    btn.addEventListener("click", function () {
+      input.value = ""; apply(""); sync(); input.focus();
+    });
+    sync();
+  }
+  wireClear(els.searchTitle, function (v) { state.filters.title = v; renderGrid(); });
+  wireClear(els.searchAuthor, function (v) { state.filters.author = v; renderGrid(); });
   els.filterGenre.addEventListener("change", function () { state.filters.genre = els.filterGenre.value; renderGrid(); });
 
   function toggleChip(el, key) {

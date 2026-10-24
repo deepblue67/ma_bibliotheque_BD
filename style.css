@@ -992,3 +992,16 @@ html:not(.is-owner) .owner-only { display: none !important; }
 .help-body ul, .help-body ol { margin: 6px 0; padding-left: 20px; }
 .help-body li { margin: 3px 0; }
 .help-body code { font-size: 12px; background: var(--hover); padding: 0 3px; border-radius: 3px; overflow-wrap: anywhere; }
+
+/* Croix pour vider un champ de recherche (apparaît dès qu'il y a du texte) */
+.field-clear {
+  flex-shrink: 0;
+  width: 20px; height: 20px; padding: 0;
+  border: none; border-radius: 50%;
+  background: var(--muted); color: var(--surface);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.field-clear[hidden] { display: none; }
+.field-clear svg { width: 11px; height: 11px; }
+.field-clear:hover, .field-clear:focus-visible { background: var(--text); }
