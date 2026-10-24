@@ -26,8 +26,8 @@
      livraison, dans les quatre liens, pour forcer les navigateurs (iPhone compris) à recharger.
      themes.js est volontairement bloquant et placé AVANT style.css : il pose le thème
      mémorisé (et charge ses polices) avant le premier affichage. -->
-<script src="themes.js?v=2.3"></script>
-<link rel="stylesheet" href="style.css?v=2.3">
+<script src="themes.js?v=2.4"></script>
+<link rel="stylesheet" href="style.css?v=2.4">
 </head>
 <body>
 
@@ -179,7 +179,7 @@
               <li>Touche <b>Enregistrer</b>.</li>
               </ol>
               <p>Sous l'auteur, une petite ligne rappelle ce qui a été corrigé (« Corrigé par toi — d'origine : … »). <b>Rétablir l'original</b> efface toutes les corrections de la fiche d'un coup.</p>
-              <p>La recherche trouve la fiche sous son nouveau titre <b>et</b> sous l'ancien. Tes corrections ne sont jamais écrasées quand de nouvelles BD sont importées.</p>
+              <p>La recherche ne porte que sur ce qui est affiché : la fiche se trouve sous son <b>nouveau</b> titre, plus sous l'ancien (pratique pour repérer, en cherchant « CDS » par exemple, ce qui reste à renommer). Même chose pour un tome renommé. Tes corrections ne sont jamais écrasées quand de nouvelles BD sont importées.</p>
               </div>
             </details>
             <details class="help-item" id="aide-tome">
@@ -214,7 +214,7 @@
               <li>Tape une partie du titre de l'autre fiche, puis touche-la dans la liste.</li>
               <li>Vérifie le message, puis <b>Oui, fusionner</b>.</li>
               </ol>
-              <p>Les tomes de l'autre fiche s'ajoutent <b>à la fin</b> de celle-ci, avec leurs coches de lecture. L'autre fiche disparaît de la grille. Le titre, l'auteur et les genres restent ceux de la fiche gardée.</p>
+              <p>Les tomes de l'autre fiche s'ajoutent <b>à la fin</b> de celle-ci, avec leurs coches de lecture. L'autre fiche disparaît de la grille, mais la recherche de son nom mène à la fiche gardée. Le titre, l'auteur et les genres restent ceux de la fiche gardée.</p>
               <p><b>Défaire</b> : dans la fiche, ligne « Fiche fusionnée ici », touche <b>séparer</b>. Tu peux aussi passer par Réglages → Fiches masquées et fusionnées → <b>Séparer</b>.</p>
               <p>Si tu masques une fiche, les fiches qui y sont fusionnées sont masquées avec elle. Pour deux one-shots identiques, masque plutôt l'un des deux : une fusion en ferait une « série » de deux albums.</p>
               </div>
@@ -367,7 +367,7 @@
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=2.3"></script>
-<script src="app.js?v=2.3"></script>
+<script src="config.js?v=2.4"></script>
+<script src="app.js?v=2.4"></script>
 </body>
 </html>

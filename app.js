@@ -12,7 +12,7 @@
   // Version de la livraison — à augmenter à CHAQUE livraison (+0.1 pour une livraison
   // ordinaire, +1.0 pour une refonte), avec le même numéro dans les quatre ?v= de
   // index.html et une ligne dans l'historique « Versions » du README.
-  var APP_VERSION = "2.3";
+  var APP_VERSION = "2.4";
   var APP_VERSION_DATE = "2026-10-24";
 
   // ---------- mode propriétaire ----------
@@ -202,8 +202,12 @@
       srcs.forEach(function (sr) {
         (sr.volumes || []).forEach(function (v, i) {
           var k = volKey(sr.id, i), vo = state.overrides[k] || {};
+          // one-shot renommé : son unique tome prend le nouveau titre (sauf correction propre
+          // au tome), pour que l'ancien nom n'apparaisse plus nulle part, ni à l'écran ni en recherche
+          var so = state.overrides[sr.id] || {};
+          var osTitle = (sr.one_shot && (sr.volumes || []).length === 1 && so.title) ? so.title : null;
           var pos = vols.length;
-          vols.push(v); keys.push(k); labels.push(vo.title || v.label);
+          vols.push(v); keys.push(k); labels.push(vo.title || osTitle || v.label);
           if (vo.hidden === true) hid.push(pos); else vis.push(pos);
         });
       });
@@ -469,13 +473,18 @@
 
   // Index de recherche precalcule une fois au chargement : titre de la serie
   // + titres de tous ses tomes (on retrouve Thorgal en tapant « magicienne trahie »).
+  // La recherche ne porte que sur ce qui est AFFICHÉ (version 2.4, demande de Christophe) :
+  // titre (corrigé s'il l'a été), titres des tomes visibles (corrigés s'ils l'ont été) et
+  // auteur affiché. Le titre d'origine d'une fiche ou d'un tome renommé ne répond plus : il
+  // n'apparaît nulle part à l'écran. Seule exception, les fiches fusionnées dans celle-ci :
+  // elles n'ont plus de vignette, on les retrouve donc par le nom affiché dans la ligne
+  // « Fiche fusionnée ici » (leur titre corrigé s'il y en a un).
   function buildSearchIndex(entries) {
     entries.forEach(function (e) {
       var labels = (e._vis || []).map(function (i) { return e._labels[i]; }).join(" ");
-      var orig = e._raw && e._raw.title !== e.title ? " " + e._raw.title : "";
-      (e._merged || []).forEach(function (m) { orig += " " + m.title; });
+      var merged = (e._merged || []).map(function (m) { return (state.overrides[m.id] || {}).title || m.title; }).join(" ");
       e._qTitle = " " + normalize(e.title) + " ";
-      e._qAll = " " + normalize(e.title + orig + " " + labels) + " ";
+      e._qAll = " " + normalize(e.title + " " + merged + " " + labels) + " ";
       e._qAuthor = " " + normalize(e.author || "") + " ";
     });
   }
