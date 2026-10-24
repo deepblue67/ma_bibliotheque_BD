@@ -26,8 +26,8 @@
      livraison, dans les quatre liens, pour forcer les navigateurs (iPhone compris) à recharger.
      themes.js est volontairement bloquant et placé AVANT style.css : il pose le thème
      mémorisé (et charge ses polices) avant le premier affichage. -->
-<script src="themes.js?v=2.1"></script>
-<link rel="stylesheet" href="style.css?v=2.1">
+<script src="themes.js?v=2.2"></script>
+<link rel="stylesheet" href="style.css?v=2.2">
 </head>
 <body>
 
@@ -78,6 +78,9 @@
 <main>
   <div id="home-view">
     <div id="empty-state" class="empty-state" hidden>Aucune BD ne correspond à ta recherche.</div>
+    <!-- Barre alphabétique : reste accrochée en haut de l'écran pendant le défilement ;
+         une lettre fait sauter au séparateur correspondant de la grille. -->
+    <nav id="az" class="az" aria-label="Aller à une lettre" hidden></nav>
     <div id="grid" class="grid"></div>
     <div id="sync-note" class="sync-note"></div>
   </div>
@@ -239,7 +242,7 @@
               <li>les titres corrigés, sans les fiches ni les tomes masqués ;</li>
               <li>les fiches fusionnées, déjà regroupées.</li>
               </ul>
-              <p>Ils peuvent chercher, filtrer par genre, Séries / One-shots, ouvrir une fiche, agrandir une couverture et choisir un thème.</p>
+              <p>Ils peuvent chercher, filtrer par genre, Séries / One-shots, sauter à une lettre avec la barre alphabétique, ouvrir une fiche, agrandir une couverture et choisir un thème.</p>
               </div>
             </details>
             <details class="help-item" id="aide-ajout">
@@ -260,6 +263,7 @@
               <ul>
               <li><b>Synchronisation</b> : une modification faite sur le PC apparaît sur l'iPhone sans recharger la page, et inversement.</li>
               <li><b>Thème</b> : il est choisi appareil par appareil, dans Réglages → Thème.</li>
+              <li><b>Barre alphabétique</b> : en haut de la grille, # puis A à Z. Elle reste visible quand tu fais défiler ; touche une lettre pour sauter directement aux titres qui commencent par elle (# : chiffres et signes). Une lettre grisée n'a aucune BD. Elle suit les filtres (One-shots, genre…) et s'efface quand une recherche donne moins de 40 résultats.</li>
               <li><b>Page Réglages</b> : chaque partie se plie ou se déplie en touchant son titre, et « Tout déplier · Tout replier » agit sur toutes à la fois. L'appareil se souvient de ce que tu as replié. « ← Retour à la bibliothèque » (ou le retour du téléphone) te ramène à l'endroit où tu étais dans la grille.</li>
               <li><b>Version de l'appli</b> : elle est indiquée tout en bas des Réglages. Après une publication, elle te permet de vérifier que ton iPhone affiche bien la dernière version ; si ce n'est pas le cas, recharge la page.</li>
               <li><b>« Non enregistré : … »</b> : la modification n'a pas pu être envoyée, par exemple parce que tu es hors ligne. Elle est annulée à l'écran : il suffit de recommencer plus tard.</li>
@@ -363,7 +367,7 @@
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=2.1"></script>
-<script src="app.js?v=2.1"></script>
+<script src="config.js?v=2.2"></script>
+<script src="app.js?v=2.2"></script>
 </body>
 </html>

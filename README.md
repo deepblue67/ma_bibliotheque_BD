@@ -2,7 +2,7 @@
 
 Catalogue personnel de bandes dessinées de Christophe (**1047 séries, 977 one-shots, 8330 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
 
-> **Version actuellement livrée : 2.1 du 24/10/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
+> **Version actuellement livrée : 2.2 du 24/10/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
 >
 > **Mode d'emploi** : ce README est la documentation **technique** du projet. Le mode d'emploi **du propriétaire** est ailleurs : dans l'appli (Réglages → Aide, visible en mode propriétaire seulement) et en PDF (`Mode_emploi_proprietaire.pdf`). Voir la section « Aide et mode d'emploi ».
 >
@@ -269,6 +269,18 @@ Le champ « titre » cherche dans le nom de la série **et dans le titre de tous
 
 L'index de recherche est calculé une seule fois, au chargement du catalogue. La grille n'est reconstruite que 150 ms après la dernière frappe. Ce qu'on ne rattrape pas, ce sont les fautes de frappe dans les noms de fichiers : « piliers » ne trouve pas « pilliers ». C'est le rôle de la future fonction « corriger le titre ».
 
+## Barre alphabétique
+
+Reprise de l'appli ebooks (son « index A–Z collant », §4 de son README). Juste au-dessus de la grille, une barre `# A B … Z` **reste accrochée en haut de l'écran** pendant le défilement. Un clic (ou un tap) sur une lettre fait défiler jusqu'au premier titre qui commence par elle. `#` regroupe les titres qui commencent par un chiffre ou un signe, comme *(Dé)rangée*, *1984* ou *13h17…*. Les lettres sans aucune BD sont grisées et inactives. Dans la grille, un **séparateur de lettre** (grande lettre et filet) précède chaque groupe.
+
+- **Lettre de classement** : première lettre du titre affiché, sans accent (*Élya* → E, *À la recherche…* → A), avec *Œ* → O et *Æ* → A. Elle suit exactement l'ordre de tri de la grille (`localeCompare` en français), y compris les articles : *Les légendaires* est sous L. La suite `test7_az.js` vérifie, sur le vrai catalogue, que chaque fiche se trouve sous le bon séparateur et que les séparateurs sont dans l'ordre.
+- **Saut sans changer l'adresse** : le défilement se fait par `window.scrollTo`, en s'arrêtant juste sous la barre pour que le séparateur reste visible. L'historique n'est pas touché : le bouton retour garde son rôle.
+- **Suit les filtres** : la barre et les séparateurs sont recalculés sur les fiches affichées (One-shots, un genre, Lus…). En dessous de 40 résultats (`AZ_MIN`, typiquement une recherche précise), ils disparaissent : ils n'apporteraient rien.
+- **Téléphone** : deux rangées de 14 cases, d'environ 23 × 34 px, avec une barre de moins de 85 px de haut au total.
+- **Piège corrigé au passage** : `html, body { overflow-x: hidden }` empêchait tout élément collant. Sur `<body>`, `hidden` en fait une zone de défilement à part, alors que c'est la fenêtre qui défile. Désormais `html` garde `overflow-x: hidden` (pas de défilement horizontal) et `body` passe en `overflow-x: clip`, qui coupe ce qui dépasse sans créer de zone de défilement. À ne pas remettre.
+
+Code : `initialOf()`, `letterHead()`, `renderAz()`, `jumpToLetter()` et `renderGrid()` dans `app.js` ; styles `.az` et `.letter-head` dans `style.css`.
+
 ## Thèmes et réglages
 
 La roue crantée, en haut à droite, ouvre la **page Réglages** (adresse `#/reglages`). C'est une vraie page, plus une fenêtre par-dessus la grille, sur le modèle de l'appli ebooks de Christophe : « ← Retour à la bibliothèque » en haut (le bouton retour du téléphone marche aussi), recherche et filtres masqués tant qu'on n'est pas sur la grille, et on retrouve la grille à l'endroit où on l'avait quittée. La page contient le choix du thème, le **mode propriétaire** (section suivante) et, en mode propriétaire, *Doublons probables*, *Fiches masquées et fusionnées* et l'*Aide*. *Doublons probables* ouvre à son tour une page (`#/doublons`, « ← Retour aux réglages » ; un visiteur qui tape cette adresse est renvoyé aux Réglages).
@@ -430,6 +442,7 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 
 | Version | Date | Contenu |
 |---|---|---|
+| 2.2 | 24/10/2026 | **Barre alphabétique** collante au-dessus de la grille et séparateurs de lettre, sur le modèle de l'appli ebooks. Correction de `overflow-x` sur `body`, qui empêchait les éléments collants. Aide et PDF complétés ; pied de page du PDF déplacé pour qu'il tienne sur 4 pages. |
 | 2.1 | 24/10/2026 | Bouton **Mode d'emploi complet (PDF)** dans Réglages → Aide (propriétaire), qui ouvre `Mode_emploi_proprietaire.pdf` publié à la racine du site. Pied de page du PDF daté plutôt que numéroté. |
 | 2.0 | 24/10/2026 | Premier numéro de version (2.0 plutôt que 1.0, choix de Christophe, l'appli ayant déjà eu de nombreuses livraisons). Réglages et Doublons probables deviennent de vraies pages (`#/reglages`, `#/doublons`) ; sections pliables avec mémoire sur l'appareil et « Tout déplier · Tout replier » ; numéro de version en bas des Réglages ; un seul `?v=` pour les quatre fichiers. Aide et PDF complétés. |
 
@@ -437,6 +450,7 @@ Les livraisons antérieures n'étaient pas numérotées ; leur détail est dans 
 
 ## Historique des décisions notables
 
+- **Version 2.2 — barre alphabétique** (24 octobre 2026) : demande de Christophe, reprise de son appli ebooks. Nouvelle suite Playwright `test7_az.js`, 27 vérifications sur le vrai catalogue (2017 fiches visibles). Elle couvre l'ordre des 27 cases, la correspondance case active / séparateur, chaque fiche sous la bonne lettre, aucune fiche perdue, les lettres grisées, la barre qui reste accrochée et le séparateur visible après un saut (PC et iPhone), l'adresse et l'historique inchangés, la recherche courte qui masque la barre, le filtre One-shots et un genre qui la recalculent, la barre absente de la page Réglages, les cases de taille correcte et l'absence de débordement sur iPhone. Les suites Réglages (54), lots 3 et 4 et croix d'effacement repassent à l'identique.
 - **Version 2.1 — mode d'emploi PDF accessible depuis l'appli** (24 octobre 2026) : demande de Christophe, qui place le PDF à la racine du dépôt. Bouton dans la section Aide des Réglages, ouverture dans un nouvel onglet, lien versionné. Suite `test6_reglages.js` portée à 54 vérifications (bouton invisible pour un visiteur, visible pour le propriétaire, lien qui sert bien un PDF, ouverture dans un nouvel onglet, cible tactile de 44 px) ; elle passe en entier.
 - **Version 2.0 — Réglages en page, sections pliables, numéro de version** (24 octobre 2026) : demande de Christophe, sur le modèle de son appli ebooks (`deepblue67/ma-bibliotheque`, §4.30 de son README). Les deux fenêtres (Réglages, Doublons probables) sont remplacées par des pages routées par l'adresse. Vérifié par une nouvelle suite Playwright, `test6_reglages.js` : 47 vérifications (sections visibles selon visiteur/propriétaire, repli et mémoire après rechargement, Tout déplier/replier, retour par le lien, par le bouton du navigateur et par Échap, retour à la même position dans la grille, `#/doublons` refusé au visiteur, déverrouillage depuis la page, action sur la page Doublons sans perdre la position, fiche ouverte refermée quand on change de page, cibles tactiles de 44 px et aucun débordement sur iPhone, aucune erreur JavaScript). Les suites des lots 3 et 4 repassent à l'identique.
 

@@ -322,8 +322,12 @@ html, body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
-  overflow-x: hidden;
 }
+/* Pas de défilement horizontal. Sur <body>, « hidden » en ferait une zone de défilement à
+   part, ce qui casse les éléments collants (barre alphabétique) : on y met « clip », qui
+   coupe ce qui dépasse sans créer de zone de défilement. */
+html { overflow-x: hidden; }
+body { overflow-x: clip; }
 
 .topbar {
   background-color: var(--accent);
@@ -1059,3 +1063,41 @@ a.btn { display: inline-flex; align-items: center; text-decoration: none; }
 .pdf-row { margin: 0 0 14px; }
 .pdf-link { gap: 8px; min-height: 44px; box-sizing: border-box; }
 .pdf-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+/* =====================================================================
+   BARRE ALPHABÉTIQUE ET SÉPARATEURS DE LETTRE (grille)
+   ===================================================================== */
+.az[hidden] { display: none; }
+.az {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  display: flex; flex-wrap: wrap; gap: 3px;
+  margin: -12px -20px 18px; padding: 8px 20px;          /* jusqu'aux bords de la zone (main a 20 px de marge) */
+  background: var(--bg);
+  border-bottom: var(--bw-s) solid var(--line);
+}
+.az button {
+  min-width: 30px; height: 32px; padding: 0 4px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 0; border-radius: 6px; background: transparent; cursor: pointer;
+  font: 800 13px var(--font-body); color: var(--text-soft);
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+}
+.az button:hover, .az button:focus-visible { background: var(--chip-on-bg); color: var(--chip-on-text); }
+.az button.off { opacity: .28; cursor: default; }
+.az button.off:hover { background: transparent; color: var(--text-soft); }
+.letter-head {
+  grid-column: 1 / -1;
+  display: flex; align-items: center; gap: 12px;
+  margin: 10px 0 -6px;
+  font-family: var(--font-display); font-weight: var(--display-weight);
+  letter-spacing: calc(var(--display-tracking) / 2);
+  font-size: 26px; line-height: 1; color: var(--fav);
+}
+.letter-head:first-child { margin-top: 0; }
+.letter-head::after { content: ""; flex: 1; height: 1px; background: var(--divider-strong); }
+/* téléphone : 2 rangées de 14 cases, assez larges pour le doigt */
+@media (max-width: 560px) {
+  .az { display: grid; grid-template-columns: repeat(14, 1fr); gap: 2px; margin: -14px -20px 14px; padding: 6px 16px; }
+  .az button { min-width: 0; height: 34px; padding: 0; font-size: 12.5px; }
+  .letter-head { font-size: 22px; margin: 6px 0 -4px; }
+}

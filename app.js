@@ -12,7 +12,7 @@
   // Version de la livraison — à augmenter à CHAQUE livraison (+0.1 pour une livraison
   // ordinaire, +1.0 pour une refonte), avec le même numéro dans les quatre ?v= de
   // index.html et une ligne dans l'historique « Versions » du README.
-  var APP_VERSION = "2.1";
+  var APP_VERSION = "2.2";
   var APP_VERSION_DATE = "2026-10-24";
 
   // ---------- mode propriétaire ----------
@@ -540,17 +540,73 @@
     renderTimer = setTimeout(renderGrid, 150);
   }
 
+  // ---------- barre alphabétique ----------
+  // Comme dans l'appli ebooks : # puis A à Z, les lettres sans BD sont grisées, et un
+  // séparateur de lettre précède le premier titre de chaque lettre dans la grille. Le saut
+  // se fait par défilement, sans changer l'adresse (le retour arrière reste propre).
+  // En dessous de AZ_MIN résultats (une recherche précise), barre et séparateurs
+  // disparaissent : ils n'apporteraient rien.
+  var AZ_LETTERS = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+  var AZ_MIN = 40;
+  var azEl = document.getElementById("az");
+  function initialOf(title) {
+    var c = (title || "").trim().charAt(0);
+    if (c === "Œ" || c === "œ") return "O";
+    if (c === "Æ" || c === "æ") return "A";
+    c = c.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+    return /[A-Z]/.test(c) ? c : "#";
+  }
+  function letterHead(L) {
+    var h = document.createElement("h2");
+    h.className = "letter-head";
+    h.id = "L-" + (L === "#" ? "num" : L);
+    h.textContent = L === "#" ? "0-9 #" : L;
+    return h;
+  }
+  function renderAz(present, show) {
+    if (!azEl) return;
+    azEl.hidden = !show;
+    azEl.innerHTML = "";
+    if (!show) return;
+    AZ_LETTERS.forEach(function (L) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.textContent = L;
+      if (present[L]) {
+        b.setAttribute("aria-label", L === "#" ? "Aller aux titres commençant par un chiffre ou un signe" : "Aller à la lettre " + L);
+        b.addEventListener("click", function () { jumpToLetter(L); });
+      } else {
+        b.disabled = true;
+        b.className = "off";
+      }
+      azEl.appendChild(b);
+    });
+  }
+  function jumpToLetter(L) {
+    var t = document.getElementById("L-" + (L === "#" ? "num" : L));
+    if (!t) return;
+    // la barre reste collée en haut : on s'arrête juste en dessous pour ne pas cacher le séparateur
+    var y = t.getBoundingClientRect().top + window.scrollY - (azEl ? azEl.offsetHeight : 0) - 10;
+    window.scrollTo(0, Math.max(0, y));
+  }
+
   // ---------- render ----------
   function renderGrid() {
     var list = state.catalog.filter(matches);
     if (lazyObserver) lazyObserver.disconnect();
     els.grid.innerHTML = "";
     els.empty.hidden = list.length > 0;
+    var showAz = list.length >= AZ_MIN, present = {};
     var frag = document.createDocumentFragment();
     list.forEach(function (entry) {
+      if (showAz) {
+        var L = initialOf(entry.title);
+        if (!present[L]) { present[L] = true; frag.appendChild(letterHead(L)); }
+      }
       frag.appendChild(renderCard(entry));
     });
     els.grid.appendChild(frag);
+    renderAz(present, showAz);
   }
 
   function renderCard(entry) {
