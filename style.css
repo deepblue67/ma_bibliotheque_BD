@@ -996,12 +996,15 @@ html:not(.is-owner) .owner-only { display: none !important; }
 /* Croix pour vider un champ de recherche (apparaît dès qu'il y a du texte) */
 .field-clear {
   flex-shrink: 0;
-  width: 20px; height: 20px; padding: 0;
+  width: 28px; height: 28px; padding: 0;      /* cible tactile confortable (iPhone/iPad) */
+  margin: -4px -4px -4px 0;                    /* sans gonfler la hauteur du champ */
   border: none; border-radius: 50%;
   background: var(--muted); color: var(--surface);
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 .field-clear[hidden] { display: none; }
-.field-clear svg { width: 11px; height: 11px; }
+.field-clear svg { width: 12px; height: 12px; }
 .field-clear:hover, .field-clear:focus-visible { background: var(--text); }
