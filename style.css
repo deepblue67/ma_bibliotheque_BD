@@ -1101,3 +1101,7 @@ a.btn { display: inline-flex; align-items: center; text-decoration: none; }
   .az button { min-width: 0; height: 34px; padding: 0; font-size: 12.5px; }
   .letter-head { font-size: 22px; margin: 6px 0 -4px; }
 }
+
+/* vignette dont la couverture n'a pas pu être chargée (après 2 nouvelles tentatives) :
+   on laisse voir le fond de la vignette plutôt qu'une icône d'image cassée */
+.card-cover-wrap img.img-failed, .dup-thumb img.img-failed { visibility: hidden; }

@@ -12,7 +12,7 @@
   // Version de la livraison — à augmenter à CHAQUE livraison (+0.1 pour une livraison
   // ordinaire, +1.0 pour une refonte), avec le même numéro dans les quatre ?v= de
   // index.html et une ligne dans l'historique « Versions » du README.
-  var APP_VERSION = "2.2";
+  var APP_VERSION = "2.3";
   var APP_VERSION_DATE = "2026-10-24";
 
   // ---------- mode propriétaire ----------
@@ -517,22 +517,59 @@
   }
 
   // ---------- chargement differe des vignettes ----------
+  // Trois protections, pour qu'aucune vignette ne reste vide alors que sa couverture existe :
+  //  1. un IntersectionObserver demande l'image quand la vignette approche de l'écran ;
+  //  2. un filet de sécurité, après chaque défilement, saut de lettre ou nouvel affichage,
+  //     demande toute vignette proche de l'écran restée en attente (certains navigateurs,
+  //     Safari notamment, peuvent rater une notification après un défilement rapide) ;
+  //  3. une image en échec (réseau, serveur sollicité par une rafale de demandes) est
+  //     retentée deux fois, après 1,5 s puis 5 s, avec une adresse légèrement différente
+  //     pour ne pas retomber sur un échec gardé en cache. Après le dernier échec, on montre
+  //     le fond de la vignette plutôt qu'une icône d'image cassée.
+  var LAZY_MARGIN = 800;
+  var RETRY_DELAYS = [1500, 5000];
   var lazyObserver = ("IntersectionObserver" in window) ? new IntersectionObserver(function (items) {
-    items.forEach(function (it) {
-      if (!it.isIntersecting) return;
-      var im = it.target;
-      im.src = im.getAttribute("data-src");
-      im.removeAttribute("data-src");
-      lazyObserver.unobserve(im);
-    });
-  }, { rootMargin: "800px 0px" }) : null;
+    items.forEach(function (it) { if (it.isIntersecting) startLoad(it.target); });
+  }, { rootMargin: LAZY_MARGIN + "px 0px" }) : null;
 
+  function startLoad(im) {
+    var url = im.getAttribute("data-src");
+    if (!url) return;
+    im.removeAttribute("data-src");
+    if (lazyObserver) lazyObserver.unobserve(im);
+    loadWithRetry(im, url, 0);
+  }
+  function loadWithRetry(im, base, attempt) {
+    im.onload = function () { im.classList.remove("img-failed"); };
+    im.onerror = function () {
+      if (attempt >= RETRY_DELAYS.length) { im.classList.add("img-failed"); return; }
+      setTimeout(function () {
+        if (!im.isConnected) return;                 // la grille a été redessinée entre-temps
+        loadWithRetry(im, base, attempt + 1);
+      }, RETRY_DELAYS[attempt]);
+    };
+    im.src = attempt ? base + (base.indexOf("?") === -1 ? "?" : "&") + "r=" + attempt : base;
+  }
   function lazyImage(img, url) {
     if (!url) return;
-    if (!lazyObserver) { img.src = url; return; }   // navigateur ancien : chargement direct
     img.setAttribute("data-src", url);
-    lazyObserver.observe(img);
+    if (lazyObserver) lazyObserver.observe(img);
+    else startLoad(img);                              // navigateur ancien : chargement direct
   }
+
+  var sweepTimer = null;
+  function sweepSoon() { clearTimeout(sweepTimer); sweepTimer = setTimeout(sweepVisible, 120); }
+  function sweepVisible() {
+    if (state.view !== "home") return;
+    var h = window.innerHeight || document.documentElement.clientHeight;
+    if (!h) return;
+    Array.prototype.forEach.call(els.grid.querySelectorAll("img[data-src]"), function (im) {
+      var r = im.getBoundingClientRect();
+      if (r.width > 0 && r.bottom > -LAZY_MARGIN && r.top < h + LAZY_MARGIN) startLoad(im);
+    });
+  }
+  window.addEventListener("scroll", sweepSoon, { passive: true });
+  window.addEventListener("resize", sweepSoon);
 
   var renderTimer = null;
   function renderGridSoon() {
@@ -588,6 +625,7 @@
     // la barre reste collée en haut : on s'arrête juste en dessous pour ne pas cacher le séparateur
     var y = t.getBoundingClientRect().top + window.scrollY - (azEl ? azEl.offsetHeight : 0) - 10;
     window.scrollTo(0, Math.max(0, y));
+    sweepSoon();
   }
 
   // ---------- render ----------
@@ -607,6 +645,7 @@
     });
     els.grid.appendChild(frag);
     renderAz(present, showAz);
+    sweepSoon();
   }
 
   function renderCard(entry) {
@@ -1629,6 +1668,7 @@
     if (v === "settings") renderSettingsPage();
     else if (v === "dups") renderDups();
     window.scrollTo(0, viewScroll[v] || 0);
+    if (v === "home") sweepSoon();
   }
   window.addEventListener("hashchange", route);
   settingsEls.open.addEventListener("click", function () { location.hash = "#/reglages"; });
