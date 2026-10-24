@@ -1054,3 +1054,8 @@ html.view-page .controls { display: none; }      /* recherche et filtres : inuti
   font-size: 11.5px; color: var(--muted);
 }
 a.btn { display: inline-flex; align-items: center; text-decoration: none; }
+
+/* Réglages → Aide : bouton vers le mode d'emploi en PDF */
+.pdf-row { margin: 0 0 14px; }
+.pdf-link { gap: 8px; min-height: 44px; box-sizing: border-box; }
+.pdf-link svg { width: 18px; height: 18px; flex-shrink: 0; }

@@ -26,8 +26,8 @@
      livraison, dans les quatre liens, pour forcer les navigateurs (iPhone compris) à recharger.
      themes.js est volontairement bloquant et placé AVANT style.css : il pose le thème
      mémorisé (et charge ses polices) avant le premier affichage. -->
-<script src="themes.js?v=2.0"></script>
-<link rel="stylesheet" href="style.css?v=2.0">
+<script src="themes.js?v=2.1"></script>
+<link rel="stylesheet" href="style.css?v=2.1">
 </head>
 <body>
 
@@ -132,7 +132,13 @@
         <span class="t">Aide — mode d'emploi propriétaire</span><span class="rule" aria-hidden="true"></span>
       </button>
       <div class="set-body">
-        <p class="settings-hint">Visible seulement en mode propriétaire. Touche un sujet pour le déplier.</p>
+        <p class="settings-hint">Visible seulement en mode propriétaire. Touche un sujet pour le déplier, ou ouvre le mode d'emploi complet en PDF, à lire ou imprimer.</p>
+        <p class="pdf-row">
+          <a id="pdf-link" class="btn pdf-link" href="Mode_emploi_proprietaire.pdf" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>
+            Mode d'emploi complet (PDF)
+          </a>
+        </p>
           <div class="help">
             <details class="help-item" id="aide-acces">
               <summary>Passer en mode propriétaire</summary>
@@ -357,7 +363,7 @@
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=2.0"></script>
-<script src="app.js?v=2.0"></script>
+<script src="config.js?v=2.1"></script>
+<script src="app.js?v=2.1"></script>
 </body>
 </html>

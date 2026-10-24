@@ -2,7 +2,7 @@
 
 Catalogue personnel de bandes dessinées de Christophe (**1047 séries, 977 one-shots, 8330 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
 
-> **Version actuellement livrée : 2.0 du 24/10/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
+> **Version actuellement livrée : 2.1 du 24/10/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
 >
 > **Mode d'emploi** : ce README est la documentation **technique** du projet. Le mode d'emploi **du propriétaire** est ailleurs : dans l'appli (Réglages → Aide, visible en mode propriétaire seulement) et en PDF (`Mode_emploi_proprietaire.pdf`). Voir la section « Aide et mode d'emploi ».
 >
@@ -39,7 +39,8 @@ ma-bibliotheque-bd/
 ├── site.webmanifest      # manifest PWA (icônes Android/Chrome, nom, couleurs)
 ├── icons/                 # déclinaisons de tailles de l'icône (apple-touch-icon-*, favicon-*,
 │                        #   android-chrome-*) — voir section dédiée plus bas
-├── Mode_emploi_proprietaire.pdf # mode d'emploi du propriétaire (même texte que Réglages → Aide)
+├── Mode_emploi_proprietaire.pdf # mode d'emploi du propriétaire (même texte que Réglages → Aide),
+│                        #   publié à la racine du site, lien dans Réglages → Aide
 ├── supabase_bd_overrides.sql # script du SQL Editor de Supabase : crée/complète la table
 │                        #   bd_overrides (corrections depuis l'appli) — relançable,
 │                        #   à relancer après chaque lot qui le modifie
@@ -355,7 +356,7 @@ Chaque suggestion a un bouton **Pas un doublon** : la décision est stockée (`"
 
 Il n'y a **pas** de mode d'emploi pour les visiteurs : ce n'était pas nécessaire (choix de Christophe, octobre 2026). Le mode d'emploi du propriétaire existe sous deux formes, **au contenu identique** :
 - **dans l'appli** : Réglages (roue crantée) → dernière section, **Aide — mode d'emploi propriétaire**. Ce sont dix sujets dépliables (`<details class="help-item">`), écrits en dur dans `index.html`, dans une section `owner-only`. Ils sont donc invisibles en mode visiteur, mais présents dans le code source de la page : rien de secret ne doit y figurer ;
-- **en PDF** : `Mode_emploi_proprietaire.pdf`, 4 pages A4, pour lire ou imprimer hors de l'appli. Il n'a pas besoin d'être publié sur GitHub.
+- **en PDF** : `Mode_emploi_proprietaire.pdf`, 4 pages A4, pour lire ou imprimer hors de l'appli. Depuis la version 2.1, il est **publié à la racine du dépôt GitHub** et s'ouvre depuis l'appli : Réglages → Aide → bouton **Mode d'emploi complet (PDF)**, dans un nouvel onglet. Le bouton n'apparaît qu'en mode propriétaire ; le fichier lui-même reste accessible à qui connaîtrait son adresse, ce qui est sans conséquence puisqu'il ne contient rien de confidentiel (ni code, ni clé). Le lien porte le numéro de version (`Mode_emploi_proprietaire.pdf?v=2.1`, ajouté par `app.js`) pour qu'un téléphone ne garde pas en cache un ancien PDF. **Le PDF doit donc être republié chaque fois qu'il change.** Son pied de page indique la date de mise à jour du mode d'emploi, pas le numéro de version de l'appli, pour ne pas devoir le régénérer à chaque livraison.
 
 Les dix sujets : passer en mode propriétaire, suivre ses lectures, corriger une fiche, corriger ou masquer un tome, masquer une fiche et la retrouver, fusionner deux fiches, examiner les doublons probables, ce que voient les visiteurs, ajouter de nouvelles BD, bon à savoir.
 
@@ -408,7 +409,7 @@ Ou plus simple : pousser directement sur GitHub Pages (qui sert en https, aucun 
 
 ## Déploiement
 
-1. `covers/`, les dossiers `volume_covers*/`, `uploader.html` et les fichiers de travail sont exclus via `.gitignore` — le commit ne contient que le code + `data/catalog.json` (~1 Mo).
+1. `covers/`, les dossiers `volume_covers*/`, `uploader.html` et les fichiers de travail sont exclus via `.gitignore` — le commit ne contient que le code, `data/catalog.json` (~1 Mo) et `Mode_emploi_proprietaire.pdf` (lié depuis Réglages → Aide).
 2. Pousser sur GitHub (dépôt `ma-bibliotheque-bd`, via GitHub Desktop).
 3. Settings → Pages → source = branche `main`, dossier racine.
 4. Site en ligne à `https://<pseudo-github>.github.io/ma-bibliotheque-bd/` après 1-2 minutes.
@@ -429,12 +430,14 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 
 | Version | Date | Contenu |
 |---|---|---|
+| 2.1 | 24/10/2026 | Bouton **Mode d'emploi complet (PDF)** dans Réglages → Aide (propriétaire), qui ouvre `Mode_emploi_proprietaire.pdf` publié à la racine du site. Pied de page du PDF daté plutôt que numéroté. |
 | 2.0 | 24/10/2026 | Premier numéro de version (2.0 plutôt que 1.0, choix de Christophe, l'appli ayant déjà eu de nombreuses livraisons). Réglages et Doublons probables deviennent de vraies pages (`#/reglages`, `#/doublons`) ; sections pliables avec mémoire sur l'appareil et « Tout déplier · Tout replier » ; numéro de version en bas des Réglages ; un seul `?v=` pour les quatre fichiers. Aide et PDF complétés. |
 
 Les livraisons antérieures n'étaient pas numérotées ; leur détail est dans l'historique ci-dessous.
 
 ## Historique des décisions notables
 
+- **Version 2.1 — mode d'emploi PDF accessible depuis l'appli** (24 octobre 2026) : demande de Christophe, qui place le PDF à la racine du dépôt. Bouton dans la section Aide des Réglages, ouverture dans un nouvel onglet, lien versionné. Suite `test6_reglages.js` portée à 54 vérifications (bouton invisible pour un visiteur, visible pour le propriétaire, lien qui sert bien un PDF, ouverture dans un nouvel onglet, cible tactile de 44 px) ; elle passe en entier.
 - **Version 2.0 — Réglages en page, sections pliables, numéro de version** (24 octobre 2026) : demande de Christophe, sur le modèle de son appli ebooks (`deepblue67/ma-bibliotheque`, §4.30 de son README). Les deux fenêtres (Réglages, Doublons probables) sont remplacées par des pages routées par l'adresse. Vérifié par une nouvelle suite Playwright, `test6_reglages.js` : 47 vérifications (sections visibles selon visiteur/propriétaire, repli et mémoire après rechargement, Tout déplier/replier, retour par le lien, par le bouton du navigateur et par Échap, retour à la même position dans la grille, `#/doublons` refusé au visiteur, déverrouillage depuis la page, action sur la page Doublons sans perdre la position, fiche ouverte refermée quand on change de page, cibles tactiles de 44 px et aucun débordement sur iPhone, aucune erreur JavaScript). Les suites des lots 3 et 4 repassent à l'identique.
 
 - **Croix d'effacement** dans les champs Titre et Auteur (24 octobre 2026) : une petite croix apparaît dès qu'un champ contient du texte et le vide d'un clic (remet le filtre à zéro et redonne le focus au champ). `app.js?v=13`, `style.css?v=13` (croix dimensionnée pour le tactile iPhone/iPad).
