@@ -22,10 +22,12 @@
 <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
 <link rel="manifest" href="site.webmanifest">
 
-<!-- themes.js est volontairement bloquant et placé AVANT style.css : il pose le thème
+<!-- ?v=2.0 = numéro de version de l'appli (APP_VERSION dans app.js) : à changer à chaque
+     livraison, dans les quatre liens, pour forcer les navigateurs (iPhone compris) à recharger.
+     themes.js est volontairement bloquant et placé AVANT style.css : il pose le thème
      mémorisé (et charge ses polices) avant le premier affichage. -->
-<script src="themes.js?v=1"></script>
-<link rel="stylesheet" href="style.css?v=13">
+<script src="themes.js?v=2.0"></script>
+<link rel="stylesheet" href="style.css?v=2.0">
 </head>
 <body>
 
@@ -74,111 +76,63 @@
 </header>
 
 <main>
-  <div id="empty-state" class="empty-state" hidden>Aucune BD ne correspond à ta recherche.</div>
-  <div id="grid" class="grid"></div>
-  <div id="sync-note" class="sync-note"></div>
-</main>
-
-<div id="overlay" class="overlay" hidden>
-  <div id="sheet" class="sheet" role="dialog" aria-modal="true">
-    <button id="sheet-close" class="sheet-close" aria-label="Fermer">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
-    <div class="sheet-body">
-      <div class="sheet-cover-wrap">
-        <img id="sheet-cover" class="sheet-cover" alt="">
-        <button id="sheet-cover-zoom" class="magnify-btn" aria-label="Agrandir la couverture">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        </button>
-      </div>
-      <div class="sheet-info">
-        <div id="sheet-title" class="sheet-title"></div>
-        <div id="sheet-author" class="sheet-author"></div>
-        <p id="sheet-orig" class="sheet-orig owner-only" hidden></p>
-        <p id="sheet-merged" class="sheet-merged owner-only" hidden></p>
-        <div id="sheet-meta" class="sheet-meta"></div>
-        <div id="sheet-genres" class="sheet-genres"></div>
-        <div class="sheet-actions owner-only">
-          <button id="btn-read" class="btn btn-outline">Marquer comme lu</button>
-          <button id="btn-fav" class="btn btn-outline">★ Ajouter aux favoris</button>
-          <button id="btn-edit" class="btn btn-outline" type="button">✎ Modifier</button>
-        </div>
-        <div id="sheet-edit" class="sheet-edit owner-only" hidden>
-          <form id="edit-form" class="edit-form" autocomplete="off">
-            <label class="edit-field"><span>Titre</span>
-              <input id="edit-title" class="owner-input" type="text"></label>
-            <label class="edit-field"><span>Auteur(s)</span>
-              <input id="edit-author" class="owner-input" type="text"></label>
-            <div class="edit-genres">
-              <label class="edit-field"><span>Genre 1</span><select id="edit-genre1" class="owner-input"></select></label>
-              <label class="edit-field"><span>Genre 2</span><select id="edit-genre2" class="owner-input"></select></label>
-            </div>
-            <div class="edit-buttons">
-              <button type="submit" class="btn">Enregistrer</button>
-              <button id="edit-cancel" type="button" class="btn btn-ghost">Annuler</button>
-              <button id="edit-reset" type="button" class="btn btn-ghost" hidden>Rétablir l'original</button>
-            </div>
-          </form>
-          <div class="edit-merge">
-            <button id="merge-open" type="button" class="btn btn-ghost">Fusionner une autre fiche dans celle-ci…</button>
-            <div id="merge-picker" class="merge-picker" hidden>
-              <label class="edit-field"><span>Fiche à intégrer dans celle-ci</span>
-                <input id="merge-q" class="owner-input" type="text" placeholder="Tape une partie de son titre…" autocomplete="off"></label>
-              <ul id="merge-results" class="merge-results"></ul>
-              <div id="merge-confirm" class="merge-confirm" hidden>
-                <p id="merge-confirm-text"></p>
-                <button id="merge-yes" type="button" class="btn">Oui, fusionner</button>
-                <button id="merge-no" type="button" class="btn btn-ghost">Non</button>
-              </div>
-              <button id="merge-cancel" type="button" class="btn btn-ghost">Fermer</button>
-            </div>
-          </div>
-          <div class="edit-danger">
-            <button id="edit-hide" type="button" class="btn btn-danger">Masquer cette fiche…</button>
-            <span id="edit-hide-confirm" class="edit-confirm" hidden>Masquer « <span class="confirm-title"></span> » ?
-              <button id="edit-hide-yes" type="button" class="btn btn-danger">Oui, masquer</button>
-              <button id="edit-hide-no" type="button" class="btn btn-ghost">Non</button></span>
-            <p class="settings-hint">Une fiche masquée disparaît pour tout le monde, mais rien n'est effacé : tu la retrouves dans Réglages → Fiches masquées.</p>
-          </div>
-        </div>
-        <div class="sheet-volumes">
-          <div class="sheet-volumes-label">Tomes</div>
-          <ol id="sheet-volume-list" class="volume-list"></ol>
-        </div>
-      </div>
-    </div>
+  <div id="home-view">
+    <div id="empty-state" class="empty-state" hidden>Aucune BD ne correspond à ta recherche.</div>
+    <div id="grid" class="grid"></div>
+    <div id="sync-note" class="sync-note"></div>
   </div>
-</div>
 
-<div id="settings-overlay" class="overlay" hidden>
-  <div class="sheet settings-sheet" role="dialog" aria-modal="true" aria-labelledby="settings-title">
-    <button id="settings-close" class="sheet-close" aria-label="Fermer">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
-    <div class="settings-body">
-      <h2 id="settings-title" class="sheet-title">Réglages</h2>
-      <section class="settings-section">
-        <h3 class="settings-h">Thème</h3>
+  <!-- Page Réglages (#/reglages) : une vraie page, plus une fenêtre. Chaque section se plie
+       ou se déplie d'un clic sur son titre ; ce qui est replié est mémorisé sur l'appareil. -->
+  <section id="settings-page" class="page" aria-labelledby="settings-title" hidden>
+    <a class="back-link" href="#/">← Retour à la bibliothèque</a>
+    <h2 id="settings-title" class="page-title">Réglages</h2>
+    <div class="set-all">
+      <button type="button" class="set-all-btn" data-all="open">Tout déplier</button>
+      <span aria-hidden="true">·</span>
+      <button type="button" class="set-all-btn" data-all="close">Tout replier</button>
+    </div>
+    <section class="set-block" data-sec="theme">
+      <button type="button" class="set-head" aria-expanded="true">
+        <span class="t">Thème</span><span class="rule" aria-hidden="true"></span>
+      </button>
+      <div class="set-body">
         <p class="settings-hint">Le changement est immédiat. Le thème est mémorisé sur cet appareil : ton iPhone et ton PC peuvent avoir chacun le leur.</p>
         <div id="theme-grid" class="theme-grid"></div>
-      </section>
-      <section class="settings-section">
-        <h3 class="settings-h">Mode propriétaire</h3>
+      </div>
+    </section>
+    <section class="set-block" data-sec="owner">
+      <button type="button" class="set-head" aria-expanded="true">
+        <span class="t">Mode propriétaire</span><span class="rule" aria-hidden="true"></span>
+      </button>
+      <div class="set-body">
         <div id="owner-panel"></div>
-      </section>
-      <section class="settings-section owner-only">
-        <h3 class="settings-h">Doublons probables</h3>
+      </div>
+    </section>
+    <section class="set-block owner-only" data-sec="dups">
+      <button type="button" class="set-head" aria-expanded="true">
+        <span class="t">Doublons probables</span><span class="rule" aria-hidden="true"></span>
+      </button>
+      <div class="set-body">
         <p class="settings-hint">Fiches au titre très proche, tomes en double dans une série, one-shots qui ressemblent à un tome : l'appli te les propose, tu tranches (fusionner, masquer ou « pas un doublon »).</p>
-        <div class="owner-row"><button id="dups-open" type="button" class="btn">Examiner les doublons</button> <span id="dups-count" class="dups-count"></span></div>
-      </section>
-      <section class="settings-section owner-only">
-        <h3 class="settings-h">Fiches masquées et fusionnées</h3>
+        <div class="owner-row"><a id="dups-open" class="btn" href="#/doublons">Examiner les doublons</a> <span id="dups-count" class="dups-count"></span></div>
+      </div>
+    </section>
+    <section class="set-block owner-only" data-sec="hidden">
+      <button type="button" class="set-head" aria-expanded="true">
+        <span class="t">Fiches masquées et fusionnées</span><span class="rule" aria-hidden="true"></span>
+      </button>
+      <div class="set-body">
         <p class="settings-hint">Doublons écartés à l'import, fiches que tu as masquées ou fusionnées dans une autre. Elles restent invisibles pour tout le monde jusqu'à ce que tu les ré-affiches ou les sépares.</p>
         <div id="hidden-list"></div>
-      </section>
-        <section class="settings-section owner-only">
-          <h3 class="settings-h">Aide — mode d'emploi propriétaire</h3>
-          <p class="settings-hint">Visible seulement en mode propriétaire. Touche un sujet pour le déplier.</p>
+      </div>
+    </section>
+    <section class="set-block owner-only" data-sec="aide">
+      <button type="button" class="set-head" aria-expanded="true">
+        <span class="t">Aide — mode d'emploi propriétaire</span><span class="rule" aria-hidden="true"></span>
+      </button>
+      <div class="set-body">
+        <p class="settings-hint">Visible seulement en mode propriétaire. Touche un sujet pour le déplier.</p>
           <div class="help">
             <details class="help-item" id="aide-acces">
               <summary>Passer en mode propriétaire</summary>
@@ -238,7 +192,7 @@
               <li>Ouvre la fiche → <b>✎ Modifier</b> → <b>Masquer cette fiche…</b> → <b>Oui, masquer</b>.</li>
               <li>Elle disparaît aussitôt, pour tout le monde. Le bandeau en bas d'écran propose <b>Annuler</b> pendant 8 secondes.</li>
               </ol>
-              <p><b>Pour la retrouver</b> : Réglages → <b>Fiches masquées et fusionnées</b>. Ce panneau liste les fiches que tu as masquées, celles qui ont été fusionnées et les doublons écartés à l'import, chacune avec le bouton <b>Ré-afficher</b> ou <b>Séparer</b>.</p>
+              <p><b>Pour la retrouver</b> : Réglages → <b>Fiches masquées et fusionnées</b>. Cette section liste les fiches que tu as masquées, celles qui ont été fusionnées et les doublons écartés à l'import, chacune avec le bouton <b>Ré-afficher</b> ou <b>Séparer</b>.</p>
               <p>Rien n'est jamais effacé : masquer, c'est seulement ne plus afficher.</p>
               </div>
             </details>
@@ -300,6 +254,8 @@
               <ul>
               <li><b>Synchronisation</b> : une modification faite sur le PC apparaît sur l'iPhone sans recharger la page, et inversement.</li>
               <li><b>Thème</b> : il est choisi appareil par appareil, dans Réglages → Thème.</li>
+              <li><b>Page Réglages</b> : chaque partie se plie ou se déplie en touchant son titre, et « Tout déplier · Tout replier » agit sur toutes à la fois. L'appareil se souvient de ce que tu as replié. « ← Retour à la bibliothèque » (ou le retour du téléphone) te ramène à l'endroit où tu étais dans la grille.</li>
+              <li><b>Version de l'appli</b> : elle est indiquée tout en bas des Réglages. Après une publication, elle te permet de vérifier que ton iPhone affiche bien la dernière version ; si ce n'est pas le cas, recharge la page.</li>
               <li><b>« Non enregistré : … »</b> : la modification n'a pas pu être envoyée, par exemple parce que tu es hors ligne. Elle est annulée à l'écran : il suffit de recommencer plus tard.</li>
               <li><b>« … relance le script supabase_bd_overrides.sql »</b> : la base n'est pas à jour. Ouvre Supabase → SQL Editor, colle le contenu de ce fichier, puis <b>Run</b>. On peut le relancer sans risque.</li>
               <li><b>Une modification n'apparaît pas après une publication</b> : recharge la page. Si besoin, vide le cache du navigateur.</li>
@@ -308,18 +264,86 @@
               </div>
             </details>
           </div>
-        </section>
-      <p class="settings-foot">Ma Bibliothèque BD</p>
-    </div>
-  </div>
-</div>
+      </div>
+    </section>
+    <p id="app-version" class="app-version"></p>
+  </section>
 
-<div id="dups-overlay" class="overlay" hidden>
-  <div class="sheet settings-sheet dups-sheet" role="dialog" aria-modal="true" aria-label="Doublons probables">
-    <button id="dups-close" class="sheet-close" aria-label="Fermer">
+  <!-- Page Doublons probables (#/doublons, propriétaire) -->
+  <section id="dups-page" class="page dups-page" aria-label="Doublons probables" hidden>
+    <a class="back-link" href="#/reglages">← Retour aux réglages</a>
+    <div id="dups-body"></div>
+  </section>
+</main>
+
+<div id="overlay" class="overlay" hidden>
+  <div id="sheet" class="sheet" role="dialog" aria-modal="true">
+    <button id="sheet-close" class="sheet-close" aria-label="Fermer">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
-    <div id="dups-body" class="settings-body dups-body"></div>
+    <div class="sheet-body">
+      <div class="sheet-cover-wrap">
+        <img id="sheet-cover" class="sheet-cover" alt="">
+        <button id="sheet-cover-zoom" class="magnify-btn" aria-label="Agrandir la couverture">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </div>
+      <div class="sheet-info">
+        <div id="sheet-title" class="sheet-title"></div>
+        <div id="sheet-author" class="sheet-author"></div>
+        <p id="sheet-orig" class="sheet-orig owner-only" hidden></p>
+        <p id="sheet-merged" class="sheet-merged owner-only" hidden></p>
+        <div id="sheet-meta" class="sheet-meta"></div>
+        <div id="sheet-genres" class="sheet-genres"></div>
+        <div class="sheet-actions owner-only">
+          <button id="btn-read" class="btn btn-outline">Marquer comme lu</button>
+          <button id="btn-fav" class="btn btn-outline">★ Ajouter aux favoris</button>
+          <button id="btn-edit" class="btn btn-outline" type="button">✎ Modifier</button>
+        </div>
+        <div id="sheet-edit" class="sheet-edit owner-only" hidden>
+          <form id="edit-form" class="edit-form" autocomplete="off">
+            <label class="edit-field"><span>Titre</span>
+              <input id="edit-title" class="owner-input" type="text"></label>
+            <label class="edit-field"><span>Auteur(s)</span>
+              <input id="edit-author" class="owner-input" type="text"></label>
+            <div class="edit-genres">
+              <label class="edit-field"><span>Genre 1</span><select id="edit-genre1" class="owner-input"></select></label>
+              <label class="edit-field"><span>Genre 2</span><select id="edit-genre2" class="owner-input"></select></label>
+            </div>
+            <div class="edit-buttons">
+              <button type="submit" class="btn">Enregistrer</button>
+              <button id="edit-cancel" type="button" class="btn btn-ghost">Annuler</button>
+              <button id="edit-reset" type="button" class="btn btn-ghost" hidden>Rétablir l'original</button>
+            </div>
+          </form>
+          <div class="edit-merge">
+            <button id="merge-open" type="button" class="btn btn-ghost">Fusionner une autre fiche dans celle-ci…</button>
+            <div id="merge-picker" class="merge-picker" hidden>
+              <label class="edit-field"><span>Fiche à intégrer dans celle-ci</span>
+                <input id="merge-q" class="owner-input" type="text" placeholder="Tape une partie de son titre…" autocomplete="off"></label>
+              <ul id="merge-results" class="merge-results"></ul>
+              <div id="merge-confirm" class="merge-confirm" hidden>
+                <p id="merge-confirm-text"></p>
+                <button id="merge-yes" type="button" class="btn">Oui, fusionner</button>
+                <button id="merge-no" type="button" class="btn btn-ghost">Non</button>
+              </div>
+              <button id="merge-cancel" type="button" class="btn btn-ghost">Fermer</button>
+            </div>
+          </div>
+          <div class="edit-danger">
+            <button id="edit-hide" type="button" class="btn btn-danger">Masquer cette fiche…</button>
+            <span id="edit-hide-confirm" class="edit-confirm" hidden>Masquer « <span class="confirm-title"></span> » ?
+              <button id="edit-hide-yes" type="button" class="btn btn-danger">Oui, masquer</button>
+              <button id="edit-hide-no" type="button" class="btn btn-ghost">Non</button></span>
+            <p class="settings-hint">Une fiche masquée disparaît pour tout le monde, mais rien n'est effacé : tu la retrouves dans Réglages → Fiches masquées et fusionnées.</p>
+          </div>
+        </div>
+        <div class="sheet-volumes">
+          <div class="sheet-volumes-label">Tomes</div>
+          <ol id="sheet-volume-list" class="volume-list"></ol>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -333,7 +357,7 @@
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=4"></script>
-<script src="app.js?v=13"></script>
+<script src="config.js?v=2.0"></script>
+<script src="app.js?v=2.0"></script>
 </body>
 </html>

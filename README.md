@@ -2,6 +2,8 @@
 
 Catalogue personnel de bandes dessinées de Christophe (**1047 séries, 977 one-shots, 8330 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
 
+> **Version actuellement livrée : 2.0 du 24/10/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
+>
 > **Mode d'emploi** : ce README est la documentation **technique** du projet. Le mode d'emploi **du propriétaire** est ailleurs : dans l'appli (Réglages → Aide, visible en mode propriétaire seulement) et en PDF (`Mode_emploi_proprietaire.pdf`). Voir la section « Aide et mode d'emploi ».
 >
 > **À faire vivre** : ce fichier doit être mis à jour à chaque changement fonctionnel, visuel ou technique. Il sert de mémoire au propriétaire du projet et de point de reprise rapide pour Claude/Codex lors d'une prochaine session.
@@ -194,7 +196,9 @@ Toutes ces images sont générées depuis un seul visuel maître 1024×1024 (scr
 
 ## Cache navigateur — convention de version
 
-`index.html` charge `themes.js`, `style.css`, `config.js` et `app.js` avec un suffixe `?v=N` (ex: `app.js?v=2`). **À chaque modification de l'un de ces fichiers, il faut incrémenter son `?v=` dans `index.html`**, sinon certains navigateurs continuent de servir l'ancienne version en cache après un simple rechargement (vécu : un `app.js` mis à jour restait invisible malgré plusieurs rechargements, jusqu'à un vidage de cache complet). `data/catalog.json` n'a pas ce problème : il est chargé via `fetch(..., { cache: "no-store" })` dans `app.js`, donc toujours à jour sans rien à incrémenter.
+Depuis la version 2.0, **un seul numéro** : la version de l'appli (`APP_VERSION` dans `app.js`). `index.html` charge `themes.js`, `style.css`, `config.js` et `app.js` avec ce même suffixe (`?v=2.0`). À chaque livraison, le numéro change partout à la fois, ce qui oblige les navigateurs, Safari iPhone compris, à reprendre les nouveaux fichiers plutôt que leur copie en cache (vécu : un `app.js` mis à jour restait invisible malgré plusieurs rechargements, jusqu'à un vidage de cache complet). Règle détaillée : section « Versions des livraisons ». `data/catalog.json` n'a pas ce problème : il est chargé via `fetch(..., { cache: "no-store" })` dans `app.js`, donc toujours à jour sans rien à incrémenter, et **une livraison qui ne touche que les données** (catalogue, couvertures, scripts SQL) **ne change pas le numéro**.
+
+Avant la 2.0, chaque fichier avait son propre compteur (`app.js?v=13`, `style.css?v=13`, `config.js?v=4`, `themes.js?v=1`) : ces anciens numéros apparaissent encore dans l'historique.
 
 ## Pipeline de génération des données
 
@@ -266,7 +270,13 @@ L'index de recherche est calculé une seule fois, au chargement du catalogue. La
 
 ## Thèmes et réglages
 
-La roue crantée, en haut à droite, ouvre le panneau **Réglages**. Il contient le choix du thème et le **mode propriétaire** (section suivante). Les 10 thèmes : *Kiosque BD* (défaut, l'original), *Atelier noir*, *Bibliothèque*, *Fiche d'archive*, *Ligne claire*, *Manga*, *Comics US*, *Western*, *Néon SF*, *Pastel jeunesse*.
+La roue crantée, en haut à droite, ouvre la **page Réglages** (adresse `#/reglages`). C'est une vraie page, plus une fenêtre par-dessus la grille, sur le modèle de l'appli ebooks de Christophe : « ← Retour à la bibliothèque » en haut (le bouton retour du téléphone marche aussi), recherche et filtres masqués tant qu'on n'est pas sur la grille, et on retrouve la grille à l'endroit où on l'avait quittée. La page contient le choix du thème, le **mode propriétaire** (section suivante) et, en mode propriétaire, *Doublons probables*, *Fiches masquées et fusionnées* et l'*Aide*. *Doublons probables* ouvre à son tour une page (`#/doublons`, « ← Retour aux réglages » ; un visiteur qui tape cette adresse est renvoyé aux Réglages).
+
+**Sections pliables.** Chaque section se plie et se déplie d'un clic sur son titre (chevron à droite, cible tactile de 44 px), et « Tout déplier · Tout replier » en haut agit sur toutes. Ce qui est replié est **mémorisé sur l'appareil** (`localStorage`, clé `bd_reglages_replies_v1`) : la page se rouvre telle qu'on l'a laissée, y compris après un changement de thème ou un déverrouillage. Tout est déplié au premier affichage. Code : `setBlockOpen()` et le câblage qui suit dans `app.js` ; routage : `route()` (événement `hashchange`).
+
+**Numéro de version.** Tout en bas de la page, visible par tous : « Ma Bibliothèque BD — version 2.0 du 24/10/2026 ». Il permet de vérifier d'un coup d'œil qu'un appareil affiche bien la dernière publication.
+
+Les 10 thèmes : *Kiosque BD* (défaut, l'original), *Atelier noir*, *Bibliothèque*, *Fiche d'archive*, *Ligne claire*, *Manga*, *Comics US*, *Western*, *Néon SF*, *Pastel jeunesse*.
 
 Fonctionnement :
 - `style.css` ne contient plus aucune couleur en dur. Tout passe par une quarantaine de variables (`--bg`, `--accent`, `--line`, `--bw-l`, `--sh-card`, `--font-display`…) définies dans `:root` pour le thème par défaut, puis redéfinies dans un bloc `[data-theme="…"]` par thème. Un thème change aussi les épaisseurs de trait, les ombres, les arrondis et les polices, pas seulement les couleurs. **Pour ajouter un thème** : un bloc dans `style.css` et une ligne dans `themes.js`.
@@ -404,7 +414,28 @@ Ou plus simple : pousser directement sur GitHub Pages (qui sert en https, aucun 
 4. Site en ligne à `https://<pseudo-github>.github.io/ma-bibliotheque-bd/` après 1-2 minutes.
 5. Le lien n'est indexé nulle part mais reste techniquement accessible à qui aurait l'URL exacte (pas de mot de passe sans offre GitHub payante).
 
+## Versions des livraisons
+
+**Règle (à appliquer à chaque livraison de l'application, par Claude ou une autre IA) :**
+1. Augmenter `APP_VERSION` dans `app.js` (et `APP_VERSION_DATE` = date du jour, format `AAAA-MM-JJ`) :
+   - `+0.1` pour une livraison ordinaire (correctif, retouche, petite fonction) : 2.0 → 2.1 → 2.2…
+   - `+1.0` pour une refonte (nouvel écran, changement de structure) : 2.9 → 3.0.
+2. Reporter **le même numéro** dans `index.html`, sur les quatre liens `themes.js?v=…`, `style.css?v=…`, `config.js?v=…` et `app.js?v=…`.
+3. Ajouter une ligne au tableau ci-dessous et mettre à jour la ligne « Version actuellement livrée » en tête de ce fichier.
+4. Livrer ensemble `index.html` et `app.js` (le numéro est dans les deux), plus les autres fichiers modifiés.
+5. Après dépôt sur le PC de Christophe, relire les fichiers sur le PC et comparer leur empreinte md5 à la version testée (un envoi a déjà écrit une ancienne version sans signaler d'erreur).
+
+Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, scripts SQL) ne change pas le numéro.
+
+| Version | Date | Contenu |
+|---|---|---|
+| 2.0 | 24/10/2026 | Premier numéro de version (2.0 plutôt que 1.0, choix de Christophe, l'appli ayant déjà eu de nombreuses livraisons). Réglages et Doublons probables deviennent de vraies pages (`#/reglages`, `#/doublons`) ; sections pliables avec mémoire sur l'appareil et « Tout déplier · Tout replier » ; numéro de version en bas des Réglages ; un seul `?v=` pour les quatre fichiers. Aide et PDF complétés. |
+
+Les livraisons antérieures n'étaient pas numérotées ; leur détail est dans l'historique ci-dessous.
+
 ## Historique des décisions notables
+
+- **Version 2.0 — Réglages en page, sections pliables, numéro de version** (24 octobre 2026) : demande de Christophe, sur le modèle de son appli ebooks (`deepblue67/ma-bibliotheque`, §4.30 de son README). Les deux fenêtres (Réglages, Doublons probables) sont remplacées par des pages routées par l'adresse. Vérifié par une nouvelle suite Playwright, `test6_reglages.js` : 47 vérifications (sections visibles selon visiteur/propriétaire, repli et mémoire après rechargement, Tout déplier/replier, retour par le lien, par le bouton du navigateur et par Échap, retour à la même position dans la grille, `#/doublons` refusé au visiteur, déverrouillage depuis la page, action sur la page Doublons sans perdre la position, fiche ouverte refermée quand on change de page, cibles tactiles de 44 px et aucun débordement sur iPhone, aucune erreur JavaScript). Les suites des lots 3 et 4 repassent à l'identique.
 
 - **Croix d'effacement** dans les champs Titre et Auteur (24 octobre 2026) : une petite croix apparaît dès qu'un champ contient du texte et le vide d'un clic (remet le filtre à zéro et redonne le focus au champ). `app.js?v=13`, `style.css?v=13` (croix dimensionnée pour le tactile iPhone/iPad).
 - **2ᵉ mise à jour delta + 2ᵉ lot de one-shots** (24 octobre 2026) : **44 nouvelles séries**, **61 séries enrichies** (nouveaux tomes dans des dossiers déjà présents) et **9 nouveaux one-shots** de `BD Unique`. Catalogue : 1971 → **2024 entrées** (1047 séries + 977 one-shots), 8101 → **8330 albums**. 229 couvertures extraites (dossier `volume_covers_delta_24oct/`, à envoyer via `uploader.html`). `app.js?v=12`.

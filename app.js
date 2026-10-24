@@ -9,6 +9,12 @@
     "Jeunesse", "Policier / Thriller", "Science-fiction", "Super-héros", "Western"
   ];
 
+  // Version de la livraison — à augmenter à CHAQUE livraison (+0.1 pour une livraison
+  // ordinaire, +1.0 pour une refonte), avec le même numéro dans les quatre ?v= de
+  // index.html et une ligne dans l'historique « Versions » du README.
+  var APP_VERSION = "2.0";
+  var APP_VERSION_DATE = "2026-10-24";
+
   // ---------- mode propriétaire ----------
   // Garde-fou, pas une serrure : sans le code, les statuts (lu, en cours, favoris) ne
   // sont ni lus ni affichés, et les commandes qui écrivent dans Supabase n'apparaissent
@@ -235,8 +241,8 @@
     if (state.activeId) {
       if (currentEntry()) refreshSheet(); else closeSheet();
     }
-    if (settingsEls && !settingsEls.overlay.hidden) renderHiddenList();
-    if (dupEls && !dupEls.overlay.hidden) renderDups();
+    if (state.view === "settings") { renderHiddenList(); updateDupButton(); }
+    if (state.view === "dups") renderDups();
   }
 
   // Enregistre une correction (fusionnée avec l'existante). Appliquée tout de suite à
@@ -437,6 +443,8 @@
         state.raw = data.entries;
         applyOverrides();
         renderGrid();
+        if (state.view === "settings") { renderHiddenList(); updateDupButton(); }
+        else if (state.view === "dups") renderDups();
       })
       .catch(function () {
         els.empty.hidden = false;
@@ -721,7 +729,7 @@
     els.zoomImg.removeAttribute("src");
     // le sheet reste ouvert derrière le zoom : ne restaure le scroll que si
     // aucune autre couche modale n'est ouverte.
-    if (els.overlay.hidden && settingsEls.overlay.hidden && dupEls.overlay.hidden) document.body.style.overflow = "";
+    if (els.overlay.hidden) document.body.style.overflow = "";
   }
 
   function renderVolumeList() {
@@ -1094,9 +1102,7 @@
 
   // ---------- réglages ----------
   var settingsEls = {
-    overlay: document.getElementById("settings-overlay"),
     open: document.getElementById("settings-open"),
-    close: document.getElementById("settings-close"),
     grid: document.getElementById("theme-grid"),
   };
 
@@ -1364,13 +1370,9 @@
   }
 
   var dupEls = {
-    overlay: document.getElementById("dups-overlay"),
     body: document.getElementById("dups-body"),
-    close: document.getElementById("dups-close"),
-    open: document.getElementById("dups-open"),
     count: document.getElementById("dups-count"),
   };
-  dupEls.sheet = dupEls.overlay ? dupEls.overlay.querySelector(".sheet") : null;
 
   function dupCount(d) { return d.entries.length + d.tomes.length + d.oneshots.length; }
   function updateDupButton() {
@@ -1427,12 +1429,12 @@
   function renderDups() {
     if (!IS_OWNER || !dupEls.body) return;
     var d = computeDups();
-    var keepScroll = dupEls.sheet.scrollTop;
+    var keepScroll = window.scrollY;
     dupEls.body.innerHTML = "";
-    dupEls.body.appendChild(el("h2", "sheet-title", "Doublons probables"));
+    dupEls.body.appendChild(el("h2", "page-title", "Doublons probables"));
     dupEls.body.appendChild(el("p", "settings-hint",
       "Suggestions calculées automatiquement : à toi de trancher. Touche une couverture pour l'agrandir. " +
-      "Rien n'est effacé : tout se défait depuis la fiche ou depuis Réglages → Fiches masquées."));
+      "Rien n'est effacé : tout se défait depuis la fiche ou depuis Réglages → Fiches masquées et fusionnées."));
 
     dupEls.body.appendChild(dupSection("Fiches qui se ressemblent",
       "« Fusionner ici » ajoute les tomes de l'autre fiche à la fin de celle-ci, et l'autre disparaît de la grille. Entre deux one-shots, « Garder celle-ci » masque l'autre.",
@@ -1521,53 +1523,109 @@
         var foot = el("div", "dup-foot"); foot.appendChild(notDupButton(it.key)); box.appendChild(foot);
         return box;
       }));
-    dupEls.sheet.scrollTop = keepScroll;
+    if (state.view === "dups") window.scrollTo(0, keepScroll);
     if (dupEls.count) dupEls.count.textContent = dupCount(d) ? dupCount(d) + " à examiner" : "rien à examiner";
   }
 
-  function openDups() {
-    if (!IS_OWNER) return;
-    closeSettings();
-    dupEls.sheet.scrollTop = 0;
-    renderDups();
-    dupEls.overlay.hidden = false;
-    document.body.style.overflow = "hidden";
-  }
-  function closeDups() {
-    dupEls.overlay.hidden = true;
-    if (els.overlay.hidden && settingsEls.overlay.hidden) document.body.style.overflow = "";
-  }
-  if (dupEls.overlay) {
-    dupEls.open.addEventListener("click", openDups);
-    dupEls.close.addEventListener("click", closeDups);
-    dupEls.overlay.addEventListener("click", function (e) { if (e.target === dupEls.overlay) closeDups(); });
+  // =====================================================================
+  // PAGES (routage par l'adresse) : #/ = bibliothèque, #/reglages = réglages,
+  // #/doublons = doublons probables (propriétaire). De vraies pages plutôt que des
+  // fenêtres : le bouton retour du téléphone fonctionne, et on retrouve chaque page à
+  // l'endroit où on l'avait quittée (dans la grille notamment, avec ~2000 vignettes).
+  // =====================================================================
+  var views = {
+    home: document.getElementById("home-view"),
+    settings: document.getElementById("settings-page"),
+    dups: document.getElementById("dups-page"),
+  };
+  var viewScroll = {};
+  state.view = "home";
+
+  function viewFromHash() {
+    var h = location.hash || "#/";
+    if (h === "#/reglages") return "settings";
+    if (h === "#/doublons") {
+      if (IS_OWNER) return "dups";
+      try { history.replaceState(null, "", "#/reglages"); } catch (e) {}
+      return "settings";
+    }
+    return "home";
   }
 
-  function openSettings() {
+  function renderSettingsPage() {
     if (window.BD_THEMES) window.BD_THEMES.loadAllFonts();
     renderThemeGrid();
     renderOwnerPanel();
     renderHiddenList();
     updateDupButton();
-    settingsEls.overlay.hidden = false;
-    document.body.style.overflow = "hidden";
   }
-  function closeSettings() {
-    settingsEls.overlay.hidden = true;
-    if (els.overlay.hidden) document.body.style.overflow = "";
+
+  function route() {
+    var v = viewFromHash(), prev = state.view;
+    viewScroll[prev] = window.scrollY;
+    if (v !== "home") {
+      if (!els.zoomOverlay.hidden) closeZoom();
+      if (state.activeId) closeSheet();
+    }
+    state.view = v;
+    Object.keys(views).forEach(function (k) { if (views[k]) views[k].hidden = k !== v; });
+    document.documentElement.classList.toggle("view-page", v !== "home");
+    if (v === "settings") renderSettingsPage();
+    else if (v === "dups") renderDups();
+    window.scrollTo(0, viewScroll[v] || 0);
   }
-  settingsEls.open.addEventListener("click", openSettings);
-  settingsEls.close.addEventListener("click", closeSettings);
-  settingsEls.overlay.addEventListener("click", function (e) { if (e.target === settingsEls.overlay) closeSettings(); });
+  window.addEventListener("hashchange", route);
+  settingsEls.open.addEventListener("click", function () { location.hash = "#/reglages"; });
+
+  // ---------- sections des Réglages repliables ----------
+  // Titre cliquable avec chevron ; ce qui est replié est mémorisé sur l'appareil, la page
+  // se rouvre donc telle qu'on l'a laissée. Tout est déplié au tout premier affichage.
+  var SET_CLOSED_KEY = "bd_reglages_replies_v1";
+  var setClosed = (function () {
+    try { var v = JSON.parse(localStorage.getItem(SET_CLOSED_KEY) || "[]"); return Array.isArray(v) ? v : []; }
+    catch (e) { return []; }
+  })();
+  function saveSetClosed() {
+    try { localStorage.setItem(SET_CLOSED_KEY, JSON.stringify(setClosed)); } catch (e) {}
+  }
+  function setBlockOpen(block, open) {
+    var head = block.querySelector(".set-head"), body = block.querySelector(".set-body");
+    var id = block.getAttribute("data-sec"), i = setClosed.indexOf(id);
+    head.setAttribute("aria-expanded", open ? "true" : "false");
+    body.hidden = !open;
+    block.classList.toggle("is-closed", !open);
+    if (open && i !== -1) setClosed.splice(i, 1);
+    if (!open && i === -1) setClosed.push(id);
+  }
+  var setBlocks = Array.prototype.slice.call(document.querySelectorAll("#settings-page .set-block"));
+  setBlocks.forEach(function (b) {
+    setBlockOpen(b, setClosed.indexOf(b.getAttribute("data-sec")) === -1);
+    b.querySelector(".set-head").addEventListener("click", function () {
+      setBlockOpen(b, this.getAttribute("aria-expanded") !== "true");
+      saveSetClosed();
+    });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll("#settings-page .set-all-btn"), function (btn) {
+    btn.addEventListener("click", function () {
+      var open = btn.getAttribute("data-all") === "open";
+      setBlocks.forEach(function (b) { setBlockOpen(b, open); });
+      saveSetClosed();
+    });
+  });
+
+  // ---------- numéro de version (bas des Réglages, visible par tous) ----------
+  var versionEl = document.getElementById("app-version");
+  if (versionEl) versionEl.textContent = "Ma Bibliothèque BD — version " + APP_VERSION + " du " +
+    APP_VERSION_DATE.split("-").reverse().join("/");
 
   els.sheetClose.addEventListener("click", closeSheet);
   els.overlay.addEventListener("click", function (e) { if (e.target === els.overlay) closeSheet(); });
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
     if (!els.zoomOverlay.hidden) closeZoom();
-    else if (!settingsEls.overlay.hidden) closeSettings();
-    else if (dupEls.overlay && !dupEls.overlay.hidden) closeDups();
-    else closeSheet();
+    else if (state.activeId) closeSheet();
+    else if (state.view === "dups") location.hash = "#/reglages";
+    else if (state.view === "settings") location.hash = "#/";
   });
   els.btnRead.addEventListener("click", toggleAllVolumesRead);
   els.btnFav.addEventListener("click", toggleFavorite);
@@ -1585,6 +1643,7 @@
     state.favorites = loadLocalFavorites();
     state.volumeRead = loadLocalVolumeRead();
   }
+  route();
   loadCatalog();
   initSupabase();
 })();

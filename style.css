@@ -727,9 +727,6 @@ main { max-width: 1400px; margin: 0 auto; padding: 32px 20px 80px; }
    RÉGLAGES
    ===================================================================== */
 
-.settings-sheet { max-width: 760px; }
-.settings-body { padding: 26px 22px 28px; }
-.settings-section { margin-top: 22px; }
 .settings-h {
   font-size: 12px; letter-spacing: .5px; font-weight: 800; text-transform: uppercase;
   color: var(--muted); margin: 0 0 4px;
@@ -805,7 +802,6 @@ main { max-width: 1400px; margin: 0 auto; padding: 32px 20px 80px; }
 .theme-card[aria-pressed="true"] { outline: 3px solid var(--gold); outline-offset: 2px; }
 .theme-card[aria-pressed="true"] .tc-check { display: flex; }
 
-.settings-foot { margin-top: 22px; font-size: 11.5px; color: var(--muted); }
 
 /* =====================================================================
    MODE PROPRIÉTAIRE
@@ -942,7 +938,6 @@ html:not(.is-owner) .owner-only { display: none !important; }
 .merge-confirm p { margin: 0 0 10px; font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.4; }
 
 .dups-count { font-size: 12.5px; font-weight: 700; color: var(--text-soft); align-self: center; }
-.dups-sheet { max-width: 860px; }
 .dup-section { margin-top: 24px; }
 .dup-empty { font-size: 13px; color: var(--muted); margin: 0; }
 .dup-item {
@@ -1008,3 +1003,54 @@ html:not(.is-owner) .owner-only { display: none !important; }
 .field-clear[hidden] { display: none; }
 .field-clear svg { width: 12px; height: 12px; }
 .field-clear:hover, .field-clear:focus-visible { background: var(--text); }
+
+/* =====================================================================
+   PAGES RÉGLAGES ET DOUBLONS (#/reglages, #/doublons)
+   De vraies pages dans le flux, plus des fenêtres par-dessus la grille.
+   ===================================================================== */
+#home-view[hidden], .page[hidden] { display: none; }
+html.view-page .controls { display: none; }      /* recherche et filtres : inutiles hors grille */
+.page { max-width: 880px; margin: 0 auto; }
+.back-link {
+  display: inline-flex; align-items: center; min-height: 44px;
+  font-size: 13.5px; font-weight: 700; color: var(--text-soft); text-decoration: none;
+}
+.back-link:hover, .back-link:focus-visible { color: var(--text); text-decoration: underline; }
+.page-title {
+  font-family: var(--font-display); font-weight: var(--display-weight);
+  letter-spacing: calc(var(--display-tracking) / 2);
+  font-size: var(--sheet-title-size); line-height: 1.1; color: var(--text);
+  margin: 4px 0 6px;
+}
+.set-all { display: flex; gap: 8px; align-items: center; margin: 0 0 14px; color: var(--muted); font-size: 12.5px; }
+.set-all-btn {
+  background: none; border: 0; padding: 0; min-height: 36px; cursor: pointer;
+  color: var(--text-soft); font: 600 12.5px var(--font-body);
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.set-all-btn:hover, .set-all-btn:focus-visible { color: var(--text); }
+.set-block { margin-bottom: 22px; }
+.set-block.is-closed { margin-bottom: 2px; }
+/* titre de section cliquable : libellé, filet, chevron */
+.set-head {
+  width: 100%; min-height: 44px; padding: 0; margin: 0 0 6px;
+  display: flex; align-items: center; gap: 10px;
+  background: none; border: 0; cursor: pointer; text-align: left;
+  font: 800 12px var(--font-body); letter-spacing: .5px; text-transform: uppercase; color: var(--muted);
+  -webkit-tap-highlight-color: transparent;
+}
+.set-block.is-closed .set-head { margin-bottom: 0; }
+.set-head .rule { flex: 1; height: 1px; background: var(--divider-strong); }
+.set-head::after {
+  content: ""; flex: none; width: 8px; height: 8px; margin: 0 4px 0 2px;
+  border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted);
+  transform: rotate(45deg) translate(-2px, -2px); transition: transform .15s ease;
+}
+.set-head[aria-expanded="true"]::after { transform: rotate(-135deg) translate(-2px, -2px); }
+.set-head:hover .t, .set-head:focus-visible .t { color: var(--text); }
+.set-body[hidden] { display: none; }
+.app-version {
+  margin: 30px 0 0; padding-top: 12px; border-top: 1px solid var(--divider-strong);
+  font-size: 11.5px; color: var(--muted);
+}
+a.btn { display: inline-flex; align-items: center; text-decoration: none; }
