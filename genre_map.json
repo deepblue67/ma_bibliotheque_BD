@@ -1044,6 +1044,14 @@
 ],
 "source": "pass3"
 },
+"Aya_Tsu": {
+"confidence": "low",
+"genres": [
+"Fantasy",
+"Aventure"
+],
+"source": "pass3"
+},
 "Aya_de_Yopougon": {
 "confidence": "high",
 "genres": [
@@ -1083,6 +1091,14 @@
 ],
 "source": "pass1_guess"
 },
+"Barbaric": {
+"confidence": "med",
+"genres": [
+"Fantasy",
+"Fantastique / Horreur"
+],
+"source": "pass3"
+},
 "Barbe_rouge": {
 "confidence": "high",
 "genres": [
@@ -1103,6 +1119,13 @@
 "Aventure"
 ],
 "source": "pass1"
+},
+"Basil_Victoria": {
+"confidence": "low",
+"genres": [
+"Aventure"
+],
+"source": "pass3"
 },
 "Basil_Victoria_MANQUE_CDS": {
 "confidence": "high",
@@ -1125,6 +1148,13 @@
 "Super-héros"
 ],
 "source": "oneshot_pass1"
+},
+"Batman_Dark_Patterns": {
+"confidence": "high",
+"genres": [
+"Super-héros"
+],
+"source": "pass3"
 },
 "Beauté_Fatale": {
 "confidence": "low",
@@ -1192,6 +1222,13 @@
 "Aventure"
 ],
 "source": "pass1"
+},
+"Bestia": {
+"confidence": "low",
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass3"
 },
 "Betty_Polo_-_La_grande_évasion": {
 "confidence": "low",
@@ -1309,6 +1346,13 @@
 "Policier / Thriller"
 ],
 "source": "oneshot_pass1"
+},
+"Blackwood": {
+"confidence": "low",
+"genres": [
+"Fantasy"
+],
+"source": "pass3"
 },
 "Blake_et_Mortimer_Hors-série_-_Diabolique": {
 "confidence": "low",
@@ -1658,6 +1702,13 @@
 ],
 "source": "pass2_web"
 },
+"Camp_Coyote": {
+"confidence": "low",
+"genres": [
+"Humour"
+],
+"source": "pass3"
+},
 "Camp_poutine": {
 "confidence": "low",
 "genres": [
@@ -1687,6 +1738,14 @@
 "Super-héros"
 ],
 "source": "oneshot_pass1"
+},
+"Capitaine_vaudou": {
+"confidence": "low",
+"genres": [
+"Aventure",
+"Fantastique / Horreur"
+],
+"source": "pass3"
 },
 "Captifs": {
 "confidence": "low",
@@ -1864,6 +1923,13 @@
 "Biographie"
 ],
 "source": "oneshot_pass1"
+},
+"Charlotte_impératrice": {
+"confidence": "high",
+"genres": [
+"Historique"
+],
+"source": "pass3"
 },
 "Chasseurs_d_Héritiers": {
 "confidence": "high",
@@ -2314,6 +2380,13 @@
 "Documentaire"
 ],
 "source": "oneshot_pass1"
+},
+"Crénom_Baudemaire": {
+"confidence": "high",
+"genres": [
+"Biographie"
+],
+"source": "pass3"
 },
 "Cutshin_Creek": {
 "confidence": "low",
@@ -2811,6 +2884,21 @@
 ],
 "source": "oneshot_pass1"
 },
+"Dune_Maison_Corrino": {
+"confidence": "high",
+"genres": [
+"Science-fiction"
+],
+"source": "pass3"
+},
+"Durandal": {
+"confidence": "med",
+"genres": [
+"Fantasy",
+"Historique"
+],
+"source": "pass3"
+},
 "Durandal_MANQUE_CDS": {
 "confidence": "low",
 "genres": [
@@ -2840,6 +2928,13 @@
 "Fantastique / Horreur"
 ],
 "source": "pass1"
+},
+"Dé_rangée": {
+"confidence": "low",
+"genres": [
+"Humour"
+],
+"source": "pass3"
 },
 "Décolonisations_-_L_histoire_au_présent": {
 "confidence": "high",
@@ -2971,6 +3066,13 @@
 "Historique"
 ],
 "source": "pass1_guess"
+},
+"Elvira_Otto": {
+"confidence": "low",
+"genres": [
+"Jeunesse"
+],
+"source": "pass3"
 },
 "Elya_Les_Brumes_d_Asceltis": {
 "confidence": "low",
@@ -3581,6 +3683,13 @@
 "Drame / Chronique sociale"
 ],
 "source": "oneshot_pass1"
+},
+"Gosse_CDS_a_renommer": {
+"confidence": "low",
+"genres": [
+"Drame / Chronique sociale"
+],
+"source": "pass3"
 },
 "Gosse_et_les_berges": {
 "confidence": "high",
@@ -4213,6 +4322,13 @@
 ],
 "source": "oneshot_pass1"
 },
+"Intercepteurs": {
+"confidence": "med",
+"genres": [
+"Guerre"
+],
+"source": "pass3"
+},
 "Intraitable": {
 "confidence": "high",
 "genres": [
@@ -4316,6 +4432,13 @@
 "Drame / Chronique sociale"
 ],
 "source": "oneshot_pass1"
+},
+"Je_suis_Cathare": {
+"confidence": "med",
+"genres": [
+"Historique"
+],
+"source": "pass3"
 },
 "Je_suis_Cathare_MANQUE_CDS": {
 "confidence": "high",
@@ -5019,6 +5142,13 @@
 "genres": [
 "Aventure",
 "Historique"
+],
+"source": "pass3"
+},
+"L_apogée_des_dragons": {
+"confidence": "med",
+"genres": [
+"Fantasy"
 ],
 "source": "pass3"
 },
@@ -5757,6 +5887,21 @@
 ],
 "source": "oneshot_pass1"
 },
+"La_Mythologie_Viking": {
+"confidence": "med",
+"genres": [
+"Fantasy",
+"Historique"
+],
+"source": "pass3"
+},
+"La_Mécanique": {
+"confidence": "low",
+"genres": [
+"Science-fiction"
+],
+"source": "pass3"
+},
 "La_Nuit_des_lanternes": {
 "confidence": "low",
 "genres": [
@@ -6055,6 +6200,13 @@
 "Drame / Chronique sociale"
 ],
 "source": "pass1"
+},
+"La_forêt_de_Louison": {
+"confidence": "low",
+"genres": [
+"Jeunesse"
+],
+"source": "pass3"
 },
 "La_fragilité_des_hommes": {
 "confidence": "low",
@@ -6534,6 +6686,14 @@
 "Aventure"
 ],
 "source": "pass1"
+},
+"Lancelot": {
+"confidence": "med",
+"genres": [
+"Fantasy",
+"Historique"
+],
+"source": "pass3"
 },
 "Largo_Winch_24-25": {
 "confidence": "high",
@@ -7034,6 +7194,13 @@
 ],
 "source": "oneshot_pass1"
 },
+"Le_Secret_du_Roi": {
+"confidence": "med",
+"genres": [
+"Historique"
+],
+"source": "pass3"
+},
 "Le_Serpent_et_Le_Coyote": {
 "confidence": "high",
 "genres": [
@@ -7414,11 +7581,26 @@
 ],
 "source": "oneshot_pass1"
 },
+"Le_grimoire_d_Elfie": {
+"confidence": "med",
+"genres": [
+"Jeunesse",
+"Fantasy"
+],
+"source": "pass3"
+},
 "Le_grimoire_d_Elfie_MANQUE_CDS": {
 "confidence": "low",
 "genres": [
 "Jeunesse",
 "Fantasy"
+],
+"source": "pass3"
+},
+"Le_génie_de_Beyrouth": {
+"confidence": "low",
+"genres": [
+"Drame / Chronique sociale"
 ],
 "source": "pass3"
 },
@@ -8163,6 +8345,13 @@
 ],
 "source": "pass3"
 },
+"Les_Foot_furieux_MANQUE_LE_28_CDS": {
+"confidence": "high",
+"genres": [
+"Humour"
+],
+"source": "pass3"
+},
 "Les_Fées_noires": {
 "confidence": "low",
 "genres": [
@@ -8626,6 +8815,13 @@
 "genres": [],
 "source": "pass2_web"
 },
+"Les_chemins_d_Avalon": {
+"confidence": "med",
+"genres": [
+"Fantasy"
+],
+"source": "pass3"
+},
 "Les_chemins_de_Malefosse": {
 "confidence": "high",
 "genres": [
@@ -8648,6 +8844,13 @@
 "Fantasy"
 ],
 "source": "oneshot_pass1"
+},
+"Les_chroniques_de_Conan": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass3"
 },
 "Les_chroniques_de_Conan_CDS99": {
 "confidence": "high",
@@ -9191,6 +9394,14 @@
 ],
 "source": "pass1_guess"
 },
+"Les_sortilèges_de_Zora": {
+"confidence": "low",
+"genres": [
+"Jeunesse",
+"Fantasy"
+],
+"source": "pass3"
+},
 "Les_sortilèges_de_Zora_MANQUE_CDS": {
 "confidence": "low",
 "genres": [
@@ -9312,6 +9523,21 @@
 "Drame / Chronique sociale"
 ],
 "source": "oneshot_pass1"
+},
+"Liberté": {
+"confidence": "med",
+"genres": [
+"Historique"
+],
+"source": "pass3"
+},
+"Libre_à_jamais": {
+"confidence": "med",
+"genres": [
+"Science-fiction",
+"Guerre"
+],
+"source": "pass3"
 },
 "Libres_d_obéir": {
 "confidence": "high",
@@ -9781,6 +10007,13 @@
 ],
 "source": "oneshot_pass1"
 },
+"Mages": {
+"confidence": "med",
+"genres": [
+"Fantasy"
+],
+"source": "pass3"
+},
 "Magic_7": {
 "confidence": "low",
 "genres": [
@@ -10021,6 +10254,13 @@
 ],
 "source": "pass2_web"
 },
+"Melody": {
+"confidence": "low",
+"genres": [
+"Jeunesse"
+],
+"source": "pass3"
+},
 "Memphis": {
 "confidence": "low",
 "genres": [
@@ -10121,6 +10361,14 @@
 "confidence": "low",
 "genres": [],
 "source": "unresolved"
+},
+"Mi_mouche": {
+"confidence": "low",
+"genres": [
+"Jeunesse",
+"Drame / Chronique sociale"
+],
+"source": "pass3"
 },
 "Michel_Vaillant": {
 "confidence": "high",
@@ -10933,6 +11181,13 @@
 ],
 "source": "oneshot_pass1"
 },
+"Once_Upon_a_Time_at_the_End_of_the_World": {
+"confidence": "med",
+"genres": [
+"Science-fiction"
+],
+"source": "pass3"
+},
 "Oncle_Vania": {
 "confidence": "high",
 "genres": [
@@ -10991,6 +11246,13 @@
 "Science-fiction"
 ],
 "source": "pass1"
+},
+"Orcs_Gobelins": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass3"
 },
 "Orgies_barbares": {
 "confidence": "low",
@@ -11184,6 +11446,13 @@
 "Drame / Chronique sociale"
 ],
 "source": "oneshot_pass1"
+},
+"Pax_Elfica": {
+"confidence": "med",
+"genres": [
+"Fantasy"
+],
+"source": "pass3"
 },
 "Pensionnaires": {
 "confidence": "low",
@@ -11950,6 +12219,13 @@
 ],
 "source": "oneshot_pass1"
 },
+"Réfugiés_climatiques_castagnettes": {
+"confidence": "med",
+"genres": [
+"Humour"
+],
+"source": "pass3"
+},
 "Résilience": {
 "confidence": "low",
 "genres": [
@@ -12100,6 +12376,14 @@
 "Drame / Chronique sociale"
 ],
 "source": "pass1"
+},
+"Samurai_Legendes": {
+"confidence": "med",
+"genres": [
+"Historique",
+"Aventure"
+],
+"source": "pass3"
 },
 "Sanctuaire": {
 "confidence": "high",
@@ -12263,6 +12547,13 @@
 "Aventure"
 ],
 "source": "oneshot_pass1"
+},
+"Servitude": {
+"confidence": "med",
+"genres": [
+"Fantasy"
+],
+"source": "pass3"
 },
 "Servitudes": {
 "confidence": "high",
@@ -12894,6 +13185,13 @@
 ],
 "source": "oneshot_pass1"
 },
+"Tenebreuse": {
+"confidence": "high",
+"genres": [
+"Fantasy"
+],
+"source": "pass3"
+},
 "Terminus": {
 "confidence": "low",
 "genres": [
@@ -13190,6 +13488,13 @@
 "Jeunesse"
 ],
 "source": "oneshot_pass1"
+},
+"Totem": {
+"confidence": "low",
+"genres": [
+"Fantastique / Horreur"
+],
+"source": "pass3"
 },
 "Totem_MANQUE_CDS": {
 "confidence": "high",
@@ -13910,6 +14215,13 @@
 ],
 "source": "oneshot_pass1"
 },
+"Verte": {
+"confidence": "med",
+"genres": [
+"Jeunesse"
+],
+"source": "pass3"
+},
 "Vertigéo": {
 "confidence": "low",
 "genres": [
@@ -14258,6 +14570,13 @@
 "Super-héros"
 ],
 "source": "oneshot_pass1"
+},
+"Wonder_Woman_Hors_la_Loi": {
+"confidence": "high",
+"genres": [
+"Super-héros"
+],
+"source": "pass3"
 },
 "Wonderball": {
 "confidence": "low",

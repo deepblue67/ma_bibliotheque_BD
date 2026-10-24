@@ -1,6 +1,6 @@
 # Ma Bibliothèque BD
 
-Catalogue personnel de bandes dessinées de Christophe (**1003 séries, 968 one-shots, 8101 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
+Catalogue personnel de bandes dessinées de Christophe (**1047 séries, 977 one-shots, 8330 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
 
 > **Mode d'emploi** : ce README est la documentation **technique** du projet. Le mode d'emploi **du propriétaire** est ailleurs : dans l'appli (Réglages → Aide, visible en mode propriétaire seulement) et en PDF (`Mode_emploi_proprietaire.pdf`). Voir la section « Aide et mode d'emploi ».
 >
@@ -47,7 +47,7 @@ ma-bibliotheque-bd/
 ├── genre_taxonomy.json    # liste fixe des genres, informatif (la vraie source pour l'appli
 │                        #   est le tableau GENRES dans app.js)
 ├── data/
-│   └── catalog.json     # catalogue généré (1971 entrées : 1003 séries + 968 one-shots)
+│   └── catalog.json     # catalogue généré (2024 entrées : 1047 séries + 977 one-shots)
 ├── pending_covers.json   # FICHIER DE TRAVAIL d'une mise à jour "delta" : liste des tomes
 │                        #   dont la couverture reste à extraire (voir "Mise à jour du
 │                        #   catalogue en mode delta"). Peut être supprimé une fois
@@ -204,7 +204,7 @@ Les BD sources vivent dans `D:\Christophe\Mes BD` (dossier = un titre, fichiers 
 
 Étapes (dans l'ordre, chaque script lit la sortie du précédent) :
 
-1. **`scan.py`** — parcourt `Mes BD`, exclut `1 2 3 A CLASSER`, `1 2 3 A TRIER` et tout dossier `Nouveau dossier*`. Pour chaque dossier-titre, liste les fichiers volumes directs + les sous-dossiers contenant eux-mêmes des volumes (sous-séries potentielles). → `scan.json`
+1. **`scan.py`** (ou `scan_delta.py` pour un delta) — parcourt `Mes BD`, exclut `1 2 3 A CLASSER`, `1 2 3 A TRIER`, `BD Unique` (traité à part en one-shots), `BD Serie à completer` (dossiers non finalisés, ignorés) et tout dossier `Nouveau dossier*`. Pour chaque dossier-titre, liste les fichiers volumes directs + les sous-dossiers contenant eux-mêmes des volumes (sous-séries potentielles). → `scan.json`
 2. **`extract_covers.py`** — extrait la 1ère page du 1er tome de chaque titre comme couverture JPEG (PyMuPDF pour PDF, zipfile+Pillow pour cbz). Les `.cbr` échouent (pas d'`unrar` disponible sur la VM) — géré au cas par cas. Tourne par lots de ~150s (la VM locale n'autorise pas de process en arrière-plan persistant entre deux appels `device_bash`). → `covers_manifest.json`, `covers/*.jpg`
 3. **`extract_meta.py`** — lit le champ `Author` des métadonnées PDF de chaque 1er tome (rapide, pas de rendu de page). → `meta_manifest.json`
 4. Classification heuristique (`looks_plausible`) pour ne garder que les auteurs PDF qui ressemblent à de vrais noms (filtre les tags de scan type "CDS", noms de sites, etc.) → `authors_from_metadata.json` (761/819 résolus automatiquement au premier passage).
@@ -405,6 +405,15 @@ Ou plus simple : pousser directement sur GitHub Pages (qui sert en https, aucun 
 5. Le lien n'est indexé nulle part mais reste techniquement accessible à qui aurait l'URL exacte (pas de mot de passe sans offre GitHub payante).
 
 ## Historique des décisions notables
+
+- **2ᵉ mise à jour delta + 2ᵉ lot de one-shots** (24 octobre 2026) : **44 nouvelles séries**, **61 séries enrichies** (nouveaux tomes dans des dossiers déjà présents) et **9 nouveaux one-shots** de `BD Unique`. Catalogue : 1971 → **2024 entrées** (1047 séries + 977 one-shots), 8101 → **8330 albums**. 229 couvertures extraites (dossier `volume_covers_delta_24oct/`, à envoyer via `uploader.html`). `app.js?v=12`.
+  - **Règle d'or confirmée : insertion *append-only*.** Les tomes déjà présents ne sont **jamais** réordonnés ; les nouveaux fichiers sont ajoutés **à la fin** de la série. C'est ce qui garantit que les coches de lecture et les corrections (indexées par position dans `bd_volume_status` / `bd_overrides`) ne bougent pas, sans avoir à migrer quoi que ce soit. Vérifié : 0 tome existant déplacé, 0 couverture existante modifiée, 0 id perdu. Contrepartie : les nouveaux tomes ne sont pas intercalés dans l'ordre « trié » — ils apparaissent après les anciens.
+  - **One-shot homonyme protégé** : un dossier de `Mes BD` est toujours rattaché à une **série**, jamais à un one-shot de même titre (sinon le dossier *Angor* (Gaudin) enrichissait par erreur le one-shot *Angor* (Thilliez)). Mêmes garde-fous pour *Kaya*.
+  - **Renommages (accent perdu)** : `C'est ou le plus loin d'ici`, `La foret du temps`, `Les ages perdus` sont les mêmes séries qu'au catalogue (accent retiré du dossier) → rattachées à l'entrée existante (id et coches conservés), titre accentué gardé.
+  - **Doublons laissés à l'arbitrage dans l'appli** (choix de Christophe) : les variantes « MANQUE CDS » / « CDS » / « a renommer » et `Servitude`/`Servitudes` sont importées telles quelles. Pour qu'elles remontent dans l'écran *Doublons probables*, `dupBase` retire désormais les marqueurs « MANQUE … », « CDS »/« CDS99 » et « a renommer » (8 paires remontent en correspondance exacte, `Servitude`/`Servitudes` par similarité).
+  - **Dossiers spéciaux inchangés** : les 21 séries à sous-dossiers (Tintin, Astérix, Les mondes de Leo…) ne sont pas re-scannées ; leurs écarts disque/catalogue sont des éditions en double déjà écartées à la main, pas des nouveautés.
+  - **1 doublon one-shot écarté** : *Le Manager Alchimiste* re-téléchargé sous un autre nom de fichier (`fr.downmagaz.net`) — non réimporté.
+
 
 - Choix initial entre Firebase et Supabase pour la synchro : **Supabase**, car Christophe l'utilise déjà.
 - Choix du mode de publication GitHub : Christophe pousse lui-même (pas d'accès token donné à Claude).

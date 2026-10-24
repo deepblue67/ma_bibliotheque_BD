@@ -1250,8 +1250,12 @@
   var AUTH_SKIP = { collectif: 1, "inconnu e": 1, inconnu: 1, anonyme: 1 };
   function dnorm(s) { return normalize((s || "").replace(/['’]/g, " ")); }
   function dupBase(title) {
-    return dnorm((title || "").replace(/\([^)]*\)|\[[^\]]*\]/g, " "))
-      .split(" ").filter(function (w) { return w && !DUP_STOP[w]; }).join(" ");
+    var s = dnorm((title || "").replace(/\([^)]*\)|\[[^\]]*\]/g, " "));
+    // marqueurs de rangement de Christophe : « MANQUE … », « CDS »/« CDS99 », « a renommer ».
+    // On les retire pour qu'une version « complète » et sa version « MANQUE CDS » se
+    // ressemblent et remontent ensemble dans les doublons probables.
+    s = s.replace(/\bmanque\b.*$/, " ").replace(/\bcds\d*\b/g, " ").replace(/\ba renommer\b/g, " ");
+    return s.split(" ").filter(function (w) { return w && !DUP_STOP[w]; }).join(" ");
   }
   function authorSet(a) {
     var set = {};
