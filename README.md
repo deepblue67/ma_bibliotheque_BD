@@ -1,6 +1,6 @@
 # Ma Bibliothèque BD
 
-Catalogue personnel de bandes dessinées de Christophe (**1047 séries, 977 one-shots, 8330 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
+Catalogue personnel de bandes dessinées de Christophe (**1061 séries, 986 one-shots, 8407 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
 
 > **Version actuellement livrée : 2.4 du 24/10/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
 >
@@ -50,7 +50,7 @@ ma-bibliotheque-bd/
 ├── genre_taxonomy.json    # liste fixe des genres, informatif (la vraie source pour l'appli
 │                        #   est le tableau GENRES dans app.js)
 ├── data/
-│   └── catalog.json     # catalogue généré (2024 entrées : 1047 séries + 977 one-shots)
+│   └── catalog.json     # catalogue généré (2047 entrées : 1061 séries + 986 one-shots)
 ├── pending_covers.json   # FICHIER DE TRAVAIL d'une mise à jour "delta" : liste des tomes
 │                        #   dont la couverture reste à extraire (voir "Mise à jour du
 │                        #   catalogue en mode delta"). Peut être supprimé une fois
@@ -63,6 +63,11 @@ ma-bibliotheque-bd/
 │                        #   — GITIGNORÉ, ne sert qu'à alimenter uploader.html
 ├── covers/               # ancien dossier (couverture par TITRE) — obsolète, gardé
 │                        #   gitignoré, peut être supprimé
+├── outils_delta/         # scripts de la mise à jour « delta » (voir « Mise à jour du
+│                        #   catalogue en mode delta ») + leur état (etat/) — GITIGNORÉ,
+│                        #   reste sur le PC
+├── volume_covers_delta_<date>/ # couvertures d'un delta, à envoyer via uploader.html
+│                        #   — GITIGNORÉ, supprimable une fois envoyé
 ├── uploader.html         # outil pour envoyer les couvertures vers Supabase Storage
 │                        #   (sélectionner "volume_covers") — GITIGNORÉ, jamais publié
 └── .gitignore            # exclut covers/, volume_covers*/, uploader.html et les
@@ -225,6 +230,18 @@ Les BD sources vivent dans `D:\Christophe\Mes BD` (dossier = un titre, fichiers 
 **Pour ajouter de nouvelles BD à l'avenir** : relancer le pipeline à partir de `scan.py` (le plus fiable), puis `extract_volume_covers.py` et `build_public_catalog_v2.py`. Envoyer les nouveaux fichiers de `volume_covers/` sur le bucket Supabase `covers` via `uploader.html` (`upsert:true`, donc rejouer l'envoi complet ne casse rien). Penser aussi à classifier le genre des nouveaux titres dans `genre_map.json` (sinon ils sortent avec `"genre": []`, donc invisibles au filtre genre) — le plus simple est de demander à Claude de le faire lors de la session qui traite l'ajout. Rien d'autre à changer : `app.js` lit `data/catalog.json` dynamiquement.
 
 ### Mise à jour du catalogue en mode « delta » (sans remonter tout le pipeline)
+
+**Depuis le 27 octobre 2026, la méthode est rangée dans `outils_delta/`** (dossier du site, gitignoré) : six scripts numérotés que Claude lance sur la VM, sans transférer de fichiers vers le cloud. Christophe n'a qu'à dire à Claude « fais le delta BD ». Le mode d'emploi des scripts est dans `outils_delta/LISEZMOI.md` :
+
+1. `1_scan.py` : inventaire de Mes BD et des fichiers nouveaux de `BD Unique` ;
+2. `2_analyse.py` : rapport des nouveautés, sans rien écrire ;
+3. `3_meta.py 150` : auteurs lus dans les PDF et gabarit `etat/a_completer.json` ;
+4. Claude choisit les genres (deux au plus, liste fermée) et vérifie titres et auteurs des one-shots dans `etat/research.json` ;
+5. `4_fusion.py` : fusion *append-only* dans `etat/build/` ;
+6. `5_couvertures.py 95` : couvertures PDF, CBZ ou CBR, à relancer jusqu'à « reste 0 » ;
+7. `6_finir.py` : contrôles et planche contact des couvertures ; puis `6_finir.py --installer`, qui sauvegarde l'ancien catalogue dans `etat/sauvegardes/<date>/`, installe le nouveau et copie les couvertures dans `volume_covers_delta_<date>/`.
+
+`etat/oneshots_importes.json` liste les fichiers de `BD Unique` déjà traités, importés ou écartés : ce sont eux qui ne reviendront pas comme nouveautés. Les explications qui suivent décrivent les règles que ces scripts appliquent.
 
 La mise à jour d'octobre 2026 a dû se faire autrement, parce que les montages `~/mnt/*` étaient cassés (voir l'avertissement ci-dessus) : impossible de lancer `scan.py`. La méthode retenue est plus sûre que de tout régénérer et vaut d'être réutilisée, même quand le pipeline complet fonctionne, car **elle ne touche jamais aux tomes déjà catalogués** :
 
@@ -463,6 +480,12 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 Les livraisons antérieures n'étaient pas numérotées ; leur détail est dans l'historique ci-dessous.
 
 ## Historique des décisions notables
+
+- **3ᵉ mise à jour delta** (27 octobre 2026) : **14 nouvelles séries**, **13 séries enrichies** (37 tomes ajoutés à la fin, dont 7 pour *Triple galop* et 6 pour *W.I.T.C.H*) et **9 nouveaux one-shots** de `BD Unique`. Catalogue : 2024 → **2047 entrées** (1061 séries + 986 one-shots), 8330 → **8407 albums**. 77 couvertures extraites (dossier `volume_covers_delta_27oct/`, à envoyer via `uploader.html`). Pas de changement de version de l'appli : la livraison ne touche que les données.
+  - **Dossier renommé parce que son compteur a changé** : `Les tuniques bleues (69-69)` est devenu `(70-70)`. Le script le reconnaît désormais tout seul : même fiche, même id, coches de lecture conservées, tome 70 ajouté à la fin, titre de base mis à jour.
+  - **Nom de fichier en NFD** : le tome 4 des *Suites vénitiennes* (« Gorée ») est écrit sur le disque avec un accent décomposé ; l'extraction des couvertures retrouve maintenant le nom brut.
+  - **Genres** choisis par Claude à partir des auteurs et des couvertures, confiance « low » pour *Du pied gauche*, *Graine de Vaurien* et *L'Élu*. Les auteurs viennent tous des métadonnées PDF.
+  - **Procédure automatisée** : choix de Christophe d'être autonome en gardant Claude (« option 3 ») ; les scripts sont rangés dans `outils_delta/` et la procédure est enregistrée pour être relancée d'une phrase. Le nouveau jeu de scripts a rejoué ce delta à l'identique (catalogue octet pour octet égal à celui du calcul de contrôle). Suites barre alphabétique (27), vignettes (16) et recherche (19) repassées sur le nouveau catalogue.
 
 - **Version 2.4 — recherche sur ce qui est affiché** (24 octobre 2026) : après avoir renommé *Louise Beauvoir_CDS_* en *Louise Beauvoir* dans l'appli, Christophe la retrouvait encore en cherchant « CDS ». C'était voulu : la recherche répondait aussi au titre d'origine. Mais ce titre n'est visible nulle part, et Christophe cherche « CDS » justement pour repérer ce qui reste à renommer. Choix de Christophe : limiter la recherche à ce qui est affiché. Au passage, un one-shot renommé gardait l'ancien nom sur son unique tome, visible dans la fiche : il prend désormais le nouveau titre. Nouvelle suite `test9_search.js` (19 vérifications) ; les suites Réglages (54), barre alphabétique (27), vignettes (16), lots 3 et 4 et croix repassent à l'identique.
 - **Version 2.3 — vignettes sans couverture** (24 octobre 2026) : Christophe signale des vignettes vides dans la grille (*Jason et la Toison d'Or*, *J'ai arrêté Otto Abetz*, *Je suis au-delà de la mort!*…) alors que les couvertures s'affichent dans la fiche. Vérifié : le catalogue est correct (la vignette pointe sur la couverture du tome 1) et les fichiers répondent bien sur Supabase (200). Correction décrite dans la section « Chargement des vignettes ». Les suites barre alphabétique (27), Réglages (54), lots 3 et 4 et croix repassent à l'identique.
