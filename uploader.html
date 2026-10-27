@@ -2,63 +2,138 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<title>Envoi des couvertures vers Supabase — usage unique</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Envoi des couvertures — Ma Bibliothèque BD</title>
+<!--
+  Page d'envoi des couvertures vers Supabase Storage (bucket "covers"), réservée au
+  propriétaire. On l'ouvre depuis Réglages → Envoi des couvertures.
+
+  SÉCURITÉ. Ce fichier est publié sur GitHub Pages mais ne contient AUCUN secret : la clé
+  service_role est collée à la main à chaque envoi, n'est jamais enregistrée (ni dans le
+  navigateur, ni ailleurs) et ne quitte la page que vers Supabase. La vérification du mode
+  propriétaire ci-dessous ne fait qu'éviter qu'un visiteur tombe sur un formulaire inutile :
+  la vraie protection, c'est la clé, que personne d'autre n'a.
+  La bibliothèque supabase-js est figée (2.45.4) et contrôlée par empreinte (integrity) :
+  si le CDN servait un autre fichier, le navigateur refuserait de l'exécuter, donc il ne
+  pourrait pas lire la clé.
+  ?v=2.5 : même numéro que l'appli (APP_VERSION dans app.js).
+-->
+<script src="themes.js?v=2.5"></script>
+<link rel="stylesheet" href="style.css?v=2.5">
 <style>
-  body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px; color: #222; }
-  h1 { font-size: 20px; }
-  p { color: #555; line-height: 1.5; }
-  label { display: block; margin-top: 16px; font-weight: 600; font-size: 13px; }
-  input[type=text], input[type=password] { width: 100%; padding: 8px; font-size: 14px; box-sizing: border-box; }
-  button { margin-top: 20px; padding: 10px 18px; font-size: 14px; font-weight: 700; cursor: pointer; }
-  #log { margin-top: 20px; font-family: monospace; font-size: 12px; white-space: pre-wrap; background: #f5f5f5; padding: 12px; border-radius: 6px; max-height: 320px; overflow-y: auto; }
-  .warn { color: #a33; font-weight: 600; }
+  .up-wrap { max-width: 680px; margin: 0 auto; padding: 24px 16px 48px; box-sizing: border-box; }
+  .up-wrap h1 { font-family: var(--font-title, inherit); font-size: 26px; margin: 8px 0 14px; color: var(--text); }
+  .up-wrap p, .up-wrap li { color: var(--text-soft); line-height: 1.5; font-size: 14px; }
+  .up-back { display: inline-block; margin-bottom: 8px; color: var(--text); font-weight: 700; font-size: 14px; }
+  .up-card { background: var(--sheet); border: var(--bw-m, 2px) solid var(--line); border-radius: var(--r-field, 8px); padding: 16px; margin-top: 16px; }
+  .up-card label { display: block; margin-top: 14px; font-weight: 800; font-size: 13px; color: var(--text); }
+  .up-card label:first-child { margin-top: 0; }
+  .up-card input[type=text], .up-card input[type=password] { width: 100%; padding: 10px; font-size: 16px; box-sizing: border-box;
+    border: var(--bw-m, 2px) solid var(--line); border-radius: var(--r-field, 8px); background: var(--surface); color: var(--text); }
+  .up-card input[type=file] { margin-top: 6px; max-width: 100%; color: var(--text); }
+  .up-hint { font-size: 12.5px !important; margin: 4px 0 0; }
+  .up-warn { color: #b3261e !important; font-weight: 700; }
+  .up-go { margin-top: 18px; min-height: 44px; }
+  .up-go[disabled] { opacity: .5; cursor: default; }
+  #up-log { margin-top: 16px; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12px; white-space: pre-wrap;
+    background: var(--surface); color: var(--text); border: 1px solid var(--line); padding: 12px; border-radius: 6px; max-height: 320px; overflow-y: auto; }
+  #up-log:empty { display: none; }
+  .up-bar { height: 8px; border-radius: 4px; background: var(--surface); border: 1px solid var(--line); margin-top: 14px; overflow: hidden; }
+  .up-bar > i { display: block; height: 100%; width: 0; background: var(--text); transition: width .2s; }
+  [hidden] { display: none !important; }
 </style>
 </head>
 <body>
-<h1>Envoi unique des couvertures vers Supabase Storage</h1>
-<p>Cette page sert à transférer les images de couverture vers ton bucket Supabase (bucket "covers"). Sélectionne le dossier <code>volume_covers/</code> (une couverture par tome, ~8100 fichiers) — tu peux relancer cet envoi à chaque fois que tu ajoutes des BD, tout est réenvoyé mais rien ne casse grâce à <code>upsert:true</code>. <strong>Plus rapide après un ajout :</strong> les dossiers <code>volume_covers_nouveaux/</code> (octobre 2026, 807 couvertures) et <code>volume_covers_oneshots/</code> (import des one-shots, 1018 couvertures) ne contiennent que les couvertures d'une mise à jour donnée — sélectionne celui-là, l'envoi ne porte alors que sur ces fichiers (le nom de fichier seul sert de clé dans le bucket, le dossier d'origine n'a aucune importance). Ce fichier ne fait pas partie du site final et ne doit jamais être publié sur GitHub.</p>
-<p class="warn">La clé "service_role" que tu colles ci-dessous est secrète (contrairement à la clé "anon" du site) : ne la mets jamais dans le code du site, ne la commite jamais sur GitHub. Elle ne sert qu'ici, dans ton navigateur, pour cet envoi ponctuel.</p>
+<main class="up-wrap">
+  <a class="up-back" href="index.html#/reglages">← Retour aux réglages</a>
+  <h1>Envoi des couvertures</h1>
 
-<label for="url">Project URL</label>
-<input id="url" type="text" value="https://aotudxyifqhyazluxhko.supabase.co">
+  <section id="up-denied" hidden>
+    <p>Cette page est réservée au propriétaire de la bibliothèque.</p>
+    <p>Si c'est toi, déverrouille d'abord cet appareil : Réglages → <b>Mode propriétaire</b>, puis reviens ici par Réglages → <b>Envoi des couvertures</b>.</p>
+  </section>
 
-<label for="key">Clé "service_role" (Project Settings → API Keys)</label>
-<input id="key" type="password" placeholder="colle la clé service_role ici">
+  <section id="up-form" hidden>
+    <p>Après un import « delta », Claude range les nouvelles couvertures dans un dossier <code>volume_covers_delta_&lt;date&gt;</code> du dossier du site, sur ton PC. Choisis ce dossier ci-dessous : seules ses images partent sur Supabase. Tu peux relancer un envoi sans risque, une couverture déjà présente est simplement remplacée.</p>
+    <p class="up-warn">La clé « service_role » est secrète. Colle-la ici au moment de l'envoi : elle n'est jamais enregistrée et disparaît quand tu fermes la page. Ne la mets jamais dans un fichier du site.</p>
 
-<label for="folder">Dossier des couvertures ("volume_covers_oneshots" pour le dernier import, sinon "volume_covers")</label>
-<input id="folder" type="file" webkitdirectory multiple>
+    <div class="up-card">
+      <label for="up-key">Clé « service_role »</label>
+      <input id="up-key" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="colle la clé service_role ici">
+      <p class="up-hint">Supabase → Project Settings → API Keys.</p>
 
-<button id="go">Envoyer vers Supabase</button>
+      <label for="up-folder">Dossier des couvertures</label>
+      <input id="up-folder" type="file" webkitdirectory multiple accept="image/jpeg,image/png">
+      <p class="up-hint" id="up-count">Aucun dossier choisi.</p>
 
-<div id="log"></div>
+      <button id="up-go" class="btn up-go" type="button">Envoyer vers Supabase</button>
+      <div class="up-bar" id="up-bar" hidden><i></i></div>
+      <div id="up-log" aria-live="polite"></div>
+    </div>
+  </section>
+</main>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="config.js?v=2.5"></script>
 <script>
-  var logEl = document.getElementById("log");
-  function log(msg) { logEl.textContent += msg + "\n"; logEl.scrollTop = logEl.scrollHeight; }
-
-  document.getElementById("go").addEventListener("click", async function () {
-    var url = document.getElementById("url").value.trim();
-    var key = document.getElementById("key").value.trim();
-    var files = Array.from(document.getElementById("folder").files).filter(function (f) {
-      return /\.(jpg|jpeg|png)$/i.test(f.name);
-    });
-    if (!url || !key) { alert("Renseigne l'URL et la clé service_role."); return; }
-    if (!files.length) { alert("Sélectionne le dossier covers (avec les .jpg dedans)."); return; }
-
-    var client = window.supabase.createClient(url, key);
-    log("Bucket 'covers' : vérification…");
-
-    var ok = 0, fail = 0;
-    for (var i = 0; i < files.length; i++) {
-      var f = files[i];
-      var res = await client.storage.from("covers").upload(f.name, f, { upsert: true, contentType: f.type || "image/jpeg" });
-      if (res.error) { fail++; log("✗ " + f.name + " — " + res.error.message); }
-      else { ok++; if (ok % 25 === 0 || i === files.length - 1) log("✓ " + ok + " / " + files.length + " envoyées…"); }
+  // Même règle que l'appli (app.js) : l'appareil est « propriétaire » quand l'empreinte
+  // gardée dans son localStorage est celle de config.js.
+  (function () {
+    var conf = (window.BD_OWNER_HASH || "").trim().toLowerCase(), mine = "";
+    try { mine = localStorage.getItem("bd_owner_v1") || ""; } catch (e) {}
+    var owner = !!conf && mine === conf;
+    document.documentElement.classList.toggle("is-owner", owner);
+    document.getElementById(owner ? "up-form" : "up-denied").hidden = false;
+    window.__UP_OWNER = owner;
+  })();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"
+        integrity="sha384-0w2KAL2YHP6wKOkUDzkCDGgVvfmHnj02DHeQ6XcHOgTfFsGyonKOpShMH1x6nk9o"
+        crossorigin="anonymous"></script>
+<script>
+  (function () {
+    if (!window.__UP_OWNER) return;
+    var logEl = document.getElementById("up-log"), keyEl = document.getElementById("up-key"),
+        folderEl = document.getElementById("up-folder"), countEl = document.getElementById("up-count"),
+        goEl = document.getElementById("up-go"), barEl = document.getElementById("up-bar");
+    function log(m) { logEl.textContent += m + "\n"; logEl.scrollTop = logEl.scrollHeight; }
+    function images() {
+      return Array.from(folderEl.files || []).filter(function (f) { return /\.(jpe?g|png)$/i.test(f.name); });
     }
-    log("\nTerminé : " + ok + " envoyées, " + fail + " échecs sur " + files.length + ".");
-    if (fail === 0) log("Tu peux fermer et supprimer cette page.");
-  });
+    folderEl.addEventListener("change", function () {
+      var n = images().length, d = (folderEl.files[0] && folderEl.files[0].webkitRelativePath || "").split("/")[0];
+      countEl.textContent = n ? n + " image" + (n > 1 ? "s" : "") + " à envoyer" + (d ? " (dossier " + d + ")" : "") + "."
+                              : "Aucune image dans ce dossier.";
+    });
+    goEl.addEventListener("click", async function () {
+      var key = keyEl.value.trim(), files = images();
+      logEl.textContent = "";
+      if (!window.supabase) { log("La bibliothèque Supabase n'a pas pu être chargée (réseau, ou fichier refusé par le contrôle d'intégrité). Recharge la page."); return; }
+      if (!key) { log("Colle d'abord la clé service_role."); keyEl.focus(); return; }
+      if (!files.length) { log("Choisis d'abord le dossier des couvertures."); return; }
+      goEl.disabled = true; barEl.hidden = false;
+      var bar = barEl.firstElementChild;
+      var client = window.supabase.createClient(window.BD_SUPABASE_URL, key, { auth: { persistSession: false, autoRefreshToken: false } });
+      var ok = 0, fail = 0;
+      log("Envoi de " + files.length + " image(s)…");
+      for (var i = 0; i < files.length; i++) {
+        var f = files[i];
+        var res = await client.storage.from("covers").upload(f.name, f, { upsert: true, contentType: f.type || "image/jpeg", cacheControl: "3600" });
+        if (res.error) {
+          fail++; log("✗ " + f.name + " — " + res.error.message);
+          if (fail === 1 && /signature|jwt|invalid|unauthor|403|401/i.test(res.error.message || "")) {
+            log("La clé semble refusée : vérifie que c'est bien la clé service_role."); break;
+          }
+        } else {
+          ok++; if (ok % 25 === 0) log("✓ " + ok + " / " + files.length);
+        }
+        bar.style.width = Math.round((i + 1) * 100 / files.length) + "%";
+      }
+      log("\nTerminé : " + ok + " envoyée(s), " + fail + " échec(s) sur " + files.length + ".");
+      if (!fail) log("Les nouvelles couvertures sont visibles dans l'appli (recharge la page si besoin).");
+      keyEl.value = ""; goEl.disabled = false;
+    });
+  })();
 </script>
 </body>
 </html>

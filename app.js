@@ -12,8 +12,8 @@
   // Version de la livraison — à augmenter à CHAQUE livraison (+0.1 pour une livraison
   // ordinaire, +1.0 pour une refonte), avec le même numéro dans les quatre ?v= de
   // index.html et une ligne dans l'historique « Versions » du README.
-  var APP_VERSION = "2.4";
-  var APP_VERSION_DATE = "2026-10-24";
+  var APP_VERSION = "2.5";
+  var APP_VERSION_DATE = "2026-10-27";
 
   // ---------- mode propriétaire ----------
   // Garde-fou, pas une serrure : sans le code, les statuts (lu, en cours, favoris) ne
@@ -1723,6 +1723,8 @@
   // version pour qu'un téléphone ne garde pas en cache un ancien PDF après une livraison.
   var pdfLink = document.getElementById("pdf-link");
   if (pdfLink) pdfLink.setAttribute("href", "Mode_emploi_proprietaire.pdf?v=" + APP_VERSION);
+  var upLink = document.getElementById("uploader-link");      // page d'envoi des couvertures
+  if (upLink) upLink.setAttribute("href", "uploader.html?v=" + APP_VERSION);
 
   var versionEl = document.getElementById("app-version");
   if (versionEl) versionEl.textContent = "Ma Bibliothèque BD — version " + APP_VERSION + " du " +

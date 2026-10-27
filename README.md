@@ -2,7 +2,7 @@
 
 Catalogue personnel de bandes dessinées de Christophe (**1061 séries, 986 one-shots, 8407 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
 
-> **Version actuellement livrée : 2.4 du 24/10/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
+> **Version actuellement livrée : 2.5 du 27/10/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
 >
 > **Mode d'emploi** : ce README est la documentation **technique** du projet. Le mode d'emploi **du propriétaire** est ailleurs : dans l'appli (Réglages → Aide, visible en mode propriétaire seulement) et en PDF (`Mode_emploi_proprietaire.pdf`). Voir la section « Aide et mode d'emploi ».
 >
@@ -68,9 +68,11 @@ ma-bibliotheque-bd/
 │                        #   reste sur le PC
 ├── volume_covers_delta_<date>/ # couvertures d'un delta, à envoyer via uploader.html
 │                        #   — GITIGNORÉ, supprimable une fois envoyé
-├── uploader.html         # outil pour envoyer les couvertures vers Supabase Storage
-│                        #   (sélectionner "volume_covers") — GITIGNORÉ, jamais publié
-└── .gitignore            # exclut covers/, volume_covers*/, uploader.html et les
+├── uploader.html         # page d'envoi des couvertures vers Supabase Storage, réservée
+│                        #   au propriétaire (Réglages → Envoi des couvertures). PUBLIÉE
+│                        #   depuis la 2.5 : elle ne contient aucun secret (voir « Bucket
+│                        #   Storage covers »)
+└── .gitignore            # exclut covers/, volume_covers*/, outils_delta/ et les
                          #   fichiers de travail (pending_*.json, _*.json, _to_delete/)
 ```
 
@@ -104,7 +106,7 @@ Un **one-shot** est une entrée ordinaire avec un seul tome, dont le libellé es
 - Projet : `ma-bibliotheque-bd` (org `deepblue67`), ref `aotudxyifqhyazluxhko`, région `eu-west-1` (Irlande).
 - Project URL : `https://aotudxyifqhyazluxhko.supabase.co`
 - La clé **anon** (publique, dans `config.js`) est protégée par les policies RLS ci-dessous — elle ne donne accès qu'aux tables `bd_status` / `bd_volume_status` / `bd_overrides` et à la lecture du bucket `covers`.
-- La clé **service_role** (secrète) n'est utilisée QUE ponctuellement dans `uploader.html`, en local, jamais commitée. Si besoin de la retrouver : Project Settings → API Keys.
+- La clé **service_role** (secrète) n'est utilisée QUE dans `uploader.html`, collée à la main au moment de l'envoi : elle n'est enregistrée nulle part et n'est jamais commitée. Si besoin de la retrouver : Project Settings → API Keys.
 
 ### Table `bd_status` (favoris — au niveau du titre)
 
@@ -183,7 +185,9 @@ create policy "public read covers" on storage.objects
 for select using (bucket_id = 'covers');
 ```
 
-Pas de policy d'écriture publique : l'envoi des couvertures se fait via `uploader.html` avec la clé service_role (qui contourne RLS), pas via le site public.
+Pas de policy d'écriture publique : l'envoi des couvertures se fait via `uploader.html` avec la clé service_role (qui contourne RLS).
+
+**Page d'envoi des couvertures (`uploader.html`, depuis la version 2.5).** Elle est publiée avec le site et s'ouvre, dans un nouvel onglet, depuis Réglages → **Envoi des couvertures**, section visible seulement en mode propriétaire. Sur un appareil non déverrouillé, la page n'affiche qu'un message « réservée au propriétaire » (même test que l'appli : empreinte du localStorage égale à `BD_OWNER_HASH`). Ce contrôle est un confort, pas une protection : la vraie protection est la clé service_role, qui n'est **pas** dans la page. Elle est collée à chaque envoi, effacée du champ à la fin, jamais enregistrée (ni localStorage, ni cookie, ni session Supabase : `persistSession:false`). Comme cette clé passe par une page web, la bibliothèque `supabase-js` y est **figée en 2.45.4 et contrôlée par empreinte** (`integrity="sha384-…"`) : si le CDN servait un fichier modifié, le navigateur refuserait de l'exécuter et aucun envoi ne partirait. Pour changer de version de `supabase-js` dans cette page, il faut recalculer l'empreinte (`openssl dgst -sha384 -binary supabase.js | base64`). La page porte `noindex` et prend le thème choisi dans l'appli. Le choix d'un dossier (`webkitdirectory`) se fait depuis le PC : c'est là que sont les couvertures.
 
 **Contrainte importante** : les noms de fichiers dans le bucket doivent être **ASCII uniquement** (Supabase Storage rejette les accents avec une erreur `Invalid key`). C'est pour ça que chaque `cover` dans catalog.json est un nom sans accents (ex: `Thorgal_001.jpg`) même si le `title`/`label` affiché garde ses accents.
 
@@ -202,7 +206,7 @@ Toutes ces images sont générées depuis un seul visuel maître 1024×1024 (scr
 
 ## Cache navigateur — convention de version
 
-Depuis la version 2.0, **un seul numéro** : la version de l'appli (`APP_VERSION` dans `app.js`). `index.html` charge `themes.js`, `style.css`, `config.js` et `app.js` avec ce même suffixe (`?v=2.0`). À chaque livraison, le numéro change partout à la fois, ce qui oblige les navigateurs, Safari iPhone compris, à reprendre les nouveaux fichiers plutôt que leur copie en cache (vécu : un `app.js` mis à jour restait invisible malgré plusieurs rechargements, jusqu'à un vidage de cache complet). Règle détaillée : section « Versions des livraisons ». `data/catalog.json` n'a pas ce problème : il est chargé via `fetch(..., { cache: "no-store" })` dans `app.js`, donc toujours à jour sans rien à incrémenter, et **une livraison qui ne touche que les données** (catalogue, couvertures, scripts SQL) **ne change pas le numéro**.
+Depuis la version 2.0, **un seul numéro** : la version de l'appli (`APP_VERSION` dans `app.js`). `index.html` charge `themes.js`, `style.css`, `config.js` et `app.js` avec ce même suffixe (`?v=2.0`), et `uploader.html` (depuis la 2.5) ses trois fichiers `themes.js`, `style.css` et `config.js`. À chaque livraison, le numéro change partout à la fois, ce qui oblige les navigateurs, Safari iPhone compris, à reprendre les nouveaux fichiers plutôt que leur copie en cache (vécu : un `app.js` mis à jour restait invisible malgré plusieurs rechargements, jusqu'à un vidage de cache complet). Règle détaillée : section « Versions des livraisons ». `data/catalog.json` n'a pas ce problème : il est chargé via `fetch(..., { cache: "no-store" })` dans `app.js`, donc toujours à jour sans rien à incrémenter, et **une livraison qui ne touche que les données** (catalogue, couvertures, scripts SQL) **ne change pas le numéro**.
 
 Avant la 2.0, chaque fichier avait son propre compteur (`app.js?v=13`, `style.css?v=13`, `config.js?v=4`, `themes.js?v=1`) : ces anciens numéros apparaissent encore dans l'historique.
 
@@ -450,7 +454,7 @@ Ou plus simple : pousser directement sur GitHub Pages (qui sert en https, aucun 
 
 ## Déploiement
 
-1. `covers/`, les dossiers `volume_covers*/`, `uploader.html` et les fichiers de travail sont exclus via `.gitignore` — le commit ne contient que le code, `data/catalog.json` (~1 Mo) et `Mode_emploi_proprietaire.pdf` (lié depuis Réglages → Aide).
+1. `covers/`, les dossiers `volume_covers*/`, `outils_delta/` et les fichiers de travail sont exclus via `.gitignore` — le commit ne contient que le code (dont `uploader.html`, publié depuis la 2.5), `data/catalog.json` (~1 Mo) et `Mode_emploi_proprietaire.pdf` (lié depuis Réglages → Aide).
 2. Pousser sur GitHub (dépôt `ma-bibliotheque-bd`, via GitHub Desktop).
 3. Settings → Pages → source = branche `main`, dossier racine.
 4. Site en ligne à `https://<pseudo-github>.github.io/ma-bibliotheque-bd/` après 1-2 minutes.
@@ -462,7 +466,7 @@ Ou plus simple : pousser directement sur GitHub Pages (qui sert en https, aucun 
 1. Augmenter `APP_VERSION` dans `app.js` (et `APP_VERSION_DATE` = date du jour, format `AAAA-MM-JJ`) :
    - `+0.1` pour une livraison ordinaire (correctif, retouche, petite fonction) : 2.0 → 2.1 → 2.2…
    - `+1.0` pour une refonte (nouvel écran, changement de structure) : 2.9 → 3.0.
-2. Reporter **le même numéro** dans `index.html`, sur les quatre liens `themes.js?v=…`, `style.css?v=…`, `config.js?v=…` et `app.js?v=…`.
+2. Reporter **le même numéro** dans `index.html`, sur les quatre liens `themes.js?v=…`, `style.css?v=…`, `config.js?v=…` et `app.js?v=…`, ainsi que sur les trois liens de `uploader.html` (`themes.js`, `style.css`, `config.js`). Le lien vers `uploader.html` dans les Réglages prend le numéro tout seul (`app.js`).
 3. Ajouter une ligne au tableau ci-dessous et mettre à jour la ligne « Version actuellement livrée » en tête de ce fichier.
 4. Livrer ensemble `index.html` et `app.js` (le numéro est dans les deux), plus les autres fichiers modifiés.
 5. Après dépôt sur le PC de Christophe, relire les fichiers sur le PC et comparer leur empreinte md5 à la version testée (un envoi a déjà écrit une ancienne version sans signaler d'erreur).
@@ -471,6 +475,7 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 
 | Version | Date | Contenu |
 |---|---|---|
+| 2.5 | 27/10/2026 | **Page d'envoi des couvertures** réservée au propriétaire : nouvelle section Réglages → Envoi des couvertures, qui ouvre `uploader.html` dans un nouvel onglet. La page est refaite (thème de l'appli, refus pour un visiteur, clé jamais enregistrée, `supabase-js` figé et contrôlé par empreinte, compteur et barre de progression, arrêt net si la clé est refusée) et n'est plus gitignorée. Aide et PDF mis à jour. |
 | 2.4 | 24/10/2026 | **Recherche limitée à ce qui est affiché** : une fiche ou un tome renommé ne répond plus à son ancien nom ; un one-shot renommé renomme aussi son tome. Aide et PDF mis à jour. |
 | 2.3 | 24/10/2026 | **Vignettes auto-réparantes** : une couverture en échec est retentée deux fois, et un filet de sécurité charge toute vignette proche de l'écran que le chargement différé aurait ratée. Corrige les vignettes vides signalées par Christophe. |
 | 2.2 | 24/10/2026 | **Barre alphabétique** collante au-dessus de la grille et séparateurs de lettre, sur le modèle de l'appli ebooks. Correction de `overflow-x` sur `body`, qui empêchait les éléments collants. Aide et PDF complétés ; pied de page du PDF déplacé pour qu'il tienne sur 4 pages. |
@@ -480,6 +485,8 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 Les livraisons antérieures n'étaient pas numérotées ; leur détail est dans l'historique ci-dessous.
 
 ## Historique des décisions notables
+
+- **Version 2.5 — page d'envoi des couvertures dans les Réglages** (27 octobre 2026) : demande de Christophe, qui avait publié `uploader.html` à la racine du dépôt. Vérifié avant tout : la page publiée ne contenait aucune clé (la clé service_role était déjà collée à la main), donc rien n'avait fuité. La page reste publique (GitHub Pages ne sait pas protéger un fichier), mais elle ne sert à rien sans la clé, n'affiche son formulaire qu'en mode propriétaire et n'est liée que depuis une section réservée au propriétaire. Durcissement : `supabase-js` figé en 2.45.4 avec contrôle d'empreinte (avant : `@2`, une version flottante qui aurait pu lire la clé), session Supabase non conservée, clé effacée après l'envoi. `uploader.html` retiré du `.gitignore`. Nouvelle suite `test10_uploader.js` (30 vérifications : section et lien invisibles pour un visiteur, page refusée au visiteur, ouverture dans un nouvel onglet, version et empreinte de `supabase-js`, envoi de 3 couvertures vers `covers` avec la clé et `upsert`, fichiers non image ignorés, clé jamais enregistrée, clé refusée, CDN falsifié bloqué, iPhone sans débordement). Les suites Réglages (54, portées à 6 sections), barre alphabétique (27), vignettes (16), recherche (19), lots 3 et 4 et croix repassent. Le PDF tient toujours sur 4 pages (interlignes légèrement resserrés).
 
 - **3ᵉ mise à jour delta** (27 octobre 2026) : **14 nouvelles séries**, **13 séries enrichies** (37 tomes ajoutés à la fin, dont 7 pour *Triple galop* et 6 pour *W.I.T.C.H*) et **9 nouveaux one-shots** de `BD Unique`. Catalogue : 2024 → **2047 entrées** (1061 séries + 986 one-shots), 8330 → **8407 albums**. 77 couvertures extraites (dossier `volume_covers_delta_27oct/`, à envoyer via `uploader.html`). Pas de changement de version de l'appli : la livraison ne touche que les données.
   - **Dossier renommé parce que son compteur a changé** : `Les tuniques bleues (69-69)` est devenu `(70-70)`. Le script le reconnaît désormais tout seul : même fiche, même id, coches de lecture conservées, tome 70 ajouté à la fin, titre de base mis à jour.

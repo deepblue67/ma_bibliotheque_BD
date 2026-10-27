@@ -22,12 +22,12 @@
 <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
 <link rel="manifest" href="site.webmanifest">
 
-<!-- ?v=2.0 = numéro de version de l'appli (APP_VERSION dans app.js) : à changer à chaque
-     livraison, dans les quatre liens, pour forcer les navigateurs (iPhone compris) à recharger.
+<!-- ?v=… = numéro de version de l'appli (APP_VERSION dans app.js) : à changer à chaque
+     livraison, dans les quatre liens (et les trois de uploader.html), pour forcer les navigateurs (iPhone compris) à recharger.
      themes.js est volontairement bloquant et placé AVANT style.css : il pose le thème
      mémorisé (et charge ses polices) avant le premier affichage. -->
-<script src="themes.js?v=2.4"></script>
-<link rel="stylesheet" href="style.css?v=2.4">
+<script src="themes.js?v=2.5"></script>
+<link rel="stylesheet" href="style.css?v=2.5">
 </head>
 <body>
 
@@ -128,6 +128,20 @@
       <div class="set-body">
         <p class="settings-hint">Doublons écartés à l'import, fiches que tu as masquées ou fusionnées dans une autre. Elles restent invisibles pour tout le monde jusqu'à ce que tu les ré-affiches ou les sépares.</p>
         <div id="hidden-list"></div>
+      </div>
+    </section>
+    <section class="set-block owner-only" data-sec="covers">
+      <button type="button" class="set-head" aria-expanded="true">
+        <span class="t">Envoi des couvertures</span><span class="rule" aria-hidden="true"></span>
+      </button>
+      <div class="set-body">
+        <p class="settings-hint">Après un import de nouvelles BD, envoie sur Supabase les couvertures du dossier <code>volume_covers_delta_&lt;date&gt;</code>. Il faut la clé « service_role », à coller au moment de l'envoi.</p>
+        <p class="pdf-row">
+          <a id="uploader-link" class="btn pdf-link" href="uploader.html" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M5 20h14"/></svg>
+            Ouvrir la page d'envoi des couvertures
+          </a>
+        </p>
       </div>
     </section>
     <section class="set-block owner-only" data-sec="aide">
@@ -238,7 +252,7 @@
               <p>Sur un appareil qui n'est pas déverrouillé, l'appli montre la bibliothèque <b>et rien d'autre</b> :</p>
               <ul>
               <li>pas de pastilles Lu / En cours / ★, pas de filtres de statut, pas de cases à cocher ;</li>
-              <li>aucun bouton ✎, ni l'écran des doublons, ni l'aide que tu lis ;</li>
+              <li>aucun bouton ✎, ni l'écran des doublons, ni la page d'envoi des couvertures, ni l'aide que tu lis ;</li>
               <li>les titres corrigés, sans les fiches ni les tomes masqués ;</li>
               <li>les fiches fusionnées, déjà regroupées.</li>
               </ul>
@@ -251,10 +265,11 @@
               <p>L'appli ne lit pas ton disque elle-même. Pour ajouter des BD :</p>
               <ol>
               <li>Range-les dans <code>D:\Christophe\Mes BD</code> : une série par dossier, et les albums sans suite dans <code>BD Unique</code>.</li>
-              <li>Demande à Claude un <b>import « delta »</b> : seules les nouveautés sont ajoutées, sans toucher à ce qui existe. Les dossiers <code>1 2 3 A CLASSER</code>, <code>1 2 3 A TRIER</code> et <code>Nouveau dossier…</code> sont ignorés.</li>
-              <li>Publie sur GitHub les fichiers indiqués, surtout <code>data/catalog.json</code>, et envoie les nouvelles couvertures avec <code>uploader.html</code>.</li>
+              <li>Dis à Claude <b>« fais le delta BD »</b> : seules les nouveautés sont ajoutées, sans toucher à ce qui existe. Les dossiers <code>1 2 3 A CLASSER</code>, <code>1 2 3 A TRIER</code>, <code>BD Serie à completer</code> et <code>Nouveau dossier…</code> sont ignorés.</li>
+              <li>Envoie les nouvelles couvertures : Réglages → <b>Envoi des couvertures</b> → <b>Ouvrir la page d'envoi des couvertures</b>. Colle la clé « service_role » (Supabase → Project Settings → API Keys), choisis le dossier <code>volume_covers_delta_&lt;date&gt;</code> indiqué par Claude, puis <b>Envoyer vers Supabase</b>.</li>
+              <li>Publie sur GitHub les fichiers indiqués, surtout <code>data/catalog.json</code>.</li>
               </ol>
-              <p>Tes corrections, masquages, fusions et coches survivent à l'import.</p>
+              <p>Tes corrections, masquages, fusions et coches survivent à l'import. La clé « service_role » n'est jamais enregistrée : colle-la à chaque envoi, et ne la mets dans aucun fichier du site. La page d'envoi s'ouvre seulement sur un appareil déverrouillé.</p>
               </div>
             </details>
             <details class="help-item" id="aide-pratique">
@@ -367,7 +382,7 @@
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=2.4"></script>
-<script src="app.js?v=2.4"></script>
+<script src="config.js?v=2.5"></script>
+<script src="app.js?v=2.5"></script>
 </body>
 </html>
