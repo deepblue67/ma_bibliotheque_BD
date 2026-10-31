@@ -1,6 +1,6 @@
 # Ma Bibliothèque BD
 
-Catalogue personnel de bandes dessinées de Christophe (**1061 séries, 986 one-shots, 8407 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
+Catalogue personnel de bandes dessinées de Christophe (**1068 séries, 986 one-shots, 8421 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
 
 > **Version actuellement livrée : 2.5 du 27/10/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
 >
@@ -50,7 +50,7 @@ ma-bibliotheque-bd/
 ├── genre_taxonomy.json    # liste fixe des genres, informatif (la vraie source pour l'appli
 │                        #   est le tableau GENRES dans app.js)
 ├── data/
-│   └── catalog.json     # catalogue généré (2047 entrées : 1061 séries + 986 one-shots)
+│   └── catalog.json     # catalogue généré (2054 entrées : 1068 séries + 986 one-shots)
 ├── pending_covers.json   # FICHIER DE TRAVAIL d'une mise à jour "delta" : liste des tomes
 │                        #   dont la couverture reste à extraire (voir "Mise à jour du
 │                        #   catalogue en mode delta"). Peut être supprimé une fois
@@ -245,7 +245,7 @@ Les BD sources vivent dans `D:\Christophe\Mes BD` (dossier = un titre, fichiers 
 6. `5_couvertures.py 95` : couvertures PDF, CBZ ou CBR, à relancer jusqu'à « reste 0 » ;
 7. `6_finir.py` : contrôles et planche contact des couvertures ; puis `6_finir.py --installer`, qui sauvegarde l'ancien catalogue dans `etat/sauvegardes/<date>/`, installe le nouveau et copie les couvertures dans `volume_covers_delta_<date>/`.
 
-`etat/oneshots_importes.json` liste les fichiers de `BD Unique` déjà traités, importés ou écartés : ce sont eux qui ne reviendront pas comme nouveautés. Les explications qui suivent décrivent les règles que ces scripts appliquent.
+`etat/regles.json` garde les règles permanentes, jamais remises à zéro : `separations` met à part, dans une fiche distincte, les fichiers d'un dossier qui mélange deux séries (motif regex sur le nom de fichier). `etat/oneshots_importes.json` liste les fichiers de `BD Unique` déjà traités, importés ou écartés : ce sont eux qui ne reviendront pas comme nouveautés. Les explications qui suivent décrivent les règles que ces scripts appliquent.
 
 La mise à jour d'octobre 2026 a dû se faire autrement, parce que les montages `~/mnt/*` étaient cassés (voir l'avertissement ci-dessus) : impossible de lancer `scan.py`. La méthode retenue est plus sûre que de tout régénérer et vaut d'être réutilisée, même quand le pipeline complet fonctionne, car **elle ne touche jamais aux tomes déjà catalogués** :
 
@@ -485,6 +485,11 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 Les livraisons antérieures n'étaient pas numérotées ; leur détail est dans l'historique ci-dessous.
 
 ## Historique des décisions notables
+
+- **4ᵉ mise à jour delta** (31 octobre 2026) : **7 nouvelles fiches de série** (*Britannia*, *Death Mountains*, *Jeu d'ombres*, *Le déserteur*, *Les Aventures de Steve Conrad*, *Varulf*, et *Léviathan (Shiro Kuroi)*), aucune série enrichie, aucun one-shot. Catalogue : 2047 → **2054 entrées** (1068 séries + 986 one-shots), 8407 → **8421 albums**. 14 couvertures extraites (dossier `volume_covers_delta_31oct/`, à envoyer depuis Réglages → Envoi des couvertures). Pas de changement de version de l'appli : la livraison ne touche que les données.
+  - **Dossier « Léviathan » qui mélange deux séries** : la BD de Brunschwig et Bossard (déjà au catalogue) et le manga de Shiro Kuroi (`Léviathan_Tome_01.pdf`, `Léviathan_Tome_02.pdf`, sans sous-titre). Choix de Christophe : une fiche séparée, sans toucher au disque. Nouvelle règle permanente dans `outils_delta/etat/regles.json` (motif `^Léviathan_Tome_\d+\.pdf$`) : les prochains tomes du manga rangés sous ce nom iront aussi dans la fiche du manga. La fiche de Brunschwig est inchangée.
+  - **Collision d'identifiant sans la casse** : la nouvelle série *Le déserteur* (Kris, Obion) aurait reçu l'id `Le_déserteur`, déjà pris (à la casse près) par le one-shot *Le Déserteur* de Junji Ito. Le contrôle final l'a bloquée ; `4_fusion.py` compare désormais ids et noms de couvertures sans tenir compte de la casse (Windows ne distingue pas `Le_Deserteur_001.jpg` de `Le_deserteur_001.jpg`), et `6_finir.py` le vérifie aussi. La série a l'id `Le_déserteur_2`.
+  - **Auteurs corrigés** par rapport aux métadonnées PDF : *Britannia* → Peter Milligan (PDF : « Willigan »), *Jeu d'ombres* → Merwan (PDF : « Mervan »). Genre en confiance « low » : *Les Aventures de Steve Conrad* (Aventure).
 
 - **Version 2.5 — page d'envoi des couvertures dans les Réglages** (27 octobre 2026) : demande de Christophe, qui avait publié `uploader.html` à la racine du dépôt. Vérifié avant tout : la page publiée ne contenait aucune clé (la clé service_role était déjà collée à la main), donc rien n'avait fuité. La page reste publique (GitHub Pages ne sait pas protéger un fichier), mais elle ne sert à rien sans la clé, n'affiche son formulaire qu'en mode propriétaire et n'est liée que depuis une section réservée au propriétaire. Durcissement : `supabase-js` figé en 2.45.4 avec contrôle d'empreinte (avant : `@2`, une version flottante qui aurait pu lire la clé), session Supabase non conservée, clé effacée après l'envoi. `uploader.html` retiré du `.gitignore`. Nouvelle suite `test10_uploader.js` (30 vérifications : section et lien invisibles pour un visiteur, page refusée au visiteur, ouverture dans un nouvel onglet, version et empreinte de `supabase-js`, envoi de 3 couvertures vers `covers` avec la clé et `upsert`, fichiers non image ignorés, clé jamais enregistrée, clé refusée, CDN falsifié bloqué, iPhone sans débordement). Les suites Réglages (54, portées à 6 sections), barre alphabétique (27), vignettes (16), recherche (19), lots 3 et 4 et croix repassent. Le PDF tient toujours sur 4 pages (interlignes légèrement resserrés).
 

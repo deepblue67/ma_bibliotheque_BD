@@ -1569,6 +1569,14 @@
   ],
   "source": "oneshot_pass1"
  },
+ "Britannia": {
+  "genres": [
+   "Historique",
+   "Fantastique / Horreur"
+  ],
+  "confidence": "medium",
+  "source": "pass3"
+ },
  "Brocéliande": {
   "confidence": "high",
   "genres": [
@@ -2617,6 +2625,14 @@
    "Humour"
   ],
   "source": "oneshot_pass1"
+ },
+ "Death_Mountains": {
+  "genres": [
+   "Western",
+   "Historique"
+  ],
+  "confidence": "medium",
+  "source": "pass3"
  },
  "Deathbringer": {
   "confidence": "low",
@@ -4576,6 +4592,14 @@
    "Western"
   ],
   "source": "pass2_web"
+ },
+ "Jeu_d_ombres": {
+  "genres": [
+   "Policier / Thriller",
+   "Drame / Chronique sociale"
+  ],
+  "confidence": "medium",
+  "source": "pass3"
  },
  "Jeune_et_fauchée": {
   "confidence": "high",
@@ -7573,6 +7597,14 @@
   ],
   "source": "pass2_web"
  },
+ "Le_déserteur_2": {
+  "genres": [
+   "Historique",
+   "Aventure"
+  ],
+  "confidence": "medium",
+  "source": "pass3"
+ },
  "Le_fantôme_de_Canterville": {
   "confidence": "high",
   "genres": [
@@ -8214,6 +8246,13 @@
    "Aventure"
   ],
   "source": "oneshot_pass1"
+ },
+ "Les_Aventures_de_Steve_Conrad": {
+  "genres": [
+   "Aventure"
+  ],
+  "confidence": "low",
+  "source": "pass3"
  },
  "Les_Blondes_-_Tome_1_a_15": {
   "confidence": "high",
@@ -10051,6 +10090,14 @@
    "Science-fiction",
    "Policier / Thriller"
   ],
+  "source": "pass3"
+ },
+ "Léviathan_Shiro_Kuroi": {
+  "genres": [
+   "Science-fiction",
+   "Fantastique / Horreur"
+  ],
+  "confidence": "medium",
   "source": "pass3"
  },
  "M_A_D": {
@@ -14300,6 +14347,14 @@
    "Jeunesse"
   ],
   "source": "oneshot_pass1"
+ },
+ "Varulf": {
+  "genres": [
+   "Fantasy",
+   "Historique"
+  ],
+  "confidence": "high",
+  "source": "pass3"
  },
  "Vautrin_contre_Balzac": {
   "confidence": "low",
