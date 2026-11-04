@@ -1,6 +1,6 @@
 # Ma Bibliothèque BD
 
-Catalogue personnel de bandes dessinées de Christophe (**1068 séries, 986 one-shots, 8421 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
+Catalogue personnel de bandes dessinées de Christophe (**1279 séries, 990 one-shots, 8666 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
 
 > **Version actuellement livrée : 2.5 du 27/10/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
 >
@@ -50,7 +50,7 @@ ma-bibliotheque-bd/
 ├── genre_taxonomy.json    # liste fixe des genres, informatif (la vraie source pour l'appli
 │                        #   est le tableau GENRES dans app.js)
 ├── data/
-│   └── catalog.json     # catalogue généré (2054 entrées : 1068 séries + 986 one-shots)
+│   └── catalog.json     # catalogue généré (2269 entrées : 1279 séries + 990 one-shots)
 ├── pending_covers.json   # FICHIER DE TRAVAIL d'une mise à jour "delta" : liste des tomes
 │                        #   dont la couverture reste à extraire (voir "Mise à jour du
 │                        #   catalogue en mode delta"). Peut être supprimé une fois
@@ -218,7 +218,7 @@ Les BD sources vivent dans `D:\Christophe\Mes BD` (dossier = un titre, fichiers 
 
 Étapes (dans l'ordre, chaque script lit la sortie du précédent) :
 
-1. **`scan.py`** (ou `scan_delta.py` pour un delta) — parcourt `Mes BD`, exclut `1 2 3 A CLASSER`, `1 2 3 A TRIER`, `BD Unique` (traité à part en one-shots), `BD Serie à completer` (dossiers non finalisés, ignorés) et tout dossier `Nouveau dossier*`. Pour chaque dossier-titre, liste les fichiers volumes directs + les sous-dossiers contenant eux-mêmes des volumes (sous-séries potentielles). → `scan.json`
+1. **`scan.py`** (ou `scan_delta.py` pour un delta) — parcourt `Mes BD`, exclut `1 2 3 A CLASSER`, `1 2 3 A TRIER`, `BD Unique` (traité à part en one-shots), `BD Serie à completer` (ignoré jusqu'en octobre 2026 ; traité à part depuis le 4 novembre 2026, voir `outils_delta/LISEZMOI.md`) et tout dossier `Nouveau dossier*`. Pour chaque dossier-titre, liste les fichiers volumes directs + les sous-dossiers contenant eux-mêmes des volumes (sous-séries potentielles). → `scan.json`
 2. **`extract_covers.py`** — extrait la 1ère page du 1er tome de chaque titre comme couverture JPEG (PyMuPDF pour PDF, zipfile+Pillow pour cbz). Les `.cbr` échouent (pas d'`unrar` disponible sur la VM) — géré au cas par cas. Tourne par lots de ~150s (la VM locale n'autorise pas de process en arrière-plan persistant entre deux appels `device_bash`). → `covers_manifest.json`, `covers/*.jpg`
 3. **`extract_meta.py`** — lit le champ `Author` des métadonnées PDF de chaque 1er tome (rapide, pas de rendu de page). → `meta_manifest.json`
 4. Classification heuristique (`looks_plausible`) pour ne garder que les auteurs PDF qui ressemblent à de vrais noms (filtre les tags de scan type "CDS", noms de sites, etc.) → `authors_from_metadata.json` (761/819 résolus automatiquement au premier passage).
@@ -485,6 +485,14 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 Les livraisons antérieures n'étaient pas numérotées ; leur détail est dans l'historique ci-dessous.
 
 ## Historique des décisions notables
+
+- **5ᵉ mise à jour delta — import de « BD Serie à completer »** (4 novembre 2026) : à la demande de Christophe, ce dossier d'albums isolés (214 fichiers `<Série>_Tome_NN_<titre>.pdf`), ignoré jusque-là, est importé « en rattachant par série » (son choix). Résultat : **5 tomes ajoutés à des fiches existantes** (Britannia 3, L'école des petits monstres 4, Sacha et Tomcrouz 4, Si seulement 3, Titans Oxymore Éditions 4), **199 nouvelles fiches** (souvent un seul tome pour l'instant), **9 fichiers ignorés** car déjà présents dans le dossier de leur série, et *I.R.$ tome 26* laissé de côté (série à sous-dossiers, à ranger à la main). Delta habituel en plus : **12 nouvelles séries** (100 Bullets, Druydesses, Détox, Jian, Kililana, La malédiction de Tirlouit, Le Déviant, Le Pêcheur et la Salamandre, Le Secret de Scarecrow, Les gens honnêtes, Taras Boulba, Wild river), **5 séries enrichies** (Caledonia, Ladies with guns, Les pilliers de la terre, Les suites vénitiennes, Triple galop : 13 tomes) et **4 one-shots** (Abby & Walton, Candida, Corps sonores, Rivages lointains - Adam). Catalogue : 2054 → **2269 entrées** (1279 séries + 990 one-shots), 8421 → **8666 albums**. 245 couvertures extraites (dossier `volume_covers_delta_4nov/`). Pas de changement de version de l'appli : la livraison ne touche que les données.
+  - **Règles permanentes ajoutées** (`outils_delta/etat/regles.json`, clé `a_completer`) : `Titans_Tome_NN` va dans la fiche *Titans Oxymore Éditions* (même collection, titres féminins : Iris, Asia, Ariane, Irenis) ; les deux « Dakota » sont deux séries différentes (Dufaux et Adamov ; Paliaga et Rubino), d'où une fiche *Dakota (Paliaga, Rubino)*.
+  - **Écarté** : `Britannia_Deluxe_Edition.pdf` (BD Unique), édition intégrale de la série Britannia déjà au catalogue tome par tome.
+  - **Laissés à l'écran « Doublons probables »** : fiches au nom proche d'une fiche existante mais d'auteurs différents (Don Juan des flots / Don Juan, L'agence des Invisibles / L'agence, Marie, Rani Lakshmi Bai / Rani, Raven Boys / Raven, Samurai / Samurai Legendes), et *Carnage* et *Sprague*, qui existent aussi en one-shot.
+  - **Genres** : choisis par Claude d'après les auteurs, les titres et les couvertures (planche contact vérifiée) ; environ 35 fiches en confiance « low ». Auteurs : métadonnées PDF ; pour 7 fiches, nom seul repris tel quel (Nill, L'Abbé, Aloïs, ELK, Yudori, Maël, Sirius) ; 5 fiches sans auteur (Blandice, Buonaparte, Charbon, Disney Vilains Maléfique, Les Jolis P'tits Cultes).
+  - Plusieurs couvertures montrent de la nudité (éditions Tabou ou Dynamite notamment : Aline, Blandice, Swinging Island, Un destin de soubrette) ; elles sont visibles par les visiteurs, à masquer depuis l'appli si besoin.
+  - Les suites barre alphabétique (27), vignettes (16) et recherche (19) repassent sur le nouveau catalogue.
 
 - **4ᵉ mise à jour delta** (31 octobre 2026) : **7 nouvelles fiches de série** (*Britannia*, *Death Mountains*, *Jeu d'ombres*, *Le déserteur*, *Les Aventures de Steve Conrad*, *Varulf*, et *Léviathan (Shiro Kuroi)*), aucune série enrichie, aucun one-shot. Catalogue : 2047 → **2054 entrées** (1068 séries + 986 one-shots), 8407 → **8421 albums**. 14 couvertures extraites (dossier `volume_covers_delta_31oct/`, à envoyer depuis Réglages → Envoi des couvertures). Pas de changement de version de l'appli : la livraison ne touche que les données.
   - **Dossier « Léviathan » qui mélange deux séries** : la BD de Brunschwig et Bossard (déjà au catalogue) et le manga de Shiro Kuroi (`Léviathan_Tome_01.pdf`, `Léviathan_Tome_02.pdf`, sans sous-titre). Choix de Christophe : une fiche séparée, sans toucher au disque. Nouvelle règle permanente dans `outils_delta/etat/regles.json` (motif `^Léviathan_Tome_\d+\.pdf$`) : les prochains tomes du manga rangés sous ce nom iront aussi dans la fiche du manga. La fiche de Brunschwig est inchangée.
