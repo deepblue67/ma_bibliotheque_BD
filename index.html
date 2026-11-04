@@ -26,8 +26,8 @@
      livraison, dans les quatre liens (et les trois de uploader.html), pour forcer les navigateurs (iPhone compris) à recharger.
      themes.js est volontairement bloquant et placé AVANT style.css : il pose le thème
      mémorisé (et charge ses polices) avant le premier affichage. -->
-<script src="themes.js?v=2.5"></script>
-<link rel="stylesheet" href="style.css?v=2.5">
+<script src="themes.js?v=2.6"></script>
+<link rel="stylesheet" href="style.css?v=2.6">
 </head>
 <body>
 
@@ -264,11 +264,12 @@
               <div class="help-body">
               <p>L'appli ne lit pas ton disque elle-même. Pour ajouter des BD :</p>
               <ol>
-              <li>Range-les dans <code>D:\Christophe\Mes BD</code> : une série par dossier, et les albums sans suite dans <code>BD Unique</code>.</li>
-              <li>Dis à Claude <b>« fais le delta BD »</b> : seules les nouveautés sont ajoutées, sans toucher à ce qui existe. Les dossiers <code>1 2 3 A CLASSER</code>, <code>1 2 3 A TRIER</code>, <code>BD Serie à completer</code> et <code>Nouveau dossier…</code> sont ignorés.</li>
+              <li>Range-les dans <code>D:\Christophe\Mes BD</code> : une série par dossier, les albums sans suite dans <code>BD Unique</code>, et les tomes isolés d'une série que tu n'as pas en entier dans <code>BD Serie à completer</code>, sous la forme <code>Série_Tome_NN_Titre.pdf</code>.</li>
+              <li>Dis à Claude <b>« fais le delta BD »</b> : seules les nouveautés sont ajoutées, sans toucher à ce qui existe. Les dossiers <code>1 2 3 A CLASSER</code>, <code>1 2 3 A TRIER</code> et <code>Nouveau dossier…</code> sont ignorés.</li>
               <li>Envoie les nouvelles couvertures : Réglages → <b>Envoi des couvertures</b> → <b>Ouvrir la page d'envoi des couvertures</b>. Colle la clé « service_role » (Supabase → Project Settings → API Keys), choisis le dossier <code>volume_covers_delta_&lt;date&gt;</code> indiqué par Claude, puis <b>Envoyer vers Supabase</b>.</li>
               <li>Publie sur GitHub les fichiers indiqués, surtout <code>data/catalog.json</code>.</li>
               </ol>
+              <p>Un tome de <code>BD Serie à completer</code> rejoint la fiche de sa série si elle existe déjà ; sinon il crée une nouvelle fiche, que les tomes suivants rejoindront. S'il est déjà dans le dossier de sa série, il est ignoré. Les séries rangées en sous-dossiers (Tintin, I.R.$…) sont à classer à la main.</p>
               <p>Tes corrections, masquages, fusions et coches survivent à l'import. La clé « service_role » n'est jamais enregistrée : colle-la à chaque envoi, et ne la mets dans aucun fichier du site. La page d'envoi s'ouvre seulement sur un appareil déverrouillé.</p>
               </div>
             </details>
@@ -382,7 +383,7 @@
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=2.5"></script>
-<script src="app.js?v=2.5"></script>
+<script src="config.js?v=2.6"></script>
+<script src="app.js?v=2.6"></script>
 </body>
 </html>

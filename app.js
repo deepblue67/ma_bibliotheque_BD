@@ -12,8 +12,8 @@
   // Version de la livraison — à augmenter à CHAQUE livraison (+0.1 pour une livraison
   // ordinaire, +1.0 pour une refonte), avec le même numéro dans les quatre ?v= de
   // index.html et une ligne dans l'historique « Versions » du README.
-  var APP_VERSION = "2.5";
-  var APP_VERSION_DATE = "2026-10-27";
+  var APP_VERSION = "2.6";
+  var APP_VERSION_DATE = "2026-11-04";
 
   // ---------- mode propriétaire ----------
   // Garde-fou, pas une serrure : sans le code, les statuts (lu, en cours, favoris) ne
