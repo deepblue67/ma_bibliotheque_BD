@@ -1,6 +1,6 @@
 # Ma Bibliothèque BD
 
-Catalogue personnel de bandes dessinées de Christophe (**1279 séries, 990 one-shots, 8666 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
+Catalogue personnel de bandes dessinées de Christophe (**1279 séries, 990 one-shots, 8667 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
 
 > **Version actuellement livrée : 2.7 du 04/11/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
 >
@@ -488,6 +488,8 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 Les livraisons antérieures n'étaient pas numérotées ; leur détail est dans l'historique ci-dessous.
 
 ## Historique des décisions notables
+
+- **I.R.$ tome 26 ajouté à la main** (4 novembre 2026) : Christophe l'a rangé dans le dossier de la série (`I.R.$. [HD]/I.R.$. [HD]/`, à côté des tomes 24 et 25). Comme les 21 dossiers à sous-dossiers ne sont jamais traités automatiquement, il est ajouté par le nouveau script `outils_delta/7_ajouter_tome.py` (ajout manuel d'un tome à la fin d'une fiche existante, puis `5_couvertures.py` et `6_finir.py` comme d'habitude). Fiche *I.R.$. [HD]* : 25 → 26 tomes ; catalogue 8666 → **8667 albums**. Couverture `I_R_HD_026.jpg`, copiée dans `volume_covers_delta_4nov/`. Une copie du fichier reste dans `BD Serie à completer` : elle sera signalée à chaque delta comme « série à sous-dossiers » tant qu'elle y est. Pas de changement de version.
 
 - **Version 2.7 — recherche des sigles** (4 novembre 2026) : Christophe ne parvenait pas à chercher la série *I.R.$*. Cause : la normalisation transformait « I.R.$ » en deux lettres isolées, « i r », qui se trouvent dans presque tous les titres (1 580 résultats sur 2 269, la série noyée dedans). Correctif dans `app.js` (`normalizeQ()`, `hasAllWords()`), décrit dans la section « Recherche ». Nouvelle suite `test11_sigles.js` (17 vérifications : I.R.$ sous 4 écritures, irs, W.I.T.C.H / witch, G.I. Joe / gi joe, M.A.D / mad, M.O.R.I.A.R.T.Y, et les recherches ordinaires inchangées). Suites repassées : Réglages (54), barre alphabétique (27), vignettes (16), recherche (19), page d'envoi (30), lots 3 et 4, croix. Aide et PDF : une ligne « Chercher un sigle » dans Bon à savoir ; le PDF tient toujours sur 4 pages.
 
