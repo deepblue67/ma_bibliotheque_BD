@@ -2,7 +2,7 @@
 
 Catalogue personnel de bandes dessinées de Christophe (**1279 séries, 990 one-shots, 8666 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
 
-> **Version actuellement livrée : 2.6 du 04/11/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
+> **Version actuellement livrée : 2.7 du 04/11/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
 >
 > **Mode d'emploi** : ce README est la documentation **technique** du projet. Le mode d'emploi **du propriétaire** est ailleurs : dans l'appli (Réglages → Aide, visible en mode propriétaire seulement) et en PDF (`Mode_emploi_proprietaire.pdf`). Voir la section « Aide et mode d'emploi ».
 >
@@ -286,7 +286,8 @@ Le champ « titre » cherche dans le nom de la série **et dans le titre de tous
 - les **accents** sont ignorés (« etrange » → *Étrange*), tout comme `œ`/`æ` (« oeil » → *Œil de dragon*) ;
 - les apostrophes droites et courbes sont confondues, puis supprimées (« l'arabe » → *L’Arabe du futur*) ;
 - toute **ponctuation** compte comme un espace (« kim jong un » → *Kim Jong-un*, « jean marc » → *Jean-Marc*) ;
-- **plusieurs mots** peuvent être tapés **dans n'importe quel ordre** : tous doivent être présents (« terre pilliers » → *Les pilliers de la terre*).
+- **plusieurs mots** peuvent être tapés **dans n'importe quel ordre** : tous doivent être présents (« terre pilliers » → *Les pilliers de la terre*) ;
+- les **sigles** (version 2.7) : une suite de lettres isolées séparées par des points est recollée et `$` compte comme un S (`normalizeQ()`), dans l'index comme dans la requête : « I.R.$ », « IR$ », « I.R.S » ou « irs » trouvent *I.R.$.*, « gi joe » trouve *G.I. Joe*. L'index garde aussi la forme d'origine (« i r »). Un sigle **tapé avec ses points ou son $** doit être un mot entier (« I.R.$ » → les 3 fiches I.R.$ et rien d'autre ; « M.A.D » → *M.A.D* seule) ; tapé sans points (« irs »), il est aussi cherché à l'intérieur des mots (« soirs »). Avant la 2.7, « I.R.$ » devenait « i r », deux lettres présentes dans presque tous les titres : 1 580 résultats.
 
 **La recherche ne porte que sur ce qui est affiché** (version 2.4) : le titre de la fiche (corrigé s'il l'a été), les titres de ses tomes visibles (corrigés s'ils l'ont été ; un tome masqué ne répond plus) et l'auteur affiché. Un titre d'origine remplacé par une correction ne répond plus. Seule exception : les fiches **fusionnées** dans une autre n'ont plus de vignette, donc leur nom, tel qu'affiché dans la ligne « Fiche fusionnée ici », mène à la fiche qui les a absorbées. Code : `buildSearchIndex()` ; vérifié par `test9_search.js` (19 vérifications, dont le cas réel *Louise Beauvoir_CDS_* → *Louise Beauvoir*).
 
@@ -475,6 +476,7 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 
 | Version | Date | Contenu |
 |---|---|---|
+| 2.7 | 04/11/2026 | **Recherche des sigles** : « I.R.$ » ne trouve plus que la série I.R.$ (avant : 1 580 résultats) ; « W.I.T.C.H », « G.I. Joe », « M.A.D » se cherchent avec ou sans points. Une ligne dans l'aide et le PDF (Bon à savoir). |
 | 2.6 | 04/11/2026 | **Aide et PDF à jour pour « BD Serie à completer »** : le dossier n'est plus présenté comme ignoré ; le sujet « Ajouter de nouvelles BD » explique comment y ranger les tomes isolés (`Série_Tome_NN_Titre.pdf`) et ce que devient chacun à l'import. Aucun changement de fonctionnement de l'appli. |
 | 2.5 | 27/10/2026 | **Page d'envoi des couvertures** réservée au propriétaire : nouvelle section Réglages → Envoi des couvertures, qui ouvre `uploader.html` dans un nouvel onglet. La page est refaite (thème de l'appli, refus pour un visiteur, clé jamais enregistrée, `supabase-js` figé et contrôlé par empreinte, compteur et barre de progression, arrêt net si la clé est refusée) et n'est plus gitignorée. Aide et PDF mis à jour. |
 | 2.4 | 24/10/2026 | **Recherche limitée à ce qui est affiché** : une fiche ou un tome renommé ne répond plus à son ancien nom ; un one-shot renommé renomme aussi son tome. Aide et PDF mis à jour. |
@@ -486,6 +488,8 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 Les livraisons antérieures n'étaient pas numérotées ; leur détail est dans l'historique ci-dessous.
 
 ## Historique des décisions notables
+
+- **Version 2.7 — recherche des sigles** (4 novembre 2026) : Christophe ne parvenait pas à chercher la série *I.R.$*. Cause : la normalisation transformait « I.R.$ » en deux lettres isolées, « i r », qui se trouvent dans presque tous les titres (1 580 résultats sur 2 269, la série noyée dedans). Correctif dans `app.js` (`normalizeQ()`, `hasAllWords()`), décrit dans la section « Recherche ». Nouvelle suite `test11_sigles.js` (17 vérifications : I.R.$ sous 4 écritures, irs, W.I.T.C.H / witch, G.I. Joe / gi joe, M.A.D / mad, M.O.R.I.A.R.T.Y, et les recherches ordinaires inchangées). Suites repassées : Réglages (54), barre alphabétique (27), vignettes (16), recherche (19), page d'envoi (30), lots 3 et 4, croix. Aide et PDF : une ligne « Chercher un sigle » dans Bon à savoir ; le PDF tient toujours sur 4 pages.
 
 - **Version 2.6 — aide, PDF et README alignés sur l'import de « BD Serie à completer »** (4 novembre 2026) : demande de Christophe après la 5ᵉ mise à jour delta. Seul le texte change (sujet « Ajouter de nouvelles BD » de l'aide et du PDF, toujours générés depuis la même source et donc identiques mot pour mot ; sections pipeline et delta du README). Numéro 2.6 reporté sur les quatre liens de `index.html` et les trois de `uploader.html`. Le PDF tient toujours sur 4 pages. Suites repassées : Réglages (54), barre alphabétique (27), vignettes (16), recherche (19), page d'envoi (30), lots 3 et 4.
 

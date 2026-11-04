@@ -26,8 +26,8 @@
      livraison, dans les quatre liens (et les trois de uploader.html), pour forcer les navigateurs (iPhone compris) à recharger.
      themes.js est volontairement bloquant et placé AVANT style.css : il pose le thème
      mémorisé (et charge ses polices) avant le premier affichage. -->
-<script src="themes.js?v=2.6"></script>
-<link rel="stylesheet" href="style.css?v=2.6">
+<script src="themes.js?v=2.7"></script>
+<link rel="stylesheet" href="style.css?v=2.7">
 </head>
 <body>
 
@@ -278,6 +278,7 @@
               <div class="help-body">
               <ul>
               <li><b>Synchronisation</b> : une modification faite sur le PC apparaît sur l'iPhone sans recharger la page, et inversement.</li>
+              <li><b>Chercher un sigle</b> : tape-le avec ses points ou son $ (« I.R.$ », « M.A.D », « W.I.T.C.H ») pour ne trouver que la série. Sans les points (« irs »), la recherche porte aussi sur l'intérieur des mots (« soirs »).</li>
               <li><b>Thème</b> : il est choisi appareil par appareil, dans Réglages → Thème.</li>
               <li><b>Barre alphabétique</b> : en haut de la grille, # puis A à Z. Elle reste visible quand tu fais défiler ; touche une lettre pour sauter directement aux titres qui commencent par elle (# : chiffres et signes). Une lettre grisée n'a aucune BD. Elle suit les filtres (One-shots, genre…) et s'efface quand une recherche donne moins de 40 résultats.</li>
               <li><b>Page Réglages</b> : chaque partie se plie ou se déplie en touchant son titre, et « Tout déplier · Tout replier » agit sur toutes à la fois. L'appareil se souvient de ce que tu as replié. « ← Retour à la bibliothèque » (ou le retour du téléphone) te ramène à l'endroit où tu étais dans la grille.</li>
@@ -383,7 +384,7 @@
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=2.6"></script>
-<script src="app.js?v=2.6"></script>
+<script src="config.js?v=2.7"></script>
+<script src="app.js?v=2.7"></script>
 </body>
 </html>

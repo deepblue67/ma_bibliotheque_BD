@@ -12,7 +12,7 @@
   // Version de la livraison — à augmenter à CHAQUE livraison (+0.1 pour une livraison
   // ordinaire, +1.0 pour une refonte), avec le même numéro dans les quatre ?v= de
   // index.html et une ligne dans l'historique « Versions » du README.
-  var APP_VERSION = "2.6";
+  var APP_VERSION = "2.7";
   var APP_VERSION_DATE = "2026-11-04";
 
   // ---------- mode propriétaire ----------
@@ -471,6 +471,20 @@
       .replace(/\s+/g, " ").trim();
   }
 
+  // Sigles (version 2.7) : « I.R.$. », « W.I.T.C.H », « G.I. Joe » s'écrivent avec des points
+  // entre des lettres isolées. normalize() en fait des lettres séparées (« i r »), qui se
+  // retrouvent dans presque tous les titres : chercher « I.R.$ » noyait la série dans 1 500
+  // résultats. Ici, une suite de lettres isolées séparées par des points est recollée
+  // (« I.R.$ » → « irs », « G.I. Joe » → « gi joe ») et le signe $ compte comme un S.
+  // L'index garde les deux formes, la requête est réduite à la forme recollée.
+  var ACRONYM_RE = /(^|[^\p{L}\p{N}])((?:[\p{L}\p{N}]\.)+[\p{L}\p{N}])(?=\.|[^\p{L}\p{N}]|$)/gu;
+  function normalizeQ(s) {
+    s = (s || "").toString().replace(/\$/g, "s")
+      .replace(ACRONYM_RE, function (m, before, acr) { return before + acr.replace(/\./g, ""); });
+    return normalize(s);
+  }
+  function both(s) { var a = normalize(s), b = normalizeQ(s); return a === b ? a : a + " " + b; }
+
   // Index de recherche precalcule une fois au chargement : titre de la serie
   // + titres de tous ses tomes (on retrouve Thorgal en tapant « magicienne trahie »).
   // La recherche ne porte que sur ce qui est AFFICHÉ (version 2.4, demande de Christophe) :
@@ -483,17 +497,24 @@
     entries.forEach(function (e) {
       var labels = (e._vis || []).map(function (i) { return e._labels[i]; }).join(" ");
       var merged = (e._merged || []).map(function (m) { return (state.overrides[m.id] || {}).title || m.title; }).join(" ");
-      e._qTitle = " " + normalize(e.title) + " ";
-      e._qAll = " " + normalize(e.title + " " + merged + " " + labels) + " ";
-      e._qAuthor = " " + normalize(e.author || "") + " ";
+      e._qTitle = " " + both(e.title) + " ";
+      e._qAll = " " + both(e.title + " " + merged + " " + labels) + " ";
+      e._qAuthor = " " + both(e.author || "") + " ";
     });
   }
 
   // Tous les mots tapes doivent se retrouver, dans n'importe quel ordre.
+  // Un sigle tapé avec ses points ou son $ (« I.R.$ », « M.A.D ») doit être un mot entier :
+  // sinon « irs » se retrouverait aussi dans « soirs ». Tapé sans points (« irs »), il garde
+  // la recherche habituelle, à l'intérieur des mots.
   function hasAllWords(haystack, query) {
-    var words = normalize(query).split(" ");
+    var words = normalizeQ(query).split(" ");
+    var plain = " " + normalize(query) + " ";
     for (var i = 0; i < words.length; i++) {
-      if (words[i] && haystack.indexOf(words[i]) === -1) return false;
+      var w = words[i];
+      if (!w) continue;
+      var acronym = w.length > 1 && plain.indexOf(" " + w + " ") === -1;
+      if (haystack.indexOf(acronym ? " " + w + " " : w) === -1) return false;
     }
     return true;
   }
