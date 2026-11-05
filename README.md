@@ -1,6 +1,6 @@
 # Ma Bibliothèque BD
 
-Catalogue personnel de bandes dessinées de Christophe (**1279 séries, 990 one-shots, 8667 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
+Catalogue personnel de bandes dessinées de Christophe (**1283 séries, 991 one-shots, 8758 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
 
 > **Version actuellement livrée : 2.7 du 04/11/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
 >
@@ -50,7 +50,7 @@ ma-bibliotheque-bd/
 ├── genre_taxonomy.json    # liste fixe des genres, informatif (la vraie source pour l'appli
 │                        #   est le tableau GENRES dans app.js)
 ├── data/
-│   └── catalog.json     # catalogue généré (2269 entrées : 1279 séries + 990 one-shots)
+│   └── catalog.json     # catalogue généré (2274 entrées : 1283 séries + 991 one-shots)
 ├── pending_covers.json   # FICHIER DE TRAVAIL d'une mise à jour "delta" : liste des tomes
 │                        #   dont la couverture reste à extraire (voir "Mise à jour du
 │                        #   catalogue en mode delta"). Peut être supprimé une fois
@@ -488,6 +488,15 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 Les livraisons antérieures n'étaient pas numérotées ; leur détail est dans l'historique ci-dessous.
 
 ## Historique des décisions notables
+
+- **6ᵉ mise à jour delta** (5 novembre 2026) : Christophe a **renommé** `BD Unique` en `-- BD Unique` et `BD Serie à completer` en `-- BD Séries à compléter`. Les scripts (`outils_delta/commun.py`) prennent le nom présent sur le disque, les anciens restant acceptés, et ignorent désormais comme série **tout dossier dont le nom commence par `--`**. Résultat : **4 nouvelles séries** (*Druuna*, Serpieri, 11 albums dont 2 hors-séries ; *Valhalla Hotel* ; *Esclave à Shanghaï* ; *Les sbires du Donjon de Naheulbeuk*), **27 séries enrichies** (surtout des fiches nées hier d'un tome isolé et désormais complétées : *Murena* 1 → 13, *Mashle* 1 → 8, *Machines de Guerre* 1 → 7, *Elric* 1 → 6, *Space Reich* 1 → 6, *Sangre* 1 → 5…), 4 tomes ajoutés depuis `-- BD Séries à compléter` (100 Bullets 3, Le Secret de Scarecrow 4, Les suites vénitiennes 9, Triple galop 15) et **1 one-shot** (*Druuna - Les origines*). Catalogue : 2269 → **2274 entrées** (1283 séries + 991 one-shots), 8667 → **8758 albums**. 91 couvertures (dossier `volume_covers_delta_5nov/`). Pas de changement de version de l'appli.
+  - **Remise dans l'ordre, exceptionnellement** : ces fiches nées d'un tome isolé (Murena 13, Mashle 7…) auraient affiché le tome isolé en premier, puis les tomes 1, 2, 3… ajoutés à la fin. Comme le prévoit la règle de la section delta, une fiche **sans aucune coche, correction ni favori** peut être réordonnée : vérifié en lisant Supabase (aucune ligne `bd_volume_status`, `bd_overrides` ni `bd_status` pour ces 27 fiches), puis listé dans `outils_delta/etat/reordonnables.json`, que `4_fusion.py` utilise pour trier ces fiches par numéro de tome et que `6_finir.py --installer` archive (la liste est à refaire, avec la même vérification, à chaque fois). 24 fiches ont été réordonnées ; `6_finir.py` vérifie qu'aucun tome ni aucune couverture n'est perdu.
+  - **Dossiers rapprochés d'une fiche existante** (nouveau, automatique : accents, casse et ponctuation ignorés) : `Machines de guerre` → *Machines de Guerre*, `Rani Lakshmi Bai, la séditieuse` → *Rani Lakshmi Bai la séditieuse*, `L'école des petits monstres` → *L'ecole des petits monstres* (ce dernier dossier est un **doublon** de l'ancien `L'ecole des petits monstres`, toujours présent : rien n'est ajouté).
+  - **Nouvelles règles permanentes** (`etat/regles.json`) : séparations `Valhalla` (→ *Valhalla Bunker* et *Valhalla Hotel*, deux séries de Bedouel), `Druuna` (→ *Druuna* et *Druuna au commencement*), `Dakota` (→ *Dakota (Paliaga, Rubino)* pour `Héritage_mécanique`) ; `a_completer` : `Les_Piliers_de_la_Terre_Tome_` → *Les pilliers de la terre* ; nouvelle clé `ignorer` : `Le Déviant/Le_Déviant_Tome_02 Un_conte_de_Noël.pdf`, copie du tome 2 sur le disque.
+  - **Corrigé dans les scripts** : un tome de `-- BD Séries à compléter` déjà rattaché à une fiche d'un autre nom (*Titans* tome 4) n'était pas reconnu au delta suivant et aurait été ajouté une 2ᵉ fois ; le libellé posé (sous-titre seul) est désormais comparé aussi. Les nouveaux tomes dont le nom de fichier ne commence pas par le titre de la fiche reçoivent leur sous-titre (ou « Tome NN ») plutôt que le nom de fichier entier.
+  - **Écartés** (one-shots de `-- BD Unique`) : *18, 20, 30 et 40 ans en BD*, déjà au catalogue depuis hier (fiches créées depuis `BD Serie à completer`, fichiers déplacés depuis).
+  - Copies à supprimer dans `-- BD Séries à compléter` : `I.R.$._Tome_26_L'Art_du_profit.pdf` (déjà dans le dossier I.R.$) ; `Arcanes_Tome_10_Santa_Sangre.pdf` concerne une série à sous-dossiers, à ranger à la main (ou à ajouter avec `7_ajouter_tome.py`).
+  - Couvertures avec nudité : *Druuna* (presque toute la série), *Esclave à Shanghaï*, *Hellina*.
 
 - **I.R.$ tome 26 ajouté à la main** (4 novembre 2026) : Christophe l'a rangé dans le dossier de la série (`I.R.$. [HD]/I.R.$. [HD]/`, à côté des tomes 24 et 25). Comme les 21 dossiers à sous-dossiers ne sont jamais traités automatiquement, il est ajouté par le nouveau script `outils_delta/7_ajouter_tome.py` (ajout manuel d'un tome à la fin d'une fiche existante, puis `5_couvertures.py` et `6_finir.py` comme d'habitude). Fiche *I.R.$. [HD]* : 25 → 26 tomes ; catalogue 8666 → **8667 albums**. Couverture `I_R_HD_026.jpg`, copiée dans `volume_covers_delta_4nov/`. Une copie du fichier reste dans `BD Serie à completer` : elle sera signalée à chaque delta comme « série à sous-dossiers » tant qu'elle y est. Pas de changement de version.
 

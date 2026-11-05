@@ -3275,6 +3275,22 @@
   ],
   "source": "oneshot_pass1"
  },
+ "Druuna": {
+  "genres": [
+   "Science-fiction",
+   "Fantastique / Horreur"
+  ],
+  "confidence": "high",
+  "source": "pass3"
+ },
+ "Druuna_-_Les_origines": {
+  "genres": [
+   "Science-fiction",
+   "Fantastique / Horreur"
+  ],
+  "confidence": "high",
+  "source": "oneshot_delta"
+ },
  "Druuna_au_commencement": {
   "genres": [
    "Science-fiction",
@@ -3687,6 +3703,14 @@
    "Humour"
   ],
   "source": "pass2_web"
+ },
+ "Esclave_à_Shanghaï": {
+  "genres": [
+   "Historique",
+   "Drame / Chronique sociale"
+  ],
+  "confidence": "low",
+  "source": "a_completer"
  },
  "Esprit_du_Vent": {
   "confidence": "low",
@@ -10487,6 +10511,14 @@
   ],
   "source": "oneshot_pass1"
  },
+ "Les_sbires_du_Donjon_de_Naheulbeuk": {
+  "genres": [
+   "Fantasy",
+   "Humour"
+  ],
+  "confidence": "high",
+  "source": "a_completer"
+ },
  "Les_seigneurs_de_la_Terre": {
   "confidence": "low",
   "genres": [
@@ -15947,6 +15979,14 @@
   ],
   "confidence": "medium",
   "source": "a_completer"
+ },
+ "Valhalla_Hotel": {
+  "genres": [
+   "Policier / Thriller",
+   "Humour"
+  ],
+  "confidence": "medium",
+  "source": "pass3"
  },
  "Varulf": {
   "genres": [
