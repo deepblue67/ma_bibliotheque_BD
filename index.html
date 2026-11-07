@@ -26,8 +26,8 @@
      livraison, dans les quatre liens (et les trois de uploader.html), pour forcer les navigateurs (iPhone compris) à recharger.
      themes.js est volontairement bloquant et placé AVANT style.css : il pose le thème
      mémorisé (et charge ses polices) avant le premier affichage. -->
-<script src="themes.js?v=2.9"></script>
-<link rel="stylesheet" href="style.css?v=2.9">
+<script src="themes.js?v=3.0"></script>
+<link rel="stylesheet" href="style.css?v=3.0">
 </head>
 <body>
 
@@ -60,6 +60,14 @@
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19V6a2 2 0 0 1 2-2h9l5 5v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M14 4v5h5"/></svg>
         <select id="filter-genre">
           <option value="">Tous les genres</option>
+        </select>
+      </div>
+      <!-- 3.0 : tri de la grille (mémorisé sur l'appareil) -->
+      <div class="field field-select field-sort">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16"/><path d="M3 16l4 4 4-4"/><path d="M17 20V4"/><path d="M13 8l4-4 4 4"/></svg>
+        <select id="sort-by" aria-label="Trier par">
+          <option value="title">Titre (A → Z)</option>
+          <option value="recent">Ajoutés récemment</option>
         </select>
       </div>
       <div class="chips">
@@ -102,6 +110,15 @@
       <div class="set-body">
         <p class="settings-hint">Le changement est immédiat. Le thème est mémorisé sur cet appareil : ton iPhone et ton PC peuvent avoir chacun le leur.</p>
         <div id="theme-grid" class="theme-grid"></div>
+      </div>
+    </section>
+    <section class="set-block" data-sec="stats">
+      <button type="button" class="set-head" aria-expanded="true">
+        <span class="t">Statistiques</span><span class="rule" aria-hidden="true"></span>
+      </button>
+      <div class="set-body">
+        <p class="settings-hint">La bibliothèque en chiffres : séries, albums, genres, auteurs les plus présents et dates des derniers ajouts.</p>
+        <div class="owner-row"><a id="stats-open" class="btn" href="#/stats">Voir les statistiques</a></div>
       </div>
     </section>
     <section class="set-block" data-sec="owner">
@@ -258,7 +275,19 @@
               <li>les titres corrigés, et sinon nettoyés des marques de rangement (« _CDS_ », « MANQUE… », « [HD] », « (68-95) »…), sans les fiches ni les tomes masqués, ni les fiches réservées ;</li>
               <li>les fiches fusionnées, déjà regroupées.</li>
               </ul>
-              <p>Ils peuvent chercher, filtrer par genre, Séries / One-shots, sauter à une lettre avec la barre alphabétique, ouvrir et partager une fiche, agrandir une couverture et choisir un thème. Toi, tu vois les titres bruts, pour repérer ce qui reste à renommer : la fiche indique ce que voient les visiteurs.</p>
+              <p>Ils peuvent chercher, filtrer par genre, Séries / One-shots, trier par titre ou par date d'ajout, sauter à une lettre avec la barre alphabétique, ouvrir et partager une fiche, agrandir une couverture, consulter les statistiques et choisir un thème. Toi, tu vois les titres bruts, pour repérer ce qui reste à renommer : la fiche indique ce que voient les visiteurs.</p>
+              </div>
+            </details>
+            <details class="help-item" id="aide-nouveautes">
+              <summary>Nouveautés, tri et statistiques</summary>
+              <div class="help-body">
+              <p><b>Trier</b> : le menu à côté des genres range la grille par <b>Titre (A → Z)</b> ou par <b>Ajoutés récemment</b>. Dans ce second cas, un séparateur par date d'import remplace les lettres, et une série qui reçoit de nouveaux tomes remonte à la date de ces tomes. Chaque appareil garde son choix.</p>
+              <ul>
+              <li><b>Pastilles</b> : <b>Nouveau</b> sur une fiche arrivée au dernier import, <b>+3 tomes</b> sur une série qui y a reçu des tomes ; dans la fiche, ces tomes portent la mention <b>nouveau</b>. Tout le monde les voit, pendant 30 jours après l'import.</li>
+              <li><b>Date d'ajout</b> : sous le nombre de tomes, la fiche indique quand elle est arrivée et, s'il y a lieu, la date de ses derniers tomes.</li>
+              <li><b>Tomes manquants</b> (toi seul) : « Il manque les tomes 1 à 12 », d'après les numéros de tome. Ce qui manque après le dernier tome que tu as n'apparaît pas, et une fiche aux numéros incertains n'affiche rien.</li>
+              <li><b>Statistiques</b> : Réglages → <b>Statistiques</b> → <b>Voir les statistiques</b>. Chiffres de la bibliothèque, ajouts par date d'import, genres et auteurs les plus présents : touche un genre ou un nom pour voir ses BD. Toi, tu vois aussi tes lectures et la liste des séries incomplètes, dont chaque titre ouvre la fiche.</li>
+              </ul>
               </div>
             </details>
             <details class="help-item" id="aide-ajout">
@@ -269,7 +298,7 @@
               <li>Range-les dans <code>D:\Christophe\Mes BD</code> : une série par dossier, les albums sans suite dans <code>-- BD Unique</code>, et les tomes isolés d'une série que tu n'as pas en entier dans <code>-- BD Séries à compléter</code>, sous la forme <code>Série_Tome_NN_Titre.pdf</code>.</li>
               <li>Dis à Claude <b>« fais le delta BD »</b> : seules les nouveautés sont ajoutées, sans toucher à ce qui existe. Les dossiers <code>1 2 3 A CLASSER</code>, <code>1 2 3 A TRIER</code>, <code>Nouveau dossier…</code> et ceux dont le nom commence par <code>--</code> ne sont jamais des séries.</li>
               <li>Envoie les nouvelles couvertures : Réglages → <b>Envoi des couvertures</b> → <b>Ouvrir la page d'envoi des couvertures</b>. Colle la clé « service_role » (Supabase → Project Settings → API Keys), choisis le dossier <code>volume_covers_delta_&lt;date&gt;</code> indiqué par Claude, puis <b>Envoyer vers Supabase</b>.</li>
-              <li>Publie sur GitHub les fichiers indiqués, surtout <code>data/catalog.json</code>.</li>
+              <li>Publie sur GitHub les fichiers indiqués, surtout <code>data/catalog.json</code> et <code>data/version.json</code>, toujours ensemble.</li>
               </ol>
               <p>Un tome de <code>-- BD Séries à compléter</code> rejoint la fiche de sa série si elle existe déjà ; sinon il crée une nouvelle fiche, que les tomes suivants rejoindront. S'il est déjà dans le dossier de sa série, il est ignoré. Les séries rangées en sous-dossiers (Tintin, I.R.$…) sont à classer à la main.</p>
               <p>Tes corrections, masquages, fusions et coches survivent à l'import. La clé « service_role » n'est jamais enregistrée : colle-la à chaque envoi, et ne la mets dans aucun fichier du site. La page d'envoi s'ouvre seulement sur un appareil déverrouillé.</p>
@@ -299,6 +328,14 @@
   </section>
 
   <!-- Page Doublons probables (#/doublons, propriétaire) -->
+  <!-- Page Statistiques (#/stats, 3.0) : visible de tous ; lectures et séries incomplètes
+       en plus pour le propriétaire. -->
+  <section id="stats-page" class="page stats-page" aria-labelledby="stats-title" hidden>
+    <a class="back-link" href="#/reglages">← Retour aux réglages</a>
+    <h2 id="stats-title" class="page-title">Statistiques</h2>
+    <div id="stats-body"></div>
+  </section>
+
   <section id="dups-page" class="page dups-page" aria-label="Doublons probables" hidden>
     <a class="back-link" href="#/reglages">← Retour aux réglages</a>
     <div id="dups-body"></div>
@@ -324,6 +361,8 @@
         <p id="sheet-merged" class="sheet-merged owner-only" hidden></p>
         <p id="sheet-public" class="sheet-orig owner-only" hidden></p>
         <div id="sheet-meta" class="sheet-meta"></div>
+        <p id="sheet-added" class="sheet-added" hidden></p>
+        <p id="sheet-missing" class="sheet-missing owner-only" hidden></p>
         <div id="sheet-genres" class="sheet-genres"></div>
         <div class="sheet-share">
           <button id="btn-share" class="btn btn-ghost share-btn" type="button">
@@ -401,7 +440,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"
         integrity="sha384-0w2KAL2YHP6wKOkUDzkCDGgVvfmHnj02DHeQ6XcHOgTfFsGyonKOpShMH1x6nk9o"
         crossorigin="anonymous"></script>
-<script src="config.js?v=2.9"></script>
-<script src="app.js?v=2.9"></script>
+<script src="config.js?v=3.0"></script>
+<script src="app.js?v=3.0"></script>
 </body>
 </html>

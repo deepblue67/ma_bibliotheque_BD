@@ -2,7 +2,7 @@
 
 Catalogue personnel de bandes dessinées de Christophe (**1283 séries, 991 one-shots, 8758 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
 
-> **Version actuellement livrée : 2.9 du 07/11/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
+> **Version actuellement livrée : 3.0 du 07/11/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
 >
 > **Mode d'emploi** : ce README est la documentation **technique** du projet. Le mode d'emploi **du propriétaire** est ailleurs : dans l'appli (Réglages → Aide, visible en mode propriétaire seulement) et en PDF (`Mode_emploi_proprietaire.pdf`). Voir la section « Aide et mode d'emploi ».
 >
@@ -90,18 +90,22 @@ Depuis le passage au **suivi de lecture par tome**, chaque volume a sa propre co
   "volume_count": 43,
   "volumes": [
     { "label": "La Magicienne trahie", "cover": "Thorgal_001.jpg", "n": 1 },
-    { "label": "L'Île des Mers gelées", "cover": "Thorgal_002.jpg", "n": 2 }
+    { "label": "L'Île des Mers gelées", "cover": "Thorgal_002.jpg", "n": 2 },
+    { "label": "Le Bateau-sabre", "cover": "Thorgal_043.jpg", "n": 43, "added": "2026-11-20" }  // tome ajouté après la fiche (exemple)
   ],
   "cover": "Thorgal_001.jpg",       // = volumes[0].cover, utilisé pour la vignette de la grille
   "parent_series": null,            // ex: "Thorgal" pour l'entrée "Thorgal - Les mondes de Thorgal"
   "genre": ["Fantasy", "Aventure"], // 0 à 2 valeurs, tirées de la liste fixe — voir section "Genres"
-  "one_shot": true                  // PRÉSENT UNIQUEMENT sur les one-shots (absent = série)
+  "one_shot": true,                 // PRÉSENT UNIQUEMENT sur les one-shots (absent = série)
+  "added": "2026-09-01"             // date d'ajout de la fiche (depuis la 3.0)
 }
 ```
 
 Un **one-shot** est une entrée ordinaire avec un seul tome, dont le libellé est le titre de l'album, et `one_shot: true`. Il passe donc par exactement le même code que les séries : coche « lu » sur son unique tome (clé Supabase `"<id>::0"`), favoris, genre, recherche. Aucune table ni colonne Supabase n'a été ajoutée pour eux.
 
 **`n` et `hs` (depuis la 2.9)** : numéro réel du tome et `"hs": true` pour un hors-série, tirés du **nom de fichier** (« …Tome_13… », « Tome 01 - … », « HS_02 »), jamais de la position dans la liste. Ajoutés une première fois le 7 novembre 2026 par un script ponctuel (7 480 tomes de série sur 7 767 ; les autres n'ont pas de numéro dans leur nom de fichier), puis à chaque nouveau tome par `4_fusion.py` et `7_ajouter_tome.py`. L'appli s'en sert seulement pour l'affichage (voir l'historique, « Versions 2.8 et 2.9 »).
+
+**`added` (depuis la 3.0)** : date d'ajout, au format `AAAA-MM-JJ`. Toujours présente sur la fiche (date de son premier import) ; présente sur un tome seulement quand il est arrivé **après** sa fiche (série enrichie). Pour les tomes déjà au catalogue le 7 novembre 2026, ces dates ont été reprises une fois pour toutes de **l'historique GitHub** de `data/catalog.json` : date du premier commit où le tome apparaît, reconnu par sa couverture (1er septembre 2026 pour le premier import, puis 14 et 16 octobre, 24, 27 et 31 octobre, 4 et 5 novembre). Ensuite, `4_fusion.py` et `7_ajouter_tome.py` notent la date du delta. L'appli s'en sert pour le tri « Ajoutés récemment », les pastilles « Nouveau » et les statistiques (section « Nouveautés, tri et statistiques »).
 
 `cover` (au niveau tome ou titre) peut être `null` si l'extraction a échoué pour ce fichier (ex : `.cbr`, PDF corrompu) — l'appli affiche alors une case vide à la place de l'image.
 
@@ -248,7 +252,7 @@ Les BD sources vivent dans `D:\Christophe\Mes BD` (dossier = un titre, fichiers 
 4. Claude choisit les genres (deux au plus, liste fermée) et vérifie titres et auteurs des one-shots dans `etat/research.json` ;
 5. `4_fusion.py` : fusion *append-only* dans `etat/build/` ;
 6. `5_couvertures.py 95` : couvertures PDF, CBZ ou CBR, à relancer jusqu'à « reste 0 » ;
-7. `6_finir.py` : contrôles et planche contact des couvertures ; puis `6_finir.py --installer`, qui sauvegarde l'ancien catalogue dans `etat/sauvegardes/<date>/`, installe le nouveau et copie les couvertures dans `volume_covers_delta_<date>/`.
+7. `6_finir.py` : contrôles (dont, depuis la 3.0, une date d'ajout `added` sur chaque fiche et aucune date de tome existant modifiée) et planche contact des couvertures ; puis `6_finir.py --installer`, qui sauvegarde l'ancien catalogue dans `etat/sauvegardes/<date>/`, installe le nouveau et copie les couvertures dans `volume_covers_delta_<date>/`.
 
 `etat/regles.json` garde les règles permanentes, jamais remises à zéro : `separations` met à part, dans une fiche distincte, les fichiers d'un dossier qui mélange deux séries (motif regex sur le nom de fichier) ; `a_completer` force la fiche d'un tome de `BD Serie à completer` (motif regex → titre de fiche, ex. `Titans_Tome_NN` → *Titans Oxymore Éditions*). `etat/oneshots_importes.json` liste les fichiers de `BD Unique` déjà traités, importés ou écartés : ce sont eux qui ne reviendront pas comme nouveautés. Les explications qui suivent décrivent les règles que ces scripts appliquent.
 
@@ -433,6 +437,18 @@ Depuis octobre 2026, `D:\Christophe\Mes BD\BD Unique` contient les BD **sans sui
 
 **Couvertures `.cbr` enfin lisibles** : le pipeline initial ne savait pas ouvrir les archives RAR (pas d'`unrar` sur la VM). Le paquet Python `libarchive-c`, qui s'appuie sur `libarchive` déjà présent, les lit très bien. `extract_covers_generic.py` (VM, `~/bd-catalog/`) gère donc PDF, CBZ et CBR à partir d'un fichier `pending_*.json`. Effet de bord : **46 des 48 tomes anciens restés sans couverture** en ont maintenant une (dont les 37 *Astérix*). Les 2 restants sont des **fichiers abîmés sur le disque** : `Jeremiah/Divers/Le monde selon Jeremiah.pdf` ne contient que des zéros, et l'intégrale 4 de *The Boys* est un PDF sans aucune page. Un `.cbz` de *La geste des chevaliers dragons* était en réalité une archive RAR renommée.
 
+## Nouveautés, tri et statistiques (version 3.0)
+
+Lot « 3.1 — Nouveautés et tri » de la revue de code du 7 novembre 2026, livré en version 3.0. Tout repose sur le champ `added` du catalogue (voir le schéma).
+
+- **Tri** : menu à côté des genres, **Titre (A → Z)** (par défaut, avec la barre alphabétique) ou **Ajoutés récemment**. Ce second tri range les fiches par **dernière** date d'ajout (fiche ou tome visible le plus récent : une série enrichie remonte), puis par titre ; un séparateur par date (« Ajoutés le 5 novembre 2026 ») remplace les lettres et la barre alphabétique disparaît. Le choix est mémorisé sur l'appareil (`localStorage`, clé `bd_tri_v1`). Visible de tous.
+- **Pastilles** (visibles de tous), en haut à gauche de la vignette : **Nouveau** pour une fiche arrivée au dernier import, **+3 tomes** pour une série existante qui y a reçu des tomes ; dans la fiche, ces tomes portent la mention « nouveau ». « Dernier import » = la date d'ajout la plus récente du catalogue et les 7 jours qui la précèdent (un import en plusieurs fois, comme les 4 et 5 novembre) ; la pastille reste 30 jours après l'import (`NEW_DAYS`, `NEW_BURST_DAYS` dans `app.js`). Sans la limite des 7 jours, le premier mois aurait marqué « Nouveau » les 968 one-shots importés le 16 octobre.
+- **Date d'ajout dans la fiche** (tous) : « Fiche ajoutée le 27 octobre 2026 · derniers tomes ajoutés le 5 novembre 2026 », ou « Ajouté le … » pour un one-shot.
+- **Tomes manquants** (propriétaire) : « Il manque les tomes 1 à 12 », sous la date d'ajout. Calculés seulement sur les fiches aux numéros sûrs (les mêmes que celles qui affichent les vrais numéros), entre 1 et le plus grand numéro : ce qui manque **après** le dernier tome n'est pas visible. Garde-fous : un numéro qui figure dans le titre (« 60 ans en BD ») ne compte pas ; une numérotation à 100 et plus à côté de 1, 2, 3 (*Donjon Crépuscule* : 1 à 9 et 113) est ignorée. Au 7 novembre 2026 : 43 séries, 179 tomes manquants. Quelques cas restent trompeurs (*Blandice*, numérotée dans une collection d'éditeur) : c'est une indication, pas une vérité.
+- **Page Statistiques** (`#/stats`, Réglages → Statistiques, visible de tous) : séries, one-shots, albums, auteurs ; tableau des ajouts par date d'import ; barres par genre et des 10 auteurs les plus présents (toucher un genre ou un nom ouvre la grille filtrée) ; bouton vers le tri « Ajoutés récemment ». Le propriétaire voit en plus **ses lectures** (albums lus, fiches lues, en cours, pas commencées, favoris) et la **liste des séries incomplètes**, dont chaque titre ouvre la fiche. Calculs faits sur les fiches affichées : sans les fiches masquées, ni les fiches réservées pour un visiteur.
+
+Code : `newCutoff()`, `newInfo()`, `missingTomes()`, `rangesText()`, `dateHead()`, `renderStats()` dans `app.js` ; styles `.card-new`, `.date-head`, `.sheet-added`, `.sheet-missing`, `.vol-new` et `.st-*` dans `style.css`. Suite de tests : `test13_v30.js` (44 vérifications).
+
 ## Points restés ouverts (au moment de la rédaction)
 
 **46 BD sans genre identifié** (toutes antérieures à octobre 2026 : les 150 séries ajoutées ensuite ont toutes au moins un genre) (voir section "Genres" ci-dessus pour la méthode) — champ `genre: []`, invisibles au filtre genre tant qu'elles n'ont pas été classées manuellement dans `genre_map.json`. Par ailleurs, une bonne partie des genres non vérifiés en ligne (`confidence: "low"` dans `genre_map.json`) restent des estimations à corriger au fil de l'eau si une erreur saute aux yeux.
@@ -481,6 +497,7 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 
 | Version | Date | Contenu |
 |---|---|---|
+| 3.0 | 07/11/2026 | **Nouveautés, tri et statistiques** (lot « 3.1 » de la revue) : date d'ajout dans le catalogue (`added`, reprise de l'historique GitHub puis notée par chaque delta) ; tri **Ajoutés récemment** avec un séparateur par date ; pastilles **Nouveau** / **+3 tomes** pendant 30 jours après un import ; date d'ajout dans la fiche ; **tomes manquants** pour le propriétaire ; page **Statistiques** (`#/stats`). Aide et PDF mis à jour (5 pages). |
 | 2.9 | 07/11/2026 | **Fiches plus lisibles** : vrais numéros de tome (« HS1 » pour un hors-série) et tomes rangés dans l'ordre quand les numéros sont sûrs ; libellés sans le nom de la série répété ; adresse propre à chaque fiche (`#/fiche/<id>`) et bouton **Partager cette fiche** ; **fiches réservées au propriétaire** (colonne `owner_only`, script SQL à relancer). Livrée avec la 2.8. Aide et PDF mis à jour (5 pages). |
 | 2.8 | 07/11/2026 | **Petits gains sûrs** (livrée avec la 2.9) : `supabase-js` figé en 2.45.4 avec empreinte `integrity` ; catalogue mis en cache jusqu'au delta suivant (`data/version.json`) ; vignettes utilisables au clavier et annoncées par VoiceOver ; focus dans la fiche à l'ouverture, Tab qui y reste, retour sur la vignette à la fermeture ; titres nettoyés pour les visiteurs ; nouveaux noms des dossiers `-- BD Unique` et `-- BD Séries à compléter` dans l'aide. |
 | 2.7 | 04/11/2026 | **Recherche des sigles** : « I.R.$ » ne trouve plus que la série I.R.$ (avant : 1 580 résultats) ; « W.I.T.C.H », « G.I. Joe », « M.A.D » se cherchent avec ou sans points. Une ligne dans l'aide et le PDF (Bon à savoir). |
@@ -495,6 +512,11 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 Les livraisons antérieures n'étaient pas numérotées ; leur détail est dans l'historique ci-dessous.
 
 ## Historique des décisions notables
+
+- **Version 3.0 — nouveautés, tri et statistiques** (7 novembre 2026) : Christophe a demandé le lot « 3.1 » de la revue de code (le lot « 3.0 — sécurité » reste à faire) ; il est livré sous le numéro 3.0, la règle des versions ajoutant 0.1 par livraison. Ses choix : pastille visible de tous pendant 30 jours ; tomes manquants pour lui seul, dans la fiche et en liste dans les statistiques ; statistiques visibles de tous, lectures pour lui seul. Détails dans la section « Nouveautés, tri et statistiques ».
+  - **Dates reprises de GitHub** : les sauvegardes du delta (`outils_delta/etat/sauvegardes/`) ne remontaient qu'au 27 octobre. L'historique public du dépôt garde, lui, toutes les versions de `data/catalog.json` depuis le 1er septembre : chaque tome reçoit la date du premier commit qui le contient (reconnu par sa couverture ; les 46 tomes qui n'avaient pas encore de couverture en octobre sont suivis par leur position). Contrôle : 6 323 + 806 + 972 + 229 + 77 + 14 + 246 + 91 = 8 758 albums. Le catalogue grossit de 53 Ko (1,25 Mo).
+  - **Outils du delta** : `4_fusion.py` et `7_ajouter_tome.py` notent `added` (variable `BD_DATE` pour forcer une date) ; `6_finir.py` refuse une fiche sans date ou une date de tome existant modifiée. **Corrigé au passage** dans `4_fusion.py` : un tome libellé « Tome 02 » au delta précédent parce que son nom de fichier ne commence pas par le titre de la fiche (`Rani_Lakshmi_Bai,_la_séditieuse_Tome_02.pdf`, virgule) n'était pas reconnu et aurait été ajouté une seconde fois au delta suivant. Vérifié en rejouant le delta du 5 novembre sur le catalogue daté : seuls les fichiers ajoutés pour l'essai ressortent, avec leur date.
+  - **Tests** : nouvelle suite `test13_v30.js` (44 vérifications, horloge figée au 8 novembre : pastilles, tri et mémoire du tri, séparateurs, dates dans la fiche, tomes manquants et garde-fous, statistiques visiteur et propriétaire, liens vers la grille filtrée, Échap, lien direct, iPhone sans débordement). Les suites Réglages (54, portées à 7 sections), barre alphabétique (27), vignettes (16), recherche (19), envoi des couvertures (30), sigles (17) et 2.9 (40) repassent, sur l'ancien catalogue comme sur le catalogue daté ; lots 3 et 4 identiques.
 
 - **Versions 2.8 et 2.9 — revue de code, premiers lots** (7 novembre 2026) : Christophe a validé les deux premiers lots de la revue de code du 7 novembre ; ils sont livrés ensemble.
   - **Titres nettoyés pour les visiteurs seulement.** Les marques de rangement des noms de dossiers (`_CDS_`, « MANQUE… », `CDS99`, « a renommer », `[HD]`, `(1DVD)`, `(complet 13)`, compteurs `(68-95)` ou `(9-9 + 0-7 HS)`) sont retirées à l'affichage, et « Donjon - Donjon Zénith » devient « Donjon Zénith » (`cleanTitle()`). Les années entre parenthèses (« (1870-1950) ») sont gardées : seuls les nombres de 1 à 3 chiffres sont des compteurs. Le propriétaire garde le **titre brut**, pour continuer à repérer en cherchant « CDS » ce qui reste à renommer (décision de la 2.4) ; sa fiche indique « Les visiteurs voient « … » ». Une correction de titre l'emporte toujours. 74 titres concernés.

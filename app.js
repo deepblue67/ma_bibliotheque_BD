@@ -12,7 +12,7 @@
   // Version de la livraison — à augmenter à CHAQUE livraison (+0.1 pour une livraison
   // ordinaire, +1.0 pour une refonte), avec le même numéro dans les quatre ?v= de
   // index.html et une ligne dans l'historique « Versions » du README.
-  var APP_VERSION = "2.9";
+  var APP_VERSION = "3.0";
   var APP_VERSION_DATE = "2026-11-07";
 
   // ---------- mode propriétaire ----------
@@ -51,6 +51,7 @@
     favorites: {},     // titleId -> { is_favorite }
     volumeRead: {},    // "titleId::idx" -> true
     filters: { title: "", author: "", read: false, unread: false, inprogress: false, fav: false, genre: "", kind: "" },
+    sort: "title",     // 3.0 : "title" (A → Z, barre alphabétique) ou "recent" (ajoutés récemment)
     activeId: null,
     activeVolIdx: 0,
   };
@@ -75,6 +76,7 @@
     filterFav: document.getElementById("filter-fav"),
     filterSeries: document.getElementById("filter-series"),
     filterOneshot: document.getElementById("filter-oneshot"),
+    sortBy: document.getElementById("sort-by"),
     overlay: document.getElementById("overlay"),
     sheetClose: document.getElementById("sheet-close"),
     sheetCover: document.getElementById("sheet-cover"),
@@ -221,6 +223,76 @@
     return s;
   }
 
+  // ---------- dates d'ajout, nouveautés, tomes manquants (3.0) ----------
+  // Le catalogue note la date d'ajout (AAAA-MM-JJ) : "added" sur chaque fiche (son premier
+  // import) et sur chaque tome ajouté plus tard à une fiche existante (outils_delta/4_fusion.py).
+  // Les dates d'avant novembre 2026 ont été reprises de l'historique GitHub de data/catalog.json.
+  // Pastille « Nouveau » / « +3 tomes » : ce qu'a apporté le DERNIER import (et ceux des 7 jours
+  // qui le précèdent, quand un import se fait en plusieurs fois), affiché pendant 30 jours.
+  // Sans cette limite, le premier mois aurait marqué « Nouveau » les 968 one-shots importés
+  // d'un coup le 16 octobre 2026.
+  var NEW_DAYS = 30, NEW_BURST_DAYS = 7;
+  var MOIS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août",
+              "septembre", "octobre", "novembre", "décembre"];
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
+  function isoDay(d) { return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); }
+  function addDays(iso, n) { var p = iso.split("-"); return isoDay(new Date(+p[0], +p[1] - 1, +p[2] + n)); }
+  function newCutoff() {
+    var a = addDays(isoDay(new Date()), -NEW_DAYS);
+    var b = state.latestAdd ? addDays(state.latestAdd, -NEW_BURST_DAYS) : a;
+    return a > b ? a : b;
+  }
+  function frDate(iso) {
+    var p = (iso || "").split("-");
+    if (p.length !== 3) return iso || "";
+    var j = parseInt(p[2], 10);
+    return (j === 1 ? "1er" : j) + " " + MOIS[parseInt(p[1], 10) - 1] + " " + p[0];
+  }
+  // Pastille de la vignette : « Nouveau » pour une fiche arrivée depuis moins de NEW_DAYS jours,
+  // « +3 tomes » pour une série existante qui a reçu des tomes pendant ce temps.
+  function newInfo(e, cut) {
+    if (!e._lastAdded || e._lastAdded < cut) return null;
+    if (e._added && e._added >= cut) return { text: "Nouveau", aria: "nouveauté" };
+    var n = e._vis.filter(function (p) { return e._adds[p] && e._adds[p] >= cut; }).length;
+    if (!n) return null;
+    return { text: "+" + n + (n > 1 ? " tomes" : " tome"), aria: n + (n > 1 ? " tomes ajoutés" : " tome ajouté") + " récemment" };
+  }
+  // Tomes manquants (propriétaire) : les numéros absents entre 1 et le plus grand numéro de
+  // la fiche. Seulement quand les numéros sont sûrs (_realNums). On ne voit pas ce qui manque
+  // APRÈS le dernier tome. Garde-fous : un numéro qui fait partie du titre (« 60 ans en BD »)
+  // n'est pas un numéro de tome ; une numérotation à 100+ à côté de 1, 2, 3 (Donjon : 113 à
+  // côté de 1 à 9) est laissée de côté, et une série qui commence à 101 démarre à 101.
+  function missingTomes(title, nums, hss, positions) {
+    var main = positions.filter(function (p) { return !hss[p] && nums[p] !== null && nums[p] > 0; })
+                        .map(function (p) { return nums[p]; });
+    if (main.some(function (x) { return x < 100; })) main = main.filter(function (x) { return x < 100; });
+    if (!main.length) return [];
+    var tn = " " + normalize(title) + " ";
+    if (main.some(function (x) { return tn.indexOf(" " + x + " ") !== -1; })) return [];
+    var have = {}, lo = Math.min.apply(null, main), hi = Math.max.apply(null, main), out = [];
+    main.forEach(function (x) { have[x] = true; });
+    for (var k = lo >= 100 ? lo : 1; k <= hi; k++) if (!have[k]) out.push(k);
+    return out;
+  }
+  // [1,2,3,5,8,9,10] -> « 1 à 3, 5 et 8 à 10 »
+  function rangesText(ns) {
+    var parts = [], i = 0;
+    while (i < ns.length) {
+      var j = i;
+      while (j + 1 < ns.length && ns[j + 1] === ns[j] + 1) j++;
+      if (j === i) parts.push(String(ns[i]));
+      else if (j === i + 1) { parts.push(String(ns[i])); parts.push(String(ns[j])); }
+      else parts.push(ns[i] + " à " + ns[j]);
+      i = j + 1;
+    }
+    return parts.length > 1 ? parts.slice(0, -1).join(", ") + " et " + parts[parts.length - 1] : parts[0] || "";
+  }
+  function missingText(ns) {
+    if (!ns.length) return "";
+    return (ns.length > 1 ? "Il manque les tomes " : "Il manque le tome ") + rangesText(ns) +
+           (ns.length > 3 ? " (" + ns.length + " tomes)" : "") + ".";
+  }
+
   function isRawHidden(r) {
     var o = state.overrides[r.id] || {};
     return (o.hidden === true || o.hidden === false) ? o.hidden : !!r.hidden;
@@ -259,7 +331,7 @@
       }
       var o = state.overrides[r.id] || {};
       var srcs = [r].concat((absorbed[r.id] || []).sort(function (a, b) { return cmp(a, b); }));
-      var vols = [], keys = [], labels = [], vis = [], hid = [], nums = [], hss = [], disp = [];
+      var vols = [], keys = [], labels = [], vis = [], hid = [], nums = [], hss = [], disp = [], adds = [];
       srcs.forEach(function (sr) {
         (sr.volumes || []).forEach(function (v, i) {
           var k = volKey(sr.id, i), vo = state.overrides[k] || {};
@@ -271,6 +343,7 @@
           vols.push(v); keys.push(k); labels.push(vo.title || osTitle || v.label);
           var n = typeof v.n === "number" ? v.n : labelNum(v.label);
           nums.push(n); hss.push(!!v.hs);
+          adds.push(v.added || sr.added || null);           // 3.0 : date d'ajout du tome
           var d = vo.title || osTitle || stripPrefix(v.label, [sr.title, cleanTitle(sr.title), (sr.title.split(" - ").pop() || "")]);
           disp.push(d || (n !== null ? (v.hs ? "Hors-série " : "Tome ") + n : v.label));
           if (vo.hidden === true) hid.push(pos); else vis.push(pos);
@@ -291,6 +364,8 @@
       var ord = realNums ? vis.slice().sort(byNum) : vis.slice();
       var ordAll = realNums ? vis.concat(hid).sort(byNum) : vols.map(function (_, i) { return i; });
       var first = ord.length ? vols[ord[0]] : null;
+      var lastAdded = r.added || null;
+      vis.forEach(function (p) { if (adds[p] && (!lastAdded || adds[p] > lastAdded)) lastAdded = adds[p]; });
       var e = {
         id: r.id,
         title: o.title || (IS_OWNER ? r.title : cleanTitle(r.title)),
@@ -304,12 +379,15 @@
         _keys: keys, _labels: labels, _vis: vis, _hidVols: hid, _raw: r,
         _nums: nums, _hs: hss, _disp: disp, _realNums: realNums, _ord: ord, _ordAll: ordAll,
         _private: !!o.owner_only, _publicTitle: o.title || cleanTitle(r.title),
+        _adds: adds, _added: r.added || null, _lastAdded: lastAdded,
+        _missing: realNums ? missingTomes(r.title, nums, hss, vis.concat(hid)) : [],
         _merged: srcs.slice(1),
         _edited: !!(o.title || o.author || Array.isArray(o.genre))
       };
       (isRawHidden(r) ? hidden : list).push(e);
     });
     list.sort(cmp); hidden.sort(cmp); merged.sort(cmp);
+    state.latestAdd = list.reduce(function (m, e) { return e._lastAdded && e._lastAdded > m ? e._lastAdded : m; }, "") || null;
     buildSearchIndex(list);
     state.catalog = list;
     state.hiddenList = hidden;
@@ -328,6 +406,7 @@
     }
     if (state.view === "settings") { renderHiddenList(); updateDupButton(); }
     if (state.view === "dups") renderDups();
+    if (state.view === "stats") renderStats();
   }
 
   // Enregistre une correction (fusionnée avec l'existante). Appliquée tout de suite à
@@ -541,6 +620,7 @@
         renderGrid();
         if (state.view === "settings") { renderHiddenList(); updateDupButton(); }
         else if (state.view === "dups") renderDups();
+        else if (state.view === "stats") renderStats();
         var fid = ficheFromHash();
         if (fid && state.view === "home") openFromRoute(fid);
       })
@@ -753,27 +833,44 @@
   }
 
   // ---------- render ----------
+  // 3.0 : tri « Ajoutés récemment » : dernière date d'ajout d'abord (une série qui reçoit
+  // de nouveaux tomes remonte), puis par titre ; un séparateur par date remplace les lettres.
+  function dateHead(d) {
+    var h = document.createElement("h2");
+    h.className = "letter-head date-head";
+    h.textContent = d ? "Ajoutés le " + frDate(d) : "Date d'ajout inconnue";
+    return h;
+  }
   function renderGrid() {
     var list = state.catalog.filter(matches);
+    var recent = state.sort === "recent";
+    if (recent) list = list.slice().sort(function (a, b) {        // tri stable : le titre départage
+      var x = a._lastAdded || "", y = b._lastAdded || "";
+      return x < y ? 1 : x > y ? -1 : 0;
+    });
     if (lazyObserver) lazyObserver.disconnect();
     els.grid.innerHTML = "";
     els.empty.hidden = list.length > 0;
-    var showAz = list.length >= AZ_MIN, present = {};
+    var showAz = !recent && list.length >= AZ_MIN, present = {}, lastDay = null, cut = newCutoff();
     var frag = document.createDocumentFragment();
     list.forEach(function (entry) {
-      if (showAz) {
+      if (recent) {
+        var d = entry._lastAdded || "";
+        if (d !== lastDay) { lastDay = d; frag.appendChild(dateHead(d)); }
+      } else if (showAz) {
         var L = initialOf(entry.title);
         if (!present[L]) { present[L] = true; frag.appendChild(letterHead(L)); }
       }
-      frag.appendChild(renderCard(entry));
+      frag.appendChild(renderCard(entry, cut));
     });
     els.grid.appendChild(frag);
     renderAz(present, showAz);
     sweepSoon();
   }
 
-  function renderCard(entry) {
+  function renderCard(entry, cut) {
     var fav = state.favorites[entry.id] || {};
+    var nw = newInfo(entry, cut || newCutoff());
     var read = isTitleRead(entry);
     var readCount = countRead(entry);
     var inProgress = isInProgress(entry);
@@ -785,7 +882,7 @@
     card.tabIndex = 0;
     card.setAttribute("aria-label", entry.title + ", " + (entry.one_shot ? "one-shot" : entry.volume_count + (entry.volume_count > 1 ? " tomes" : " tome")) +
       (entry.author ? ", " + entry.author : "") + (IS_OWNER && read ? ", lu" : IS_OWNER && inProgress ? ", " + readCount + " lus" : "") +
-      (entry._private ? ", réservée au propriétaire" : ""));
+      (entry._private ? ", réservée au propriétaire" : "") + (nw ? ", " + nw.aria : ""));
 
     var coverWrap = document.createElement("div");
     coverWrap.className = "card-cover-wrap";
@@ -829,6 +926,10 @@
       var bp = document.createElement("span"); bp.className = "badge inprogress"; bp.textContent = readCount + "/" + entry.volume_count + " lus"; badges.appendChild(bp);
     }
     coverWrap.appendChild(badges);
+    if (nw) {                                             // 3.0 : nouveauté (visible de tous)
+      var bn = document.createElement("span"); bn.className = "badge new card-new"; bn.textContent = nw.text;
+      coverWrap.appendChild(bn);
+    }
 
     var info = document.createElement("div");
     info.className = "card-info";
@@ -917,6 +1018,20 @@
     }
     els.sheetAuthor.textContent = entry.author || "Auteur non renseigné";
     els.sheetMeta.textContent = (entry.one_shot ? "One-shot · album unique" : entry.volume_count + (entry.volume_count > 1 ? " tomes" : " tome")) + (entry.parent_series ? " · série liée à " + entry.parent_series : "");
+    var added = document.getElementById("sheet-added");
+    if (added) {                                           // 3.0 : date d'ajout (tout le monde)
+      var at = "";
+      if (entry._added) {
+        at = (entry.one_shot ? "Ajouté le " : "Fiche ajoutée le ") + frDate(entry._added);
+        if (!entry.one_shot && entry._lastAdded && entry._lastAdded > entry._added) at += " · derniers tomes ajoutés le " + frDate(entry._lastAdded);
+      }
+      added.textContent = at; added.hidden = !at;
+    }
+    var miss = document.getElementById("sheet-missing");
+    if (miss) {                                            // 3.0 : tomes manquants (propriétaire)
+      var mt = IS_OWNER && !entry.one_shot ? missingText(entry._missing) : "";
+      miss.textContent = mt; miss.hidden = !mt;
+    }
     var orig = document.getElementById("sheet-orig");
     if (orig) {
       var r = entry._raw, bits = [];
@@ -1013,7 +1128,7 @@
     els.volumeList.innerHTML = "";
     // visiteur : tomes visibles seulement ; propriétaire : tous, les masqués grisés
     var order = IS_OWNER ? entry._ordAll : entry._ord;
-    var pos = 0;
+    var pos = 0, cut = newCutoff(), fresh = !!(entry._added && entry._added >= cut);
     order.forEach(function (i) {
       var hiddenVol = entry._hidVols.indexOf(i) !== -1;
       if (!hiddenVol) pos++;
@@ -1045,6 +1160,11 @@
       label.textContent = entry._disp[i] + (hiddenVol ? "  (masqué)" : "");
       li.appendChild(num);
       li.appendChild(label);
+      if (!fresh && !hiddenVol && entry._adds[i] && entry._adds[i] >= cut) {   // 3.0 : tome arrivé récemment
+        var tn = document.createElement("span"); tn.className = "vol-new"; tn.textContent = "nouveau";
+        tn.title = "Ajouté le " + frDate(entry._adds[i]);
+        li.appendChild(tn);
+      }
 
       if (IS_OWNER) {
         var pen = document.createElement("button");
@@ -1418,6 +1538,23 @@
   }
   kindChip(els.filterSeries, "series");
   kindChip(els.filterOneshot, "oneshot");
+
+  // 3.0 : tri de la grille, mémorisé sur l'appareil
+  var SORT_KEY = "bd_tri_v1";
+  try { if (localStorage.getItem(SORT_KEY) === "recent") state.sort = "recent"; } catch (e) {}
+  function setSort(v) {
+    state.sort = v === "recent" ? "recent" : "title";
+    if (els.sortBy) els.sortBy.value = state.sort;
+    try { localStorage.setItem(SORT_KEY, state.sort); } catch (e) {}
+  }
+  if (els.sortBy) {
+    els.sortBy.value = state.sort;
+    els.sortBy.addEventListener("change", function () {
+      setSort(els.sortBy.value);
+      window.scrollTo(0, 0);
+      renderGrid();
+    });
+  }
 
   // ---------- réglages ----------
   var settingsEls = {
@@ -1863,6 +2000,159 @@
   }
 
   // =====================================================================
+  // STATISTIQUES (#/stats, 3.0) : ouverte depuis les Réglages, visible de tous. Calculée sur
+  // les fiches affichées (sans les fiches masquées, ni les fiches privées pour un visiteur).
+  // En plus pour le propriétaire : ses lectures et les séries incomplètes.
+  // =====================================================================
+  var statsBody = document.getElementById("stats-body");
+  function st(tag, cls, text) {
+    var x = document.createElement(tag);
+    if (cls) x.className = cls;
+    if (text !== undefined) x.textContent = text;
+    return x;
+  }
+  function fmt(n) { return n.toLocaleString("fr-FR"); }
+  function statSection(title, hint) {
+    var sec = st("section", "st-sec");
+    sec.appendChild(st("h3", "st-h", title));
+    if (hint) sec.appendChild(st("p", "settings-hint", hint));
+    statsBody.appendChild(sec);
+    return sec;
+  }
+  function statTiles(sec, tiles) {
+    var g = st("div", "st-tiles");
+    tiles.forEach(function (t) {
+      var d = st("div", "st-tile");
+      d.appendChild(st("div", "st-num", t[1]));
+      d.appendChild(st("div", "st-lab", t[0]));
+      g.appendChild(d);
+    });
+    sec.appendChild(g);
+  }
+  // Barres horizontales, une seule série : libellé (bouton s'il mène à la grille), barre, valeur.
+  function statBars(sec, rows, unit) {
+    var max = rows.reduce(function (m, r) { return Math.max(m, r.v); }, 0) || 1;
+    var box = st("div", "st-bars");
+    rows.forEach(function (r) {
+      var row = st("div", "st-row");
+      var lab = r.go ? st("button", "st-lab-btn", r.label) : st("span", "st-lab-txt", r.label);
+      if (r.go) { lab.type = "button"; lab.addEventListener("click", r.go); }
+      var track = st("span", "st-track"), fill = st("span", "st-fill");
+      fill.style.width = Math.max(1.5, r.v * 100 / max) + "%";
+      track.appendChild(fill);
+      track.title = r.label + " : " + fmt(r.v) + " " + unit;
+      track.setAttribute("aria-hidden", "true");
+      row.appendChild(lab); row.appendChild(track); row.appendChild(st("span", "st-val", r.text || fmt(r.v)));
+      box.appendChild(row);
+    });
+    sec.appendChild(box);
+  }
+  // Depuis les statistiques : afficher la grille filtrée (genre ou auteur), ou triée par ajout.
+  function goGrid(apply) {
+    apply();
+    viewScroll.home = 0;
+    location.hash = "#/";
+  }
+  function renderStats() {
+    if (!statsBody) return;
+    statsBody.innerHTML = "";
+    if (!state.raw.length) { statsBody.appendChild(st("p", "settings-hint", "Chargement du catalogue…")); return; }
+    var list = state.catalog, nOne = 0, nVol = 0, authors = {}, genres = {}, noGenre = 0, byDay = {};
+    list.forEach(function (e) {
+      if (e.one_shot) nOne++;
+      nVol += e.volume_count;
+      (e.author || "").split(/\s*,\s*/).forEach(function (a) {
+        a = a.trim(); if (!a) return;
+        var k = a.toLowerCase(), x = authors[k] || (authors[k] = { name: a, albums: 0, fiches: 0 });
+        x.albums += e.volume_count; x.fiches++;
+      });
+      if (!(e.genre || []).length) noGenre++;
+      (e.genre || []).forEach(function (g) { genres[g] = (genres[g] || 0) + 1; });
+      if (e._added) (byDay[e._added] = byDay[e._added] || { fiches: 0, albums: 0 }).fiches++;
+      e._vis.forEach(function (p) {
+        var d = e._adds[p]; if (!d) return;
+        (byDay[d] = byDay[d] || { fiches: 0, albums: 0 }).albums++;
+      });
+    });
+
+    var sec = statSection("En chiffres");
+    statTiles(sec, [["séries", fmt(list.length - nOne)], ["one-shots", fmt(nOne)], ["albums", fmt(nVol)], ["auteurs", fmt(Object.keys(authors).length)]]);
+
+    if (IS_OWNER) {
+      var albRead = 0, done = 0, going = 0, fresh = 0, favs = 0;
+      list.forEach(function (e) {
+        var c = countRead(e);
+        albRead += c;
+        if (e._vis.length && c === e._vis.length) done++;
+        else if (c > 0) going++;
+        else fresh++;
+        if ((state.favorites[e.id] || {}).is_favorite) favs++;
+      });
+      var pct = nVol ? Math.round(albRead * 100 / nVol) : 0;
+      sec = statSection("Tes lectures", "Visible seulement en mode propriétaire. Une fiche compte comme lue quand tous ses tomes visibles sont cochés.");
+      var meter = st("div", "st-meter");
+      meter.setAttribute("role", "img");
+      meter.setAttribute("aria-label", pct + " % des albums lus");
+      var mf = st("span", "st-meter-fill"); mf.style.width = pct + "%"; meter.appendChild(mf);
+      sec.appendChild(st("p", "st-meter-lab", fmt(albRead) + (albRead > 1 ? " albums lus" : " album lu") + " sur " + fmt(nVol) + " (" + pct + " %)"));
+      sec.appendChild(meter);
+      statTiles(sec, [["fiches lues", fmt(done)], ["en cours", fmt(going)], ["pas commencées", fmt(fresh)], ["favoris", fmt(favs)]]);
+
+      var inc = list.filter(function (e) { return !e.one_shot && e._missing.length; });
+      var tot = inc.reduce(function (t, e) { return t + e._missing.length; }, 0);
+      sec = statSection("Séries incomplètes",
+        inc.length ? fmt(inc.length) + (inc.length > 1 ? " séries" : " série") + " · " + fmt(tot) + (tot > 1 ? " tomes manquants" : " tome manquant") +
+          ". Calculé d'après les numéros de tome : ce qui manque après le dernier tome que tu as n'est pas compté."
+        : "Aucun trou dans la numérotation des séries.");
+      if (inc.length) {
+        var ul = st("ul", "st-missing");
+        inc.forEach(function (e) {
+          var li = st("li");
+          var b = st("button", "st-lab-btn", e.title); b.type = "button";
+          b.addEventListener("click", function () { openSheet(e.id); });
+          li.appendChild(b);
+          li.appendChild(st("span", "st-miss-txt", (e._missing.length > 1 ? "tomes " : "tome ") + rangesText(e._missing)));
+          ul.appendChild(li);
+        });
+        sec.appendChild(ul);
+      }
+    }
+
+    var days = Object.keys(byDay).sort().reverse();
+    sec = statSection("Ajouts", "Date de chaque import de nouvelles BD : albums ajoutés, dont ceux des nouvelles fiches.");
+    var tb = st("table", "st-table"), thead = st("thead"), hr = st("tr");
+    ["Date", "Albums", "Nouvelles fiches"].forEach(function (h) { hr.appendChild(st("th", null, h)); });
+    thead.appendChild(hr); tb.appendChild(thead);
+    var tbody = st("tbody");
+    days.forEach(function (d) {
+      var tr = st("tr");
+      tr.appendChild(st("td", null, frDate(d)));
+      tr.appendChild(st("td", "n", "+" + fmt(byDay[d].albums)));
+      tr.appendChild(st("td", "n", byDay[d].fiches ? "+" + fmt(byDay[d].fiches) : "—"));
+      tbody.appendChild(tr);
+    });
+    tb.appendChild(tbody); sec.appendChild(tb);
+    var rb = st("button", "btn st-go", "Voir les ajouts récents dans la bibliothèque"); rb.type = "button";
+    rb.addEventListener("click", function () { goGrid(function () { setSort("recent"); renderGrid(); }); });
+    sec.appendChild(rb);
+
+    sec = statSection("Genres", "Nombre de fiches par genre ; une fiche peut avoir deux genres. Touche un genre pour voir ses BD.");
+    var grows = GENRES.filter(function (g) { return genres[g]; }).map(function (g) {
+      return { label: g, v: genres[g], go: function () { goGrid(function () { els.filterGenre.value = g; els.filterGenre.dispatchEvent(new Event("change")); }); } };
+    }).sort(function (a, b) { return b.v - a.v || a.label.localeCompare(b.label, "fr"); });
+    if (noGenre) grows.push({ label: "Sans genre", v: noGenre });
+    statBars(sec, grows, "fiches");
+
+    sec = statSection("Auteurs les plus présents", "Les 10 auteurs qui ont le plus d'albums. Touche un nom pour voir ses BD.");
+    var top = Object.keys(authors).map(function (k) { return authors[k]; })
+      .sort(function (a, b) { return b.albums - a.albums || b.fiches - a.fiches || a.name.localeCompare(b.name, "fr"); }).slice(0, 10);
+    statBars(sec, top.map(function (a) {
+      return { label: a.name, v: a.albums, text: fmt(a.albums) + " albums · " + fmt(a.fiches) + (a.fiches > 1 ? " fiches" : " fiche"),
+               go: function () { goGrid(function () { els.searchAuthor.value = a.name; els.searchAuthor.dispatchEvent(new Event("input")); }); } };
+    }), "albums");
+  }
+
+  // =====================================================================
   // PAGES (routage par l'adresse) : #/ = bibliothèque, #/reglages = réglages,
   // #/doublons = doublons probables (propriétaire). De vraies pages plutôt que des
   // fenêtres : le bouton retour du téléphone fonctionne, et on retrouve chaque page à
@@ -1872,6 +2162,7 @@
     home: document.getElementById("home-view"),
     settings: document.getElementById("settings-page"),
     dups: document.getElementById("dups-page"),
+    stats: document.getElementById("stats-page"),
   };
   var viewScroll = {};
   state.view = "home";
@@ -1880,6 +2171,7 @@
     var h = location.hash || "#/";
     if (h.indexOf("#/fiche/") === 0) return "home";
     if (h === "#/reglages") return "settings";
+    if (h === "#/stats") return "stats";
     if (h === "#/doublons") {
       if (IS_OWNER) return "dups";
       try { history.replaceState(null, "", "#/reglages"); } catch (e) {}
@@ -1908,6 +2200,7 @@
     document.documentElement.classList.toggle("view-page", v !== "home");
     if (v === "settings") renderSettingsPage();
     else if (v === "dups") renderDups();
+    else if (v === "stats") renderStats();
     window.scrollTo(0, viewScroll[v] || 0);
     if (v === "home") {
       sweepSoon();
@@ -1984,7 +2277,7 @@
     if (e.key !== "Escape") return;
     if (!els.zoomOverlay.hidden) closeZoom();
     else if (state.activeId) closeSheet();
-    else if (state.view === "dups") location.hash = "#/reglages";
+    else if (state.view === "dups" || state.view === "stats") location.hash = "#/reglages";
     else if (state.view === "settings") location.hash = "#/";
   });
   els.btnRead.addEventListener("click", toggleAllVolumesRead);
