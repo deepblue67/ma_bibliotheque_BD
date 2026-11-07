@@ -12,8 +12,8 @@
   // Version de la livraison — à augmenter à CHAQUE livraison (+0.1 pour une livraison
   // ordinaire, +1.0 pour une refonte), avec le même numéro dans les quatre ?v= de
   // index.html et une ligne dans l'historique « Versions » du README.
-  var APP_VERSION = "2.7";
-  var APP_VERSION_DATE = "2026-11-04";
+  var APP_VERSION = "2.9";
+  var APP_VERSION_DATE = "2026-11-07";
 
   // ---------- mode propriétaire ----------
   // Garde-fou, pas une serrure : sans le code, les statuts (lu, en cours, favoris) ne
@@ -160,6 +160,67 @@
     return a.length === b.length && a.every(function (x, i) { return x === b[i]; });
   }
 
+  // ---------- titres et libellés affichés (2.8 / 2.9) ----------
+  // Les noms de dossiers gardent des marqueurs de rangement (« _CDS_ », « MANQUE LE 28 »,
+  // « [HD] », « (68-95) », « (complet 13) »…). Les VISITEURS voient le titre nettoyé ; le
+  // propriétaire voit le titre brut, pour repérer ce qui reste à renommer (sa fiche indique
+  // le titre vu par les visiteurs). Une correction de titre l'emporte toujours.
+  function cleanTitle(t) {
+    var s = (t || "").replace(/_CDS_/g, " ")
+      .replace(/\[HD\]|\(1DVD\)/gi, " ")
+      .replace(/\((?:complet|manque)\s*\d*\)/gi, " ")
+      .replace(/\bMANQUE\b.*$/i, " ")
+      .replace(/\bCDS\d*\b/g, " ")
+      .replace(/\ba renommer\b/gi, " ")
+      .replace(/\(\s*\d{1,3}\s*-\s*\d{1,3}(?:\s*\+[^)]*)?\)/g, " ")
+      .replace(/\s{2,}/g, " ").replace(/^[\s\-_]+|[\s\-_]+$/g, "");
+    // « Donjon - Donjon Zénith » -> « Donjon Zénith » (sous-série rangée dans sa série)
+    var m = /^(.+?)\s+-\s+(.+)$/.exec(s);
+    if (m && normalize(m[1]) && normalize(m[2]).indexOf(normalize(m[1])) === 0) s = m[2];
+    s = s.replace(/\s{2,}/g, " ").replace(/^[\s\-_]+|[\s\-_]+$/g, "");
+    return s || t;
+  }
+  // Numéro d'un tome : champ « n » du catalogue (tiré du nom de fichier par les outils du
+  // delta), sinon lu dans le libellé (« … Tome 03 … », « T03 », « 03 - … »).
+  function labelNum(label) {
+    var m = /(?:^|[\s_.\-])(?:Tome|T)\s*\.?\s*0*(\d{1,3})(?=$|[\s_.\-:])/i.exec(label || "") ||
+            /^0*(\d{1,3})\s*[\-.:]\s/.exec(label || "");
+    return m ? parseInt(m[1], 10) : null;
+  }
+  // Libellé affiché : sans le nom de la série répété devant, ni « Tome NN ».
+  // « Les Piliers de la Terre Tome 01 Le Rêveur de cathédrales » -> « Le Rêveur de cathédrales ».
+  function stripPrefix(label, titles) {
+    var words = (label || "").split(/\s+/);
+    for (var t = 0; t < titles.length; t++) {
+      var tw = normalize(titles[t]).split(" ").filter(Boolean);
+      if (!tw.length) continue;
+      var j = 0, i = 0;
+      while (i < words.length && j < tw.length) {
+        var nw = normalize(words[i]).split(" ").filter(Boolean);
+        if (!nw.length) { i++; continue; }
+        var ok = nw.every(function (w, k) { return tw[j + k] === w; });
+        if (!ok) break;
+        j += nw.length; i++;
+      }
+      if (j >= tw.length && i < words.length) { words = words.slice(i); break; }
+    }
+    var s = words.join(" ");
+    // Préfixe proche du titre mais pas identique (« Les Piliers de la Terre Tome 01 … » dans
+    // la fiche « Les pilliers de la terre ») : on coupe avant « Tome NN » si au moins deux mots,
+    // ou la moitié des mots, sont communs avec le titre.
+    var m = /^(.+?)\s+(?:(?:Tome|T)\s*\.?\s*|-\s*)\d{1,3}\b\s*(?:-\s+)?(.*)$/i.exec(s);
+    if (m) {
+      var tw = {}; titles.forEach(function (t) { normalize(t).split(" ").forEach(function (w) { if (w) tw[w] = true; }); });
+      var xw = normalize(m[1]).split(" ").filter(Boolean), common = xw.filter(function (w) { return tw[w]; }).length;
+      if (common >= 2 || common * 2 >= xw.length) s = m[2];
+    }
+    s = s
+      .replace(/^[\s\-:,.]*(?:Tome|T)\s*\.?\s*\d{1,3}\b[\s\-:,.]*/i, "")
+      .replace(/^0*\d{1,3}\s*[\-.:]\s+/, "")
+      .replace(/^[\s\-:,.]+/, "");
+    return s;
+  }
+
   function isRawHidden(r) {
     var o = state.overrides[r.id] || {};
     return (o.hidden === true || o.hidden === false) ? o.hidden : !!r.hidden;
@@ -198,7 +259,7 @@
       }
       var o = state.overrides[r.id] || {};
       var srcs = [r].concat((absorbed[r.id] || []).sort(function (a, b) { return cmp(a, b); }));
-      var vols = [], keys = [], labels = [], vis = [], hid = [];
+      var vols = [], keys = [], labels = [], vis = [], hid = [], nums = [], hss = [], disp = [];
       srcs.forEach(function (sr) {
         (sr.volumes || []).forEach(function (v, i) {
           var k = volKey(sr.id, i), vo = state.overrides[k] || {};
@@ -208,13 +269,31 @@
           var osTitle = (sr.one_shot && (sr.volumes || []).length === 1 && so.title) ? so.title : null;
           var pos = vols.length;
           vols.push(v); keys.push(k); labels.push(vo.title || osTitle || v.label);
+          var n = typeof v.n === "number" ? v.n : labelNum(v.label);
+          nums.push(n); hss.push(!!v.hs);
+          var d = vo.title || osTitle || stripPrefix(v.label, [sr.title, cleanTitle(sr.title), (sr.title.split(" - ").pop() || "")]);
+          disp.push(d || (n !== null ? (v.hs ? "Hors-série " : "Tome ") + n : v.label));
           if (vo.hidden === true) hid.push(pos); else vis.push(pos);
         });
       });
-      var first = vis.length ? vols[vis[0]] : null;
+      if (!IS_OWNER && o.owner_only) return;          // fiche réservée au propriétaire (2.9)
+      // Numéros fiables (2.9) = chaque tome visible a un numéro, sans doublon hors hors-séries :
+      // on affiche alors les vrais numéros et on range les tomes dans l'ordre (affichage seul,
+      // les clés de lecture ne bougent pas). Sinon : 01, 02… comme avant.
+      var seenN = {}, realNums = !r.one_shot && vis.length > 0 && vis.every(function (p) {
+        if (nums[p] === null) return false;
+        if (hss[p]) return true;
+        if (seenN[nums[p]]) return false;
+        seenN[nums[p]] = true; return true;
+      });
+      var sortKey = function (p) { return [hss[p] ? 1 : 0, nums[p] === null ? 1e6 : nums[p], p]; };
+      var byNum = function (a, b) { var x = sortKey(a), y = sortKey(b); return x[0] - y[0] || x[1] - y[1] || x[2] - y[2]; };
+      var ord = realNums ? vis.slice().sort(byNum) : vis.slice();
+      var ordAll = realNums ? vis.concat(hid).sort(byNum) : vols.map(function (_, i) { return i; });
+      var first = ord.length ? vols[ord[0]] : null;
       var e = {
         id: r.id,
-        title: o.title || r.title,
+        title: o.title || (IS_OWNER ? r.title : cleanTitle(r.title)),
         author: o.author || r.author,
         genre: Array.isArray(o.genre) ? o.genre : (r.genre || []),
         one_shot: r.one_shot && srcs.length === 1,
@@ -223,6 +302,8 @@
         cover: (first && first.cover) || null,
         volume_count: vis.length,
         _keys: keys, _labels: labels, _vis: vis, _hidVols: hid, _raw: r,
+        _nums: nums, _hs: hss, _disp: disp, _realNums: realNums, _ord: ord, _ordAll: ordAll,
+        _private: !!o.owner_only, _publicTitle: o.title || cleanTitle(r.title),
         _merged: srcs.slice(1),
         _edited: !!(o.title || o.author || Array.isArray(o.genre))
       };
@@ -253,10 +334,10 @@
   // l'écran, puis envoyée à Supabase ; en cas d'échec, on revient en arrière.
   function saveOverride(key, patch, onOk) {
     var prev = state.overrides[key] ? JSON.parse(JSON.stringify(state.overrides[key])) : null;
-    var cur = { hidden: null, title: null, author: null, genre: null, merged_into: null, not_dup: null };
+    var cur = { hidden: null, title: null, author: null, genre: null, merged_into: null, not_dup: null, owner_only: null };
     if (prev) Object.keys(cur).forEach(function (k) { if (prev[k] !== undefined && prev[k] !== null) cur[k] = prev[k]; });
     Object.keys(patch).forEach(function (k) { cur[k] = patch[k]; });
-    var empty = cur.hidden === null && !cur.title && !cur.author && !Array.isArray(cur.genre) && !cur.merged_into && !cur.not_dup;
+    var empty = cur.hidden === null && !cur.title && !cur.author && !Array.isArray(cur.genre) && !cur.merged_into && !cur.not_dup && !cur.owner_only;
     if (empty) delete state.overrides[key]; else state.overrides[key] = cur;
     saveLocalOverrides();
     refreshAll();
@@ -271,7 +352,7 @@
           author: cur.author || null, genre: Array.isArray(cur.genre) ? cur.genre : null, updated_at: new Date().toISOString() };
     // colonnes ajoutées au lot « fusion » : envoyées seulement quand elles servent, pour que
     // les corrections simples marchent même si le script SQL du lot n'a pas encore été passé.
-    ["merged_into", "not_dup"].forEach(function (k) {
+    ["merged_into", "not_dup", "owner_only"].forEach(function (k) {
       if (cur[k] || (prev && prev[k])) row[k] = cur[k] || null;
     });
     var q = empty
@@ -279,7 +360,7 @@
       : supabase.from("bd_overrides").upsert(row);
     q.then(function (res) {
       var m = res.error ? (res.error.message || "erreur Supabase") : "";
-      if (/merged_into|not_dup/.test(m)) m = "relance le script supabase_bd_overrides.sql dans Supabase (voir README).";
+      if (/merged_into|not_dup|owner_only/.test(m)) m = "relance le script supabase_bd_overrides.sql dans Supabase (voir README).";
       if (res.error) rollback(m);
       else if (onOk) onOk();
     }).catch(function (err) { rollback((err && err.message) || "hors ligne"); });
@@ -287,7 +368,7 @@
 
   function rowToOverride(row) {
     return { hidden: row.hidden, title: row.title, author: row.author, genre: row.genre,
-             merged_into: row.merged_into || null, not_dup: row.not_dup || null };
+             merged_into: row.merged_into || null, not_dup: row.not_dup || null, owner_only: row.owner_only || null };
   }
 
   function fetchOverrides() {
@@ -438,7 +519,18 @@
   function loadCatalog() {
     // cache: "no-store" + un paramètre unique évitent qu'un navigateur (ou un cache
     // intermédiaire) serve une ancienne version de catalog.json après une mise à jour.
-    fetch("data/catalog.json?t=" + Date.now(), { cache: "no-store" })
+    // 2.8 : data/version.json (quelques octets, jamais mis en cache) donne l'empreinte du
+    // catalogue, écrite par outils_delta/6_finir.py. Le catalogue (1,2 Mo) est demandé avec
+    // cette empreinte : le navigateur le garde tant qu'il ne change pas, et le reprend dès
+    // le delta suivant. Sans version.json (ancien dépôt), on le recharge à chaque fois.
+    fetch("data/version.json?t=" + Date.now(), { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .catch(function () { return null; })
+      .then(function (v) {
+        return v && v.catalog
+          ? fetch("data/catalog.json?v=" + encodeURIComponent(v.catalog))
+          : fetch("data/catalog.json?t=" + Date.now(), { cache: "no-store" });
+      })
       .then(function (r) { return r.json(); })
       .then(function (data) {
         // "hidden" : fiche masquée (ex : ancien dossier d'une série remplacé par un plus
@@ -449,6 +541,8 @@
         renderGrid();
         if (state.view === "settings") { renderHiddenList(); updateDupButton(); }
         else if (state.view === "dups") renderDups();
+        var fid = ficheFromHash();
+        if (fid && state.view === "home") openFromRoute(fid);
       })
       .catch(function () {
         els.empty.hidden = false;
@@ -495,7 +589,7 @@
   // « Fiche fusionnée ici » (leur titre corrigé s'il y en a un).
   function buildSearchIndex(entries) {
     entries.forEach(function (e) {
-      var labels = (e._vis || []).map(function (i) { return e._labels[i]; }).join(" ");
+      var labels = (e._vis || []).map(function (i) { return e._disp[i]; }).join(" ");
       var merged = (e._merged || []).map(function (m) { return (state.overrides[m.id] || {}).title || m.title; }).join(" ");
       e._qTitle = " " + both(e.title) + " ";
       e._qAll = " " + both(e.title + " " + merged + " " + labels) + " ";
@@ -684,8 +778,14 @@
     var readCount = countRead(entry);
     var inProgress = isInProgress(entry);
     var card = document.createElement("div");
-    card.className = "card";
+    card.className = "card" + (entry._private ? " is-private" : "");
     card.setAttribute("data-id", entry.id);
+    // 2.8 : vignette utilisable au clavier (Tab, Entrée, Espace) et annoncée par VoiceOver
+    card.setAttribute("role", "button");
+    card.tabIndex = 0;
+    card.setAttribute("aria-label", entry.title + ", " + (entry.one_shot ? "one-shot" : entry.volume_count + (entry.volume_count > 1 ? " tomes" : " tome")) +
+      (entry.author ? ", " + entry.author : "") + (IS_OWNER && read ? ", lu" : IS_OWNER && inProgress ? ", " + readCount + " lus" : "") +
+      (entry._private ? ", réservée au propriétaire" : ""));
 
     var coverWrap = document.createElement("div");
     coverWrap.className = "card-cover-wrap";
@@ -715,6 +815,9 @@
       });
       badges.appendChild(zoomBtn);
     }
+    if (IS_OWNER && entry._private) {
+      var bpv = document.createElement("span"); bpv.className = "badge private"; bpv.textContent = "Privé"; badges.appendChild(bpv);
+    }
     if (IS_OWNER && fav.is_favorite) {
       var bf = document.createElement("span"); bf.className = "badge fav"; bf.textContent = "★"; badges.appendChild(bf);
     }
@@ -737,6 +840,10 @@
     card.appendChild(coverWrap);
     card.appendChild(info);
     card.addEventListener("click", function () { openSheet(entry.id); });
+    card.addEventListener("keydown", function (e) {
+      if (e.target !== card) return;                     // Entrée sur la loupe : la loupe
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openSheet(entry.id); }
+    });
     return card;
   }
 
@@ -745,16 +852,50 @@
     return state.catalog.find(function (e) { return e.id === state.activeId; });
   }
 
+  // 2.9 : chaque fiche a son adresse, #/fiche/<id>, qu'on peut partager. Ouvrir une fiche
+  // depuis la grille change l'adresse (le bouton retour du téléphone la referme) ; c'est
+  // route() qui l'affiche réellement (openSheetUI).
+  var FICHE_PREFIX = "#/fiche/";
+  function ficheFromHash() {
+    var h = location.hash || "";
+    if (h.indexOf(FICHE_PREFIX) !== 0) return null;
+    try { return decodeURIComponent(h.slice(FICHE_PREFIX.length)); } catch (e) { return null; }
+  }
+  function ficheUrl(id) { return location.href.split("#")[0] + FICHE_PREFIX + encodeURIComponent(id); }
   function openSheet(id) {
+    var h = FICHE_PREFIX + encodeURIComponent(id);
+    if (location.hash === h) { openFromRoute(id); return; }
+    state.sheetFromApp = true;
+    location.hash = h;
+  }
+  function openFromRoute(id) {
+    var entry = state.catalog.find(function (e) { return e.id === id; });
+    if (!entry) {                                          // fiche fusionnée : sa fiche d'accueil
+      var m = state.mergedList.find(function (x) { return x.id === id; });
+      if (m) entry = state.catalog.find(function (e) { return e.id === m.into; });
+    }
+    if (!entry) {
+      if (!state.raw.length) return;                       // catalogue pas encore chargé
+      try { history.replaceState(null, "", "#/"); } catch (e) {}
+      if (state.activeId) closeSheetUI();
+      toast("Cette fiche n'est pas disponible.");
+      return;
+    }
+    if (state.activeId !== entry.id || els.overlay.hidden) openSheetUI(entry.id);
+  }
+  function openSheetUI(id) {
     var entry = state.catalog.find(function (e) { return e.id === id; });
     if (!entry) return;
+    if (els.overlay.hidden) state.lastFocus = document.activeElement;
     state.activeId = id;
-    state.activeVolIdx = entry._vis.length ? entry._vis[0] : 0;
+    state.activeVolIdx = entry._ord.length ? entry._ord[0] : 0;
     state.editVol = null;
     closeEditor();
     refreshSheet();
     els.overlay.hidden = false;
     document.body.style.overflow = "hidden";
+    // 2.8 : le focus va dans la fiche (lecteurs d'écran, clavier)
+    setTimeout(function () { try { els.sheetTitle.focus({ preventScroll: true }); } catch (e) {} }, 0);
   }
 
   // Remplit la fiche ouverte à partir de l'état courant (appelé aussi après une correction).
@@ -762,9 +903,18 @@
     var entry = currentEntry();
     if (!entry) return;
     if (entry._vis.indexOf(state.activeVolIdx) === -1 && !(IS_OWNER && entry._hidVols.indexOf(state.activeVolIdx) !== -1)) {
-      state.activeVolIdx = entry._vis.length ? entry._vis[0] : 0;
+      state.activeVolIdx = entry._ord.length ? entry._ord[0] : 0;
     }
     els.sheetTitle.textContent = entry.title;
+    var pub = document.getElementById("sheet-public");
+    if (pub) {
+      var msg = [];
+      if (entry._private) msg.push("Réservée au propriétaire : invisible pour les visiteurs.");
+      else if (!(state.overrides[entry.id] || {}).title && entry._publicTitle !== entry.title)
+        msg.push("Les visiteurs voient « " + entry._publicTitle + " ».");
+      pub.textContent = msg.join(" ");
+      pub.hidden = !msg.length;
+    }
     els.sheetAuthor.textContent = entry.author || "Auteur non renseigné";
     els.sheetMeta.textContent = (entry.one_shot ? "One-shot · album unique" : entry.volume_count + (entry.volume_count > 1 ? " tomes" : " tome")) + (entry.parent_series ? " · série liée à " + entry.parent_series : "");
     var orig = document.getElementById("sheet-orig");
@@ -824,7 +974,7 @@
     state.activeVolIdx = idx;
     var vol = entry.volumes[idx];
     var cover = (vol && vol.cover) || entry.cover;
-    var alt = entry.title + (vol ? " — " + (entry._labels ? entry._labels[idx] : vol.label) : "");
+    var alt = entry.title + (vol ? " — " + (entry._disp ? entry._disp[idx] : vol.label) : "");
     if (cover) {
       els.sheetCover.src = coverUrl(cover);
       els.sheetCover.style.display = "";
@@ -862,7 +1012,7 @@
     if (!entry) return;
     els.volumeList.innerHTML = "";
     // visiteur : tomes visibles seulement ; propriétaire : tous, les masqués grisés
-    var order = IS_OWNER ? entry.volumes.map(function (_, i) { return i; }) : entry._vis;
+    var order = IS_OWNER ? entry._ordAll : entry._ord;
     var pos = 0;
     order.forEach(function (i) {
       var hiddenVol = entry._hidVols.indexOf(i) !== -1;
@@ -887,9 +1037,12 @@
       }
 
       var num = document.createElement("span"); num.className = "num";
-      num.textContent = hiddenVol ? "––" : String(pos).padStart(2, "0");
+      if (entry._realNums && entry._nums[i] !== null) {
+        num.textContent = (entry._hs[i] ? "HS" : "") + String(entry._nums[i]).padStart(entry._hs[i] ? 1 : 2, "0");
+        if (entry._hs[i]) num.classList.add("hs");
+      } else num.textContent = hiddenVol ? "––" : String(pos).padStart(2, "0");
       var label = document.createElement("span"); label.className = "vol-label";
-      label.textContent = entry._labels[i] + (hiddenVol ? "  (masqué)" : "");
+      label.textContent = entry._disp[i] + (hiddenVol ? "  (masqué)" : "");
       li.appendChild(num);
       li.appendChild(label);
 
@@ -931,8 +1084,9 @@
       '<div class="vol-editor-row"></div>' +
       '<p class="edit-orig"></p>';
     var input = li.querySelector("input");
-    input.value = entry._labels[i];
-    input.placeholder = original;
+    var origDisp = stripPrefix(original, [entry._raw.title, cleanTitle(entry._raw.title)]) || original;
+    input.value = entry._disp[i];
+    input.placeholder = origDisp;
     var row = li.querySelector(".vol-editor-row");
     if (o.title) {
       li.querySelector(".edit-orig").textContent = "Sur le disque : « " + original + " »";
@@ -958,7 +1112,7 @@
       e.preventDefault();
       var v = input.value.trim();
       state.editVol = null;
-      saveOverride(key, { title: (!v || v === original) ? null : v }, function () { toast("Titre du tome enregistré."); });
+      saveOverride(key, { title: (!v || v === original || v === origDisp) ? null : v }, function () { toast("Titre du tome enregistré."); });
     });
     setTimeout(function () { input.focus(); input.select(); }, 0);
     return li;
@@ -989,12 +1143,26 @@
   }
 
   function closeSheet() {
+    if (ficheFromHash() !== null) {
+      if (state.sheetFromApp) { state.sheetFromApp = false; history.back(); return; }
+      try { history.replaceState(null, "", "#/"); } catch (e) {}
+    }
+    closeSheetUI();
+  }
+  function closeSheetUI() {
+    var id = state.activeId;
     closeEditor();
     state.editVol = null;
     if (!els.zoomOverlay.hidden) closeZoom();
     els.overlay.hidden = true;
     state.activeId = null;
     document.body.style.overflow = "";
+    // 2.8 : le focus revient sur la vignette d'origine
+    var back = null;
+    try { back = id && els.grid.querySelector('.card[data-id="' + (window.CSS && CSS.escape ? CSS.escape(id) : id) + '"]'); } catch (e) {}
+    back = back || state.lastFocus;
+    state.lastFocus = null;
+    if (back && back.focus && document.contains(back)) { try { back.focus({ preventScroll: true }); } catch (e) {} }
   }
 
   function toggleAllVolumesRead() {
@@ -1040,6 +1208,7 @@
     yes: document.getElementById("edit-hide-yes"),
     no: document.getElementById("edit-hide-no"),
     btn: document.getElementById("btn-edit"),
+    priv: document.getElementById("edit-private"),
   };
   [edit.g1, edit.g2].forEach(function (sel) {
     var o0 = document.createElement("option"); o0.value = ""; o0.textContent = "— aucun —"; sel.appendChild(o0);
@@ -1059,6 +1228,7 @@
     edit.author.value = entry.author || ""; edit.author.placeholder = entry._raw.author || "Auteur";
     edit.g1.value = entry.genre[0] || ""; edit.g2.value = entry.genre[1] || "";
     edit.reset.hidden = !entry._edited;
+    edit.priv.textContent = entry._private ? "Rendre visible aux visiteurs" : "Réserver au propriétaire";
     edit.confirm.hidden = true; edit.hide.hidden = false;
     resetMergePicker();
     edit.box.hidden = false;
@@ -1091,6 +1261,30 @@
     edit.hide.hidden = true; edit.confirm.hidden = false;
   });
   edit.no.addEventListener("click", function () { edit.confirm.hidden = true; edit.hide.hidden = false; });
+  // 2.9 : fiche réservée au propriétaire (couvertures adultes…) — invisible pour les visiteurs
+  edit.priv.addEventListener("click", function () {
+    var entry = currentEntry(); if (!entry) return;
+    var id = entry.id, title = entry.title, on = !entry._private;
+    closeEditor();
+    saveOverride(id, { owner_only: on ? true : null }, function () {
+      toast(on ? "« " + title + " » est réservée au propriétaire." : "« " + title + " » est de nouveau visible pour tous.",
+            "Annuler", function () { saveOverride(id, { owner_only: on ? null : true }); });
+    });
+  });
+
+  // 2.9 : partager une fiche (iPhone : feuille de partage ; ailleurs : lien copié)
+  document.getElementById("btn-share").addEventListener("click", function () {
+    var entry = currentEntry(); if (!entry) return;
+    var url = ficheUrl(entry.id);
+    var warn = entry._private ? " Fiche réservée : le lien ne s'ouvrira que sur tes appareils." : "";
+    if (navigator.share) {
+      navigator.share({ title: entry.title, url: url }).catch(function () {});
+      if (warn) toast(warn.trim());
+    } else if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(function () { toast("Lien copié." + warn); },
+        function () { toast("Lien : " + url); });
+    } else toast("Lien : " + url);
+  });
   // ---------- fusion : intégrer une autre fiche dans celle-ci ----------
   var mp = {
     open: document.getElementById("merge-open"),
@@ -1349,8 +1543,21 @@
     var box = document.getElementById("hidden-list");
     if (!box || !IS_OWNER) return;
     box.innerHTML = "";
-    if (!state.hiddenList.length && !state.mergedList.length) { box.innerHTML = '<p class="settings-hint">Aucune fiche masquée ni fusionnée.</p>'; return; }
+    var priv = state.catalog.filter(function (e) { return e._private; });
+    if (!state.hiddenList.length && !state.mergedList.length && !priv.length) { box.innerHTML = '<p class="settings-hint">Aucune fiche masquée, privée ni fusionnée.</p>'; return; }
     var ul = document.createElement("ul"); ul.className = "hidden-list";
+    priv.forEach(function (e) {
+      var li = document.createElement("li");
+      li.innerHTML = '<div class="hl-text"><div class="hl-title"></div><div class="hl-why"></div></div>';
+      li.querySelector(".hl-title").textContent = e.title;
+      li.querySelector(".hl-why").textContent = "Réservée au propriétaire : invisible pour les visiteurs";
+      var b = document.createElement("button"); b.type = "button"; b.className = "btn"; b.textContent = "Rendre visible";
+      b.addEventListener("click", function () {
+        saveOverride(e.id, { owner_only: null }, function () { toast("« " + e.title + " » est de nouveau visible pour tous."); });
+      });
+      li.appendChild(b);
+      ul.appendChild(li);
+    });
     state.mergedList.forEach(function (m) {
       var li = document.createElement("li");
       var into = state.catalog.find(function (e) { return e.id === m.into; });
@@ -1477,6 +1684,9 @@
       Object.keys(groups).forEach(function (n) {
         var pos = groups[n];
         if (pos.length < 2) return;
+        // 2.9 : même libellé mais numéros différents connus (« Un conte de Noël » 1 et 2) : pas un doublon
+        var nn = pos.map(function (i) { return e._nums[i]; });
+        if (nn.every(function (x) { return x !== null; }) && nn.filter(function (x, k) { return nn.indexOf(x) === k; }).length === nn.length) return;
         var key = "nodup:" + pos.map(function (i) { return e._keys[i]; }).sort().join("|");
         if (!isDismissed(key)) out.tomes.push({ key: key, e: e, pos: pos });
       });
@@ -1668,6 +1878,7 @@
 
   function viewFromHash() {
     var h = location.hash || "#/";
+    if (h.indexOf("#/fiche/") === 0) return "home";
     if (h === "#/reglages") return "settings";
     if (h === "#/doublons") {
       if (IS_OWNER) return "dups";
@@ -1690,7 +1901,7 @@
     viewScroll[prev] = window.scrollY;
     if (v !== "home") {
       if (!els.zoomOverlay.hidden) closeZoom();
-      if (state.activeId) closeSheet();
+      if (state.activeId) closeSheetUI();
     }
     state.view = v;
     Object.keys(views).forEach(function (k) { if (views[k]) views[k].hidden = k !== v; });
@@ -1698,7 +1909,12 @@
     if (v === "settings") renderSettingsPage();
     else if (v === "dups") renderDups();
     window.scrollTo(0, viewScroll[v] || 0);
-    if (v === "home") sweepSoon();
+    if (v === "home") {
+      sweepSoon();
+      var fid = ficheFromHash();
+      if (fid !== null) openFromRoute(fid);
+      else if (state.activeId) { state.sheetFromApp = false; closeSheetUI(); }
+    }
   }
   window.addEventListener("hashchange", route);
   settingsEls.open.addEventListener("click", function () { location.hash = "#/reglages"; });
@@ -1753,6 +1969,17 @@
 
   els.sheetClose.addEventListener("click", closeSheet);
   els.overlay.addEventListener("click", function (e) { if (e.target === els.overlay) closeSheet(); });
+  // 2.8 : Tab reste dans la fiche ouverte (fenêtre modale)
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Tab" || els.overlay.hidden || !els.zoomOverlay.hidden) return;
+    var f = Array.prototype.filter.call(
+      document.getElementById("sheet").querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'),
+      function (x) { return !x.disabled && x.offsetParent !== null; });
+    if (!f.length) return;
+    var a = document.activeElement, i = f.indexOf(a);
+    if (e.shiftKey && (i <= 0)) { e.preventDefault(); f[f.length - 1].focus(); }
+    else if (!e.shiftKey && (i === -1 || i === f.length - 1)) { e.preventDefault(); f[0].focus(); }
+  });
   document.addEventListener("keydown", function (e) {
     if (e.key !== "Escape") return;
     if (!els.zoomOverlay.hidden) closeZoom();

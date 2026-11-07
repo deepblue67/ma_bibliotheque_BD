@@ -2,7 +2,7 @@
 
 Catalogue personnel de bandes dessinées de Christophe (**1283 séries, 991 one-shots, 8758 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
 
-> **Version actuellement livrée : 2.7 du 04/11/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
+> **Version actuellement livrée : 2.9 du 07/11/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
 >
 > **Mode d'emploi** : ce README est la documentation **technique** du projet. Le mode d'emploi **du propriétaire** est ailleurs : dans l'appli (Réglages → Aide, visible en mode propriétaire seulement) et en PDF (`Mode_emploi_proprietaire.pdf`). Voir la section « Aide et mode d'emploi ».
 >
@@ -50,7 +50,9 @@ ma-bibliotheque-bd/
 ├── genre_taxonomy.json    # liste fixe des genres, informatif (la vraie source pour l'appli
 │                        #   est le tableau GENRES dans app.js)
 ├── data/
-│   └── catalog.json     # catalogue généré (2274 entrées : 1283 séries + 991 one-shots)
+│   ├── catalog.json     # catalogue généré (2274 entrées : 1283 séries + 991 one-shots)
+│   └── version.json     # empreinte du catalogue (2.8), écrite par outils_delta/6_finir.py : l'appli
+│                        #   garde le catalogue en cache tant qu'elle ne change pas — à publier avec lui
 ├── pending_covers.json   # FICHIER DE TRAVAIL d'une mise à jour "delta" : liste des tomes
 │                        #   dont la couverture reste à extraire (voir "Mise à jour du
 │                        #   catalogue en mode delta"). Peut être supprimé une fois
@@ -87,8 +89,8 @@ Depuis le passage au **suivi de lecture par tome**, chaque volume a sa propre co
   "author": "Jean Van Hamme, Grzegorz Rosinski",
   "volume_count": 43,
   "volumes": [
-    { "label": "La Magicienne trahie", "cover": "Thorgal_001.jpg" },
-    { "label": "L'Île des Mers gelées", "cover": "Thorgal_002.jpg" }
+    { "label": "La Magicienne trahie", "cover": "Thorgal_001.jpg", "n": 1 },
+    { "label": "L'Île des Mers gelées", "cover": "Thorgal_002.jpg", "n": 2 }
   ],
   "cover": "Thorgal_001.jpg",       // = volumes[0].cover, utilisé pour la vignette de la grille
   "parent_series": null,            // ex: "Thorgal" pour l'entrée "Thorgal - Les mondes de Thorgal"
@@ -98,6 +100,8 @@ Depuis le passage au **suivi de lecture par tome**, chaque volume a sa propre co
 ```
 
 Un **one-shot** est une entrée ordinaire avec un seul tome, dont le libellé est le titre de l'album, et `one_shot: true`. Il passe donc par exactement le même code que les séries : coche « lu » sur son unique tome (clé Supabase `"<id>::0"`), favoris, genre, recherche. Aucune table ni colonne Supabase n'a été ajoutée pour eux.
+
+**`n` et `hs` (depuis la 2.9)** : numéro réel du tome et `"hs": true` pour un hors-série, tirés du **nom de fichier** (« …Tome_13… », « Tome 01 - … », « HS_02 »), jamais de la position dans la liste. Ajoutés une première fois le 7 novembre 2026 par un script ponctuel (7 480 tomes de série sur 7 767 ; les autres n'ont pas de numéro dans leur nom de fichier), puis à chaque nouveau tome par `4_fusion.py` et `7_ajouter_tome.py`. L'appli s'en sert seulement pour l'affichage (voir l'historique, « Versions 2.8 et 2.9 »).
 
 `cover` (au niveau tome ou titre) peut être `null` si l'extraction a échoué pour ce fichier (ex : `.cbr`, PDF corrompu) — l'appli affiche alors une case vide à la place de l'image.
 
@@ -162,6 +166,7 @@ create table if not exists public.bd_overrides (
   genre       text[],             -- fiches seulement, 0 à 2 genres de la liste fixe
   merged_into text,               -- fiches seulement : id de la fiche qui l'absorbe (fusion)
   not_dup     boolean,            -- lignes "nodup:<clé1>|<clé2>" : « pas un doublon »
+  owner_only  boolean,            -- fiches seulement (2.9) : réservée au propriétaire
   updated_at  timestamptz not null default now()
 );
 -- + "alter table … add column if not exists" pour les colonnes ajoutées après coup
@@ -169,7 +174,7 @@ create table if not exists public.bd_overrides (
 -- + ajout à la publication supabase_realtime
 ```
 
-Les colonnes `merged_into` et `not_dup` ont été ajoutées au lot « fusion et doublons probables ». L'appli ne les envoie que lorsqu'elles servent : tant que le script n'a pas été relancé, les corrections simples continuent de marcher, et seules la fusion et « pas un doublon » échouent avec un message qui demande de relancer le script.
+Les colonnes `merged_into` et `not_dup` ont été ajoutées au lot « fusion et doublons probables », `owner_only` à la version 2.9 (**relancer le script** : sans la colonne, « Réserver au propriétaire » échoue avec un message qui le demande ; tout le reste marche). L'appli ne les envoie que lorsqu'elles servent : tant que le script n'a pas été relancé, les corrections simples continuent de marcher, et seules la fusion et « pas un doublon » échouent avec un message qui demande de relancer le script.
 
 Une ligne n'existe que tant qu'il reste quelque chose à corriger : quand tous les champs reviennent à « valeur du catalogue », l'appli **supprime** la ligne (d'où la policy `delete`, que les deux autres tables n'ont pas).
 
@@ -206,7 +211,7 @@ Toutes ces images sont générées depuis un seul visuel maître 1024×1024 (scr
 
 ## Cache navigateur — convention de version
 
-Depuis la version 2.0, **un seul numéro** : la version de l'appli (`APP_VERSION` dans `app.js`). `index.html` charge `themes.js`, `style.css`, `config.js` et `app.js` avec ce même suffixe (`?v=2.0`), et `uploader.html` (depuis la 2.5) ses trois fichiers `themes.js`, `style.css` et `config.js`. À chaque livraison, le numéro change partout à la fois, ce qui oblige les navigateurs, Safari iPhone compris, à reprendre les nouveaux fichiers plutôt que leur copie en cache (vécu : un `app.js` mis à jour restait invisible malgré plusieurs rechargements, jusqu'à un vidage de cache complet). Règle détaillée : section « Versions des livraisons ». `data/catalog.json` n'a pas ce problème : il est chargé via `fetch(..., { cache: "no-store" })` dans `app.js`, donc toujours à jour sans rien à incrémenter, et **une livraison qui ne touche que les données** (catalogue, couvertures, scripts SQL) **ne change pas le numéro**.
+Depuis la version 2.0, **un seul numéro** : la version de l'appli (`APP_VERSION` dans `app.js`). `index.html` charge `themes.js`, `style.css`, `config.js` et `app.js` avec ce même suffixe (`?v=2.0`), et `uploader.html` (depuis la 2.5) ses trois fichiers `themes.js`, `style.css` et `config.js`. À chaque livraison, le numéro change partout à la fois, ce qui oblige les navigateurs, Safari iPhone compris, à reprendre les nouveaux fichiers plutôt que leur copie en cache (vécu : un `app.js` mis à jour restait invisible malgré plusieurs rechargements, jusqu'à un vidage de cache complet). Règle détaillée : section « Versions des livraisons ». `data/catalog.json` n'a pas ce problème. Depuis la 2.8, l'appli lit d'abord `data/version.json` (quelques octets, jamais mis en cache), qui contient l'empreinte du catalogue écrite par `outils_delta/6_finir.py --installer`, puis demande `data/catalog.json?v=<empreinte>` : le navigateur garde le catalogue (1,2 Mo) tant qu'il ne change pas et le reprend dès le delta suivant. Sans `version.json` (ancien dépôt), il est rechargé à chaque ouverture comme avant (`no-store` et `?t=`). Rien à incrémenter à la main, et **une livraison qui ne touche que les données** (catalogue, couvertures, scripts SQL) **ne change pas le numéro**.
 
 Avant la 2.0, chaque fichier avait son propre compteur (`app.js?v=13`, `style.css?v=13`, `config.js?v=4`, `themes.js?v=1`) : ces anciens numéros apparaissent encore dans l'historique.
 
@@ -476,6 +481,8 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 
 | Version | Date | Contenu |
 |---|---|---|
+| 2.9 | 07/11/2026 | **Fiches plus lisibles** : vrais numéros de tome (« HS1 » pour un hors-série) et tomes rangés dans l'ordre quand les numéros sont sûrs ; libellés sans le nom de la série répété ; adresse propre à chaque fiche (`#/fiche/<id>`) et bouton **Partager cette fiche** ; **fiches réservées au propriétaire** (colonne `owner_only`, script SQL à relancer). Livrée avec la 2.8. Aide et PDF mis à jour (5 pages). |
+| 2.8 | 07/11/2026 | **Petits gains sûrs** (livrée avec la 2.9) : `supabase-js` figé en 2.45.4 avec empreinte `integrity` ; catalogue mis en cache jusqu'au delta suivant (`data/version.json`) ; vignettes utilisables au clavier et annoncées par VoiceOver ; focus dans la fiche à l'ouverture, Tab qui y reste, retour sur la vignette à la fermeture ; titres nettoyés pour les visiteurs ; nouveaux noms des dossiers `-- BD Unique` et `-- BD Séries à compléter` dans l'aide. |
 | 2.7 | 04/11/2026 | **Recherche des sigles** : « I.R.$ » ne trouve plus que la série I.R.$ (avant : 1 580 résultats) ; « W.I.T.C.H », « G.I. Joe », « M.A.D » se cherchent avec ou sans points. Une ligne dans l'aide et le PDF (Bon à savoir). |
 | 2.6 | 04/11/2026 | **Aide et PDF à jour pour « BD Serie à completer »** : le dossier n'est plus présenté comme ignoré ; le sujet « Ajouter de nouvelles BD » explique comment y ranger les tomes isolés (`Série_Tome_NN_Titre.pdf`) et ce que devient chacun à l'import. Aucun changement de fonctionnement de l'appli. |
 | 2.5 | 27/10/2026 | **Page d'envoi des couvertures** réservée au propriétaire : nouvelle section Réglages → Envoi des couvertures, qui ouvre `uploader.html` dans un nouvel onglet. La page est refaite (thème de l'appli, refus pour un visiteur, clé jamais enregistrée, `supabase-js` figé et contrôlé par empreinte, compteur et barre de progression, arrêt net si la clé est refusée) et n'est plus gitignorée. Aide et PDF mis à jour. |
@@ -488,6 +495,16 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 Les livraisons antérieures n'étaient pas numérotées ; leur détail est dans l'historique ci-dessous.
 
 ## Historique des décisions notables
+
+- **Versions 2.8 et 2.9 — revue de code, premiers lots** (7 novembre 2026) : Christophe a validé les deux premiers lots de la revue de code du 7 novembre ; ils sont livrés ensemble.
+  - **Titres nettoyés pour les visiteurs seulement.** Les marques de rangement des noms de dossiers (`_CDS_`, « MANQUE… », `CDS99`, « a renommer », `[HD]`, `(1DVD)`, `(complet 13)`, compteurs `(68-95)` ou `(9-9 + 0-7 HS)`) sont retirées à l'affichage, et « Donjon - Donjon Zénith » devient « Donjon Zénith » (`cleanTitle()`). Les années entre parenthèses (« (1870-1950) ») sont gardées : seuls les nombres de 1 à 3 chiffres sont des compteurs. Le propriétaire garde le **titre brut**, pour continuer à repérer en cherchant « CDS » ce qui reste à renommer (décision de la 2.4) ; sa fiche indique « Les visiteurs voient « … » ». Une correction de titre l'emporte toujours. 74 titres concernés.
+  - **Numéros et ordre des tomes.** Le catalogue reçoit `n` et `hs` (voir le schéma). Une fiche dont chaque tome visible a un numéro, sans doublon hors hors-séries, affiche les vrais numéros et range ses tomes par numéro, hors-séries à la fin : 1 193 fiches sur 1 283. Les autres gardent la numérotation 01, 02… (78 fiches ont des numéros en double : plusieurs cycles, éditions…). Ce tri est **seulement visuel** : les clés de lecture `<id>::<index>` ne bougent pas. La vignette de la grille devient celle du premier tome dans cet ordre (*I.R.$* montrait le tome 24). L'écran Doublons ne signale plus deux tomes de même libellé mais de numéros différents (*Le Déviant* 1 et 2).
+  - **Libellés sans préfixe** (`stripPrefix()`) : le nom de la série répété devant le titre du tome et « Tome NN » sont retirés à l'affichage (2 702 libellés), y compris quand le préfixe diffère un peu du titre de la fiche (« Les Piliers de la Terre » dans « Les pilliers de la terre » : au moins deux mots ou la moitié des mots en commun). Un libellé vide devient « Tome 3 ». La recherche porte sur ces libellés affichés.
+  - **Adresse de fiche et partage** : `#/fiche/<id>` ; ouvrir une fiche depuis la grille change l'adresse (le bouton retour du téléphone la referme), un lien reçu ouvre directement la fiche, une fiche fusionnée mène à sa fiche d'accueil, une fiche inconnue ou réservée affiche « Cette fiche n'est pas disponible ». **Partager cette fiche** : feuille de partage sur iPhone, sinon lien copié.
+  - **Fiches réservées au propriétaire** (`owner_only` dans `bd_overrides`) : invisibles pour les visiteurs (grille, recherche, statistiques, lien), pastille « Privé » pour le propriétaire, bouton dans ✎ Modifier et liste dans Réglages → « Fiches masquées, privées et fusionnées ». C'est de la **discrétion, pas un secret** : `catalog.json` et les couvertures restent publics pour qui les cherche.
+  - **Accessibilité** : vignettes `role="button"` focalisables (Entrée, Espace) avec un nom parlé (titre, nombre de tomes, auteur, état) ; fiche `aria-labelledby`, focus sur son titre à l'ouverture, Tab qui reste dans la fiche, retour sur la vignette d'origine à la fermeture.
+  - **Outils du delta** : `commun.py` gagne `num_hs()` ; `4_fusion.py` et `7_ajouter_tome.py` écrivent `n` / `hs` sur chaque nouveau tome ; `6_finir.py --installer` écrit `data/version.json`.
+  - **Tests** : nouvelle suite `test12_v29.js` (40 vérifications : clavier et focus, adresse et lien direct, bouton retour, partage, titres nettoyés et bruts, numéros et ordre — Thorgal, Murena, I.R.$, Druuna et ses hors-séries —, libellés sans préfixe, fiche réservée côté visiteur et propriétaire, cache du catalogue avec et sans `version.json`, iPhone). Suites existantes repassées ; leurs attentes ont été mises à jour pour les titres nettoyés (recherche « cds », sigles I.R.$) et les libellés sans préfixe.
 
 - **6ᵉ mise à jour delta** (5 novembre 2026) : Christophe a **renommé** `BD Unique` en `-- BD Unique` et `BD Serie à completer` en `-- BD Séries à compléter`. Les scripts (`outils_delta/commun.py`) prennent le nom présent sur le disque, les anciens restant acceptés, et ignorent désormais comme série **tout dossier dont le nom commence par `--`**. Résultat : **4 nouvelles séries** (*Druuna*, Serpieri, 11 albums dont 2 hors-séries ; *Valhalla Hotel* ; *Esclave à Shanghaï* ; *Les sbires du Donjon de Naheulbeuk*), **27 séries enrichies** (surtout des fiches nées hier d'un tome isolé et désormais complétées : *Murena* 1 → 13, *Mashle* 1 → 8, *Machines de Guerre* 1 → 7, *Elric* 1 → 6, *Space Reich* 1 → 6, *Sangre* 1 → 5…), 4 tomes ajoutés depuis `-- BD Séries à compléter` (100 Bullets 3, Le Secret de Scarecrow 4, Les suites vénitiennes 9, Triple galop 15) et **1 one-shot** (*Druuna - Les origines*). Catalogue : 2269 → **2274 entrées** (1283 séries + 991 one-shots), 8667 → **8758 albums**. 91 couvertures (dossier `volume_covers_delta_5nov/`). Pas de changement de version de l'appli.
   - **Remise dans l'ordre, exceptionnellement** : ces fiches nées d'un tome isolé (Murena 13, Mashle 7…) auraient affiché le tome isolé en premier, puis les tomes 1, 2, 3… ajoutés à la fin. Comme le prévoit la règle de la section delta, une fiche **sans aucune coche, correction ni favori** peut être réordonnée : vérifié en lisant Supabase (aucune ligne `bd_volume_status`, `bd_overrides` ni `bd_status` pour ces 27 fiches), puis listé dans `outils_delta/etat/reordonnables.json`, que `4_fusion.py` utilise pour trier ces fiches par numéro de tome et que `6_finir.py --installer` archive (la liste est à refaire, avec la même vérification, à chaque fois). 24 fiches ont été réordonnées ; `6_finir.py` vérifie qu'aucun tome ni aucune couverture n'est perdu.

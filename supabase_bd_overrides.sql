@@ -2,8 +2,8 @@
 -- Ma Bibliothèque BD — table des corrections faites depuis l'appli
 -- À exécuter : Supabase → projet ma-bibliotheque-bd → SQL Editor → New query →
 -- coller ce script → Run. Il peut être relancé sans risque, et DOIT l'être après
--- chaque lot qui le complète (dernier ajout : colonnes merged_into et not_dup, lot
--- « fusion et doublons probables »).
+-- chaque lot qui le complète (dernier ajout : colonne owner_only, version 2.9,
+-- « fiches réservées au propriétaire »).
 -- ============================================================================
 --
 -- Une ligne = une correction, rattachée soit à une fiche (id = id du catalogue,
@@ -22,6 +22,9 @@
 --            ajoutés à la fin, elle disparaît de la grille) ; NULL = pas de fusion
 --   not_dup : true sur une ligne "nodup:<clé1>|<clé2>" = « pas un doublon », la
 --            suggestion ne revient plus dans l'écran des doublons probables
+--   owner_only : true = fiche réservée au propriétaire (2.9) : l'appli ne la montre pas
+--            aux visiteurs. C'est de la discrétion, pas un secret : le catalogue et les
+--            couvertures restent publics pour qui les cherche.
 
 create table if not exists public.bd_overrides (
   id          text primary key,
@@ -31,12 +34,14 @@ create table if not exists public.bd_overrides (
   genre       text[],
   merged_into text,
   not_dup     boolean,
+  owner_only  boolean,
   updated_at  timestamptz not null default now()
 );
 
 -- Table déjà créée par une version précédente du script : on ajoute les colonnes manquantes.
 alter table public.bd_overrides add column if not exists merged_into text;
 alter table public.bd_overrides add column if not exists not_dup boolean;
+alter table public.bd_overrides add column if not exists owner_only boolean;
 
 alter table public.bd_overrides enable row level security;
 

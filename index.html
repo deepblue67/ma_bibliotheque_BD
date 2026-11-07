@@ -26,8 +26,8 @@
      livraison, dans les quatre liens (et les trois de uploader.html), pour forcer les navigateurs (iPhone compris) à recharger.
      themes.js est volontairement bloquant et placé AVANT style.css : il pose le thème
      mémorisé (et charge ses polices) avant le premier affichage. -->
-<script src="themes.js?v=2.7"></script>
-<link rel="stylesheet" href="style.css?v=2.7">
+<script src="themes.js?v=2.9"></script>
+<link rel="stylesheet" href="style.css?v=2.9">
 </head>
 <body>
 
@@ -123,10 +123,10 @@
     </section>
     <section class="set-block owner-only" data-sec="hidden">
       <button type="button" class="set-head" aria-expanded="true">
-        <span class="t">Fiches masquées et fusionnées</span><span class="rule" aria-hidden="true"></span>
+        <span class="t">Fiches masquées, privées et fusionnées</span><span class="rule" aria-hidden="true"></span>
       </button>
       <div class="set-body">
-        <p class="settings-hint">Doublons écartés à l'import, fiches que tu as masquées ou fusionnées dans une autre. Elles restent invisibles pour tout le monde jusqu'à ce que tu les ré-affiches ou les sépares.</p>
+        <p class="settings-hint">Doublons écartés à l'import, fiches que tu as masquées ou fusionnées dans une autre : invisibles pour tout le monde jusqu'à ce que tu les ré-affiches ou les sépares. Fiches réservées au propriétaire : visibles pour toi seul.</p>
         <div id="hidden-list"></div>
       </div>
     </section>
@@ -193,6 +193,8 @@
               <li>Touche <b>Enregistrer</b>.</li>
               </ol>
               <p>Sous l'auteur, une petite ligne rappelle ce qui a été corrigé (« Corrigé par toi — d'origine : … »). <b>Rétablir l'original</b> efface toutes les corrections de la fiche d'un coup.</p>
+              <p><b>Réserver au propriétaire</b> (dans ✎ Modifier) : la fiche reste visible pour toi, avec la pastille <b>Privé</b>, mais disparaît pour tes visiteurs. Pratique pour les couvertures adultes. Pour la rendre à nouveau visible : même bouton, ou Réglages → Fiches masquées, privées et fusionnées.</p>
+              <p><b>Partager cette fiche</b> : le bouton, sous les genres, ouvre le partage de l'iPhone ou copie le lien. Le lien ouvre directement la fiche.</p>
               <p>La recherche ne porte que sur ce qui est affiché : la fiche se trouve sous son <b>nouveau</b> titre, plus sous l'ancien (pratique pour repérer, en cherchant « CDS » par exemple, ce qui reste à renommer). Même chose pour un tome renommé. Tes corrections ne sont jamais écrasées quand de nouvelles BD sont importées.</p>
               </div>
             </details>
@@ -205,7 +207,7 @@
               <li><b>Masquer ce tome</b> : il disparaît pour tes visiteurs. Toi, tu le vois encore, grisé et marqué « (masqué) ». Il ne compte plus dans le nombre de tomes.</li>
               <li><b>Ré-afficher ce tome</b> : même bouton, sur un tome masqué.</li>
               </ul>
-              <p>Les numéros 01, 02… ne comptent que les tomes visibles. On ne masque pas le tome d'un one-shot : on masque la fiche entière.</p>
+              <p>Le numéro affiché est celui du tome (HS pour un hors-série), et les tomes sont rangés dans l'ordre. Quand une fiche n'a pas de numéros sûrs, l'appli numérote simplement 01, 02… les tomes visibles. On ne masque pas le tome d'un one-shot : on masque la fiche entière.</p>
               </div>
             </details>
             <details class="help-item" id="aide-masquer">
@@ -253,10 +255,10 @@
               <ul>
               <li>pas de pastilles Lu / En cours / ★, pas de filtres de statut, pas de cases à cocher ;</li>
               <li>aucun bouton ✎, ni l'écran des doublons, ni la page d'envoi des couvertures, ni l'aide que tu lis ;</li>
-              <li>les titres corrigés, sans les fiches ni les tomes masqués ;</li>
+              <li>les titres corrigés, et sinon nettoyés des marques de rangement (« _CDS_ », « MANQUE… », « [HD] », « (68-95) »…), sans les fiches ni les tomes masqués, ni les fiches réservées ;</li>
               <li>les fiches fusionnées, déjà regroupées.</li>
               </ul>
-              <p>Ils peuvent chercher, filtrer par genre, Séries / One-shots, sauter à une lettre avec la barre alphabétique, ouvrir une fiche, agrandir une couverture et choisir un thème.</p>
+              <p>Ils peuvent chercher, filtrer par genre, Séries / One-shots, sauter à une lettre avec la barre alphabétique, ouvrir et partager une fiche, agrandir une couverture et choisir un thème. Toi, tu vois les titres bruts, pour repérer ce qui reste à renommer : la fiche indique ce que voient les visiteurs.</p>
               </div>
             </details>
             <details class="help-item" id="aide-ajout">
@@ -264,12 +266,12 @@
               <div class="help-body">
               <p>L'appli ne lit pas ton disque elle-même. Pour ajouter des BD :</p>
               <ol>
-              <li>Range-les dans <code>D:\Christophe\Mes BD</code> : une série par dossier, les albums sans suite dans <code>BD Unique</code>, et les tomes isolés d'une série que tu n'as pas en entier dans <code>BD Serie à completer</code>, sous la forme <code>Série_Tome_NN_Titre.pdf</code>.</li>
-              <li>Dis à Claude <b>« fais le delta BD »</b> : seules les nouveautés sont ajoutées, sans toucher à ce qui existe. Les dossiers <code>1 2 3 A CLASSER</code>, <code>1 2 3 A TRIER</code> et <code>Nouveau dossier…</code> sont ignorés.</li>
+              <li>Range-les dans <code>D:\Christophe\Mes BD</code> : une série par dossier, les albums sans suite dans <code>-- BD Unique</code>, et les tomes isolés d'une série que tu n'as pas en entier dans <code>-- BD Séries à compléter</code>, sous la forme <code>Série_Tome_NN_Titre.pdf</code>.</li>
+              <li>Dis à Claude <b>« fais le delta BD »</b> : seules les nouveautés sont ajoutées, sans toucher à ce qui existe. Les dossiers <code>1 2 3 A CLASSER</code>, <code>1 2 3 A TRIER</code>, <code>Nouveau dossier…</code> et ceux dont le nom commence par <code>--</code> ne sont jamais des séries.</li>
               <li>Envoie les nouvelles couvertures : Réglages → <b>Envoi des couvertures</b> → <b>Ouvrir la page d'envoi des couvertures</b>. Colle la clé « service_role » (Supabase → Project Settings → API Keys), choisis le dossier <code>volume_covers_delta_&lt;date&gt;</code> indiqué par Claude, puis <b>Envoyer vers Supabase</b>.</li>
               <li>Publie sur GitHub les fichiers indiqués, surtout <code>data/catalog.json</code>.</li>
               </ol>
-              <p>Un tome de <code>BD Serie à completer</code> rejoint la fiche de sa série si elle existe déjà ; sinon il crée une nouvelle fiche, que les tomes suivants rejoindront. S'il est déjà dans le dossier de sa série, il est ignoré. Les séries rangées en sous-dossiers (Tintin, I.R.$…) sont à classer à la main.</p>
+              <p>Un tome de <code>-- BD Séries à compléter</code> rejoint la fiche de sa série si elle existe déjà ; sinon il crée une nouvelle fiche, que les tomes suivants rejoindront. S'il est déjà dans le dossier de sa série, il est ignoré. Les séries rangées en sous-dossiers (Tintin, I.R.$…) sont à classer à la main.</p>
               <p>Tes corrections, masquages, fusions et coches survivent à l'import. La clé « service_role » n'est jamais enregistrée : colle-la à chaque envoi, et ne la mets dans aucun fichier du site. La page d'envoi s'ouvre seulement sur un appareil déverrouillé.</p>
               </div>
             </details>
@@ -304,7 +306,7 @@
 </main>
 
 <div id="overlay" class="overlay" hidden>
-  <div id="sheet" class="sheet" role="dialog" aria-modal="true">
+  <div id="sheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
     <button id="sheet-close" class="sheet-close" aria-label="Fermer">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
@@ -316,12 +318,19 @@
         </button>
       </div>
       <div class="sheet-info">
-        <div id="sheet-title" class="sheet-title"></div>
+        <div id="sheet-title" class="sheet-title" tabindex="-1"></div>
         <div id="sheet-author" class="sheet-author"></div>
         <p id="sheet-orig" class="sheet-orig owner-only" hidden></p>
         <p id="sheet-merged" class="sheet-merged owner-only" hidden></p>
+        <p id="sheet-public" class="sheet-orig owner-only" hidden></p>
         <div id="sheet-meta" class="sheet-meta"></div>
         <div id="sheet-genres" class="sheet-genres"></div>
+        <div class="sheet-share">
+          <button id="btn-share" class="btn btn-ghost share-btn" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/></svg>
+            Partager cette fiche
+          </button>
+        </div>
         <div class="sheet-actions owner-only">
           <button id="btn-read" class="btn btn-outline">Marquer comme lu</button>
           <button id="btn-fav" class="btn btn-outline">★ Ajouter aux favoris</button>
@@ -357,6 +366,10 @@
               <button id="merge-cancel" type="button" class="btn btn-ghost">Fermer</button>
             </div>
           </div>
+          <div class="edit-private">
+            <button id="edit-private" type="button" class="btn">Réserver au propriétaire</button>
+            <p class="settings-hint">Une fiche réservée reste visible pour toi, avec la pastille « Privé », mais n'apparaît plus pour tes visiteurs : ni dans la grille, ni dans la recherche, ni par son lien.</p>
+          </div>
           <div class="edit-danger">
             <button id="edit-hide" type="button" class="btn btn-danger">Masquer cette fiche…</button>
             <span id="edit-hide-confirm" class="edit-confirm" hidden>Masquer « <span class="confirm-title"></span> » ?
@@ -383,8 +396,12 @@
 
 <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="config.js?v=2.7"></script>
-<script src="app.js?v=2.7"></script>
+<!-- supabase-js figé et contrôlé par empreinte (2.8), comme dans uploader.html : une nouvelle
+     version publiée sur le CDN ne peut plus changer l'appli sans qu'on le décide. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"
+        integrity="sha384-0w2KAL2YHP6wKOkUDzkCDGgVvfmHnj02DHeQ6XcHOgTfFsGyonKOpShMH1x6nk9o"
+        crossorigin="anonymous"></script>
+<script src="config.js?v=2.9"></script>
+<script src="app.js?v=2.9"></script>
 </body>
 </html>

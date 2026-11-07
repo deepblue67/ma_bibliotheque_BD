@@ -477,6 +477,10 @@ main { max-width: 1400px; margin: 0 auto; padding: 32px 20px 80px; }
   position: relative;
 }
 .card:hover { transform: translateY(-3px); }
+/* 2.8 : vignette atteinte au clavier */
+.card:focus { outline: none; }
+.card:focus-visible { outline: 3px solid var(--text); outline-offset: 3px; transform: translateY(-3px); }
+.sheet-title:focus { outline: none; }
 
 .card-cover-wrap { position: relative; aspect-ratio: 500 / 680; background: var(--card-placeholder); }
 .card-cover-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -494,6 +498,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 32px 20px 80px; }
 .badge.read { background: var(--read); color: var(--on-read); }
 .badge.inprogress { background: var(--gold); color: var(--on-gold); }
 .badge.fav { background: var(--fav); color: var(--on-fav); }
+.badge.private { background: var(--text); color: var(--bg); }          /* 2.9 : fiche réservée au propriétaire */
 
 .magnify-btn {
   width: 24px; height: 24px;
@@ -672,7 +677,8 @@ main { max-width: 1400px; margin: 0 auto; padding: 32px 20px 80px; }
 .vol-row:hover { background: var(--hover); }
 .vol-row.active { background: var(--tan); color: var(--chip-text); }
 .vol-row.is-read .vol-label { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--muted); }
-.vol-row .num { color: var(--fav); font-weight: 800; flex-shrink: 0; }
+.vol-row .num { color: var(--fav); font-weight: 800; flex-shrink: 0; min-width: 1.6em; }
+.vol-row .num.hs { font-size: .85em; }                                  /* 2.9 : hors-série */
 .vol-row .vol-label { flex: 1; min-width: 0; }
 
 .vol-check {
@@ -846,6 +852,12 @@ html:not(.is-owner) .owner-only { display: none !important; }
 .sheet-orig { font-size: 11.5px; font-style: italic; color: var(--muted); margin: 6px 0 0; line-height: 1.35; }
 .sheet-orig[hidden], .sheet-edit[hidden], .edit-confirm[hidden],
 #edit-hide[hidden], #edit-reset[hidden], .toast[hidden] { display: none; }
+/* 2.9 : partager une fiche, fiche réservée au propriétaire */
+.sheet-share { margin-top: 10px; }
+.share-btn { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; box-sizing: border-box; }
+.share-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+.edit-private { margin-top: 14px; padding-top: 12px; border-top: var(--bw-s) dashed var(--line); }
+.edit-private .settings-hint { margin: 6px 0 0; }
 
 .sheet-edit {
   margin-top: 14px; padding: 14px;
