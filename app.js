@@ -12,8 +12,8 @@
   // Version de la livraison — à augmenter à CHAQUE livraison (+0.1 pour une livraison
   // ordinaire, +1.0 pour une refonte), avec le même numéro dans les quatre ?v= de
   // index.html et une ligne dans l'historique « Versions » du README.
-  var APP_VERSION = "3.0";
-  var APP_VERSION_DATE = "2026-11-07";
+  var APP_VERSION = "3.1";
+  var APP_VERSION_DATE = "2026-11-08";
 
   // ---------- mode propriétaire ----------
   // Garde-fou, pas une serrure : sans le code, les statuts (lu, en cours, favoris) ne
@@ -450,10 +450,24 @@
              merged_into: row.merged_into || null, not_dup: row.not_dup || null, owner_only: row.owner_only || null };
   }
 
+  // 3.1 : les corrections (dont les fiches réservées au propriétaire) doivent être connues
+  // avant d'afficher quoi que ce soit à un visiteur qui n'a encore rien en cache : sinon une
+  // fiche privée apparaissait une fraction de seconde (ou s'ouvrait depuis un lien) avant
+  // l'arrivée de bd_overrides. Attente plafonnée à OV_WAIT ms (Supabase injoignable).
+  var OV_WAIT = 4000, ovResolve, ovReadyP = new Promise(function (r) { ovResolve = r; });
+  state.ovReady = false;
+  function markOvReady() { if (!state.ovReady) { state.ovReady = true; ovResolve(); } }
+  function whenOv() { return Promise.race([ovReadyP, new Promise(function (r) { setTimeout(r, OV_WAIT); })]); }
+  // Ouvre la fiche d'une adresse #/fiche/<id> ; pour un visiteur, une fois les corrections connues.
+  function openFromRouteSafe(fid) {
+    if (IS_OWNER || state.ovReady) { openFromRoute(fid); return; }
+    whenOv().then(function () { if (ficheFromHash() === fid && state.view === "home") openFromRoute(fid); });
+  }
   function fetchOverrides() {
     supabase.from("bd_overrides").select("*")
       .then(function (res) {
         if (res.error) {
+          markOvReady();
           if (IS_OWNER) setSyncNote("Corrections indisponibles : la table bd_overrides n'existe pas encore dans Supabase (voir README).");
           return;
         }
@@ -463,20 +477,23 @@
         });
         state.overrides = map;
         saveLocalOverrides();
+        markOvReady();
         refreshAll();
       })
-      .catch(function () {});
+      .catch(function () { markOvReady(); });
   }
 
   // ---------- supabase ----------
   var supabase = null;
   function initSupabase() {
     if (!window.supabase || !window.BD_SUPABASE_URL || !window.BD_SUPABASE_ANON_KEY) {
+      markOvReady();
       if (IS_OWNER) setSyncNote("Synchronisation indisponible (config manquante) — mode local uniquement.");
       return;
     }
     try {
       supabase = window.supabase.createClient(window.BD_SUPABASE_URL, window.BD_SUPABASE_ANON_KEY);
+      initAuth();
       // les corrections concernent tout le monde (titres corrigés, fiches masquées)…
       fetchOverrides();
       // …les statuts et la synchro en direct, seulement le propriétaire
@@ -486,8 +503,105 @@
         subscribeRealtime();
       }
     } catch (e) {
+      markOvReady();
       if (IS_OWNER) setSyncNote("Synchronisation indisponible — mode local uniquement.");
     }
+  }
+
+  // ---------- connexion Supabase (3.1) ----------
+  // Première étape du lot sécurité : le propriétaire se connecte à Supabase avec son adresse
+  // e-mail et son mot de passe (supabase.auth.signInWithPassword), une fois par appareil.
+  // (Le code par e-mail a été écarté : sans serveur SMTP à soi, Supabase n'envoie qu'un lien,
+  // qui sur l'iPhone s'ouvrirait dans Safari et pas dans l'appli de l'écran d'accueil.)
+  // La session est gardée par supabase-js dans le localStorage (clé sb-<ref>-auth-token) et
+  // renouvelée toute seule ; toutes les requêtes partent alors avec le jeton de la session au
+  // lieu de la clé publique. Le mot de passe, lui, n'est gardé nulle part par l'appli.
+  // En 3.1, les règles (RLS) ne changent pas : se connecter ne bloque ni ne débloque rien.
+  // En 3.2, seules les requêtes d'une session connectée pourront écrire.
+  // Les inscriptions sont fermées dans Supabase : seul l'utilisateur créé à la main existe.
+  var AUTH_EMAIL_KEY = "bd_auth_email_v1";
+  state.auth = { session: null, ready: false, email: "", msg: "", err: false, busy: false };
+  try { state.auth.email = localStorage.getItem(AUTH_EMAIL_KEY) || ""; } catch (e) {}
+  function initAuth() {
+    if (!supabase || !supabase.auth) return;
+    supabase.auth.getSession().then(function (res) {
+      state.auth.session = (res && res.data && res.data.session) || null;
+      state.auth.ready = true;
+      renderAuthBox();
+    }).catch(function () { state.auth.ready = true; renderAuthBox(); });
+    supabase.auth.onAuthStateChange(function (event, session) {
+      state.auth.session = session || null;
+      state.auth.ready = true;
+      renderAuthBox();
+    });
+  }
+  function authErrorText(err) {
+    var m = ((err && (err.message || err.msg || err.error_description)) || "") + "";
+    var code = (err && (err.code || err.error_code)) || "";
+    if (err && err.status === 429 || /rate limit|too many/i.test(m)) return "Trop d'essais rapprochés : attends quelques minutes avant de recommencer.";
+    if (code === "invalid_credentials" || /invalid login credentials|invalid_grant/i.test(m)) return "Adresse ou mot de passe incorrect.";
+    if (code === "email_not_confirmed" || /not confirmed/i.test(m)) return "Ce compte n'est pas confirmé dans Supabase (Authentication → Users).";
+    if (/fetch|network/i.test(m)) return "Supabase ne répond pas (hors ligne ?). Réessaie dans un moment.";
+    return "Connexion impossible : " + (m || "erreur inconnue");
+  }
+  function renderAuthBox() {
+    var box = document.getElementById("auth-box");
+    if (!box) return;
+    var a = state.auth, html = '<h4 class="auth-h">Connexion sécurisée</h4>';
+    if (!supabase || !supabase.auth) {
+      html += '<p class="settings-hint">Connexion indisponible : Supabase n\'a pas pu être chargé.</p>';
+    } else if (!a.ready) {
+      html += '<p class="settings-hint">Vérification de la connexion…</p>';
+    } else if (a.session) {
+      var who = (a.session.user && a.session.user.email) || a.email;
+      html += '<p class="owner-status on">Connecté à Supabase sur cet appareil' + (who ? ' (<b>' + esc(who) + '</b>)' : '') + '. ' +
+              'À partir de la version 3.2, cette connexion sera nécessaire pour cocher, corriger ou masquer.</p>' +
+              '<div class="owner-row"><button type="button" class="btn btn-ghost" id="auth-out">Se déconnecter de Supabase</button></div>';
+    } else {
+      html += '<p class="owner-status">Pas encore connecté sur cet appareil. À partir de la version 3.2, il faudra l\'être pour cocher, corriger ou masquer. ' +
+              'Saisis l\'adresse e-mail et le mot de passe du compte créé dans Supabase.</p>' +
+              '<form id="auth-form" class="owner-form auth-form" autocomplete="on">' +
+              '<input type="email" id="auth-email" class="owner-input" autocomplete="username" placeholder="Adresse e-mail" aria-label="Adresse e-mail" required>' +
+              '<input type="password" id="auth-pass" class="owner-input" autocomplete="current-password" placeholder="Mot de passe" aria-label="Mot de passe" required>' +
+              '<button type="submit" class="btn"' + (a.busy ? ' disabled' : '') + '>Se connecter</button></form>';
+    }
+    html += '<p id="auth-msg" class="owner-msg' + (a.err ? ' err' : '') + '" role="status"></p>';
+    box.innerHTML = html;
+    document.getElementById("auth-msg").textContent = a.msg || "";
+    var mail = document.getElementById("auth-email");
+    if (mail) mail.value = a.email || "";
+    var f = document.getElementById("auth-form");
+    if (f) f.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var email = (mail.value || "").trim(), pass = document.getElementById("auth-pass").value;
+      if (!email || !pass) return;
+      a.email = email; a.busy = true; a.msg = "Connexion…"; a.err = false;
+      document.getElementById("auth-msg").textContent = a.msg;
+      supabase.auth.signInWithPassword({ email: email, password: pass }).then(function (res) {
+        a.busy = false;
+        if (res && res.error) {
+          a.msg = authErrorText(res.error); a.err = true; renderAuthBox();
+          var pw = document.getElementById("auth-pass"); if (pw) pw.focus();
+          return;
+        }
+        try { localStorage.setItem(AUTH_EMAIL_KEY, email); } catch (e2) {}
+        a.session = (res.data && res.data.session) || a.session;
+        a.msg = "Connexion réussie : cet appareil est prêt pour la version 3.2."; a.err = false;
+        renderAuthBox();
+      }).catch(function (err) { a.busy = false; a.msg = authErrorText(err); a.err = true; renderAuthBox(); });
+    });
+    var out = document.getElementById("auth-out");
+    if (out) out.addEventListener("click", function () {
+      a.msg = ""; a.err = false;
+      supabase.auth.signOut({ scope: "local" }).then(function () {
+        a.session = null; a.msg = "Déconnecté de Supabase sur cet appareil."; renderAuthBox();
+      });
+    });
+  }
+  // Quitter le mode propriétaire déconnecte aussi de Supabase (appareil prêté, par exemple).
+  function signOutLocal() {
+    if (!supabase || !supabase.auth) return Promise.resolve();
+    return supabase.auth.signOut({ scope: "local" }).catch(function () {});
   }
 
   function setSyncNote(text) {
@@ -616,13 +730,17 @@
         // complet). Elle reste dans le catalogue pour que le prochain import la reconnaisse
         // et ne la réinsère pas, mais elle n'est jamais affichée ni comptée.
         state.raw = data.entries;
-        applyOverrides();
-        renderGrid();
-        if (state.view === "settings") { renderHiddenList(); updateDupButton(); }
-        else if (state.view === "dups") renderDups();
-        else if (state.view === "stats") renderStats();
-        var fid = ficheFromHash();
-        if (fid && state.view === "home") openFromRoute(fid);
+        var show = function () {
+          applyOverrides();
+          renderGrid();
+          if (state.view === "settings") { renderHiddenList(); updateDupButton(); }
+          else if (state.view === "dups") renderDups();
+          else if (state.view === "stats") renderStats();
+          var fid = ficheFromHash();
+          if (fid && state.view === "home") openFromRouteSafe(fid);
+        };
+        // visiteur sans corrections en cache (première visite) : on attend bd_overrides
+        if (!IS_OWNER && !state.ovReady && !hadOvCache) whenOv().then(show); else show();
       })
       .catch(function () {
         els.empty.hidden = false;
@@ -1604,7 +1722,8 @@
     if (IS_OWNER) {
       html += '<p class="owner-status on">Mode propriétaire actif sur cet appareil : tu peux corriger un titre, masquer une fiche et cocher les statuts. Tes visiteurs, eux, ne voient que la bibliothèque.</p>' +
               '<div class="owner-row"><button type="button" class="btn" id="owner-quit">Quitter le mode propriétaire</button>' +
-              '<button type="button" class="btn btn-ghost" id="owner-change">Changer de code…</button></div>';
+              '<button type="button" class="btn btn-ghost" id="owner-change">Changer de code…</button></div>' +
+              '<div id="auth-box" class="auth-box"></div>';
     } else if (configured) {
       html += '<p class="owner-status">Cet appareil est en mode visiteur. Saisis ton code pour retrouver tes statuts et pouvoir les modifier.</p>' +
               '<form id="owner-unlock" class="owner-form" autocomplete="on">' +
@@ -1626,11 +1745,12 @@
               '<div id="owner-out" class="owner-out" hidden></div></div>';
     }
     box.innerHTML = html;
+    renderAuthBox();
 
     var quit = document.getElementById("owner-quit");
     if (quit) quit.addEventListener("click", function () {
       try { localStorage.removeItem(OWNER_KEY); } catch (e) {}
-      location.reload();
+      signOutLocal().then(function () { location.reload(); });
     });
     var change = document.getElementById("owner-change");
     if (change) change.addEventListener("click", function () {
@@ -2205,7 +2325,7 @@
     if (v === "home") {
       sweepSoon();
       var fid = ficheFromHash();
-      if (fid !== null) openFromRoute(fid);
+      if (fid !== null) openFromRouteSafe(fid);
       else if (state.activeId) { state.sheetFromApp = false; closeSheetUI(); }
     }
   }
@@ -2292,6 +2412,7 @@
   // ---------- boot ----------
   populateGenreFilter();
   state.overrides = loadLocalOverrides();
+  var hadOvCache = Object.keys(state.overrides).length > 0;
   if (IS_OWNER) {
     state.favorites = loadLocalFavorites();
     state.volumeRead = loadLocalVolumeRead();

@@ -26,8 +26,8 @@
      livraison, dans les quatre liens (et les trois de uploader.html), pour forcer les navigateurs (iPhone compris) à recharger.
      themes.js est volontairement bloquant et placé AVANT style.css : il pose le thème
      mémorisé (et charge ses polices) avant le premier affichage. -->
-<script src="themes.js?v=3.0"></script>
-<link rel="stylesheet" href="style.css?v=3.0">
+<script src="themes.js?v=3.1"></script>
+<link rel="stylesheet" href="style.css?v=3.1">
 </head>
 <body>
 
@@ -186,6 +186,7 @@
               <p><b>Quitter</b> : Réglages → <b>Quitter le mode propriétaire</b>. L'appareil redevient visiteur. Fais-le sur un appareil qui n'est pas le tien.</p>
               <p><b>Changer de code</b> : Réglages → <b>Changer de code…</b>. Saisis deux fois le nouveau code, puis copie la ligne <code>window.BD_OWNER_HASH = "…";</code> affichée. Elle doit remplacer celle de <code>config.js</code>, puis il faut publier sur GitHub. Ensuite, <b>tous</b> tes appareils repassent en visiteur : déverrouille-les avec le nouveau code.</p>
               <p><b>Code oublié</b> : même chose que « changer de code », depuis n'importe quel appareil. Aucun code n'est stocké nulle part, seule son empreinte l'est.</p>
+              <p><b>Connexion sécurisée</b>, une fois par appareil déverrouillé : Réglages → Mode propriétaire → <b>Connexion sécurisée</b>. Saisis l'adresse e-mail et le mot de passe du compte créé dans Supabase, puis <b>Se connecter</b> (le trousseau de l'iPhone peut les retenir). L'appareil reste connecté. <b>Se déconnecter de Supabase</b> l'oublie, <b>Quitter le mode propriétaire</b> aussi. Pour l'instant, la connexion ne change rien ; bientôt, elle sera nécessaire pour cocher, corriger ou masquer. Mot de passe oublié : dans Supabase, Authentication → Users, supprime ton compte et recrée-le avec un nouveau mot de passe (« Auto Confirm User » coché).</p>
               </div>
             </details>
             <details class="help-item" id="aide-lecture">
@@ -440,7 +441,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"
         integrity="sha384-0w2KAL2YHP6wKOkUDzkCDGgVvfmHnj02DHeQ6XcHOgTfFsGyonKOpShMH1x6nk9o"
         crossorigin="anonymous"></script>
-<script src="config.js?v=3.0"></script>
-<script src="app.js?v=3.0"></script>
+<script src="config.js?v=3.1"></script>
+<script src="app.js?v=3.1"></script>
 </body>
 </html>
