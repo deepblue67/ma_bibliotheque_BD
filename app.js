@@ -12,34 +12,30 @@
   // Version de la livraison — à augmenter à CHAQUE livraison (+0.1 pour une livraison
   // ordinaire, +1.0 pour une refonte), avec le même numéro dans les quatre ?v= de
   // index.html et une ligne dans l'historique « Versions » du README.
-  var APP_VERSION = "3.2";
+  var APP_VERSION = "3.3";
   var APP_VERSION_DATE = "2026-11-08";
 
-  // ---------- mode propriétaire ----------
-  // Garde-fou, pas une serrure : sans le code, les statuts (lu, en cours, favoris) ne
-  // sont ni lus ni affichés, et les commandes qui écrivent dans Supabase n'apparaissent
-  // pas. Mais les règles Supabase restent ouvertes en écriture à la clé publique : quelqu'un
-  // qui lit le code source peut toujours écrire dans la base. Le code n'est stocké nulle
-  // part. config.js ne contient que son empreinte PBKDF2 (BD_OWNER_HASH), et l'appareil
-  // déverrouillé garde cette même empreinte dans son localStorage.
-  var OWNER_KEY = "bd_owner_v1";
-  var OWNER_SALT = "ma-bibliotheque-bd/owner/v1";
-  var OWNER_ITER = 200000;
-  function ownerHashConfigured() { return (window.BD_OWNER_HASH || "").trim().toLowerCase(); }
-  function ownerHashStored() { try { return localStorage.getItem(OWNER_KEY) || ""; } catch (e) { return ""; } }
-  var IS_OWNER = !!ownerHashConfigured() && ownerHashStored() === ownerHashConfigured();
-  document.documentElement.classList.toggle("is-owner", IS_OWNER);
-
-  function deriveOwnerHash(code) {
-    var enc = new TextEncoder();
-    return crypto.subtle.importKey("raw", enc.encode(code), "PBKDF2", false, ["deriveBits"])
-      .then(function (key) {
-        return crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt: enc.encode(OWNER_SALT), iterations: OWNER_ITER }, key, 256);
-      })
-      .then(function (bits) {
-        return Array.prototype.map.call(new Uint8Array(bits), function (b) { return ("0" + b.toString(16)).slice(-2); }).join("");
-      });
+  // ---------- mode propriétaire (3.3) ----------
+  // Propriétaire = appareil connecté à Supabase (Supabase Auth, e-mail + mot de passe ; voir
+  // « Connexion sécurisée » dans le README). Depuis la 3.2, la base n'accepte les écritures,
+  // et la lecture des favoris et des coches, que de cette session : c'est la vraie serrure.
+  // On le sait dès le chargement, sans attendre le réseau : supabase-js garde la session dans
+  // le localStorage (clé sb-<ref>-auth-token). Si elle s'avère invalide (compte recréé,
+  // session révoquée), supabase-js l'efface et l'appli se recharge en visiteur (initAuth).
+  // L'ancien code propriétaire (empreinte PBKDF2 BD_OWNER_HASH, versions 1.x à 3.2) n'existe plus.
+  function authStorageKey() {
+    try { return "sb-" + new URL(window.BD_SUPABASE_URL).hostname.split(".")[0] + "-auth-token"; } catch (e) { return ""; }
   }
+  function storedSession() {
+    try {
+      var s = JSON.parse(localStorage.getItem(authStorageKey()) || "null");
+      return s && (s.refresh_token || s.access_token) ? s : null;
+    } catch (e) { return null; }
+  }
+  var IS_OWNER = !!storedSession();
+  document.documentElement.classList.toggle("is-owner", IS_OWNER);
+  try { localStorage.removeItem("bd_owner_v1"); } catch (e) {}   // empreinte de l'ancien code (≤ 3.2)
+  var LOST_KEY = "bd_session_perdue";
 
   var state = {
     raw: [],           // catalogue tel que généré (data/catalog.json), jamais modifié
@@ -525,13 +521,18 @@
     supabase.auth.getSession().then(function (res) {
       state.auth.session = (res && res.data && res.data.session) || null;
       state.auth.ready = true;
+      // propriétaire dont la session gardée n'est plus valable (supabase-js l'a effacée) : visiteur
+      if (IS_OWNER && !state.auth.session && !storedSession()) { lostSession(); return; }
       renderAuthBox();
       syncStatuses();
     }).catch(function () { state.auth.ready = true; renderAuthBox(); });
     supabase.auth.onAuthStateChange(function (event, session) {
       state.auth.session = session || null;
       state.auth.ready = true;
-      if (event === "SIGNED_OUT") state.statusSynced = false;
+      if (event === "SIGNED_OUT") {
+        state.statusSynced = false;
+        if (IS_OWNER && !state.auth.leaving) { lostSession(); return; }
+      }
       renderAuthBox();
       if (event === "SIGNED_IN") syncStatuses();
     });
@@ -545,27 +546,21 @@
     if (/fetch|network/i.test(m)) return "Supabase ne répond pas (hors ligne ?). Réessaie dans un moment.";
     return "Connexion impossible : " + (m || "erreur inconnue");
   }
+  // Réglages → Mode propriétaire, sur un appareil visiteur : formulaire de connexion.
+  // Une connexion réussie recharge la page, qui s'ouvre alors en mode propriétaire.
   function renderAuthBox() {
-    updateLoginBanner();
     var box = document.getElementById("auth-box");
     if (!box) return;
-    var a = state.auth, html = '<h4 class="auth-h">Connexion sécurisée</h4>';
+    var a = state.auth, html = "";
     if (!supabase || !supabase.auth) {
-      html += '<p class="settings-hint">Connexion indisponible : Supabase n\'a pas pu être chargé.</p>';
-    } else if (!a.ready) {
-      html += '<p class="settings-hint">Vérification de la connexion…</p>';
+      html = '<p class="settings-hint">Connexion indisponible : Supabase n\'a pas pu être chargé.</p>';
     } else if (a.session) {
-      var who = (a.session.user && a.session.user.email) || a.email;
-      html += '<p class="owner-status on">Connecté à Supabase sur cet appareil' + (who ? ' (<b>' + esc(who) + '</b>)' : '') + '. ' +
-              'Tes coches, favoris et corrections sont enregistrés.</p>' +
-              '<div class="owner-row"><button type="button" class="btn btn-ghost" id="auth-out">Se déconnecter de Supabase</button></div>';
+      html = '<p class="owner-status on">Connexion réussie : ouverture du mode propriétaire…</p>';
     } else {
-      html += '<p class="owner-status off">Pas connecté sur cet appareil : tes coches, favoris et corrections ne peuvent pas être enregistrés. ' +
-              'Saisis l\'adresse e-mail et le mot de passe du compte créé dans Supabase.</p>' +
-              '<form id="auth-form" class="owner-form auth-form" autocomplete="on">' +
-              '<input type="email" id="auth-email" class="owner-input" autocomplete="username" placeholder="Adresse e-mail" aria-label="Adresse e-mail" required>' +
-              '<input type="password" id="auth-pass" class="owner-input" autocomplete="current-password" placeholder="Mot de passe" aria-label="Mot de passe" required>' +
-              '<button type="submit" class="btn"' + (a.busy ? ' disabled' : '') + '>Se connecter</button></form>';
+      html = '<form id="auth-form" class="owner-form auth-form" autocomplete="on">' +
+             '<input type="email" id="auth-email" class="owner-input" autocomplete="username" placeholder="Adresse e-mail" aria-label="Adresse e-mail" required>' +
+             '<input type="password" id="auth-pass" class="owner-input" autocomplete="current-password" placeholder="Mot de passe" aria-label="Mot de passe" required>' +
+             '<button type="submit" class="btn"' + (a.busy ? ' disabled' : '') + '>Se connecter</button></form>';
     }
     html += '<p id="auth-msg" class="owner-msg' + (a.err ? ' err' : '') + '" role="status"></p>';
     box.innerHTML = html;
@@ -587,19 +582,19 @@
           return;
         }
         try { localStorage.setItem(AUTH_EMAIL_KEY, email); } catch (e2) {}
-        a.session = (res.data && res.data.session) || a.session;
-        a.msg = "Connexion réussie."; a.err = false;
+        a.session = (res.data && res.data.session) || a.session; a.msg = ""; a.err = false;
         renderAuthBox();
+        location.reload();
       }).catch(function (err) { a.busy = false; a.msg = authErrorText(err); a.err = true; renderAuthBox(); });
     });
-    var out = document.getElementById("auth-out");
-    if (out) out.addEventListener("click", function () {
-      a.msg = ""; a.err = false;
-      supabase.auth.signOut({ scope: "local" }).then(function () {
-        a.session = null; a.msg = "Déconnecté de Supabase sur cet appareil."; renderAuthBox();
-      });
-    });
   }
+  // Session perdue (compte recréé, session révoquée, expirée sans renouvellement possible) :
+  // l'appareil repasse en visiteur ; le message s'affiche après le rechargement.
+  function lostSession() {
+    try { sessionStorage.setItem(LOST_KEY, "1"); } catch (e) {}
+    location.reload();
+  }
+
   // ---------- verrou des écritures (3.2) ----------
   // Depuis supabase_securite.sql, la base n'accepte les écritures (et la lecture des favoris
   // et des coches) que d'une session connectée. Sans connexion, l'appli prévient AVANT de
@@ -615,10 +610,13 @@
       (f.value ? document.getElementById("auth-pass") : f).focus();
     }, 300);
   }
+  // Propriétaire dont la session n'est pas (encore) confirmée : vérification en cours, ou
+  // Supabase injoignable (hors ligne). On ne touche à rien plutôt que d'afficher un changement
+  // qui ne serait pas gardé.
   function needLogin() {
     if (!supabase || hasSession()) return false;   // sans Supabase : comportement d'avant
     if (!state.auth.ready) toast("Vérification de la connexion en cours : réessaie dans un instant.");
-    else toast("Pas enregistré : connecte-toi d'abord à Supabase sur cet appareil.", "Se connecter", goLogin);
+    else toast("Pas enregistré : Supabase ne répond pas (hors ligne ?). Réessaie dans un moment.");
     return true;
   }
   function isRefused(err) {
@@ -627,12 +625,8 @@
                      /row-level security|permission denied|jwt/i.test(m));
   }
   function refusedText(err) {
-    return isRefused(err) ? "la connexion à Supabase n'est plus valable : reconnecte-toi (Réglages → Connexion sécurisée)."
+    return isRefused(err) ? "la connexion à Supabase n'est plus valable : reconnecte-toi (Réglages → Mode propriétaire)."
                           : ((err && err.message) || "erreur Supabase");
-  }
-  function updateLoginBanner() {
-    var b = document.getElementById("login-banner");
-    if (b) b.hidden = !(IS_OWNER && !!supabase && state.auth.ready && !hasSession());
   }
   // Favoris et coches du propriétaire : lus une fois connecté (la base ne les donne plus à la clé publique).
   function syncStatuses() {
@@ -730,7 +724,7 @@
       undo();
       renderGrid();
       if (state.activeId) { renderVolumeList(); renderSheetActions(); }
-      toast("Non enregistré : " + refusedText(res.error), "Se connecter", goLogin);
+      toast("Non enregistré : " + refusedText(res.error));
     } else setSyncNote("Dernière modification pas encore synchronisée.");
   }
   function pushFavorite(titleId) {
@@ -1774,86 +1768,23 @@
   function renderOwnerPanel() {
     var box = document.getElementById("owner-panel");
     if (!box) return;
-    if (!window.crypto || !crypto.subtle) {
-      box.innerHTML = '<p class="settings-hint">Ce navigateur ne permet pas le mode propriétaire (il faut une page en https).</p>';
-      return;
-    }
-    var configured = !!ownerHashConfigured();
-    var html = "";
+    var html;
     if (IS_OWNER) {
-      html += '<p class="owner-status on">Mode propriétaire actif sur cet appareil : tu peux corriger un titre, masquer une fiche et cocher les statuts. Tes visiteurs, eux, ne voient que la bibliothèque.</p>' +
-              '<div class="owner-row"><button type="button" class="btn" id="owner-quit">Quitter le mode propriétaire</button>' +
-              '<button type="button" class="btn btn-ghost" id="owner-change">Changer de code…</button></div>' +
-              '<div id="auth-box" class="auth-box"></div>';
-    } else if (configured) {
-      html += '<p class="owner-status">Cet appareil est en mode visiteur. Saisis ton code pour retrouver tes statuts et pouvoir les modifier.</p>' +
-              '<form id="owner-unlock" class="owner-form" autocomplete="on">' +
-              '<input type="password" id="owner-code" class="owner-input" placeholder="Code propriétaire" autocomplete="current-password" required>' +
-              '<button type="submit" class="btn">Déverrouiller</button></form>' +
-              '<p id="owner-msg" class="owner-msg" role="status"></p>';
+      var s = state.auth.session || storedSession(), who = (s && s.user && s.user.email) || "";
+      html = '<p class="owner-status on">Mode propriétaire actif sur cet appareil' + (who ? ' (connecté : <b>' + esc(who) + '</b>)' : '') +
+             ' : tu peux cocher tes lectures, corriger un titre, masquer une fiche. Tes visiteurs, eux, ne voient que la bibliothèque.</p>' +
+             '<div class="owner-row"><button type="button" class="btn" id="owner-quit">Quitter le mode propriétaire</button></div>' +
+             '<p class="settings-hint">Quitter déconnecte cet appareil de Supabase : fais-le sur un appareil qui n\'est pas le tien.</p>';
     } else {
-      html += '<p class="owner-status">Le mode propriétaire n\'est pas encore configuré : l\'appli est en lecture seule pour tout le monde, toi compris.</p>';
-    }
-    if (!configured || IS_OWNER) {
-      html += '<div id="owner-gen" class="owner-gen"' + (IS_OWNER ? ' hidden' : '') + '>' +
-              '<p class="settings-hint">' + (configured ? 'Choisis un nouveau code.' : 'Choisis ton code (au moins 6 caractères).') +
-              ' L\'appli en calcule une empreinte, qu\'il faudra recopier dans <code>config.js</code> puis publier. Le code lui-même n\'est enregistré nulle part.</p>' +
-              '<form id="owner-genform" class="owner-form" autocomplete="off">' +
-              '<input type="password" id="owner-new1" class="owner-input" placeholder="Code" autocomplete="new-password" minlength="6" required>' +
-              '<input type="password" id="owner-new2" class="owner-input" placeholder="Confirme le code" autocomplete="new-password" minlength="6" required>' +
-              '<button type="submit" class="btn">Générer l\'empreinte</button></form>' +
-              '<p id="owner-genmsg" class="owner-msg" role="status"></p>' +
-              '<div id="owner-out" class="owner-out" hidden></div></div>';
+      html = '<p class="owner-status">Cet appareil est en mode visiteur. Connecte-toi avec l\'adresse e-mail et le mot de passe de ton compte Supabase pour retrouver tes statuts et pouvoir les modifier.</p>' +
+             '<div id="auth-box" class="auth-box"></div>';
     }
     box.innerHTML = html;
     renderAuthBox();
-
     var quit = document.getElementById("owner-quit");
     if (quit) quit.addEventListener("click", function () {
-      try { localStorage.removeItem(OWNER_KEY); } catch (e) {}
+      state.auth.leaving = true;
       signOutLocal().then(function () { location.reload(); });
-    });
-    var change = document.getElementById("owner-change");
-    if (change) change.addEventListener("click", function () {
-      document.getElementById("owner-gen").hidden = false; change.hidden = true;
-    });
-    var unlock = document.getElementById("owner-unlock");
-    if (unlock) unlock.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var msg = document.getElementById("owner-msg");
-      msg.textContent = "Vérification…"; msg.className = "owner-msg";
-      deriveOwnerHash(document.getElementById("owner-code").value).then(function (h) {
-        if (h === ownerHashConfigured()) {
-          try { localStorage.setItem(OWNER_KEY, h); } catch (e2) {}
-          location.reload();
-        } else {
-          msg.textContent = "Code incorrect."; msg.className = "owner-msg err";
-        }
-      });
-    });
-    var gen = document.getElementById("owner-genform");
-    if (gen) gen.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var a = document.getElementById("owner-new1").value, b = document.getElementById("owner-new2").value;
-      var msg = document.getElementById("owner-genmsg"), out = document.getElementById("owner-out");
-      out.hidden = true;
-      if (a.length < 6) { msg.textContent = "Le code doit faire au moins 6 caractères."; msg.className = "owner-msg err"; return; }
-      if (a !== b) { msg.textContent = "Les deux saisies ne sont pas identiques."; msg.className = "owner-msg err"; return; }
-      msg.textContent = "Calcul…"; msg.className = "owner-msg";
-      deriveOwnerHash(a).then(function (h) {
-        var line = 'window.BD_OWNER_HASH = "' + h + '";';
-        msg.textContent = "";
-        out.innerHTML = '<p class="settings-hint">Remplace la ligne <code>window.BD_OWNER_HASH</code> de <code>config.js</code> par celle-ci, puis publie (commit + push). Ensuite, reviens ici et saisis ton code pour déverrouiller.</p>' +
-                        '<pre class="owner-line">' + esc(line) + '</pre><button type="button" class="btn" id="owner-copy">Copier la ligne</button>';
-        out.hidden = false;
-        document.getElementById("owner-copy").addEventListener("click", function () {
-          var btn = this;
-          (navigator.clipboard ? navigator.clipboard.writeText(line) : Promise.reject()).then(
-            function () { btn.textContent = "✓ Copiée"; },
-            function () { btn.textContent = "Sélectionne et copie la ligne"; });
-        });
-        document.getElementById("owner-new1").value = ""; document.getElementById("owner-new2").value = "";
-      });
     });
   }
 
@@ -2470,8 +2401,13 @@
   els.zoomClose.addEventListener("click", closeZoom);
   els.zoomOverlay.addEventListener("click", function (e) { if (e.target === els.zoomOverlay) closeZoom(); });
 
-  var lbGo = document.getElementById("login-banner-go");
-  if (lbGo) lbGo.addEventListener("click", goLogin);
+  // session perdue au chargement précédent (lostSession) : on le dit, une fois
+  try {
+    if (sessionStorage.getItem(LOST_KEY)) {
+      sessionStorage.removeItem(LOST_KEY);
+      setTimeout(function () { toast("Ta connexion à Supabase a expiré : reconnecte-toi pour retrouver le mode propriétaire.", "Se connecter", goLogin); }, 600);
+    }
+  } catch (e) {}
 
   // ---------- boot ----------
   populateGenreFilter();

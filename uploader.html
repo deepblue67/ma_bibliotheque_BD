@@ -17,10 +17,10 @@
   La bibliothèque supabase-js est figée (2.45.4) et contrôlée par empreinte (integrity) :
   si le CDN servait un autre fichier, le navigateur refuserait de l'exécuter, donc il ne
   pourrait pas lire la clé.
-  ?v=3.2 : même numéro que l'appli (APP_VERSION dans app.js).
+  ?v=3.3 : même numéro que l'appli (APP_VERSION dans app.js).
 -->
-<script src="themes.js?v=3.2"></script>
-<link rel="stylesheet" href="style.css?v=3.2">
+<script src="themes.js?v=3.3"></script>
+<link rel="stylesheet" href="style.css?v=3.3">
 <style>
   .up-wrap { max-width: 680px; margin: 0 auto; padding: 24px 16px 48px; box-sizing: border-box; }
   .up-wrap h1 { font-family: var(--font-title, inherit); font-size: 26px; margin: 8px 0 14px; color: var(--text); }
@@ -51,7 +51,7 @@
 
   <section id="up-denied" hidden>
     <p>Cette page est réservée au propriétaire de la bibliothèque.</p>
-    <p>Si c'est toi, déverrouille d'abord cet appareil : Réglages → <b>Mode propriétaire</b>, puis reviens ici par Réglages → <b>Envoi des couvertures</b>.</p>
+    <p>Si c'est toi, connecte-toi d'abord sur cet appareil : Réglages → <b>Mode propriétaire</b>, puis reviens ici par Réglages → <b>Envoi des couvertures</b>.</p>
   </section>
 
   <section id="up-form" hidden>
@@ -74,14 +74,15 @@
   </section>
 </main>
 
-<script src="config.js?v=3.2"></script>
+<script src="config.js?v=3.3"></script>
 <script>
-  // Même règle que l'appli (app.js) : l'appareil est « propriétaire » quand l'empreinte
-  // gardée dans son localStorage est celle de config.js.
+  // Même règle que l'appli (app.js, 3.3) : l'appareil est « propriétaire » quand il garde une
+  // session Supabase (connexion par e-mail + mot de passe, Réglages → Mode propriétaire).
   (function () {
-    var conf = (window.BD_OWNER_HASH || "").trim().toLowerCase(), mine = "";
-    try { mine = localStorage.getItem("bd_owner_v1") || ""; } catch (e) {}
-    var owner = !!conf && mine === conf;
+    var key = "", s = null;
+    try { key = "sb-" + new URL(window.BD_SUPABASE_URL).hostname.split(".")[0] + "-auth-token"; } catch (e) {}
+    try { s = JSON.parse(localStorage.getItem(key) || "null"); } catch (e) {}
+    var owner = !!(s && (s.refresh_token || s.access_token));
     document.documentElement.classList.toggle("is-owner", owner);
     document.getElementById(owner ? "up-form" : "up-denied").hidden = false;
     window.__UP_OWNER = owner;
