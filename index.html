@@ -26,8 +26,8 @@
      livraison, dans les quatre liens (et les trois de uploader.html), pour forcer les navigateurs (iPhone compris) à recharger.
      themes.js est volontairement bloquant et placé AVANT style.css : il pose le thème
      mémorisé (et charge ses polices) avant le premier affichage. -->
-<script src="themes.js?v=3.1"></script>
-<link rel="stylesheet" href="style.css?v=3.1">
+<script src="themes.js?v=3.2"></script>
+<link rel="stylesheet" href="style.css?v=3.2">
 </head>
 <body>
 
@@ -85,6 +85,11 @@
 
 <main>
   <div id="home-view">
+    <!-- 3.2 : propriétaire pas connecté à Supabase sur cet appareil -->
+    <div id="login-banner" class="login-banner owner-only" role="status" hidden>
+      <span>Tu n'es pas connecté à Supabase sur cet appareil : tes coches, favoris et corrections ne peuvent pas être enregistrés.</span>
+      <button type="button" class="btn" id="login-banner-go">Se connecter</button>
+    </div>
     <div id="empty-state" class="empty-state" hidden>Aucune BD ne correspond à ta recherche.</div>
     <!-- Barre alphabétique : reste accrochée en haut de l'écran pendant le défilement ;
          une lettre fait sauter au séparateur correspondant de la grille. -->
@@ -186,7 +191,7 @@
               <p><b>Quitter</b> : Réglages → <b>Quitter le mode propriétaire</b>. L'appareil redevient visiteur. Fais-le sur un appareil qui n'est pas le tien.</p>
               <p><b>Changer de code</b> : Réglages → <b>Changer de code…</b>. Saisis deux fois le nouveau code, puis copie la ligne <code>window.BD_OWNER_HASH = "…";</code> affichée. Elle doit remplacer celle de <code>config.js</code>, puis il faut publier sur GitHub. Ensuite, <b>tous</b> tes appareils repassent en visiteur : déverrouille-les avec le nouveau code.</p>
               <p><b>Code oublié</b> : même chose que « changer de code », depuis n'importe quel appareil. Aucun code n'est stocké nulle part, seule son empreinte l'est.</p>
-              <p><b>Connexion sécurisée</b>, une fois par appareil déverrouillé : Réglages → Mode propriétaire → <b>Connexion sécurisée</b>. Saisis l'adresse e-mail et le mot de passe du compte créé dans Supabase, puis <b>Se connecter</b> (le trousseau de l'iPhone peut les retenir). L'appareil reste connecté. <b>Se déconnecter de Supabase</b> l'oublie, <b>Quitter le mode propriétaire</b> aussi. Pour l'instant, la connexion ne change rien ; bientôt, elle sera nécessaire pour cocher, corriger ou masquer. Mot de passe oublié : dans Supabase, Authentication → Users, supprime ton compte et recrée-le avec un nouveau mot de passe (« Auto Confirm User » coché).</p>
+              <p><b>Connexion sécurisée</b>, une fois par appareil déverrouillé : Réglages → Mode propriétaire → <b>Connexion sécurisée</b>. Saisis l'adresse e-mail et le mot de passe du compte créé dans Supabase, puis <b>Se connecter</b> (le trousseau de l'iPhone peut les retenir). L'appareil reste connecté. <b>Se déconnecter de Supabase</b> l'oublie, <b>Quitter le mode propriétaire</b> aussi. <b>Sans connexion, rien ne s'enregistre</b> : ni coche, ni favori, ni correction. Un bandeau le rappelle en haut de la bibliothèque. Mot de passe oublié : dans Supabase, Authentication → Users, supprime ton compte et recrée-le avec un nouveau mot de passe (« Auto Confirm User » coché).</p>
               </div>
             </details>
             <details class="help-item" id="aide-lecture">
@@ -314,10 +319,10 @@
               <li><b>Thème</b> : il est choisi appareil par appareil, dans Réglages → Thème.</li>
               <li><b>Barre alphabétique</b> : en haut de la grille, # puis A à Z. Elle reste visible quand tu fais défiler ; touche une lettre pour sauter directement aux titres qui commencent par elle (# : chiffres et signes). Une lettre grisée n'a aucune BD. Elle suit les filtres (One-shots, genre…) et s'efface quand une recherche donne moins de 40 résultats.</li>
               <li><b>Page Réglages</b> : chaque partie se plie ou se déplie en touchant son titre, et « Tout déplier · Tout replier » agit sur toutes à la fois. L'appareil se souvient de ce que tu as replié. « ← Retour à la bibliothèque » (ou le retour du téléphone) te ramène à l'endroit où tu étais dans la grille.</li>
-              <li><b>Version de l'appli</b> : elle est indiquée tout en bas des Réglages. Après une publication, elle te permet de vérifier que ton iPhone affiche bien la dernière version ; si ce n'est pas le cas, recharge la page.</li>
+              <li><b>Version de l'appli</b> : elle est indiquée tout en bas des Réglages. Après une publication, elle te permet de vérifier que ton iPhone affiche bien la dernière version ; sinon, ou si une modification publiée n'apparaît pas, recharge la page (au besoin, vide le cache du navigateur).</li>
               <li><b>« Non enregistré : … »</b> : la modification n'a pas pu être envoyée, par exemple parce que tu es hors ligne. Elle est annulée à l'écran : il suffit de recommencer plus tard.</li>
+              <li><b>« Pas enregistré : connecte-toi d'abord »</b> (ou « … n'est plus valable ») : rien n'a changé. Touche <b>Se connecter</b>, puis recommence.</li>
               <li><b>« … relance le script supabase_bd_overrides.sql »</b> : la base n'est pas à jour. Ouvre Supabase → SQL Editor, colle le contenu de ce fichier, puis <b>Run</b>. On peut le relancer sans risque.</li>
-              <li><b>Une modification n'apparaît pas après une publication</b> : recharge la page. Si besoin, vide le cache du navigateur.</li>
               <li><b>Rien n'est effacé depuis l'appli</b> : tout se défait, depuis la fiche ou depuis Réglages.</li>
               </ul>
               </div>
@@ -441,7 +446,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"
         integrity="sha384-0w2KAL2YHP6wKOkUDzkCDGgVvfmHnj02DHeQ6XcHOgTfFsGyonKOpShMH1x6nk9o"
         crossorigin="anonymous"></script>
-<script src="config.js?v=3.1"></script>
-<script src="app.js?v=3.1"></script>
+<script src="config.js?v=3.2"></script>
+<script src="app.js?v=3.2"></script>
 </body>
 </html>

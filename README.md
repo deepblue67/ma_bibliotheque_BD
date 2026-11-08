@@ -2,7 +2,7 @@
 
 Catalogue personnel de bandes dessinées de Christophe (**1283 séries, 991 one-shots, 8758 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
 
-> **Version actuellement livrée : 3.1 du 08/11/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
+> **Version actuellement livrée : 3.2 du 08/11/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
 >
 > **Mode d'emploi** : ce README est la documentation **technique** du projet. Le mode d'emploi **du propriétaire** est ailleurs : dans l'appli (Réglages → Aide, visible en mode propriétaire seulement) et en PDF (`Mode_emploi_proprietaire.pdf`). Voir la section « Aide et mode d'emploi ».
 >
@@ -41,6 +41,8 @@ ma-bibliotheque-bd/
 │                        #   android-chrome-*) — voir section dédiée plus bas
 ├── Mode_emploi_proprietaire.pdf # mode d'emploi du propriétaire (même texte que Réglages → Aide),
 │                        #   publié à la racine du site, lien dans Réglages → Aide
+├── supabase_securite.sql     # 3.2 : règles d'accès (verrou) des trois tables, à lancer dans le SQL Editor
+├── supabase_securite_retour.sql # 3.2 : retour arrière du verrou (règles d'avant), en cas de problème
 ├── supabase_bd_overrides.sql # script du SQL Editor de Supabase : crée/complète la table
 │                        #   bd_overrides (corrections depuis l'appli) — relançable,
 │                        #   à relancer après chaque lot qui le modifie
@@ -113,7 +115,7 @@ Un **one-shot** est une entrée ordinaire avec un seul tome, dont le libellé es
 
 - Projet : `ma-bibliotheque-bd` (org `deepblue67`), ref `aotudxyifqhyazluxhko`, région `eu-west-1` (Irlande).
 - Project URL : `https://aotudxyifqhyazluxhko.supabase.co`
-- La clé **anon** (publique, dans `config.js`) est protégée par les policies RLS ci-dessous — elle ne donne accès qu'aux tables `bd_status` / `bd_volume_status` / `bd_overrides` et à la lecture du bucket `covers`.
+- La clé **anon** (publique, dans `config.js`) est protégée par les policies RLS. **Depuis la 3.2** (`supabase_securite.sql`), elle ne permet plus que de **lire** `bd_overrides` et le bucket `covers` : les favoris et les coches (`bd_status`, `bd_volume_status`) ne sont lisibles, et les trois tables modifiables, que par le propriétaire **connecté** (Supabase Auth, voir « Connexion sécurisée »). Les extraits SQL ci-dessous montrent les règles d'origine, avant la 3.2 ; ce sont les règles que remet `supabase_securite_retour.sql`.
 - La clé **service_role** (secrète) n'est utilisée QUE dans `uploader.html`, collée à la main au moment de l'envoi : elle n'est enregistrée nulle part et n'est jamais commitée. Si besoin de la retrouver : Project Settings → API Keys.
 
 ### Table `bd_status` (favoris — au niveau du titre)
@@ -182,7 +184,7 @@ Les colonnes `merged_into` et `not_dup` ont été ajoutées au lot « fusion et 
 
 Une ligne n'existe que tant qu'il reste quelque chose à corriger : quand tous les champs reviennent à « valeur du catalogue », l'appli **supprime** la ligne (d'où la policy `delete`, que les deux autres tables n'ont pas).
 
-Contrairement aux statuts, cette table est lue **par tout le monde**, visiteurs compris : un visiteur doit voir les titres corrigés et ne pas voir les fiches masquées. Elle n'est **écrite** qu'en mode propriétaire, avec la même limite que pour les statuts : le garde-fou est dans l'interface, pas dans la base (voir « Mode propriétaire »).
+Contrairement aux statuts, cette table est lue **par tout le monde**, visiteurs compris : un visiteur doit voir les titres corrigés et ne pas voir les fiches masquées. Elle n'est **écrite** que par le propriétaire connecté : jusqu'à la 3.1, seule l'interface l'empêchait ; depuis la 3.2, la base le refuse aussi (`supabase_securite.sql`). Ce script-ci ne touche plus aux règles d'accès, pour ne pas rouvrir les écritures s'il est relancé.
 
 ### Bucket Storage `covers`
 
@@ -350,7 +352,7 @@ Choix validé avec Christophe : la protection est un **code**. C'est un garde-fo
 
 **Comment c'est vérifié.** Le code n'est enregistré nulle part. `config.js` contient `window.BD_OWNER_HASH`, une empreinte **PBKDF2-SHA-256** (200 000 itérations, sel fixe `ma-bibliotheque-bd/owner/v1`) calculée dans le navigateur avec `crypto.subtle`, qui exige une page en https. À la saisie du bon code, l'appareil garde cette même empreinte dans son `localStorage` (clé `bd_owner_v1`) et reste déverrouillé. « Quitter le mode propriétaire » l'efface. Si l'empreinte de `config.js` change (changement de code), **tous** les appareils repassent automatiquement en visiteur.
 
-**Limite assumée.** Les règles Supabase (RLS) acceptent toujours les écritures avec la clé publique, et la clé anon permet aussi de lire les statuts. Quelqu'un qui lit le code source peut donc lire ou écrire les statuts directement dans la base. Pour un vrai verrou, il faut l'authentification Supabase et des règles RLS réservées au compte de Christophe : c'est le lot sécurité, commencé en 3.1 (voir « Connexion sécurisée (Supabase Auth) » ; jusqu'à la 3.2, cette limite reste vraie).
+**Limite d'origine, levée en 3.2.** Jusqu'à la 3.1, les règles Supabase (RLS) acceptaient les écritures avec la clé publique et la laissaient lire les statuts : le code n'était qu'un garde-fou d'interface. Depuis la 3.2, la base n'accepte plus les écritures (ni la lecture des statuts) que d'une session Supabase connectée (voir « Connexion sécurisée (Supabase Auth) »). Le code propriétaire reste, jusqu'à la 3.3, ce qui fait apparaître les outils du propriétaire sur un appareil.
 
 **Mise en service (deux publications) :**
 1. Publier l'appli avec `BD_OWNER_HASH = ""` : elle est alors en lecture seule pour **tout le monde**, Christophe compris. C'est voulu : mieux vaut un défaut fermé.
@@ -376,7 +378,13 @@ Lot sécurité de la revue de code, découpé en trois livraisons à la demande 
 
 1. **3.1 — la connexion arrive, rien n'est bloqué** (livrée). En mode propriétaire, Réglages → Mode propriétaire → **Connexion sécurisée** : adresse e-mail + mot de passe du compte créé dans Supabase → **Se connecter** (`supabase.auth.signInWithPassword`). Le champ e-mail porte `autocomplete="username"` et le mot de passe `current-password`, pour que le trousseau de l'iPhone ou du navigateur les retienne ; l'appli ne garde jamais le mot de passe. La session est gardée par `supabase-js` dans le `localStorage` (clé `sb-aotudxyifqhyazluxhko-auth-token`) et se renouvelle seule : une connexion par appareil. Une fois connecté, **toutes** les requêtes partent avec le jeton de la session au lieu de la clé publique ; les policies actuelles n'ayant pas de clause `to`, elles s'appliquent aussi au rôle `authenticated` et rien ne change. **Se déconnecter de Supabase** et **Quitter le mode propriétaire** déconnectent l'appareil seul (`signOut({ scope: "local" })`). L'adresse saisie est retenue sur l'appareil (`bd_auth_email_v1`) ; elle n'est écrite dans aucun fichier du site.
    - **Pourquoi pas un code par e-mail** (premier choix de Christophe) : Supabase ne laisse plus modifier ses modèles d'e-mail sans serveur SMTP à soi, et son modèle par défaut n'envoie qu'un **lien** de connexion, pas de code. Or sur l'iPhone, ce lien s'ouvrirait dans Safari et l'appli posée sur l'écran d'accueil (stockage séparé) ne serait pas connectée. Le mot de passe n'envoie aucun e-mail : ni limite d'envoi, ni modèle à modifier.
-2. **3.2 — le verrou** (à faire, une fois chaque appareil connecté) : script SQL qui réserve les écritures des trois tables à la session connectée et la lecture des statuts (`bd_status`, `bd_volume_status`) au propriétaire ; `bd_overrides` reste lisible de tous. Script de retour arrière fourni avec.
+2. **3.2 — le verrou** (livrée le 8 novembre 2026, une fois les appareils de Christophe connectés). `supabase_securite.sql`, relançable, supprime **toutes** les règles existantes des trois tables (quel que soit leur nom) et pose 12 règles :
+   - `bd_status`, `bd_volume_status` : lecture, ajout, modification, suppression réservés au propriétaire connecté ;
+   - `bd_overrides` : lecture pour tous (`anon`, `authenticated`), écriture réservée au propriétaire connecté ;
+   - « propriétaire connecté » = fonction `public.bd_proprietaire()` : jeton de rôle `authenticated` et non anonyme (`is_anonymous`). Pas d'identifiant de compte figé (le compte peut être recréé si le mot de passe est oublié) : c'est sûr **tant que les inscriptions restent fermées**. Ne jamais rouvrir « Allow new users to sign up ».
+   - Retour arrière : `supabase_securite_retour.sql` remet les règles d'avant (clé publique en lecture et écriture). Pour reverrouiller : relancer `supabase_securite.sql`.
+   - Vérifié avant livraison sur un PostgreSQL 16 local qui reproduit Supabase (rôles `anon` / `authenticated`, `auth.jwt()`) : la clé publique ne lit plus les statuts, ses insertions sont refusées (« new row violates row-level security policy ») et ses modifications ou suppressions ne touchent aucune ligne ; une session anonyme est refusée ; la session du propriétaire lit, ajoute (`upsert`), modifie et supprime ; relancer `supabase_bd_overrides.sql` ne rouvre rien ; retour arrière puis reverrouillage fonctionnent.
+   - **Côté appli (3.2)** : sans connexion, cocher, mettre en favori ou corriger ne change rien à l'écran et affiche « Pas enregistré : connecte-toi d'abord à Supabase sur cet appareil » avec un bouton **Se connecter** (`needLogin()`) ; un bandeau le rappelle en haut de la bibliothèque (`#login-banner`, propriétaire non connecté seulement). Les favoris et coches ne sont demandés à la base qu'une fois connecté (`syncStatuses()`, aussi juste après la connexion). Si la base refuse quand même (session révoquée ou expirée), la coche, le favori ou la correction sont annulés à l'écran avec « la connexion à Supabase n'est plus valable » (`isRefused()`, `afterStatusWrite()`). Avant, un échec d'écriture des statuts laissait la coche affichée sans la garder.
 3. **3.3 — le ménage** : suppression du code PBKDF2 et de `BD_OWNER_HASH` ; « mode propriétaire » = « connecté ».
 
 **Réglages Supabase à faire une fois (par Christophe, dans le tableau de bord) :**
@@ -513,6 +521,7 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 
 | Version | Date | Contenu |
 |---|---|---|
+| 3.2 | 08/11/2026 | **Sécurité, étape 2 : le verrou** : nouveaux scripts `supabase_securite.sql` (écritures et lecture des statuts réservées au propriétaire connecté, corrections lisibles de tous) et `supabase_securite_retour.sql` ; `supabase_bd_overrides.sql` ne touche plus aux règles. L'appli prévient avant d'écrire sans connexion, affiche un bandeau, lit les statuts une fois connectée et annule à l'écran une écriture refusée. Aide et PDF mis à jour (5 pages). |
 | 3.1 | 08/11/2026 | **Sécurité, étape 1 : connexion** : bloc **Connexion sécurisée** dans Réglages → Mode propriétaire (e-mail + mot de passe, Supabase Auth), session gardée par appareil, déconnexion ; aucune règle Supabase changée. Corrigé : une fiche réservée au propriétaire apparaissait un instant à un visiteur venu pour la première fois. Aide et PDF mis à jour. Export des tables Supabase gardé dans `outils_delta/etat/sauvegardes/supabase_2026-11-07/`. |
 | 3.0 | 07/11/2026 | **Nouveautés, tri et statistiques** (lot « 3.1 » de la revue) : date d'ajout dans le catalogue (`added`, reprise de l'historique GitHub puis notée par chaque delta) ; tri **Ajoutés récemment** avec un séparateur par date ; pastilles **Nouveau** / **+3 tomes** pendant 30 jours après un import ; date d'ajout dans la fiche ; **tomes manquants** pour le propriétaire ; page **Statistiques** (`#/stats`). Aide et PDF mis à jour (5 pages). |
 | 2.9 | 07/11/2026 | **Fiches plus lisibles** : vrais numéros de tome (« HS1 » pour un hors-série) et tomes rangés dans l'ordre quand les numéros sont sûrs ; libellés sans le nom de la série répété ; adresse propre à chaque fiche (`#/fiche/<id>`) et bouton **Partager cette fiche** ; **fiches réservées au propriétaire** (colonne `owner_only`, script SQL à relancer). Livrée avec la 2.8. Aide et PDF mis à jour (5 pages). |
@@ -529,6 +538,9 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 Les livraisons antérieures n'étaient pas numérotées ; leur détail est dans l'historique ci-dessous.
 
 ## Historique des décisions notables
+
+- **Version 3.2 — sécurité, étape 2 : le verrou** (8 novembre 2026) : Christophe a confirmé que tous ses appareils étaient connectés à Supabase. Règles décrites dans « Connexion sécurisée (Supabase Auth) », point 2. Ordre de mise en service conseillé : publier l'appli 3.2, lancer `supabase_securite.sql`, puis vérifier depuis la page du site (lecture des coches refusée à la clé publique).
+  - **Tests** : nouvelle suite `test15_verrou.js` (23 vérifications, Supabase simulé avec les règles de la 3.2 : rien pour un visiteur et corrections toujours appliquées ; propriétaire non connecté : bandeau, aucune lecture des statuts, coche, favori, « Tout marquer comme lu » et correction refusés sans rien changer, bouton qui mène au formulaire ; connecté : statuts lus et coche enregistrée avec le jeton ; session refusée par la base : coche, favori et correction annulés avec un message ; rechargement ; iPhone). Les anciennes suites simulent désormais un appareil connecté (`_sess.js`) et repassent toutes (Réglages 54, barre alphabétique 27, vignettes 16, recherche 19, envoi des couvertures 30, sigles 17, 2.9 40, 3.0 44, connexion 29 ; lots 3 et 4 identiques).
 
 - **Version 3.1 — sécurité, étape 1 : la connexion** (8 novembre 2026) : Christophe a demandé de découper le lot sécurité de la revue en plusieurs livraisons. Découpage retenu : 3.1 connexion sans rien bloquer, 3.2 verrou des écritures, 3.3 suppression de l'ancien code ; on ne verrouille rien tant que chaque appareil n'est pas connecté. Il a d'abord choisi un code reçu par e-mail, puis l'e-mail + mot de passe quand il est apparu que Supabase ne laisse plus modifier ses modèles d'e-mail sans SMTP à soi (le modèle par défaut n'envoie qu'un lien). Il a aussi choisi de ne pas allonger son code propriétaire en attendant (la 3.3 le supprime). Détails dans « Connexion sécurisée (Supabase Auth) ».
   - **Export avant tout** : les trois tables lues depuis la page du site (12 lignes `bd_status`, 19 `bd_volume_status`, 25 `bd_overrides`), empreinte SHA-256 vérifiée identique entre le navigateur et le fichier, rangées dans `outils_delta/etat/sauvegardes/supabase_2026-11-07/export.json` avec `restaurer_export.sql` (remet ces lignes en place si besoin).

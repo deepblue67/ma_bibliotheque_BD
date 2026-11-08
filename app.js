@@ -12,7 +12,7 @@
   // Version de la livraison — à augmenter à CHAQUE livraison (+0.1 pour une livraison
   // ordinaire, +1.0 pour une refonte), avec le même numéro dans les quatre ?v= de
   // index.html et une ligne dans l'historique « Versions » du README.
-  var APP_VERSION = "3.1";
+  var APP_VERSION = "3.2";
   var APP_VERSION_DATE = "2026-11-08";
 
   // ---------- mode propriétaire ----------
@@ -412,6 +412,7 @@
   // Enregistre une correction (fusionnée avec l'existante). Appliquée tout de suite à
   // l'écran, puis envoyée à Supabase ; en cas d'échec, on revient en arrière.
   function saveOverride(key, patch, onOk) {
+    if (needLogin()) return;
     var prev = state.overrides[key] ? JSON.parse(JSON.stringify(state.overrides[key])) : null;
     var cur = { hidden: null, title: null, author: null, genre: null, merged_into: null, not_dup: null, owner_only: null };
     if (prev) Object.keys(cur).forEach(function (k) { if (prev[k] !== undefined && prev[k] !== null) cur[k] = prev[k]; });
@@ -440,6 +441,7 @@
     q.then(function (res) {
       var m = res.error ? (res.error.message || "erreur Supabase") : "";
       if (/merged_into|not_dup|owner_only/.test(m)) m = "relance le script supabase_bd_overrides.sql dans Supabase (voir README).";
+      else if (res.error && isRefused(res.error)) m = refusedText(res.error);
       if (res.error) rollback(m);
       else if (onOk) onOk();
     }).catch(function (err) { rollback((err && err.message) || "hors ligne"); });
@@ -497,11 +499,7 @@
       // les corrections concernent tout le monde (titres corrigés, fiches masquées)…
       fetchOverrides();
       // …les statuts et la synchro en direct, seulement le propriétaire
-      if (IS_OWNER) {
-        fetchRemoteFavorites();
-        fetchRemoteVolumeStatus();
-        subscribeRealtime();
-      }
+      if (IS_OWNER) subscribeRealtime();   // statuts : lus par syncStatuses(), une fois connecté (3.2)
     } catch (e) {
       markOvReady();
       if (IS_OWNER) setSyncNote("Synchronisation indisponible — mode local uniquement.");
@@ -528,11 +526,14 @@
       state.auth.session = (res && res.data && res.data.session) || null;
       state.auth.ready = true;
       renderAuthBox();
+      syncStatuses();
     }).catch(function () { state.auth.ready = true; renderAuthBox(); });
     supabase.auth.onAuthStateChange(function (event, session) {
       state.auth.session = session || null;
       state.auth.ready = true;
+      if (event === "SIGNED_OUT") state.statusSynced = false;
       renderAuthBox();
+      if (event === "SIGNED_IN") syncStatuses();
     });
   }
   function authErrorText(err) {
@@ -545,6 +546,7 @@
     return "Connexion impossible : " + (m || "erreur inconnue");
   }
   function renderAuthBox() {
+    updateLoginBanner();
     var box = document.getElementById("auth-box");
     if (!box) return;
     var a = state.auth, html = '<h4 class="auth-h">Connexion sécurisée</h4>';
@@ -555,10 +557,10 @@
     } else if (a.session) {
       var who = (a.session.user && a.session.user.email) || a.email;
       html += '<p class="owner-status on">Connecté à Supabase sur cet appareil' + (who ? ' (<b>' + esc(who) + '</b>)' : '') + '. ' +
-              'À partir de la version 3.2, cette connexion sera nécessaire pour cocher, corriger ou masquer.</p>' +
+              'Tes coches, favoris et corrections sont enregistrés.</p>' +
               '<div class="owner-row"><button type="button" class="btn btn-ghost" id="auth-out">Se déconnecter de Supabase</button></div>';
     } else {
-      html += '<p class="owner-status">Pas encore connecté sur cet appareil. À partir de la version 3.2, il faudra l\'être pour cocher, corriger ou masquer. ' +
+      html += '<p class="owner-status off">Pas connecté sur cet appareil : tes coches, favoris et corrections ne peuvent pas être enregistrés. ' +
               'Saisis l\'adresse e-mail et le mot de passe du compte créé dans Supabase.</p>' +
               '<form id="auth-form" class="owner-form auth-form" autocomplete="on">' +
               '<input type="email" id="auth-email" class="owner-input" autocomplete="username" placeholder="Adresse e-mail" aria-label="Adresse e-mail" required>' +
@@ -586,7 +588,7 @@
         }
         try { localStorage.setItem(AUTH_EMAIL_KEY, email); } catch (e2) {}
         a.session = (res.data && res.data.session) || a.session;
-        a.msg = "Connexion réussie : cet appareil est prêt pour la version 3.2."; a.err = false;
+        a.msg = "Connexion réussie."; a.err = false;
         renderAuthBox();
       }).catch(function (err) { a.busy = false; a.msg = authErrorText(err); a.err = true; renderAuthBox(); });
     });
@@ -598,6 +600,48 @@
       });
     });
   }
+  // ---------- verrou des écritures (3.2) ----------
+  // Depuis supabase_securite.sql, la base n'accepte les écritures (et la lecture des favoris
+  // et des coches) que d'une session connectée. Sans connexion, l'appli prévient AVANT de
+  // toucher à l'écran, plutôt que d'afficher une coche qui ne serait pas gardée ; si la base
+  // refuse quand même (session expirée), la modification est annulée à l'écran.
+  function hasSession() { return !!(state.auth && state.auth.session); }
+  function goLogin() {
+    location.hash = "#/reglages";
+    setTimeout(function () {
+      var f = document.getElementById("auth-email");
+      if (!f) return;
+      try { f.scrollIntoView({ block: "center" }); } catch (e) {}
+      (f.value ? document.getElementById("auth-pass") : f).focus();
+    }, 300);
+  }
+  function needLogin() {
+    if (!supabase || hasSession()) return false;   // sans Supabase : comportement d'avant
+    if (!state.auth.ready) toast("Vérification de la connexion en cours : réessaie dans un instant.");
+    else toast("Pas enregistré : connecte-toi d'abord à Supabase sur cet appareil.", "Se connecter", goLogin);
+    return true;
+  }
+  function isRefused(err) {
+    var m = ((err && (err.message || err.msg)) || "") + "";
+    return !!err && (err.code === "42501" || err.code === "PGRST301" || err.status === 401 || err.status === 403 ||
+                     /row-level security|permission denied|jwt/i.test(m));
+  }
+  function refusedText(err) {
+    return isRefused(err) ? "la connexion à Supabase n'est plus valable : reconnecte-toi (Réglages → Connexion sécurisée)."
+                          : ((err && err.message) || "erreur Supabase");
+  }
+  function updateLoginBanner() {
+    var b = document.getElementById("login-banner");
+    if (b) b.hidden = !(IS_OWNER && !!supabase && state.auth.ready && !hasSession());
+  }
+  // Favoris et coches du propriétaire : lus une fois connecté (la base ne les donne plus à la clé publique).
+  function syncStatuses() {
+    if (!IS_OWNER || !supabase || !hasSession() || state.statusSynced) return;
+    state.statusSynced = true;
+    fetchRemoteFavorites();
+    fetchRemoteVolumeStatus();
+  }
+
   // Quitter le mode propriétaire déconnecte aussi de Supabase (appareil prêté, par exemple).
   function signOutLocal() {
     if (!supabase || !supabase.auth) return Promise.resolve();
@@ -678,33 +722,48 @@
       .subscribe();
   }
 
+  // Écriture refusée par la base (3.2 : session expirée ou révoquée) : on remet l'écran
+  // comme avant et on le dit. Autre erreur (réseau) : on garde la modification locale.
+  function afterStatusWrite(res, undo) {
+    if (!res || !res.error) return;
+    if (isRefused(res.error)) {
+      undo();
+      renderGrid();
+      if (state.activeId) { renderVolumeList(); renderSheetActions(); }
+      toast("Non enregistré : " + refusedText(res.error), "Se connecter", goLogin);
+    } else setSyncNote("Dernière modification pas encore synchronisée.");
+  }
   function pushFavorite(titleId) {
     if (!supabase) return;
-    var f = state.favorites[titleId] || { is_favorite: false };
+    var f = state.favorites[titleId] || { is_favorite: false }, was = !f.is_favorite;
     supabase.from("bd_status").upsert({
       id: titleId, is_favorite: f.is_favorite, updated_at: new Date().toISOString()
     }).then(function (res) {
-      if (res.error) setSyncNote("Dernière modification pas encore synchronisée (réessaiera).");
+      afterStatusWrite(res, function () { state.favorites[titleId] = { is_favorite: was }; saveLocalFavorites(); });
     }).catch(function () {});
   }
 
   function pushVolumeStatus(key) {
     if (!supabase) return;
+    var now = isKeyRead(key);
     supabase.from("bd_volume_status").upsert({
-      id: key, title_id: titleOfKey(key), is_read: isKeyRead(key), updated_at: new Date().toISOString()
+      id: key, title_id: titleOfKey(key), is_read: now, updated_at: new Date().toISOString()
     }).then(function (res) {
-      if (res.error) setSyncNote("Dernière modification pas encore synchronisée (réessaiera).");
+      afterStatusWrite(res, function () { if (now) delete state.volumeRead[key]; else state.volumeRead[key] = true; saveLocalVolumeRead(); });
     }).catch(function () {});
   }
 
-  function pushVolumeStatusBulk(keys, read) {
+  function pushVolumeStatusBulk(keys, read, before) {
     if (!supabase || !keys.length) return;
     var now = new Date().toISOString();
     var rows = keys.map(function (k) {
       return { id: k, title_id: titleOfKey(k), is_read: read, updated_at: now };
     });
     supabase.from("bd_volume_status").upsert(rows).then(function (res) {
-      if (res.error) setSyncNote("Dernière modification pas encore synchronisée (réessaiera).");
+      afterStatusWrite(res, function () {
+        keys.forEach(function (k) { if (before && before[k]) state.volumeRead[k] = true; else delete state.volumeRead[k]; });
+        saveLocalVolumeRead();
+      });
     }).catch(function () {});
   }
 
@@ -1357,6 +1416,7 @@
   }
 
   function toggleVolumeRead(entry, i) {
+    if (needLogin()) return;
     var key = entry._keys[i];
     if (state.volumeRead[key]) delete state.volumeRead[key];
     else state.volumeRead[key] = true;
@@ -1405,8 +1465,9 @@
 
   function toggleAllVolumesRead() {
     var entry = currentEntry();
-    if (!entry) return;
-    var makeRead = !isTitleRead(entry);
+    if (!entry || needLogin()) return;
+    var makeRead = !isTitleRead(entry), before = {};
+    entry._vis.forEach(function (i) { before[entry._keys[i]] = isKeyRead(entry._keys[i]); });
     entry._vis.forEach(function (i) {
       var key = entry._keys[i];
       if (makeRead) state.volumeRead[key] = true;
@@ -1416,12 +1477,12 @@
     renderVolumeList();
     renderSheetActions();
     renderGrid();
-    pushVolumeStatusBulk(entry._vis.map(function (i) { return entry._keys[i]; }), makeRead);
+    pushVolumeStatusBulk(entry._vis.map(function (i) { return entry._keys[i]; }), makeRead, before);
   }
 
   function toggleFavorite() {
     var entry = currentEntry();
-    if (!entry) return;
+    if (!entry || needLogin()) return;
     var f = state.favorites[entry.id] || { is_favorite: false };
     f.is_favorite = !f.is_favorite;
     state.favorites[entry.id] = f;
@@ -2408,6 +2469,9 @@
   });
   els.zoomClose.addEventListener("click", closeZoom);
   els.zoomOverlay.addEventListener("click", function (e) { if (e.target === els.zoomOverlay) closeZoom(); });
+
+  var lbGo = document.getElementById("login-banner-go");
+  if (lbGo) lbGo.addEventListener("click", goLogin);
 
   // ---------- boot ----------
   populateGenreFilter();

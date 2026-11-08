@@ -3,7 +3,8 @@
 -- À exécuter : Supabase → projet ma-bibliotheque-bd → SQL Editor → New query →
 -- coller ce script → Run. Il peut être relancé sans risque, et DOIT l'être après
 -- chaque lot qui le complète (dernier ajout : colonne owner_only, version 2.9,
--- « fiches réservées au propriétaire »).
+-- « fiches réservées au propriétaire »). Depuis la 3.2, les règles d'accès sont dans
+-- supabase_securite.sql.
 -- ============================================================================
 --
 -- Une ligne = une correction, rattachée soit à une fiche (id = id du catalogue,
@@ -45,17 +46,10 @@ alter table public.bd_overrides add column if not exists owner_only boolean;
 
 alter table public.bd_overrides enable row level security;
 
--- Lecture publique : les visiteurs doivent voir les titres corrigés et ne pas voir
--- les fiches masquées. Écriture et suppression avec la clé publique, comme pour
--- bd_status et bd_volume_status : seule l'interface (mode propriétaire) les limite.
-drop policy if exists "public read"   on public.bd_overrides;
-drop policy if exists "public insert" on public.bd_overrides;
-drop policy if exists "public update" on public.bd_overrides;
-drop policy if exists "public delete" on public.bd_overrides;
-create policy "public read"   on public.bd_overrides for select using (true);
-create policy "public insert" on public.bd_overrides for insert with check (true);
-create policy "public update" on public.bd_overrides for update using (true);
-create policy "public delete" on public.bd_overrides for delete using (true);
+-- Règles d'accès : depuis la version 3.2, elles sont posées par supabase_securite.sql
+-- (lecture pour tous, écriture réservée au propriétaire connecté). Ce script n'y touche
+-- plus, pour ne jamais rouvrir les écritures à la clé publique s'il est relancé.
+-- Table toute neuve (aucune règle encore) : lancer ensuite supabase_securite.sql.
 
 -- Synchro en direct entre tes appareils (ignore l'erreur si déjà fait).
 do $$ begin

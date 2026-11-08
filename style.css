@@ -1191,3 +1191,15 @@ a.btn { display: inline-flex; align-items: center; text-decoration: none; }
 .auth-h { margin: 0 0 8px; font: 800 13.5px var(--font-body); color: var(--text); }
 .auth-box .owner-input { font-size: 16px; }   /* 16 px : l'iPhone ne zoome pas sur le champ */
 
+
+/* 3.2 : bandeau « pas connecté à Supabase » (propriétaire) */
+.login-banner {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px;
+  margin: 0 0 18px; padding: 12px 14px;
+  border: var(--bw-s) solid var(--line); border-left: 6px solid var(--fav); border-radius: var(--r-field);
+  background: var(--surface); color: var(--text); font-size: 13.5px; font-weight: 600; line-height: 1.4;
+}
+.login-banner[hidden] { display: none; }
+.login-banner span { flex: 1 1 260px; min-width: 0; }
+.login-banner .btn { padding: 8px 14px; min-height: 40px; }
+.owner-status.off { border-left: 4px solid var(--fav); padding-left: 10px; }
