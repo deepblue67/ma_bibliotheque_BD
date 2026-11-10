@@ -127,6 +127,14 @@
   ],
   "source": "oneshot_pass1"
  },
+ "AMR": {
+  "genres": [
+   "Science-fiction",
+   "Aventure"
+  ],
+  "confidence": "low",
+  "source": "oneshot_delta"
+ },
  "AVC": {
   "confidence": "low",
   "genres": [
@@ -496,6 +504,13 @@
   ],
   "source": "pass2_web"
  },
+ "American_Parano": {
+  "genres": [
+   "Policier / Thriller"
+  ],
+  "confidence": "medium",
+  "source": "pass3"
+ },
  "Amour_Toxique": {
   "confidence": "low",
   "genres": [
@@ -749,6 +764,14 @@
   ],
   "confidence": "medium",
   "source": "a_completer"
+ },
+ "Après_guerre": {
+  "genres": [
+   "Historique",
+   "Drame / Chronique sociale"
+  ],
+  "confidence": "medium",
+  "source": "pass3"
  },
  "Après_l_Incal": {
   "confidence": "high",
@@ -3764,6 +3787,14 @@
   "confidence": "medium",
   "source": "a_completer"
  },
+ "Euy": {
+  "genres": [
+   "Jeunesse",
+   "Humour"
+  ],
+  "confidence": "medium",
+  "source": "oneshot_delta"
+ },
  "Ex_humans": {
   "confidence": "low",
   "genres": [
@@ -6496,6 +6527,14 @@
   ],
   "source": "pass1_guess"
  },
+ "La_Fayette_-_Le_Marquis_et_la_Révolution_américaine": {
+  "genres": [
+   "Historique",
+   "Biographie"
+  ],
+  "confidence": "high",
+  "source": "oneshot_delta"
+ },
  "La_Femme_au_portrait": {
   "confidence": "low",
   "genres": [
@@ -6832,6 +6871,14 @@
    "Historique"
   ],
   "source": "oneshot_pass1"
+ },
+ "La_Tour_de_Kyla": {
+  "genres": [
+   "Fantasy",
+   "Humour"
+  ],
+  "confidence": "medium",
+  "source": "pass3"
  },
  "La_Vallée_du_vivant": {
   "confidence": "low",
@@ -9149,6 +9196,13 @@
   ],
   "source": "pass1_guess"
  },
+ "Les_Chroniques_de_Magon": {
+  "genres": [
+   "Science-fiction"
+  ],
+  "confidence": "high",
+  "source": "pass3"
+ },
  "Les_Chroniques_de_la_guerre_de_Lodoss_La_Dame_de_Falis": {
   "confidence": "high",
   "genres": [
@@ -10236,6 +10290,14 @@
   ],
   "source": "oneshot_pass1"
  },
+ "Les_jours_heureux": {
+  "genres": [
+   "Historique",
+   "Drame / Chronique sociale"
+  ],
+  "confidence": "medium",
+  "source": "pass3"
+ },
  "Les_justes_-_Carl_Lutz": {
   "confidence": "high",
   "genres": [
@@ -10274,6 +10336,14 @@
    "Jeunesse"
   ],
   "source": "pass3"
+ },
+ "Les_mille_et_une_vies_des_urgences": {
+  "genres": [
+   "Drame / Chronique sociale",
+   "Documentaire"
+  ],
+  "confidence": "medium",
+  "source": "oneshot_delta"
  },
  "Les_moments_doux": {
   "confidence": "low",
@@ -10653,6 +10723,14 @@
    "Drame / Chronique sociale"
   ],
   "source": "pass1_guess"
+ },
+ "Les_Évadés_d_Alcatraz": {
+  "genres": [
+   "Policier / Thriller",
+   "Historique"
+  ],
+  "confidence": "medium",
+  "source": "oneshot_delta"
  },
  "Les_âmes_noires": {
   "confidence": "low",
@@ -11487,6 +11565,14 @@
   ],
   "source": "pass1"
  },
+ "Mauviette": {
+  "genres": [
+   "Documentaire",
+   "Drame / Chronique sociale"
+  ],
+  "confidence": "medium",
+  "source": "oneshot_delta"
+ },
  "Max_Cornélius": {
   "genres": [
    "Aventure",
@@ -11514,6 +11600,14 @@
   "genres": [
    "Jeunesse"
   ],
+  "source": "pass3"
+ },
+ "Melvile": {
+  "genres": [
+   "Fantastique / Horreur",
+   "Drame / Chronique sociale"
+  ],
+  "confidence": "medium",
   "source": "pass3"
  },
  "Memphis": {
@@ -12804,6 +12898,14 @@
   ],
   "source": "pass2_web"
  },
+ "Pathfinder": {
+  "genres": [
+   "Fantasy",
+   "Aventure"
+  ],
+  "confidence": "high",
+  "source": "pass3"
+ },
  "Patient_zéro": {
   "confidence": "high",
   "genres": [
@@ -13021,6 +13123,14 @@
    "Documentaire"
   ],
   "source": "oneshot_pass1"
+ },
+ "Ping": {
+  "genres": [
+   "Humour",
+   "Jeunesse"
+  ],
+  "confidence": "low",
+  "source": "a_completer"
  },
  "Pinkerton": {
   "confidence": "high",
@@ -14033,6 +14143,14 @@
    "Jeunesse"
   ],
   "source": "pass2_web"
+ },
+ "Sculpter_l_éternité_Rodin_face_à_Michel-Ange": {
+  "genres": [
+   "Biographie",
+   "Historique"
+  ],
+  "confidence": "high",
+  "source": "oneshot_delta"
  },
  "Scène_de_Crime": {
   "confidence": "high",

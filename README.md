@@ -1,6 +1,6 @@
 # Ma Bibliothèque BD
 
-Catalogue personnel de bandes dessinées de Christophe (**1283 séries, 991 one-shots, 8758 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
+Catalogue personnel de bandes dessinées de Christophe (**1291 séries, 998 one-shots, 8822 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
 
 > **Version actuellement livrée : 3.3 du 08/11/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
 >
@@ -51,7 +51,7 @@ ma-bibliotheque-bd/
 ├── genre_taxonomy.json    # liste fixe des genres, informatif (la vraie source pour l'appli
 │                        #   est le tableau GENRES dans app.js)
 ├── data/
-│   ├── catalog.json     # catalogue généré (2274 entrées : 1283 séries + 991 one-shots)
+│   ├── catalog.json     # catalogue généré (2289 entrées : 1291 séries + 998 one-shots)
 │   └── version.json     # empreinte du catalogue (2.8), écrite par outils_delta/6_finir.py : l'appli
 │                        #   garde le catalogue en cache tant qu'elle ne change pas — à publier avec lui
 ├── pending_covers.json   # FICHIER DE TRAVAIL d'une mise à jour "delta" : liste des tomes
@@ -542,6 +542,8 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 Les livraisons antérieures n'étaient pas numérotées ; leur détail est dans l'historique ci-dessous.
 
 ## Historique des décisions notables
+
+- **7ᵉ mise à jour delta** (10 novembre 2026) : **8 nouvelles séries** (*American Parano*, *Après guerre*, *La Tour de Kyla*, *Les Chroniques de Magon*, *Les jours heureux*, *Melvile*, *Pathfinder*, et *Ping*, née du tome 2 rangé dans `-- BD Séries à compléter`), **29 séries enrichies** (42 tomes, surtout des tomes manquants comblés : *Petit poilu* 1, 6, 12 et 31, *Les Elfées* 3 à 5, *Triple galop* 16 à 18, *Mashle* 9 à 11, *100 Bullets* 4 à 6, *Silver Coin* 1 et 2…) et **7 nouveaux one-shots** (*AMR*, *Euy*, *La Fayette*, *Les mille et une vies des urgences*, *Les Évadés d'Alcatraz*, *Mauviette*, *Sculpter l'éternité*). `-- BD Séries à compléter` : 179 fichiers déjà présents, 1 nouvelle fiche. Catalogue : 2274 → **2289 entrées** (1291 séries + 998 one-shots), 8758 → **8822 albums**. 64 couvertures (dossier `volume_covers_delta_10nov/`), toutes vérifiées sur la planche contact, aucune avec nudité. Premier delta avec les dates d'ajout (`added` = 2026-11-10 sur les 15 nouvelles fiches et les 42 tomes ajoutés aux séries existantes). Auteurs des nouveaux tomes vérifiés dans les métadonnées PDF : mêmes séries (seuls les dessinateurs changent : *Orcs Gobelins*, *Terres d'Ogon*, *Silver Coin*, *Empire USA*). Pas de remise en ordre (depuis la 3.2, la clé publique ne lit plus les coches : la vérification « sans coche » demanderait la session du propriétaire ; l'appli range de toute façon les tomes par numéro). Genres en confiance « low » : *AMR*, *Ping*. Pas de changement de version de l'appli.
 
 - **Version 3.3 — sécurité, étape 3 : le ménage** (8 novembre 2026) : demandée par Christophe juste après la vérification en ligne du verrou. Le lot sécurité de la revue est terminé : propriétaire = connecté à Supabase, et la base refuse tout le reste. Détails dans « Mode propriétaire ».
   - **Mise en service** : les appareils de Christophe, déjà connectés depuis la 3.1, passent directement en mode propriétaire ; aucun réglage Supabase à faire. `config.js` est à publier avec le reste (ligne `BD_OWNER_HASH` retirée).
