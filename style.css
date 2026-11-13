@@ -1211,18 +1211,22 @@ a.btn { display: inline-flex; align-items: center; text-decoration: none; }
 /* --- Éventail : jusqu'à 4 couvertures déployées, la première devant --- */
 .card-cover-wrap.fan { overflow: hidden; display: flex; align-items: center; justify-content: center; }
 .card-cover-wrap.fan img.fan-i {
-  position: absolute; top: 20%; left: 22%;
-  width: 56%; height: auto; aspect-ratio: 500 / 680; object-fit: cover;
+  position: absolute; top: 15%; left: 18%;          /* 3.9 : 64 % de large (56 % avant) */
+  width: 64%; height: auto; aspect-ratio: 500 / 680; object-fit: cover;
   border: var(--bw-s) solid var(--line); border-radius: var(--r-cover);
   box-shadow: var(--sh-mini);
   transform-origin: 50% 100%;
-  transform: translateX(calc(var(--k) * 12%)) rotate(calc(var(--k) * 6deg));
+  transform: translateX(calc(var(--k) * 9%)) rotate(calc(var(--k) * 5deg));
   transition: transform .18s ease;
 }
 .card:hover .card-cover-wrap.fan img.fan-i,
-.card:focus-visible .card-cover-wrap.fan img.fan-i { transform: translateX(calc(var(--k) * 17%)) rotate(calc(var(--k) * 9deg)); }
-.card-cover-wrap.fan.solo img.fan-i { top: 0; left: 0; width: 100%; height: 100%; border: 0; border-radius: 0; box-shadow: none; transform: none; }
+.card:focus-visible .card-cover-wrap.fan img.fan-i { transform: translateX(calc(var(--k) * 13%)) rotate(calc(var(--k) * 8deg)); }
+/* 3.9 : une couverture seule (one-shot, série d'un tome) à la même taille que celles de l'éventail, droite */
+.card-cover-wrap.fan.solo img.fan-i, .card:hover .card-cover-wrap.fan.solo img.fan-i { transform: none; }
 .card-cover-wrap.fan .card-badges, .card-cover-wrap.fan .card-new { z-index: 9; }
+@media (max-width: 560px) {                          /* vignettes étroites : éventail moins ouvert */
+  .card-cover-wrap.fan img.fan-i { transform: translateX(calc(var(--k) * 6%)) rotate(calc(var(--k) * 4deg)); }
+}
 
 /* --- Mur : les couvertures seules ; une série se voit en pile (2 tomes, 3 et plus) --- */
 #grid[data-pres="mur"] { padding-top: 12px; }
