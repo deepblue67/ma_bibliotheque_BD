@@ -2,7 +2,7 @@
 
 Catalogue personnel de bandes dessinées de Christophe (**1291 séries, 998 one-shots, 8822 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
 
-> **Version actuellement livrée : 3.7 du 13/11/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
+> **Version actuellement livrée : 3.9 du 13/11/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
 >
 > **Mode d'emploi** : ce README est la documentation **technique** du projet. Le mode d'emploi **du propriétaire** est ailleurs : dans l'appli (Réglages → Aide, visible en mode propriétaire seulement) et en PDF (`Mode_emploi_proprietaire.pdf`). Voir la section « Aide et mode d'emploi ».
 >
@@ -22,15 +22,18 @@ Catalogue personnel de bandes dessinées de Christophe (**1291 séries, 998 one-
 ```
 ma-bibliotheque-bd/
 ├── index.html          # structure de la page (header recherche, grille, fiche détail)
-├── themes.js           # registre des 10 thèmes (nom, polices, couleur de barre d'état) ;
-│                        #   chargé AVANT style.css pour appliquer le thème sans flash
+├── themes.js           # registre des 10 thèmes (nom, polices, couleur de barre d'état) et,
+│                        #   depuis la 3.9, des réglages de Style (window.BD_STYLE) ;
+│                        #   chargé AVANT style.css pour appliquer thème et style sans flash
 ├── style.css           # toute la mise en forme, pilotée par des variables CSS ; un bloc
-│                        #   [data-theme="…"] par thème ; responsive (grid auto-fill)
-├── app.js              # toute la logique : chargement catalogue, recherche/filtres,
-│                        #   rendu grille + fiche détail, lu par tome (calcul du "lu" titre),
-│                        #   favoris par titre, aperçu couverture par tome, sync Supabase,
-│                        #   corrections/masquages/fusions (bd_overrides) appliqués au
-│                        #   chargement, écran « doublons probables » (propriétaire)
+│                        #   [data-theme="…"] par thème ; sommaire en tête (3.8)
+├── app.js              # code de l'appli, découpé en 7 fichiers depuis la 3.8 (voir
+├── grille.js           #   « Organisation du code ») : à publier TOUS ENSEMBLE, chargés
+├── fiche.js            #   par index.html dans cet ordre. app.js = socle (état, données,
+├── reglages.js         #   Supabase, connexion, filtres) ; grille.js = grille et vignettes ;
+├── doublons.js         #   fiche.js = fiche et édition ; reglages.js = bandeau et Réglages ;
+├── carnet.js           #   doublons.js ; carnet.js = statistiques, avis, carnet ;
+├── demarrage.js        #   demarrage.js = routage, fiche précédente / suivante, lancement
 ├── config.js            # identifiants Supabase (URL + clé anon — publics, sans risque)
 │                        #   + BD_IMAGE_BASE (préfixe des couvertures sur Supabase Storage)
 ├── apple-touch-icon.png  # icône écran d'accueil iPad/iPhone (180×180, convention racine)
@@ -258,7 +261,7 @@ Toutes ces images sont générées depuis un seul visuel maître 1024×1024 (scr
 
 ## Cache navigateur — convention de version
 
-Depuis la version 2.0, **un seul numéro** : la version de l'appli (`APP_VERSION` dans `app.js`). `index.html` charge `themes.js`, `style.css`, `config.js` et `app.js` avec ce même suffixe (`?v=2.0`), et `uploader.html` (depuis la 2.5) ses trois fichiers `themes.js`, `style.css` et `config.js`. À chaque livraison, le numéro change partout à la fois, ce qui oblige les navigateurs, Safari iPhone compris, à reprendre les nouveaux fichiers plutôt que leur copie en cache (vécu : un `app.js` mis à jour restait invisible malgré plusieurs rechargements, jusqu'à un vidage de cache complet). Règle détaillée : section « Versions des livraisons ». `data/catalog.json` n'a pas ce problème. Depuis la 2.8, l'appli lit d'abord `data/version.json` (quelques octets, jamais mis en cache), qui contient l'empreinte du catalogue écrite par `outils_delta/6_finir.py --installer`, puis demande `data/catalog.json?v=<empreinte>` : le navigateur garde le catalogue (1,2 Mo) tant qu'il ne change pas et le reprend dès le delta suivant. Sans `version.json` (ancien dépôt), il est rechargé à chaque ouverture comme avant (`no-store` et `?t=`). Rien à incrémenter à la main, et **une livraison qui ne touche que les données** (catalogue, couvertures, scripts SQL) **ne change pas le numéro**.
+Depuis la version 2.0, **un seul numéro** : la version de l'appli (`APP_VERSION` dans `app.js`). `index.html` charge `themes.js`, `style.css`, `config.js` et `app.js` (depuis la 3.8 : les sept fichiers du code) avec ce même suffixe (`?v=2.0`), et `uploader.html` (depuis la 2.5) ses trois fichiers `themes.js`, `style.css` et `config.js`. À chaque livraison, le numéro change partout à la fois, ce qui oblige les navigateurs, Safari iPhone compris, à reprendre les nouveaux fichiers plutôt que leur copie en cache (vécu : un `app.js` mis à jour restait invisible malgré plusieurs rechargements, jusqu'à un vidage de cache complet). Règle détaillée : section « Versions des livraisons ». `data/catalog.json` n'a pas ce problème. Depuis la 2.8, l'appli lit d'abord `data/version.json` (quelques octets, jamais mis en cache), qui contient l'empreinte du catalogue écrite par `outils_delta/6_finir.py --installer`, puis demande `data/catalog.json?v=<empreinte>` : le navigateur garde le catalogue (1,2 Mo) tant qu'il ne change pas et le reprend dès le delta suivant. Sans `version.json` (ancien dépôt), il est rechargé à chaque ouverture comme avant (`no-store` et `?t=`). Rien à incrémenter à la main, et **une livraison qui ne touche que les données** (catalogue, couvertures, scripts SQL) **ne change pas le numéro**.
 
 Avant la 2.0, chaque fichier avait son propre compteur (`app.js?v=13`, `style.css?v=13`, `config.js?v=4`, `themes.js?v=1`) : ces anciens numéros apparaissent encore dans l'historique.
 
@@ -370,7 +373,7 @@ Code : `initialOf()`, `letterHead()`, `renderAz()`, `jumpToLetter()` et `renderG
 
 ## Thèmes et réglages
 
-La roue crantée, en haut à droite, ouvre la **page Réglages** (adresse `#/reglages`). C'est une vraie page, plus une fenêtre par-dessus la grille, sur le modèle de l'appli ebooks de Christophe : « ← Retour à la bibliothèque » en haut (le bouton retour du téléphone marche aussi), recherche et filtres masqués tant qu'on n'est pas sur la grille, et on retrouve la grille à l'endroit où on l'avait quittée. La page contient le choix de la **présentation**, le **carnet de lecture** (propriétaire, depuis la 3.6) (depuis la 3.4, voir « Présentations de la bibliothèque »), le choix du thème, le **mode propriétaire** (section suivante) et, en mode propriétaire, *Doublons probables*, *Fiches masquées et fusionnées* et l'*Aide*. *Doublons probables* ouvre à son tour une page (`#/doublons`, « ← Retour aux réglages » ; un visiteur qui tape cette adresse est renvoyé aux Réglages).
+La roue crantée, en haut à droite, ouvre la **page Réglages** (adresse `#/reglages`). C'est une vraie page, plus une fenêtre par-dessus la grille, sur le modèle de l'appli ebooks de Christophe : « ← Retour à la bibliothèque » en haut (le bouton retour du téléphone marche aussi), recherche et filtres masqués tant qu'on n'est pas sur la grille, et on retrouve la grille à l'endroit où on l'avait quittée. La page contient le choix de la **présentation**, du **style** (depuis la 3.9), le **carnet de lecture** (propriétaire, depuis la 3.6) (depuis la 3.4, voir « Présentations de la bibliothèque »), le choix du thème, le **mode propriétaire** (section suivante) et, en mode propriétaire, *Doublons probables*, *Fiches masquées et fusionnées* et l'*Aide*. *Doublons probables* ouvre à son tour une page (`#/doublons`, « ← Retour aux réglages » ; un visiteur qui tape cette adresse est renvoyé aux Réglages).
 
 **Sections pliables.** Chaque section se plie et se déplie d'un clic sur son titre (chevron à droite, cible tactile de 44 px), et « Tout déplier · Tout replier » en haut agit sur toutes. Ce qui est replié est **mémorisé sur l'appareil** (`localStorage`, clé `bd_reglages_replies_v1`) : la page se rouvre telle qu'on l'a laissée, y compris après un changement de thème ou un déverrouillage. Tout est déplié au premier affichage. Code : `setBlockOpen()` et le câblage qui suit dans `app.js` ; routage : `route()` (événement `hashchange`).
 
@@ -385,6 +388,29 @@ Fonctionnement :
 - Le choix est mémorisé **par appareil** (`localStorage`, clé `bd_theme_v1`), sans synchronisation Supabase : ton iPhone et ton PC peuvent avoir chacun le leur. Il suffirait d'une colonne dans Supabase pour synchroniser le thème si on le voulait un jour.
 - Toutes les polices retenues contiennent les caractères français (vérifié glyphe par glyphe : É, È, Ç, Œ, œ, ’, « »…).
 - Le zoom plein écran sur une couverture garde volontairement un fond noir quel que soit le thème.
+
+### Style (Réglages → Style, version 3.9)
+
+Repris de l'appli ebooks (sa section « Style entièrement paramétrable »), adapté : dans l'appli BD, c'est le **thème** qui fixe l'aspect, et le Style l'**affine aspect par aspect**, sur l'appareil (visible de tous, comme le thème). Chaque réglage a pour défaut « Thème » (ou « Comme les titres », « MAJUSCULES ») : **sans choix, l'appli est exactement celle de la 3.8** (vérifié au banc visuel).
+
+| Groupe | Réglage | Choix |
+|---|---|---|
+| Bandeau | Police du titre | Comme les titres · BD (Bangers) · Affiche (Anton) · Classique (Fraunces) · Prestige (Abril Fatface) · Élégant (Spectral italique) · Moderne (Space Grotesk) · Sobre (Archivo) · Machine à écrire (Special Elite) · Manuscrit (Caveat) ; chaque bouton s'écrit dans sa police |
+| | Écriture du titre | MAJUSCULES · Normale (« Ma Bibliothèque BD ») |
+| | Ombre du titre | Thème · Décalée · Douce · Aucune |
+| | Fond du bandeau | Thème · Trame BD · Uni · Dégradé (toujours dans la couleur du thème) |
+| | Champs de recherche | Thème · Doux · Arrondis · Soulignés (recherche, auteur, genre, tri) |
+| | Puces de filtre | Thème · Douces · Contour (la puce active reste pleine) |
+| | Bouton Réglages | Thème · Doux · Contour · Discret (zone à toucher de 42 px gardée) |
+| Pages | Police des titres | Thème · BD · Classique · Moderne (titres de pages, fiche, lettres A–Z ; le titre du bandeau suit s'il est « Comme les titres ») |
+| | Vignettes et fiche | Thème · Douces (filet fin, ombre floue, coins arrondis) · Épurées (à plat) ; l'étagère n'est pas concernée, les piles du mur restent dessinées |
+| | Pastilles | Thème · Douces (sans filet, ombre légère) · Plates (Lu, ★, Nouveau, note, genres) |
+| | Boutons, cases et champs | Thème · Doux (boutons, champs, cases des tomes, boutons ronds de la fiche, notes de Mon avis) |
+| | Panneaux | Thème · Doux (vignettes des thèmes, messages) · BD (statistiques et aide cerclées, avec ombre décalée) |
+
+**Préréglages** : *D'origine* (tout comme le thème), *Doux*, *Élégant* (Prestige, casse normale, dégradé, champs arrondis, contours, titres Classique), *Épuré* (Sobre, champs soulignés, bouton discret, vignettes épurées, titres Moderne) et *Tout BD* (Bangers partout, ombre décalée, trame, panneaux BD). Un réglage qui s'en écarte affiche « personnalisé ». Un **aperçu en direct** (mini-bandeau, vignette avec pastilles, titre, genre, bouton, statistique : de vrais éléments de l'appli) est à droite sur ordinateur, au-dessus des choix sur iPhone.
+
+**Technique** : les choix et préréglages sont décrits une seule fois dans `themes.js` (`window.BD_STYLE` : groupes, préréglages, `get`, `set`, `applyPreset`, `presetOf`), qui pose les choix **différents du défaut** en attributs sur `<html>` (`data-hdrpolice`, `data-hdrcasse`, `data-hdrombre`, `data-hdrfond`, `data-hdrchamps`, `data-hdrpuces`, `data-hdrbouton`, `data-titres`, `data-cartes`, `data-pastilles`, `data-commandes`, `data-panneaux`) **avant le premier affichage**, et charge seulement les polices choisies (lien `style-fonts`). Mémoire : `localStorage`, clé `bd_style_v1` (un objet ; une valeur inconnue revient au défaut). Dans `style.css`, bloc « 3.9 : STYLE » : chaque règle ne s'applique que sous son attribut, surtout en redéfinissant les variables du thème sur les éléments concernés (`--bw-*`, `--sh-*`, `--r-*`, `--font-display`). Le titre du bandeau est désormais écrit « Ma Bibliothèque BD » dans `index.html`, mis en majuscules par la feuille de style (`text-transform`), ce qui permet le choix « Normale ». La section des Réglages et l'aperçu : `renderStyleBlock()` en fin de `reglages.js`. Ajouter une valeur = l'ajouter dans `themes.js` et écrire ses règles.
 
 ## Mode propriétaire
 
@@ -584,6 +610,28 @@ Code : `tomesBand()`, `lastReadOf()`, `textHead()` et le tri dans `renderGrid()`
 - `Paradis perdu [HD]` / `Psaume 2` : doublon probable, un seul jeu conservé.
 - `Thorgal` : nature du sous-dossier `Saga` incertaine.
 
+## Organisation du code (version 3.8)
+
+Jusqu'à la 3.7, tout le code tenait dans `app.js` (3 275 lignes), enfermé dans une seule fonction. Depuis la 3.8, il est **découpé en sept fichiers**, chargés par `index.html` l'un après l'autre, **dans cet ordre** :
+
+| Fichier | Contenu |
+|---|---|
+| `app.js` | socle : version (`APP_VERSION`), mode propriétaire, état, copies locales, corrections et fusions (`applyOverrides()`), titres, dates d'ajout, présentations (réglage), client Supabase (`supa`), connexion, verrou, synchronisation, chargement du catalogue, recherche et filtres, chargement différé des vignettes |
+| `grille.js` | barre alphabétique, tri et séparateurs, grille et vignettes dans les cinq présentations |
+| `fiche.js` | fiche détaillée, tomes, zoom, édition d'une fiche et d'un tome, fusion, message temporaire (`toast`) |
+| `reglages.js` | champs et puces du bandeau, menu de tri, page Réglages (thèmes, mode propriétaire, fiches masquées) |
+| `doublons.js` | écran des doublons probables |
+| `carnet.js` | statistiques, mon avis, carnet de lecture |
+| `demarrage.js` | pages et routage, Réglages → Présentation, sections repliables, numéro de version, fiche précédente / suivante, lancement (`loadCatalog()`, `initSupabase()`) |
+
+**Comment ils se partagent le code.** Chaque fichier commence par une ligne de titre et `"use strict";`, puis le code tel qu'il était : ses fonctions et variables de premier niveau sont communes aux sept fichiers (portée globale de la page), comme elles l'étaient dans la fonction unique. Deux conséquences :
+- **l'ordre compte** : un fichier ne doit rien *exécuter* au chargement qui dépende d'un fichier chargé après lui (les fonctions appelées plus tard, au clic ou au retour du réseau, peuvent être n'importe où). C'est pourquoi le lancement est à la fin de `demarrage.js` ;
+- **un nom de premier niveau ne doit pas déjà exister dans la page** : le client Supabase, qui s'appelait `supabase` comme la bibliothèque supabase-js (`window.supabase`), s'appelle désormais `supa` (seul renommage de la 3.8, 37 occurrences). Vérifié : aucun autre des 257 noms ne correspond à une propriété existante de la page, sauf `toast`, qui est aussi l'identifiant d'un élément HTML : une fonction déclarée l'emporte, sans effet.
+
+**Vérifié à la livraison** : mis bout à bout, sans leurs deux lignes d'en-tête, les sept fichiers redonnent **exactement** l'ancien `app.js` (hormis `supabase` → `supa`, le numéro de version et un commentaire sur les `?v=`) ; une analyse du code confirme qu'aucune instruction exécutée au chargement n'atteint un nom déclaré dans un fichier suivant. Si un fichier manque en ligne (oubli de publication), l'appli s'arrête au chargement : publier les sept ensemble.
+
+**`style.css`** n'est pas découpé, mais **rangé** : sommaire en tête (les treize blocs, dans l'ordre, qui compte) ; règles mortes retirées (`.owner-gen`, `.owner-out`, `.owner-line` : panneau de l'ancien code propriétaire, supprimé en 3.3 ; `.auth-h`, jamais utilisé) ; les deux corrections de la 3.5 ajoutées en fin de feuille (`.sheet-body { padding-top }`, `.sheet { overflow-x }`) reportées dans leurs règles d'origine. Le reste était déjà rangé par composant et n'a pas bougé, pour ne pas changer l'ordre des règles.
+
 ## Développement local
 
 ⚠️ Ouvrir `index.html` en double-clic (protocole `file://`) **ne fonctionne pas** dans Chrome/Edge : le `fetch("data/catalog.json")` est bloqué par la politique CORS sur les fichiers locaux. Pour tester avant de publier :
@@ -610,15 +658,17 @@ Ou plus simple : pousser directement sur GitHub Pages (qui sert en https, aucun 
 1. Augmenter `APP_VERSION` dans `app.js` (et `APP_VERSION_DATE` = date du jour, format `AAAA-MM-JJ`) :
    - `+0.1` pour une livraison ordinaire (correctif, retouche, petite fonction) : 2.0 → 2.1 → 2.2…
    - `+1.0` pour une refonte (nouvel écran, changement de structure) : 2.9 → 3.0.
-2. Reporter **le même numéro** dans `index.html`, sur les quatre liens `themes.js?v=…`, `style.css?v=…`, `config.js?v=…` et `app.js?v=…`, ainsi que sur les trois liens de `uploader.html` (`themes.js`, `style.css`, `config.js`). Le lien vers `uploader.html` dans les Réglages prend le numéro tout seul (`app.js`).
+2. Reporter **le même numéro** dans `index.html`, sur tous les liens : `themes.js?v=…`, `style.css?v=…`, `config.js?v=…` et, depuis la 3.8, les sept fichiers du code (`app.js`, `grille.js`, `fiche.js`, `reglages.js`, `doublons.js`, `carnet.js`, `demarrage.js`), soit dix liens, ainsi que sur les trois liens de `uploader.html` (`themes.js`, `style.css`, `config.js`). Le lien vers `uploader.html` dans les Réglages prend le numéro tout seul (`app.js`).
 3. Ajouter une ligne au tableau ci-dessous et mettre à jour la ligne « Version actuellement livrée » en tête de ce fichier.
-4. Livrer ensemble `index.html` et `app.js` (le numéro est dans les deux), plus les autres fichiers modifiés.
+4. Livrer ensemble `index.html` et `app.js` (le numéro est dans les deux), plus les autres fichiers modifiés ; comme leur `?v=` change, les sept fichiers du code se publient toujours ensemble.
 5. Après dépôt sur le PC de Christophe, relire les fichiers sur le PC et comparer leur empreinte md5 à la version testée (un envoi a déjà écrit une ancienne version sans signaler d'erreur).
 
 Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, scripts SQL) ne change pas le numéro.
 
 | Version | Date | Contenu |
 |---|---|---|
+| 3.9 | 13/11/2026 | **Réglages → Style** (repris de l'appli ebooks) : 12 réglages en deux groupes, Bandeau et Pages, qui affinent le thème sur l'appareil ; 5 préréglages (D'origine, Doux, Élégant, Épuré, Tout BD), « personnalisé », aperçu en direct ; appliqué avant le premier affichage. Sans choix, aspect identique à la 3.8. Aide et PDF mis à jour (6 pages). |
+| 3.8 | 13/11/2026 | **Chantier technique** (rien ne change à l'écran) : `app.js` découpé en sept fichiers (`app.js`, `grille.js`, `fiche.js`, `reglages.js`, `doublons.js`, `carnet.js`, `demarrage.js`), à publier ensemble ; client Supabase renommé `supa` ; `style.css` rangé (sommaire, règles mortes retirées, doublons fusionnés). Vérifié par un banc de captures identiques avant / après. |
 | 3.7 | 13/11/2026 | **Ordre et recherche** : tris **Nombre de tomes** (tous) et **Lus récemment** (propriétaire, d'après les dates des coches et des avis), avec séparateurs ; recherche, classement et barre alphabétique qui ramènent ø, ß, ł, đ, ð, þ et ı à o, ss, l, d, d, th et i. Aide et PDF mis à jour (6 pages). |
 | 3.6 | 13/11/2026 | **Mon avis et carnet de lecture** (propriétaire) : note sur 10, date de lecture et commentaire dans la fiche, pastille « 8/10 » sur la vignette ; page **Carnet de lecture** (`#/carnet`) avec chiffres, répartition des notes, lectures par mois, note par genre, liste avec recherche, filtres, tri et export CSV. Nouvelle table privée `bd_avis` (`supabase_avis.sql`, `supabase_avis_retour.sql`). Aide et PDF mis à jour (6 pages). |
 | 3.5 | 13/11/2026 | **Fiche précédente / suivante** : boutons ‹ › (avec la position) dans une barre collée en haut de la fiche, touches ← →, glissement du doigt sur téléphone ; ordre de la grille affichée (recherche, filtres, tri) ; adresse mise à jour sans encombrer l'historique ; en refermant, la grille se place sur la dernière fiche vue. Aide et PDF mis à jour (5 pages). |
@@ -641,6 +691,13 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 Les livraisons antérieures n'étaient pas numérotées ; leur détail est dans l'historique ci-dessous.
 
 ## Historique des décisions notables
+
+- **Version 3.9 — Réglages → Style** (13 novembre 2026) : seconde partie du dernier lot tiré de l'appli ebooks, demandée par Christophe « comme l'appli ebook » (groupes Bandeau et Pages, préréglages, aperçu), l'aspect BD restant le défaut. Lancée sans attendre la publication de la 3.8 (choix de Christophe) : publier la 3.9 publie aussi la 3.8. Détails : « Style » dans « Thèmes et réglages ».
+  - **Tests** : nouvelle suite `test21.js` (76 vérifications : rien de posé par défaut ; section visible des visiteurs, 5 préréglages, 12 réglages ; l'effet réel mesuré à l'écran de chaque réglage du bandeau et des pages ; police chargée à la demande ; mémoire sur l'appareil, « personnalisé », préréglage Épuré conservé après rechargement, appliqué à la grille et à la fiche ; « D'origine » efface tout ; valeur inconnue ignorée ; style posé avant le premier affichage ; pour chaque préréglage, sur PC (étagère) et iPhone (mur) : pas de débordement, étagère intacte, piles du mur dessinées, pas d'identifiant en double, aucune erreur JS ; sur iPhone SE, aucune des 10 polices du titre ne déborde ni ne touche le bouton Réglages). Les suites 3.4 à 3.7 repassent (103, 38, 57, 31). **Banc visuel** 3.8 / 3.9 sans style choisi : en dehors des Réglages (nouvelle section, attendue), 74 écrans sur 78 retombent sur une image identique au pixel près ; les 4 autres (fiche ou zoom ouverts sur la grille) diffèrent de quelques dizaines de pixels d'une nuance d'au plus 5/255, exactement comme deux captures de la même version entre elles.
+
+- **Version 3.8 — chantier technique** (13 novembre 2026) : première partie du dernier lot tiré de l'appli ebooks (la seconde, Réglages → Style, suit en 3.9). Choix de Christophe : la technique d'abord, sans aucun changement visible, puis le Style construit dans les nouveaux fichiers. Détails : « Organisation du code ».
+  - **Vérifications** : concaténation des sept fichiers identique à l'ancien `app.js` (hormis le renommage `supa`, le numéro et un commentaire) ; analyse des dépendances au chargement ; suites 3.4 à 3.7 repassées (103, 38, 57, 31) ; **banc visuel** de 86 écrans (les 10 thèmes : accueil PC et iPhone, fiche ; en Kiosque et Atelier noir, PC et iPhone : les 5 présentations, Réglages propriétaire et visiteur, statistiques, carnet, doublons, fiche en édition avec Mon avis, zoom, tris par nombre de tomes et lus récemment, page d'envoi des couvertures), capturés avec la 3.7 puis la 3.8 : **chaque écran de la 3.8 est identique au pixel près à une capture de la 3.7**. Quelques écrans varient de quelques pixels d'une capture à l'autre (anticrénelage des couvertures inclinées et des coins arrondis, hauteur du carnet selon l'arrivée des avis) : ils varient de la même façon entre deux passages de la 3.7 elle-même ; recapturés, ils retombent sur une image commune.
+  - **Outils de test rangés sur le PC** : `outils_delta/tests/` (gitignoré) contient le banc d'essai (`harness.js` : site local, Supabase simulé, couvertures dessinées), les suites `test17` à `test21`, la non-régression (`regress.js`), le banc visuel (`visuel.js`, `cmpvis.py`) et les outils du découpage (`split.js`, `rename.js`, `deps.js`, `deps2.js`, `toplevel.js`). Mode d'emploi en tête de `harness.js`. Ils ont été réécrits après la perte de l'espace de travail de Claude pendant la 3.4 : les suites plus anciennes (test4 à test16) n'existent plus.
 
 - **Version 3.7 — ordre et recherche** (13 novembre 2026) : quatrième idée tirée de l'appli ebooks. Aucun script Supabase : les dates de lecture viennent de la colonne `updated_at` déjà présente dans `bd_volume_status`. Détails : « Ordre de la grille » et « Recherche ».
   - **Tests** : nouvelle suite de 31 vérifications (12 recherches sur des titres et auteurs d'essai — Søren, Straße, Þór, Iğdır, Łukasz Ðorđević, Anna Weiß, Ayşe Kılıç —, en minuscules et majuscules ; classement sous la bonne lettre ; tri par nombre de tomes : ordre, séparateurs, barre masquée, mémorisé ; visiteur sans « Lus récemment » ; propriétaire : ordre et séparateurs d'après les coches et un avis, tome décoché ignoré, tome coché le jour même remonté en tête et envoyé à Supabase, même ordre après rechargement ; aucune erreur JS). Les suites 3.4 (103), 3.5 (38) et 3.6 (57) repassent ; non-régression par rapport à la 3.6 : grille, recherche, tri récent, fiche et statistiques identiques (différences : le menu de tri, l'aide).

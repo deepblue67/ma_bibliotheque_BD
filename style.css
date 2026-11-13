@@ -1,4 +1,24 @@
 /* =====================================================================
+   SOMMAIRE de style.css (rangé en 3.8)
+   Les blocs se suivent dans cet ordre, qui compte : un bloc plus bas l'emporte
+   sur un bloc plus haut à sélecteur égal. Chercher le titre en MAJUSCULES.
+    1. THÈMES : variables de chaque thème ([data-theme="…"])
+    2. MISE EN PAGE : bandeau, recherche, filtres, grille, vignettes, fiche, zoom
+    3. RÉGLAGES : vignettes de thème
+    4. MODE PROPRIÉTAIRE : champs, boutons, messages
+    5. CORRECTIONS ET MASQUAGE (propriétaire) : éditeur de fiche et de tome
+    6. FUSION ET DOUBLONS PROBABLES (propriétaire)
+    7. AIDE (Réglages, mode propriétaire seulement)
+    8. PAGES RÉGLAGES ET DOUBLONS : pages, sections repliables
+    9. BARRE ALPHABÉTIQUE ET SÉPARATEURS DE LETTRE (grille)
+   10. 3.0 : NOUVEAUTÉS, TRI, TOMES MANQUANTS, STATISTIQUES, puis connexion (3.1)
+   11. 3.4 : PRÉSENTATIONS DE LA BIBLIOTHÈQUE (éventail, mur, étagère, liste)
+   12. 3.5 : FICHE PRÉCÉDENTE / SUIVANTE (barre du haut de la fiche)
+   13. 3.6 : MON AVIS (fiche) ET CARNET DE LECTURE
+   14. 3.9 : STYLE (réglages d'aspect, puis la section Style des Réglages)
+   ===================================================================== */
+
+/* =====================================================================
    THÈMES
    Toute la mise en forme passe par les variables ci-dessous. Un thème = un
    bloc [data-theme="…"] qui redéfinit tout ou partie de ces variables.
@@ -354,6 +374,7 @@ body { overflow-x: clip; }
   letter-spacing: var(--display-tracking);
   margin: 0;
   text-shadow: var(--brand-shadow);
+  text-transform: uppercase;    /* 3.9 : le titre est écrit « Ma Bibliothèque BD » ; Réglages → Style peut le laisser tel quel */
 }
 
 .stats {
@@ -561,6 +582,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 32px 20px 80px; }
   overflow-y: auto;
   position: relative;
   box-shadow: var(--sh-sheet-m);
+  overflow-x: hidden;         /* 3.5 : le petit glissement d'une fiche à l'autre ne fait pas apparaître de barre */
 }
 @media (min-width: 720px) {
   .sheet { border-radius: var(--r-sheet); box-shadow: var(--sh-sheet); }
@@ -582,7 +604,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 32px 20px 80px; }
 .sheet-body {
   display: flex;
   flex-direction: column;
-  padding: 28px 22px 22px;
+  padding: 4px 22px 22px;     /* 3.5 : le haut de la fiche est la barre ‹ › ✕ (.sheet-top) */
   gap: 18px;
 }
 @media (min-width: 560px) {
@@ -833,17 +855,8 @@ html:not(.is-owner) .owner-only { display: none !important; }
   box-shadow: var(--sh-field);
 }
 .btn-ghost { background: transparent; box-shadow: none; }
-.owner-gen { margin-top: 14px; }
-.owner-gen[hidden], .owner-out[hidden] { display: none; }
 .owner-msg { font-size: 12.5px; font-weight: 700; min-height: 16px; margin: 4px 0 0; color: var(--text-soft); }
 .owner-msg.err { color: var(--fav); }
-.owner-out { margin-top: 10px; }
-.owner-line {
-  font: 12px ui-monospace, Menlo, Consolas, monospace;
-  background: var(--surface); color: var(--text);
-  border: 1px dashed var(--line); border-radius: 6px;
-  padding: 10px; white-space: pre-wrap; word-break: break-all; margin: 8px 0 10px;
-}
 .settings-hint code, .owner-status code { font-size: 12px; }
 
 /* =====================================================================
@@ -1188,7 +1201,6 @@ a.btn { display: inline-flex; align-items: center; text-decoration: none; }
 
 /* 3.1 : connexion Supabase (Réglages → Mode propriétaire) */
 .auth-box { margin-top: 4px; }
-.auth-h { margin: 0 0 8px; font: 800 13.5px var(--font-body); color: var(--text); }
 .auth-box .owner-input { font-size: 16px; }   /* 16 px : l'iPhone ne zoome pas sur le champ */
 
 /* =====================================================================
@@ -1324,8 +1336,6 @@ a.btn { display: inline-flex; align-items: center; text-decoration: none; }
   background: var(--sheet);
 }
 .sheet-top .sheet-close { position: static; margin-left: auto; flex-shrink: 0; }
-.sheet-body { padding-top: 4px; }
-.sheet { overflow-x: hidden; }               /* le petit glissement ne fait pas apparaître de barre */
 .sheet-nav { display: flex; align-items: center; gap: 8px; }
 .sheet-nav[hidden] { display: none; }
 .sheet-nav-btn {
@@ -1424,4 +1434,130 @@ button.cv-col:focus-visible { outline: 3px solid var(--text); outline-offset: 2p
   .cv-lab { font-size: 10px; }
   .cv-sel { flex: 1 1 calc(50% - 4px); }
   .cv-thumb { flex-basis: 44px; }
+}
+
+/* =====================================================================
+   3.9 : STYLE (Réglages → Style)
+   Chaque aspect ne s'applique que sous son attribut sur <html> (posé par themes.js),
+   et seulement quand il diffère du défaut « Thème » : sans choix, rien ici ne s'applique.
+   Les réglages agissent surtout en redéfinissant, sur les éléments concernés, les variables
+   du thème (traits --bw-*, ombres --sh-*, arrondis --r-*, couleur des traits --line).
+   ===================================================================== */
+
+/* --- Bandeau : police, écriture, ombre du titre --- */
+:root[data-hdrpolice] .brand { font-size: calc(var(--brand-size) * var(--brand-k, 1)); }
+:root[data-hdrpolice="bd"] .brand        { font-family: 'Bangers', Impact, cursive; font-weight: 400; letter-spacing: 1px; --brand-k: 1; }
+:root[data-hdrpolice="affiche"] .brand   { font-family: 'Anton', Impact, sans-serif; font-weight: 400; letter-spacing: 1px; --brand-k: .92; }
+:root[data-hdrpolice="classique"] .brand { font-family: 'Fraunces', Georgia, serif; font-weight: 800; letter-spacing: 0; --brand-k: .86; }
+:root[data-hdrpolice="prestige"] .brand  { font-family: 'Abril Fatface', Georgia, serif; font-weight: 400; letter-spacing: .5px; --brand-k: .88; }
+:root[data-hdrpolice="elegant"] .brand   { font-family: 'Spectral', Georgia, serif; font-weight: 700; font-style: italic; letter-spacing: 0; --brand-k: .9; }
+:root[data-hdrpolice="moderne"] .brand   { font-family: 'Space Grotesk', system-ui, sans-serif; font-weight: 700; letter-spacing: -.5px; --brand-k: .84; }
+:root[data-hdrpolice="sobre"] .brand     { font-family: 'Archivo', system-ui, sans-serif; font-weight: 800; letter-spacing: 0; --brand-k: .8; }
+:root[data-hdrpolice="machine"] .brand   { font-family: 'Special Elite', 'Courier New', monospace; font-weight: 400; letter-spacing: 0; --brand-k: .8; }
+:root[data-hdrpolice="manuscrit"] .brand { font-family: 'Caveat', 'Segoe Script', cursive; font-weight: 700; letter-spacing: 0; --brand-k: 1.1; }
+:root[data-hdrcasse="normale"] .brand { text-transform: none; }
+:root[data-hdrombre="decalee"] .brand { text-shadow: 3px 3px 0 var(--shadow-c); }
+:root[data-hdrombre="douce"] .brand   { text-shadow: 0 2px 10px rgba(0,0,0,.35); }
+:root[data-hdrombre="aucune"] .brand  { text-shadow: none; }
+
+/* --- Bandeau : fond --- */
+:root[data-hdrfond="trame"] .topbar   { background-image: radial-gradient(rgba(0,0,0,.16) 1.6px, transparent 1.6px); background-size: 11px 11px; }
+:root[data-hdrfond="uni"] .topbar     { background-image: none; }
+:root[data-hdrfond="degrade"] .topbar { background-image: linear-gradient(135deg, rgba(255,255,255,.18), rgba(0,0,0,.24)); background-size: auto; }
+
+/* --- Bandeau : champs de recherche, de genre et de tri --- */
+:root[data-hdrchamps="doux"] .topbar .field { --bw-m: 1px; --line: transparent; --sh-field: 0 2px 8px rgba(0,0,0,.18); border-radius: 12px; }
+:root[data-hdrchamps="arrondis"] .topbar .field { --bw-m: 1px; --line: transparent; --sh-field: 0 1px 3px rgba(0,0,0,.14); border-radius: 999px; padding-left: 16px; padding-right: 16px; }
+:root[data-hdrchamps="soulignes"] .topbar .field {
+  background: transparent; border-width: 0 0 2px; border-color: var(--on-accent); border-radius: 0; box-shadow: none;
+  padding-left: 2px; padding-right: 2px;
+}
+:root[data-hdrchamps="soulignes"] .topbar .field input,
+:root[data-hdrchamps="soulignes"] .topbar .field select,
+:root[data-hdrchamps="soulignes"] .topbar .field .icon { color: var(--on-accent); }
+:root[data-hdrchamps="soulignes"] .topbar .field input::placeholder { color: var(--on-accent); opacity: .75; }
+:root[data-hdrchamps="soulignes"] .topbar .field select option { color: var(--text); }
+
+/* --- Bandeau : puces de filtre (la puce active reste pleine) --- */
+:root[data-hdrpuces="douces"] .topbar .chip { border-color: transparent; box-shadow: 0 1px 4px rgba(0,0,0,.22); }
+:root[data-hdrpuces="contour"] .topbar .chip { background: transparent; color: var(--on-accent); border-color: var(--on-accent); }
+:root[data-hdrpuces] .topbar .chip[data-active="true"] { background: var(--chip-on-bg); color: var(--chip-on-text); border-color: var(--chip-on-bg); }
+
+/* --- Bandeau : bouton Réglages (la zone à toucher garde 42 px) --- */
+:root[data-hdrbouton="doux"] .gear-btn    { --bw-m: 1px; --line: transparent; --sh-btn: 0 2px 8px rgba(0,0,0,.22); }
+:root[data-hdrbouton="contour"] .gear-btn { background: transparent; color: var(--on-accent); border-color: var(--on-accent); box-shadow: none; }
+:root[data-hdrbouton="discret"] .gear-btn { background: transparent; color: var(--on-accent); border-color: transparent; box-shadow: none; }
+
+/* --- Pages : police des titres (bandeau compris s'il est « Comme les titres ») --- */
+:root[data-titres="bd"]        { --font-display: 'Bangers', Impact, cursive; --display-weight: 400; --display-tracking: 1px; }
+:root[data-titres="classique"] { --font-display: 'Fraunces', Georgia, serif; --display-weight: 700; --display-tracking: 0px; }
+:root[data-titres="moderne"]   { --font-display: 'Space Grotesk', system-ui, sans-serif; --display-weight: 700; --display-tracking: 0px; }
+
+/* --- Pages : vignettes et fiche --- */
+:root[data-cartes="douces"] .card  { --bw-l: 1px; border-color: var(--divider-strong); --sh-card: 0 3px 12px rgba(0,0,0,.16); --r-card: 12px; }
+:root[data-cartes="douces"] .card.row { --bw-m: 1px; --sh-btn: 0 2px 8px rgba(0,0,0,.14); }
+:root[data-cartes="douces"] .sheet { --bw-l: 1px; border-color: var(--divider-strong); --sh-sheet: 0 18px 50px rgba(0,0,0,.32); --sh-sheet-m: 0 -6px 30px rgba(0,0,0,.25); --r-sheet: 18px; }
+:root[data-cartes="epurees"] .card { --bw-l: 0px; --sh-card: 0 0 0 transparent; --r-card: 10px; }
+:root[data-cartes="epurees"] .card.row { --bw-m: 0px; --sh-btn: 0 0 0 transparent; }
+:root[data-cartes="epurees"] .sheet { --bw-l: 0px; --sh-sheet: 0 18px 50px rgba(0,0,0,.3); --sh-sheet-m: 0 -6px 30px rgba(0,0,0,.22); --r-sheet: 16px; }
+
+/* --- Pages : pastilles (vignettes, fiche, avis) --- */
+:root[data-pastilles="douces"] :is(.badge, .avis-note, .genre-tag) { border-color: transparent; box-shadow: 0 1px 4px rgba(0,0,0,.28); }
+:root[data-pastilles="plates"] :is(.badge, .avis-note, .genre-tag) { border-color: transparent; box-shadow: none; }
+
+/* --- Pages : boutons, cases et champs --- */
+:root[data-commandes="doux"] :is(.btn, .owner-input, .pres-btn, .avis-chip, .vol-check, .sheet-nav-btn, .sheet-close, .magnify-btn) {
+  --bw-m: 1px; --bw-s: 1px; --line: var(--divider-strong);
+  --sh-btn: 0 2px 6px rgba(0,0,0,.14); --sh-field: 0 1px 4px rgba(0,0,0,.10); --sh-mini: 0 1px 4px rgba(0,0,0,.18);
+}
+:root[data-commandes="doux"] .vol-row.is-read .vol-check { border-color: var(--read); }
+
+/* --- Pages : panneaux (vignettes de thème, message, statistiques, aide, carnet) --- */
+:root[data-panneaux="doux"] :is(.theme-card, .toast, .merge-confirm) {
+  --bw-m: 1px; --bw-s: 1px; --line: var(--divider-strong); --sh-btn: 0 2px 10px rgba(0,0,0,.14); --sh-mini: 0 1px 3px rgba(0,0,0,.14);
+}
+:root[data-panneaux="bd"] :is(.st-tile, .help-item) { border: var(--bw-m) solid var(--line); box-shadow: var(--sh-btn); }
+:root[data-panneaux="bd"] .st-h::after, :root[data-panneaux="bd"] .letter-head::after { height: var(--bw-s); background: var(--line); }
+
+/* --- la section Style des Réglages --- */
+.style-wrap { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 22px; align-items: start; }
+.style-preview { position: sticky; top: 12px; border: 1px solid var(--divider); border-radius: var(--r-field); overflow: hidden; background: var(--bg); }
+.style-preview .topbar { padding: 12px 12px 14px; --brand-size: 20px; }
+.style-preview .brand-row { flex-wrap: nowrap; align-items: center; gap: 10px; }
+.style-preview .brand { min-width: 0; line-height: 1.05; overflow-wrap: anywhere; }
+.style-preview .gear-btn { width: 34px; height: 34px; }
+.style-preview .gear-btn svg { width: 18px; height: 18px; }
+.style-preview .sp-controls { margin-top: 10px; display: flex; }
+.style-preview .field { flex: 1 1 100%; padding: 7px 10px; }
+.style-preview .field input { font-size: 13px; }
+.style-preview .chips { margin-top: 8px; }
+.style-preview .chip { padding: 6px 10px; font-size: 11.5px; }
+.style-preview .sp-body { display: flex; gap: 14px; padding: 14px 12px; align-items: flex-start; }
+.style-preview .sp-body .card { width: 112px; flex: none; cursor: default; }
+.style-preview .sp-body .card:hover { transform: none; }
+.style-preview .sp-cover { width: 100%; height: 100%; background: linear-gradient(160deg, #3d6fb6, #1f3c6e); }
+.style-preview .sp-side { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+.style-preview .sp-title { font-family: var(--font-display); font-weight: var(--display-weight); letter-spacing: calc(var(--display-tracking) / 2); font-size: 22px; line-height: 1.05; color: var(--text); }
+.style-preview .st-tile { align-self: stretch; }
+.style-preview .st-num { font-size: 22px; }
+.style-presets { display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0 6px; align-items: center; }
+.style-cur { font-size: 12px; font-weight: 700; color: var(--muted); }
+.style-group { margin-top: 14px; }
+.style-group-h { font: 800 11.5px var(--font-body); letter-spacing: .5px; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+.style-row { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 6px 12px; align-items: start; padding: 7px 0; border-top: 1px solid var(--divider); }
+.style-row-lab { font-size: 13px; font-weight: 800; color: var(--text); padding-top: 6px; }
+.style-opts { display: flex; flex-wrap: wrap; gap: 6px; }
+.style-opt {
+  font-family: var(--font-body); font-size: 12.5px; font-weight: 700; color: var(--text);
+  background: var(--surface); border: 1px solid var(--divider-strong); border-radius: 999px;
+  padding: 6px 11px; cursor: pointer; line-height: 1.2;
+}
+.style-opt[aria-pressed="true"] { background: var(--chip-on-bg); color: var(--chip-on-text); border-color: var(--chip-on-bg); }
+.style-opt:focus-visible { outline: 3px solid var(--text); outline-offset: 2px; }
+.style-opt.f { font-size: 15px; font-weight: 400; padding: 5px 11px; }
+@media (max-width: 760px) {
+  .style-wrap { grid-template-columns: minmax(0, 1fr); }
+  .style-preview { position: relative; top: 0; order: -1; }
+  .style-row { grid-template-columns: minmax(0, 1fr); }
+  .style-row-lab { padding-top: 0; }
 }
