@@ -164,7 +164,6 @@
     info.appendChild(t); info.appendChild(a); info.appendChild(c);
     return info;
   }
-  var SHELF_H = [100, 93, 97, 90, 95, 92];   // hauteurs (%) des tomes sur l'étagère, pour un rang moins sage
 
   function renderCard(entry, cut, pres) {
     pres = pres || presentation();
@@ -235,8 +234,7 @@
       var books = document.createElement("div"); books.className = "shelf-books";
       var max = state.shelfMax || 6, files = coversOf(entry, max), total = (entry._ord || []).length;
       files.forEach(function (f, i) {
-        var b = coverImg(f, "shelf-b", i ? "" : entry.title);
-        b.style.setProperty("--h", SHELF_H[i % SHELF_H.length] + "%");
+        var b = coverImg(f, "shelf-b", i ? "" : entry.title);   // 3.9 : tous à la même hauteur
         books.appendChild(b);
       });
       if (!files.length) { var ph = document.createElement("span"); ph.className = "shelf-b shelf-ph"; books.appendChild(ph); }
@@ -275,7 +273,14 @@
       fw.appendChild(badges);
       if (bn) fw.appendChild(bn);
       card.appendChild(fw);
-      card.appendChild(infoBlock(entry));
+      // 3.9 : sous l'éventail, le titre seul, et le nombre de tomes pour une série de 2 tomes
+      // et plus (l'éventail n'en montre que 4) ; auteurs et « One-shot » restent dans la fiche
+      var fi = document.createElement("div"); fi.className = "fan-info";
+      var ft = document.createElement("div"); ft.className = "card-title"; ft.textContent = entry.title; fi.appendChild(ft);
+      if (!entry.one_shot && entry.volume_count > 1) {
+        var fc = document.createElement("div"); fc.className = "card-count"; fc.textContent = countText(entry); fi.appendChild(fc);
+      }
+      card.appendChild(fi);
     } else {
       var coverWrap = document.createElement("div");
       coverWrap.className = "card-cover-wrap";

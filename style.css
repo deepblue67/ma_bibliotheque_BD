@@ -1208,11 +1208,22 @@ a.btn { display: inline-flex; align-items: center; text-decoration: none; }
    #grid[data-pres] : grille (défaut, règles ci-dessus), eventail, etagere, mur, liste
    ===================================================================== */
 
-/* --- Éventail : jusqu'à 4 couvertures déployées, la première devant --- */
-.card-cover-wrap.fan { overflow: hidden; display: flex; align-items: center; justify-content: center; }
+/* --- Éventail : jusqu'à 4 couvertures déployées, la première devant ---
+   3.9 : sans cadre ni bandeau, posé sur la page, titre centré dessous ; 5 à 6 colonnes
+   sur grand écran (8 avant), 2 sur téléphone */
+#grid[data-pres="eventail"] { grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 26px 22px; }
+#grid[data-pres="eventail"] .card { border: 0; border-radius: 0; box-shadow: none; background: transparent; overflow: visible; }
+#grid[data-pres="eventail"] .card:focus-visible { outline-offset: 4px; border-radius: 6px; }
+.card-cover-wrap.fan { aspect-ratio: 1 / 1; background: transparent; overflow: visible; display: flex; align-items: center; justify-content: center; }
+.fan-info { text-align: center; padding: 4px 6px 0; }
+.fan-info .card-title {
+  color: var(--text); font-size: 14px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.fan-info .card-count { color: var(--muted); font-size: 11.5px; margin-top: 2px; }
 .card-cover-wrap.fan img.fan-i {
-  position: absolute; top: 15%; left: 18%;          /* 3.9 : 64 % de large (56 % avant) */
-  width: 64%; height: auto; aspect-ratio: 500 / 680; object-fit: cover;
+  position: absolute; top: 7%; left: 19%;
+  width: 62%; height: auto; aspect-ratio: 500 / 680; object-fit: cover;
   border: var(--bw-s) solid var(--line); border-radius: var(--r-cover);
   box-shadow: var(--sh-mini);
   transform-origin: 50% 100%;
@@ -1224,8 +1235,10 @@ a.btn { display: inline-flex; align-items: center; text-decoration: none; }
 /* 3.9 : une couverture seule (one-shot, série d'un tome) à la même taille que celles de l'éventail, droite */
 .card-cover-wrap.fan.solo img.fan-i, .card:hover .card-cover-wrap.fan.solo img.fan-i { transform: none; }
 .card-cover-wrap.fan .card-badges, .card-cover-wrap.fan .card-new { z-index: 9; }
-@media (max-width: 560px) {                          /* vignettes étroites : éventail moins ouvert */
+@media (max-width: 560px) {                          /* téléphone : 2 colonnes, éventail moins ouvert */
+  #grid[data-pres="eventail"] { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 14px; }
   .card-cover-wrap.fan img.fan-i { transform: translateX(calc(var(--k) * 6%)) rotate(calc(var(--k) * 4deg)); }
+  .fan-info .card-title { font-size: 12.5px; }
 }
 
 /* --- Mur : les couvertures seules ; une série se voit en pile (2 tomes, 3 et plus) --- */
@@ -1261,7 +1274,7 @@ a.btn { display: inline-flex; align-items: center; text-decoration: none; }
   transition: transform .12s ease;
 }
 .shelf-b {
-  height: var(--h, 100%); width: auto; aspect-ratio: 500 / 680; object-fit: cover; display: block;
+  height: 100%; width: auto; aspect-ratio: 500 / 680; object-fit: cover; display: block;   /* 3.9 : même hauteur pour tous */
   border: var(--bw-s) solid var(--line); border-radius: 2px 3px 3px 2px;
   background: var(--card-placeholder);
 }
