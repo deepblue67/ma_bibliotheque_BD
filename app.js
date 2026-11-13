@@ -12,8 +12,8 @@
   // Version de la livraison — à augmenter à CHAQUE livraison (+0.1 pour une livraison
   // ordinaire, +1.0 pour une refonte), avec le même numéro dans les quatre ?v= de
   // index.html et une ligne dans l'historique « Versions » du README.
-  var APP_VERSION = "3.3";
-  var APP_VERSION_DATE = "2026-11-08";
+  var APP_VERSION = "3.7";
+  var APP_VERSION_DATE = "2026-11-13";
 
   // ---------- mode propriétaire (3.3) ----------
   // Propriétaire = appareil connecté à Supabase (Supabase Auth, e-mail + mot de passe ; voir
@@ -75,6 +75,11 @@
     sortBy: document.getElementById("sort-by"),
     overlay: document.getElementById("overlay"),
     sheetClose: document.getElementById("sheet-close"),
+    sheetNav: document.getElementById("sheet-nav"),           // 3.5 : fiche précédente / suivante
+    sheetPrev: document.getElementById("sheet-prev"),
+    sheetNext: document.getElementById("sheet-next"),
+    sheetPos: document.getElementById("sheet-pos"),
+    sheetLive: document.getElementById("sheet-live"),
     sheetCover: document.getElementById("sheet-cover"),
     sheetCoverZoom: document.getElementById("sheet-cover-zoom"),
     sheetTitle: document.getElementById("sheet-title"),
@@ -111,7 +116,42 @@
   }
   function saveLocalVolumeRead() {
     try { localStorage.setItem(LOCAL_VOL_KEY, JSON.stringify(state.volumeRead)); } catch (e) {}
+    saveLocalReadAt();
   }
+  // 3.7 : date à laquelle chaque tome a été coché lu (updated_at de bd_volume_status), pour le
+  // tri « Lus récemment » du propriétaire. Copie locale bd_lu_dates_v1, comme les coches.
+  var LOCAL_READAT_KEY = "bd_lu_dates_v1";
+  function loadLocalReadAt() {
+    if (!IS_OWNER) return {};
+    try { return JSON.parse(localStorage.getItem(LOCAL_READAT_KEY) || "{}") || {}; } catch (e) { return {}; }
+  }
+  function saveLocalReadAt() {
+    if (!IS_OWNER || !state.readAt) return;
+    try { localStorage.setItem(LOCAL_READAT_KEY, JSON.stringify(state.readAt)); } catch (e) {}
+  }
+  state.readAt = loadLocalReadAt();
+
+  // ---------- mon avis (3.6) ----------
+  // Un avis par fiche (série ou one-shot) : note sur 10 (facultative), date de lecture et
+  // commentaire. Propriétaire seulement : table Supabase bd_avis, lisible et modifiable par
+  // la seule session du propriétaire (supabase_avis.sql). Copie locale sur l'appareil du
+  // propriétaire (bd_avis_v1) pour l'affichage hors ligne ; effacée sur un appareil visiteur
+  // et quand on quitte le mode propriétaire.
+  var AVIS_KEY = "bd_avis_v1", AVIS_MAX = 4000;
+  function loadLocalAvis() {
+    if (!IS_OWNER) { try { localStorage.removeItem(AVIS_KEY); } catch (e) {} return {}; }
+    try { return JSON.parse(localStorage.getItem(AVIS_KEY) || "{}") || {}; } catch (e) { return {}; }
+  }
+  function saveLocalAvis() {
+    if (!IS_OWNER) return;
+    try { localStorage.setItem(AVIS_KEY, JSON.stringify(state.avis)); } catch (e) {}
+  }
+  function rowToAvis(r) {
+    return { note: (r.note === null || r.note === undefined) ? null : +r.note, lu_le: r.lu_le || null,
+             commentaire: r.commentaire || "", updated_at: r.updated_at || null };
+  }
+  state.avis = loadLocalAvis();      // id de fiche -> { note, lu_le, commentaire, updated_at }
+  state.avisEdit = false;            // formulaire « Mon avis » ouvert dans la fiche
 
   // ---------- computed read status ----------
   // Chaque tome affiché garde la clé de SA fiche d'origine ("idFiche::index d'origine"),
@@ -219,6 +259,33 @@
     return s;
   }
 
+  // ---------- présentations de la bibliothèque (3.4) ----------
+  // Cinq façons d'afficher la grille, comme dans l'appli ebooks : grille (vignettes, celle
+  // d'avant), éventail (les premières couvertures d'une série déployées en éventail),
+  // étagère (les tomes debout sur une planche), mur (couvertures seules, piles pour les
+  // séries) et liste (une ligne par fiche).
+  // Chaque appareil choisit la sienne (Réglages → Présentation, clé bd_presentation_v1) ;
+  // « Par défaut » suit celle que le propriétaire a choisie pour ses visiteurs, gardée dans
+  // la table Supabase bd_reglages (ligne « presentation », lisible par tous, modifiable par
+  // le propriétaire seul : supabase_reglages.sql). Elle est mise en cache sur l'appareil
+  // (bd_reglages_site_v1) pour s'afficher tout de suite à la visite suivante.
+  var PRESENTATIONS = [
+    { id: "grille", name: "Grille" },
+    { id: "eventail", name: "Éventail" },
+    { id: "etagere", name: "Étagère" },
+    { id: "mur", name: "Mur" },
+    { id: "liste", name: "Liste" }
+  ];
+  var PRES_KEY = "bd_presentation_v1", SITE_KEY = "bd_reglages_site_v1";
+  function presOk(v) { return PRESENTATIONS.some(function (p) { return p.id === v; }); }
+  function presNom(v) { var p = PRESENTATIONS.find(function (x) { return x.id === v; }); return p ? p.name : "Grille"; }
+  state.presDevice = null;
+  try { var pd0 = localStorage.getItem(PRES_KEY); if (presOk(pd0)) state.presDevice = pd0; } catch (e) {}
+  state.site = {};
+  try { state.site = JSON.parse(localStorage.getItem(SITE_KEY) || "{}") || {}; } catch (e) { state.site = {}; }
+  function presSite() { return presOk(state.site.presentation) ? state.site.presentation : null; }
+  function presentation() { return state.presDevice || presSite() || "grille"; }
+
   // ---------- dates d'ajout, nouveautés, tomes manquants (3.0) ----------
   // Le catalogue note la date d'ajout (AAAA-MM-JJ) : "added" sur chaque fiche (son premier
   // import) et sur chaque tome ajouté plus tard à une fiche existante (outils_delta/4_fusion.py).
@@ -319,7 +386,9 @@
       var t = mergeTarget(r.id, byId);
       if (t) { target[r.id] = t; (absorbed[t] = absorbed[t] || []).push(r); }
     });
-    var cmp = function (a, b) { return a.title.localeCompare(b.title, "fr", { sensitivity: "base", numeric: true }); };
+    // 3.7 : Þór se range à « Thor », Søren à « Soren » (et non après le Z)
+    var sk = function (x) { return x._sk || (x._sk = foldLetters(x.title.toLowerCase())); };
+    var cmp = function (a, b) { return sk(a).localeCompare(sk(b), "fr", { sensitivity: "base", numeric: true }); };
     state.raw.forEach(function (r) {
       if (target[r.id]) {
         merged.push({ id: r.id, title: (state.overrides[r.id] || {}).title || r.title, into: target[r.id], _raw: r });
@@ -403,6 +472,7 @@
     if (state.view === "settings") { renderHiddenList(); updateDupButton(); }
     if (state.view === "dups") renderDups();
     if (state.view === "stats") renderStats();
+    if (state.view === "carnet") renderCarnet();
   }
 
   // Enregistre une correction (fusionnée avec l'existante). Appliquée tout de suite à
@@ -481,6 +551,22 @@
       .catch(function () { markOvReady(); });
   }
 
+  // 3.4 : réglages du site (présentation par défaut des visiteurs), table bd_reglages
+  function fetchReglages() {
+    supabase.from("bd_reglages").select("cle,valeur")
+      .then(function (res) {
+        if (res.error) { state.siteMissing = true; if (state.view === "settings") renderPresBlock(); return; }
+        state.siteMissing = false;
+        var before = presentation(), site = {};
+        (res.data || []).forEach(function (r) { if (r && r.cle) site[r.cle] = r.valeur; });
+        state.site = site;
+        try { localStorage.setItem(SITE_KEY, JSON.stringify(site)); } catch (e) {}
+        if (presentation() !== before) renderGrid();
+        if (state.view === "settings") renderPresBlock();
+      })
+      .catch(function () {});
+  }
+
   // ---------- supabase ----------
   var supabase = null;
   function initSupabase() {
@@ -494,6 +580,7 @@
       initAuth();
       // les corrections concernent tout le monde (titres corrigés, fiches masquées)…
       fetchOverrides();
+      fetchReglages();                     // 3.4 : présentation par défaut des visiteurs
       // …les statuts et la synchro en direct, seulement le propriétaire
       if (IS_OWNER) subscribeRealtime();   // statuts : lus par syncStatuses(), une fois connecté (3.2)
     } catch (e) {
@@ -634,6 +721,7 @@
     state.statusSynced = true;
     fetchRemoteFavorites();
     fetchRemoteVolumeStatus();
+    fetchRemoteAvis();                       // 3.6
   }
 
   // Quitter le mode propriétaire déconnecte aussi de Supabase (appareil prêté, par exemple).
@@ -666,8 +754,8 @@
       .then(function (res) {
         if (res.error) { setSyncNote("Synchro : hors ligne (données locales conservées)."); return; }
         (res.data || []).forEach(function (row) {
-          if (row.is_read) state.volumeRead[row.id] = true;
-          else delete state.volumeRead[row.id];
+          if (row.is_read) { state.volumeRead[row.id] = true; if (row.updated_at) state.readAt[row.id] = row.updated_at; }
+          else { delete state.volumeRead[row.id]; delete state.readAt[row.id]; }
         });
         saveLocalVolumeRead();
         renderGrid();
@@ -691,8 +779,8 @@
       .on("postgres_changes", { event: "*", schema: "public", table: "bd_volume_status" }, function (payload) {
         var row = payload.new && Object.keys(payload.new).length ? payload.new : payload.old;
         if (!row || !row.id) return;
-        if (payload.eventType === "DELETE" || !row.is_read) { delete state.volumeRead[row.id]; }
-        else { state.volumeRead[row.id] = true; }
+        if (payload.eventType === "DELETE" || !row.is_read) { delete state.volumeRead[row.id]; delete state.readAt[row.id]; }
+        else { state.volumeRead[row.id] = true; if (row.updated_at) state.readAt[row.id] = row.updated_at; }
         saveLocalVolumeRead();
         renderGrid();
         var act = state.activeId && currentEntry();
@@ -700,6 +788,18 @@
           renderVolumeList();
           renderSheetActions();
         }
+      })
+      .subscribe();
+    // 3.6 : avis, canal séparé (la table peut ne pas encore exister)
+    supabase.channel("bd_avis_changes")
+      .on("postgres_changes", { event: "*", schema: "public", table: "bd_avis" }, function (payload) {
+        var row = payload.new && Object.keys(payload.new).length ? payload.new : payload.old;
+        if (!row || !row.id) return;
+        if (payload.eventType === "DELETE") delete state.avis[row.id];
+        else state.avis[row.id] = rowToAvis(row);
+        saveLocalAvis();
+        if (state.activeId === row.id && state.avisEdit) return;      // ne pas écraser une saisie en cours
+        refreshAvisViews(true);
       })
       .subscribe();
     // canal séparé : si la table bd_overrides n'existe pas encore, seul ce canal échoue
@@ -806,8 +906,12 @@
   // ou courbes confondues, et toute ponctuation (tirets, points, deux-points…) vue
   // comme un espace. « kim jong un » trouve donc « Kim Jong-un », et « l'arabe »
   // trouve « L’Arabe ».
+  // 3.7 : lettres que la décomposition Unicode ne ramène pas à une lettre simple
+  // (Søren, Łukasz, Straße, Đorđević, Þór, Iğdır…) : ø → o, ß → ss, ł → l, đ/ð → d, þ → th, ı → i.
+  var FOLD_RE = /[øßłđðþı]/g, FOLD = { "ø": "o", "ß": "ss", "ł": "l", "đ": "d", "ð": "d", "þ": "th", "ı": "i" };
+  function foldLetters(s) { return s.replace(FOLD_RE, function (c) { return FOLD[c]; }); }
   function normalize(s) {
-    return (s || "").toString().toLowerCase()
+    return foldLetters((s || "").toString().toLowerCase())
       .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
       .replace(/[\u2019\u2018\u02bc\u0060\u00b4]/g, "'")
       .replace(/œ/g, "oe").replace(/æ/g, "ae")
@@ -965,7 +1069,7 @@
     var c = (title || "").trim().charAt(0);
     if (c === "Œ" || c === "œ") return "O";
     if (c === "Æ" || c === "æ") return "A";
-    c = c.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+    c = foldLetters(c.toLowerCase()).charAt(0).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
     return /[A-Z]/.test(c) ? c : "#";
   }
   function letterHead(L) {
@@ -1012,34 +1116,114 @@
     h.textContent = d ? "Ajoutés le " + frDate(d) : "Date d'ajout inconnue";
     return h;
   }
+  // 3.7 : tri « Nombre de tomes » (tous) et « Lus récemment » (propriétaire), avec leurs
+  // séparateurs : tranches de nombre de tomes, mois de la dernière lecture.
+  function tomesBand(e) {
+    var n = e.volume_count;
+    if (e.one_shot) return { k: "os", t: "One-shots" };
+    if (n >= 20) return { k: "20", t: "20 tomes et plus" };
+    if (n >= 10) return { k: "10", t: "10 à 19 tomes" };
+    if (n >= 5) return { k: "5", t: "5 à 9 tomes" };
+    if (n >= 2) return { k: "2", t: "2 à 4 tomes" };
+    return { k: "1", t: "Séries d'un seul tome" };
+  }
+  // dernière lecture d'une fiche : tome coché lu le plus récent, ou date de lecture de mon avis
+  function lastReadOf(e) {
+    var best = "";
+    (e._vis || []).forEach(function (i) {
+      var k = e._keys[i];
+      if (isKeyRead(k)) { var d = state.readAt[k]; if (d) { d = isoDay(new Date(d)); if (d > best) best = d; } }
+    });
+    var a = state.avis && state.avis[e.id];
+    if (a && a.lu_le && a.lu_le > best) best = a.lu_le;
+    return best;
+  }
+  function textHead(t) {
+    var h = document.createElement("h2");
+    h.className = "letter-head date-head";
+    h.textContent = t;
+    return h;
+  }
   function renderGrid() {
     var list = state.catalog.filter(matches);
-    var recent = state.sort === "recent";
+    var recent = state.sort === "recent", tomes = state.sort === "tomes", lus = state.sort === "lus" && IS_OWNER;
     if (recent) list = list.slice().sort(function (a, b) {        // tri stable : le titre départage
       var x = a._lastAdded || "", y = b._lastAdded || "";
       return x < y ? 1 : x > y ? -1 : 0;
     });
+    else if (tomes) list = list.slice().sort(function (a, b) {    // séries d'abord, les plus longues en tête
+      return (a.one_shot ? 1 : 0) - (b.one_shot ? 1 : 0) || b.volume_count - a.volume_count;
+    });
+    else if (lus) {
+      list.forEach(function (e) { e._lastRead = lastReadOf(e); });
+      list = list.slice().sort(function (a, b) { return a._lastRead < b._lastRead ? 1 : a._lastRead > b._lastRead ? -1 : 0; });
+    }
     if (lazyObserver) lazyObserver.disconnect();
+    var pres = presentation();                                  // 3.4
+    els.grid.setAttribute("data-pres", pres);
+    state.shelfMax = shelfMaxNow();
     els.grid.innerHTML = "";
+    state.gridOrder = list.map(function (e) { return e.id; });   // 3.5 : fiche précédente / suivante
     els.empty.hidden = list.length > 0;
-    var showAz = !recent && list.length >= AZ_MIN, present = {}, lastDay = null, cut = newCutoff();
+    var showAz = !recent && !tomes && !lus && list.length >= AZ_MIN, present = {}, lastDay = null, cut = newCutoff();
     var frag = document.createDocumentFragment();
     list.forEach(function (entry) {
       if (recent) {
         var d = entry._lastAdded || "";
         if (d !== lastDay) { lastDay = d; frag.appendChild(dateHead(d)); }
+      } else if (tomes) {
+        var bd = tomesBand(entry);
+        if (bd.k !== lastDay) { lastDay = bd.k; frag.appendChild(textHead(bd.t)); }
+      } else if (lus) {
+        var mo = entry._lastRead ? entry._lastRead.slice(0, 7) : "";
+        if (mo !== lastDay) {
+          lastDay = mo;
+          frag.appendChild(textHead(mo ? "Lus en " + MOIS[+mo.slice(5, 7) - 1] + " " + mo.slice(0, 4) : "Pas encore lus"));
+        }
       } else if (showAz) {
         var L = initialOf(entry.title);
         if (!present[L]) { present[L] = true; frag.appendChild(letterHead(L)); }
       }
-      frag.appendChild(renderCard(entry, cut));
+      frag.appendChild(renderCard(entry, cut, pres));
     });
     els.grid.appendChild(frag);
     renderAz(present, showAz);
     sweepSoon();
   }
 
-  function renderCard(entry, cut) {
+  // 3.4 : couvertures des tomes visibles d'une fiche, dans l'ordre (éventail, étagère, mur)
+  function coversOf(entry, max) {
+    var seen = {}, out = [];
+    (entry._ord || []).forEach(function (i) {
+      var v = entry.volumes && entry.volumes[i], f = v && v.cover;
+      if (f && !seen[f]) { seen[f] = true; out.push(f); }
+    });
+    if (!out.length && entry.cover) out.push(entry.cover);
+    return max ? out.slice(0, max) : out;
+  }
+  function coverImg(file, cls, alt) {
+    var im = document.createElement("img");
+    if (cls) im.className = cls;
+    im.alt = alt || "";
+    lazyImage(im, coverUrl(file));
+    return im;
+  }
+  function countText(entry) {
+    return entry.one_shot ? "One-shot" : entry.volume_count + (entry.volume_count > 1 ? " tomes" : " tome");
+  }
+  function infoBlock(entry, cls) {
+    var info = document.createElement("div");
+    info.className = cls || "card-info";
+    var t = document.createElement("div"); t.className = "card-title"; t.textContent = entry.title;
+    var a = document.createElement("div"); a.className = "card-author"; a.textContent = entry.author || "Auteur non renseigné";
+    var c = document.createElement("div"); c.className = "card-count" + (entry.one_shot ? " oneshot" : ""); c.textContent = countText(entry);
+    info.appendChild(t); info.appendChild(a); info.appendChild(c);
+    return info;
+  }
+  var SHELF_H = [100, 93, 97, 90, 95, 92];   // hauteurs (%) des tomes sur l'étagère, pour un rang moins sage
+
+  function renderCard(entry, cut, pres) {
+    pres = pres || presentation();
     var fav = state.favorites[entry.id] || {};
     var nw = newInfo(entry, cut || newCutoff());
     var read = isTitleRead(entry);
@@ -1053,25 +1237,13 @@
     card.tabIndex = 0;
     card.setAttribute("aria-label", entry.title + ", " + (entry.one_shot ? "one-shot" : entry.volume_count + (entry.volume_count > 1 ? " tomes" : " tome")) +
       (entry.author ? ", " + entry.author : "") + (IS_OWNER && read ? ", lu" : IS_OWNER && inProgress ? ", " + readCount + " lus" : "") +
-      (entry._private ? ", réservée au propriétaire" : "") + (nw ? ", " + nw.aria : ""));
+      (entry._private ? ", réservée au propriétaire" : "") + (nw ? ", " + nw.aria : "") +
+      (IS_OWNER && state.avis[entry.id] && state.avis[entry.id].note !== null ? ", noté " + state.avis[entry.id].note + " sur 10" : ""));
 
-    var coverWrap = document.createElement("div");
-    coverWrap.className = "card-cover-wrap";
-    var img = document.createElement("img");
-    // "lazy" natif s'est révélé peu fiable ici (certaines vignettes ne se
-    // chargent jamais, même visibles à l'écran) — chargement immédiat, plus
-    // sûr, quitte à consommer un peu plus de bande passante à l'ouverture.
-    img.alt = entry.title;
-    // Chargement differe : avec ~2000 vignettes, tout charger a l'ouverture pesait
-    // ~140 Mo. On n'utilise PAS loading="lazy" (natif), qui s'etait revele peu fiable
-    // ici (vignettes jamais chargees), mais un IntersectionObserver explicite.
-    lazyImage(img, coverUrl(entry.cover));
-    if (!entry.cover) img.style.display = "none";
-    coverWrap.appendChild(img);
-
+    // pastilles (communes à toutes les présentations ; la loupe seulement en grille et en mur)
     var badges = document.createElement("div");
     badges.className = "card-badges";
-    if (entry.cover) {
+    if (entry.cover && (pres === "grille" || pres === "mur")) {
       var zoomBtn = document.createElement("button");
       zoomBtn.type = "button";
       zoomBtn.className = "magnify-btn";
@@ -1089,6 +1261,10 @@
     if (IS_OWNER && fav.is_favorite) {
       var bf = document.createElement("span"); bf.className = "badge fav"; bf.textContent = "★"; badges.appendChild(bf);
     }
+    var av = IS_OWNER && state.avis[entry.id];             // 3.6 : ma note
+    if (av && av.note !== null) {
+      var bno = document.createElement("span"); bno.className = "badge note"; bno.textContent = av.note + "/10"; badges.appendChild(bno);
+    }
     if (!IS_OWNER) {
       // visiteur : pas de pastille de statut
     } else if (read) {
@@ -1096,21 +1272,82 @@
     } else if (inProgress) {
       var bp = document.createElement("span"); bp.className = "badge inprogress"; bp.textContent = readCount + "/" + entry.volume_count + " lus"; badges.appendChild(bp);
     }
-    coverWrap.appendChild(badges);
+    var bn = null;
     if (nw) {                                             // 3.0 : nouveauté (visible de tous)
-      var bn = document.createElement("span"); bn.className = "badge new card-new"; bn.textContent = nw.text;
-      coverWrap.appendChild(bn);
+      bn = document.createElement("span"); bn.className = "badge new card-new"; bn.textContent = nw.text;
     }
 
-    var info = document.createElement("div");
-    info.className = "card-info";
-    var t = document.createElement("div"); t.className = "card-title"; t.textContent = entry.title;
-    var a = document.createElement("div"); a.className = "card-author"; a.textContent = entry.author || "Auteur non renseigné";
-    var c = document.createElement("div"); c.className = "card-count" + (entry.one_shot ? " oneshot" : ""); c.textContent = entry.one_shot ? "One-shot" : entry.volume_count + (entry.volume_count > 1 ? " tomes" : " tome");
-    info.appendChild(t); info.appendChild(a); info.appendChild(c);
-
-    card.appendChild(coverWrap);
-    card.appendChild(info);
+    if (pres === "liste") {
+      card.className += " row";
+      var rc = document.createElement("div"); rc.className = "row-cover";
+      if (entry.cover) rc.appendChild(coverImg(entry.cover, "", entry.title));
+      card.appendChild(rc);
+      card.appendChild(infoBlock(entry, "row-info"));
+      badges.className = "row-badges";
+      if (bn) { bn.className = "badge new"; badges.insertBefore(bn, badges.firstChild); }
+      card.appendChild(badges);
+    } else if (pres === "etagere") {
+      card.className += " shelf";
+      var books = document.createElement("div"); books.className = "shelf-books";
+      var max = state.shelfMax || 6, files = coversOf(entry, max), total = (entry._ord || []).length;
+      files.forEach(function (f, i) {
+        var b = coverImg(f, "shelf-b", i ? "" : entry.title);
+        b.style.setProperty("--h", SHELF_H[i % SHELF_H.length] + "%");
+        books.appendChild(b);
+      });
+      if (!files.length) { var ph = document.createElement("span"); ph.className = "shelf-b shelf-ph"; books.appendChild(ph); }
+      if (total > files.length && files.length) {
+        var more = document.createElement("span"); more.className = "shelf-more"; more.textContent = "+" + (total - files.length);
+        books.appendChild(more);
+      }
+      books.appendChild(badges);
+      if (bn) books.appendChild(bn);
+      card.appendChild(books);
+      var plank = document.createElement("div"); plank.className = "shelf-plank"; card.appendChild(plank);
+      var st = document.createElement("div"); st.className = "shelf-title"; st.textContent = entry.title;
+      card.appendChild(st);
+    } else if (pres === "mur") {
+      var nv = (entry._ord || []).length;
+      card.className += " mur" + (nv >= 3 ? " pile2" : nv === 2 ? " pile1" : "") + (entry.cover ? "" : " no-cover");
+      var mw = document.createElement("div"); mw.className = "card-cover-wrap";
+      if (entry.cover) mw.appendChild(coverImg(entry.cover, "", entry.title));
+      mw.appendChild(badges);
+      if (bn) mw.appendChild(bn);
+      var cap = document.createElement("div"); cap.className = "mur-cap";
+      var mt = document.createElement("span"); mt.className = "mur-title"; mt.textContent = entry.title;
+      var mc = document.createElement("span"); mc.className = "mur-count"; mc.textContent = countText(entry);
+      cap.appendChild(mt); cap.appendChild(mc); mw.appendChild(cap);
+      card.appendChild(mw);
+    } else if (pres === "eventail") {
+      var fw = document.createElement("div");
+      var fl = coversOf(entry, 4), n = fl.length;
+      fw.className = "card-cover-wrap fan" + (n < 2 ? " solo" : "");
+      fl.forEach(function (f, k) {
+        var im = coverImg(f, "fan-i", k ? "" : entry.title);
+        im.style.setProperty("--k", (k - (n - 1) / 2).toFixed(2));
+        im.style.zIndex = String(n - k);
+        fw.appendChild(im);
+      });
+      fw.appendChild(badges);
+      if (bn) fw.appendChild(bn);
+      card.appendChild(fw);
+      card.appendChild(infoBlock(entry));
+    } else {
+      var coverWrap = document.createElement("div");
+      coverWrap.className = "card-cover-wrap";
+      var img = document.createElement("img");
+      img.alt = entry.title;
+      // Chargement differe : avec ~2000 vignettes, tout charger a l'ouverture pesait
+      // ~140 Mo. On n'utilise PAS loading="lazy" (natif), qui s'etait revele peu fiable
+      // ici (vignettes jamais chargees), mais un IntersectionObserver explicite.
+      lazyImage(img, coverUrl(entry.cover));
+      if (!entry.cover) img.style.display = "none";
+      coverWrap.appendChild(img);
+      coverWrap.appendChild(badges);
+      if (bn) coverWrap.appendChild(bn);
+      card.appendChild(coverWrap);
+      card.appendChild(infoBlock(entry));
+    }
     card.addEventListener("click", function () { openSheet(entry.id); });
     card.addEventListener("keydown", function (e) {
       if (e.target !== card) return;                     // Entrée sur la loupe : la loupe
@@ -1118,6 +1355,11 @@
     });
     return card;
   }
+  // l'étagère montre 4 tomes sur téléphone, 6 ailleurs : on redessine en franchissant le seuil
+  function shelfMaxNow() { return (window.innerWidth || 1000) < 560 ? 4 : 6; }
+  window.addEventListener("resize", function () {
+    if (presentation() === "etagere" && state.shelfMax && shelfMaxNow() !== state.shelfMax) renderGridSoon();
+  });
 
   // ---------- detail sheet ----------
   function currentEntry() {
@@ -1155,17 +1397,36 @@
     }
     if (state.activeId !== entry.id || els.overlay.hidden) openSheetUI(entry.id);
   }
-  function openSheetUI(id) {
+  // opts (3.5, passage à la fiche voisine) : dir = -1 / 1 (petit glissement de la fiche),
+  // keepFocus = le focus reste sur le bouton ‹ › qu'on vient d'utiliser.
+  function openSheetUI(id, opts) {
+    opts = opts || {};
     var entry = state.catalog.find(function (e) { return e.id === id; });
     if (!entry) return;
     if (els.overlay.hidden) state.lastFocus = document.activeElement;
     state.activeId = id;
     state.activeVolIdx = entry._ord.length ? entry._ord[0] : 0;
     state.editVol = null;
+    state.avisEdit = false; state.avisConfirm = false;    // 3.6
     closeEditor();
     refreshSheet();
     els.overlay.hidden = false;
     document.body.style.overflow = "hidden";
+    if (opts.dir) {
+      var sh = document.getElementById("sheet"), body = sh && sh.querySelector(".sheet-body");
+      if (sh) sh.scrollTop = 0;
+      if (body) {
+        body.classList.remove("slide-next", "slide-prev");
+        void body.offsetWidth;                            // relance l'animation
+        body.classList.add(opts.dir > 0 ? "slide-next" : "slide-prev");
+      }
+    }
+    if (opts.keepFocus) {
+      // bouton devenu inactif (première ou dernière fiche) : le focus passe à l'autre
+      var a = document.activeElement;
+      if (a && a.disabled) { var o = a === els.sheetPrev ? els.sheetNext : els.sheetPrev; try { (o && !o.disabled ? o : els.sheetTitle).focus({ preventScroll: true }); } catch (e) {} }
+      return;
+    }
     // 2.8 : le focus va dans la fiche (lecteurs d'écran, clavier)
     setTimeout(function () { try { els.sheetTitle.focus({ preventScroll: true }); } catch (e) {} }, 0);
   }
@@ -1174,6 +1435,8 @@
   function refreshSheet() {
     var entry = currentEntry();
     if (!entry) return;
+    updateSheetNav();
+    renderAvis();                                          // 3.6
     if (entry._vis.indexOf(state.activeVolIdx) === -1 && !(IS_OWNER && entry._hidVols.indexOf(state.activeVolIdx) !== -1)) {
       state.activeVolIdx = entry._ord.length ? entry._ord[0] : 0;
     }
@@ -1412,8 +1675,8 @@
   function toggleVolumeRead(entry, i) {
     if (needLogin()) return;
     var key = entry._keys[i];
-    if (state.volumeRead[key]) delete state.volumeRead[key];
-    else state.volumeRead[key] = true;
+    if (state.volumeRead[key]) { delete state.volumeRead[key]; delete state.readAt[key]; }
+    else { state.volumeRead[key] = true; state.readAt[key] = new Date().toISOString(); }
     saveLocalVolumeRead();
     renderVolumeList();
     renderSheetActions();
@@ -1455,6 +1718,13 @@
     back = back || state.lastFocus;
     state.lastFocus = null;
     if (back && back.focus && document.contains(back)) { try { back.focus({ preventScroll: true }); } catch (e) {} }
+    // 3.5 : après un passage de fiche en fiche, la grille se place sur la dernière vue
+    if (state.navMoved && back && back.classList && back.classList.contains("card") && state.view === "home") {
+      var r = back.getBoundingClientRect(), vh = window.innerHeight || document.documentElement.clientHeight;
+      if (r.top < 70 || r.bottom > vh) window.scrollTo(0, Math.max(0, window.scrollY + r.top - (vh - r.height) / 2));
+      sweepSoon();
+    }
+    state.navMoved = false;
   }
 
   function toggleAllVolumesRead() {
@@ -1464,8 +1734,8 @@
     entry._vis.forEach(function (i) { before[entry._keys[i]] = isKeyRead(entry._keys[i]); });
     entry._vis.forEach(function (i) {
       var key = entry._keys[i];
-      if (makeRead) state.volumeRead[key] = true;
-      else delete state.volumeRead[key];
+      if (makeRead) { state.volumeRead[key] = true; state.readAt[key] = new Date().toISOString(); }
+      else { delete state.volumeRead[key]; delete state.readAt[key]; }
     });
     saveLocalVolumeRead();
     renderVolumeList();
@@ -1714,9 +1984,15 @@
 
   // 3.0 : tri de la grille, mémorisé sur l'appareil
   var SORT_KEY = "bd_tri_v1";
-  try { if (localStorage.getItem(SORT_KEY) === "recent") state.sort = "recent"; } catch (e) {}
+  // 3.7 : + « Nombre de tomes » (tous) et « Lus récemment » (propriétaire seulement)
+  function sortOk(v) { return v === "title" || v === "recent" || v === "tomes" || (v === "lus" && IS_OWNER); }
+  if (els.sortBy && IS_OWNER && !els.sortBy.querySelector('option[value="lus"]')) {
+    var oLus = document.createElement("option"); oLus.value = "lus"; oLus.textContent = "Lus récemment";
+    els.sortBy.appendChild(oLus);
+  }
+  try { var s0 = localStorage.getItem(SORT_KEY); if (sortOk(s0)) state.sort = s0; } catch (e) {}
   function setSort(v) {
-    state.sort = v === "recent" ? "recent" : "title";
+    state.sort = sortOk(v) ? v : "title";
     if (els.sortBy) els.sortBy.value = state.sort;
     try { localStorage.setItem(SORT_KEY, state.sort); } catch (e) {}
   }
@@ -1784,6 +2060,7 @@
     var quit = document.getElementById("owner-quit");
     if (quit) quit.addEventListener("click", function () {
       state.auth.leaving = true;
+      try { localStorage.removeItem(AVIS_KEY); } catch (e) {}   // 3.6 : avis privés
       signOutLocal().then(function () { location.reload(); });
     });
   }
@@ -2209,6 +2486,8 @@
       sec.appendChild(st("p", "st-meter-lab", fmt(albRead) + (albRead > 1 ? " albums lus" : " album lu") + " sur " + fmt(nVol) + " (" + pct + " %)"));
       sec.appendChild(meter);
       statTiles(sec, [["fiches lues", fmt(done)], ["en cours", fmt(going)], ["pas commencées", fmt(fresh)], ["favoris", fmt(favs)]]);
+      var cb = st("a", "btn st-go", "Ouvrir le carnet de lecture (" + fmt(Object.keys(state.avis).length) + " avis)"); cb.href = "#/carnet";
+      sec.appendChild(cb);
 
       var inc = list.filter(function (e) { return !e.one_shot && e._missing.length; });
       var tot = inc.reduce(function (t, e) { return t + e._missing.length; }, 0);
@@ -2264,6 +2543,399 @@
     }), "albums");
   }
 
+  // ---------- mon avis : lecture, écriture, fiche (3.6) ----------
+  function avisMissingErr(e) {
+    var m = ((e && (e.message || "")) || "") + "";
+    return !!e && (e.code === "42P01" || e.code === "PGRST205" || /could not find the table|does not exist/i.test(m));
+  }
+  function fetchRemoteAvis() {
+    supabase.from("bd_avis").select("id,note,lu_le,commentaire,updated_at")
+      .then(function (res) {
+        if (res.error) { if (avisMissingErr(res.error)) state.avisMissing = true; refreshAvisViews(); return; }
+        state.avisMissing = false;
+        var map = {};
+        (res.data || []).forEach(function (r) { if (r && r.id) map[r.id] = rowToAvis(r); });
+        var same = JSON.stringify(map) === JSON.stringify(state.avis);   // rien de neuf : pas de grille à redessiner
+        state.avis = map;
+        saveLocalAvis();
+        refreshAvisViews(!same);
+      })
+      .catch(function () {});
+  }
+  // après un changement d'avis : vignettes, fiche ouverte, carnet
+  function refreshAvisViews(grid) {
+    if (grid) renderGrid();
+    if (state.activeId) renderAvis();
+    if (state.view === "carnet") renderCarnet();
+  }
+  function todayIso() { return isoDay(new Date()); }
+  function noteText(n) { return (n === null || n === undefined) ? "" : n + "/10"; }
+
+  function renderAvis() {
+    var box = document.getElementById("sheet-avis");
+    if (!box) return;
+    var entry = currentEntry();
+    if (!IS_OWNER || !entry) { box.hidden = true; box.innerHTML = ""; return; }
+    box.hidden = false;
+    var a = state.avis[entry.id] || null;
+    box.innerHTML = "";
+    var head = st("div", "sheet-volumes-label", "Mon avis");
+    box.appendChild(head);
+    if (state.avisMissing && !a) {
+      box.appendChild(st("p", "settings-hint", "Pour donner ton avis, lance d'abord supabase_avis.sql dans Supabase (voir README)."));
+      return;
+    }
+    if (!state.avisEdit) {
+      if (a) {
+        var line = st("div", "avis-line");
+        if (a.note !== null) { var n = st("span", "avis-note", noteText(a.note)); n.setAttribute("aria-label", "Note : " + a.note + " sur 10"); line.appendChild(n); }
+        if (a.lu_le) line.appendChild(st("span", "avis-date", "lu le " + frDate(a.lu_le)));
+        box.appendChild(line);
+        if (a.commentaire) box.appendChild(st("p", "avis-com", a.commentaire));
+      }
+      var b = st("button", "btn btn-outline avis-btn", a ? "✎ Modifier mon avis" : "＋ Donner mon avis");
+      b.type = "button"; b.id = "avis-open";
+      b.addEventListener("click", function () {
+        if (needLogin()) return;
+        state.avisEdit = true; state.avisDraft = { note: a ? a.note : null, lu_le: (a && a.lu_le) || todayIso(), commentaire: a ? a.commentaire : "" };
+        state.avisConfirm = false;
+        renderAvis();
+        var f = document.getElementById("avis-com"); if (f) try { f.focus({ preventScroll: true }); } catch (e) {}
+      });
+      box.appendChild(b);
+      return;
+    }
+    // --- édition ---
+    var d = state.avisDraft || { note: null, lu_le: todayIso(), commentaire: "" };
+    var form = st("form", "avis-form"); form.id = "avis-form"; form.setAttribute("autocomplete", "off");
+    var nl = st("div", "avis-lab", "Note sur 10 (touche à nouveau pour l'enlever)"); nl.id = "avis-note-lab";
+    form.appendChild(nl);
+    var chips = st("div", "avis-chips"); chips.setAttribute("role", "radiogroup"); chips.setAttribute("aria-labelledby", "avis-note-lab");
+    for (var i = 0; i <= 10; i++) (function (v) {
+      var c = st("button", "avis-chip", String(v)); c.type = "button";
+      c.setAttribute("role", "radio"); c.setAttribute("aria-checked", d.note === v ? "true" : "false");
+      c.setAttribute("aria-label", v + " sur 10");
+      c.addEventListener("click", function () {
+        d.note = d.note === v ? null : v;
+        Array.prototype.forEach.call(chips.children, function (x, k) { x.setAttribute("aria-checked", d.note === k ? "true" : "false"); });
+      });
+      chips.appendChild(c);
+    })(i);
+    form.appendChild(chips);
+    var dl = st("label", "edit-field avis-field"); dl.appendChild(st("span", null, "Lu le"));
+    var di = st("input", "owner-input"); di.type = "date"; di.id = "avis-date"; di.value = d.lu_le || ""; di.max = todayIso();
+    di.addEventListener("input", function () { d.lu_le = di.value || null; });
+    dl.appendChild(di); form.appendChild(dl);
+    var cl = st("label", "edit-field avis-field"); cl.appendChild(st("span", null, "Commentaire"));
+    var ta = st("textarea", "owner-input avis-text"); ta.id = "avis-com"; ta.rows = 4; ta.maxLength = AVIS_MAX; ta.value = d.commentaire || "";
+    ta.placeholder = "Ce que tu en as pensé…";
+    ta.addEventListener("input", function () { d.commentaire = ta.value; });
+    cl.appendChild(ta); form.appendChild(cl);
+    var bts = st("div", "edit-buttons");
+    var sv = st("button", "btn", "Enregistrer"); sv.type = "submit";
+    var cc = st("button", "btn btn-ghost", "Annuler"); cc.type = "button";
+    cc.addEventListener("click", function () { state.avisEdit = false; state.avisConfirm = false; renderAvis(); });
+    bts.appendChild(sv); bts.appendChild(cc);
+    if (a) {
+      var del = st("button", "btn btn-ghost", "Effacer mon avis"); del.type = "button"; del.id = "avis-del";
+      del.addEventListener("click", function () { state.avisConfirm = true; renderAvis(); });
+      bts.appendChild(del);
+    }
+    form.appendChild(bts);
+    if (state.avisConfirm) {
+      var cf = st("div", "edit-confirm avis-confirm");
+      cf.appendChild(st("p", null, "Effacer cet avis ? La note, la date et le commentaire seront supprimés."));
+      var y = st("button", "btn", "Oui, effacer"); y.type = "button"; y.id = "avis-del-yes";
+      var no = st("button", "btn btn-ghost", "Non"); no.type = "button";
+      y.addEventListener("click", function () { deleteAvis(entry.id); });
+      no.addEventListener("click", function () { state.avisConfirm = false; renderAvis(); });
+      cf.appendChild(y); cf.appendChild(no); form.appendChild(cf);
+    }
+    var msg = st("p", "settings-hint avis-msg"); msg.id = "avis-msg"; msg.setAttribute("role", "status"); form.appendChild(msg);
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var com = (d.commentaire || "").trim();
+      if (d.note === null && !com) { msg.textContent = "Donne une note ou écris un commentaire (ou touche Annuler)."; return; }
+      saveAvis(entry.id, { note: d.note, lu_le: d.lu_le || null, commentaire: com });
+    });
+    box.appendChild(form);
+  }
+
+  function avisFail(e, rollback) {
+    rollback();
+    if (avisMissingErr(e)) { state.avisMissing = true; toast("Non enregistré : lance d'abord supabase_avis.sql dans Supabase (voir README)."); }
+    else toast("Non enregistré : " + (e && e.message === "vide" ? "la base a refusé (reconnecte-toi dans Réglages → Mode propriétaire)." : refusedText(e)));
+  }
+  function saveAvis(id, v) {
+    if (needLogin()) return;
+    var prev = state.avis[id] ? JSON.parse(JSON.stringify(state.avis[id])) : null;
+    var now = new Date().toISOString();
+    state.avis[id] = { note: v.note, lu_le: v.lu_le, commentaire: v.commentaire, updated_at: now };
+    state.avisEdit = false; state.avisConfirm = false;
+    saveLocalAvis(); refreshAvisViews(true);
+    function rollback() {
+      if (prev) state.avis[id] = prev; else delete state.avis[id];
+      saveLocalAvis(); refreshAvisViews(true);
+    }
+    if (!supabase) return;
+    supabase.from("bd_avis").upsert({ id: id, note: v.note, lu_le: v.lu_le, commentaire: v.commentaire || null, updated_at: now }).select()
+      .then(function (res) {
+        if (res.error) avisFail(res.error, rollback);
+        else if (!res.data || !res.data.length) avisFail({ message: "vide" }, rollback);
+        else toast("Avis enregistré.");
+      })
+      .catch(function (err) { avisFail(err || { message: "hors ligne" }, rollback); });
+  }
+  function deleteAvis(id) {
+    if (needLogin()) return;
+    var prev = state.avis[id] ? JSON.parse(JSON.stringify(state.avis[id])) : null;
+    if (!prev) return;
+    delete state.avis[id];
+    state.avisEdit = false; state.avisConfirm = false;
+    saveLocalAvis(); refreshAvisViews(true);
+    function rollback() { state.avis[id] = prev; saveLocalAvis(); refreshAvisViews(true); }
+    if (!supabase) return;
+    supabase.from("bd_avis").delete().eq("id", id).select()
+      .then(function (res) {
+        if (res.error) avisFail(res.error, rollback);
+        else if (!res.data || !res.data.length) avisFail({ message: "vide" }, rollback);
+        else toast("Avis effacé.");
+      })
+      .catch(function (err) { avisFail(err || { message: "hors ligne" }, rollback); });
+  }
+
+  // ---------- carnet de lecture (3.6, #/carnet, propriétaire) ----------
+  // Tous les avis : chiffres, répartition des notes, avis par mois, note moyenne par genre,
+  // puis la liste, avec recherche, filtres (note, genre, année) et tri, et l'export CSV.
+  // Les filtres ne touchent que la liste ; les graphiques portent sur tous les avis.
+  var carnetBody = document.getElementById("carnet-body");
+  state.carnetF = { q: "", note: "all", genre: "", year: "", sort: "date" };
+  function avisEntries() {
+    return Object.keys(state.avis).map(function (id) {
+      var a = state.avis[id], e = state.catalog.find(function (x) { return x.id === id; }), via = null;
+      if (!e) {                                            // fiche fusionnée : sa fiche d'accueil
+        var m = state.mergedList.find(function (x) { return x.id === id; });
+        if (m) { e = state.catalog.find(function (x) { return x.id === m.into; }); via = m; }
+      }
+      var hid = false;
+      if (!e) {                                            // masquée : on la cherche dans les masquées
+        var h = state.hiddenList.find(function (x) { return x.id === id; });
+        if (h) { e = h; hid = true; }
+      }
+      return { id: id, a: a, e: e || null, title: via ? via.title : e ? e.title : id.replace(/_/g, " "), author: e ? (e.author || "") : "",
+               genre: e ? (e.genre || []) : [], cover: e ? e.cover : null, gone: !e, merged: !!via, hidden: hid };
+    });
+  }
+  var MOIS_COURT = ["janv", "févr", "mars", "avr", "mai", "juin", "juil", "août", "sept", "oct", "nov", "déc"];
+  function frNote(x) { return (Math.round(x * 10) / 10).toLocaleString("fr-FR"); }
+  function carnetSection(title, hint) {
+    var sec = st("section", "st-sec");
+    sec.appendChild(st("h3", "st-h", title));
+    if (hint) sec.appendChild(st("p", "settings-hint", hint));
+    carnetBody.appendChild(sec);
+    return sec;
+  }
+  // colonnes verticales, une seule série (couleur du thème), valeur au-dessus, libellé dessous
+  function carnetColumns(sec, cols, aria, onPick) {
+    var max = cols.reduce(function (m, c) { return Math.max(m, c.v); }, 0) || 1;
+    var box = st("div", "cv-cols"); box.setAttribute("role", "group"); box.setAttribute("aria-label", aria);
+    cols.forEach(function (c) {
+      var col = st(onPick ? "button" : "div", "cv-col" + (c.v ? "" : " zero"));
+      if (onPick) { col.type = "button"; col.addEventListener("click", function () { onPick(c); }); }
+      col.title = c.tip;
+      col.setAttribute("aria-label", c.tip);
+      col.appendChild(st("span", "cv-val", c.v ? fmt(c.v) : ""));
+      var bar = st("span", "cv-bar"); bar.style.height = (c.v ? Math.max(4, c.v * 100 / max) : 0) + "%";
+      var wrap = st("span", "cv-barwrap"); wrap.appendChild(bar); col.appendChild(wrap);
+      col.appendChild(st("span", "cv-lab", c.label));
+      box.appendChild(col);
+    });
+    sec.appendChild(box);
+  }
+  function renderCarnet() {
+    if (!carnetBody) return;
+    carnetBody.innerHTML = "";
+    if (!IS_OWNER) return;
+    if (!state.raw.length) { carnetBody.appendChild(st("p", "settings-hint", "Chargement du catalogue…")); return; }
+    var all = avisEntries();
+    if (state.avisMissing) carnetBody.appendChild(st("p", "settings-hint avis-warn", "La table bd_avis n'existe pas encore dans Supabase : lance supabase_avis.sql (voir README) pour pouvoir donner ton avis."));
+    if (!all.length) {
+      var s0 = carnetSection("Ton carnet est vide");
+      s0.appendChild(st("p", "settings-hint", "Ouvre la fiche d'une BD que tu as lue et touche « ＋ Donner mon avis » : une note sur 10, la date de lecture et ce que tu en as pensé. Tes avis s'afficheront ici, avec leurs statistiques."));
+      return;
+    }
+    var noted = all.filter(function (x) { return x.a.note !== null; });
+    var avg = noted.length ? noted.reduce(function (t, x) { return t + x.a.note; }, 0) / noted.length : 0;
+    var year = String(new Date().getFullYear());
+    var sec = carnetSection("En chiffres");
+    statTilesIn(sec, [["avis", fmt(all.length)], ["note moyenne", noted.length ? frNote(avg) + "/10" : "—"],
+      ["avec commentaire", fmt(all.filter(function (x) { return x.a.commentaire; }).length)],
+      ["lus en " + year, fmt(all.filter(function (x) { return (x.a.lu_le || "").slice(0, 4) === year; }).length)]]);
+
+    if (noted.length) {
+      sec = carnetSection("Répartition des notes", "Nombre d'avis pour chaque note. Touche une note pour voir les avis correspondants.");
+      var cnt = []; for (var i = 0; i <= 10; i++) cnt.push(0);
+      noted.forEach(function (x) { cnt[x.a.note]++; });
+      carnetColumns(sec, cnt.map(function (v, k) { return { v: v, label: String(k), tip: k + "/10 : " + v + (v > 1 ? " avis" : " avis"), k: k }; }),
+        "Répartition des notes de 0 à 10", function (c) { setCarnetFilter({ note: "eq:" + c.k }); });
+    }
+
+    var dated = all.filter(function (x) { return x.a.lu_le; });
+    if (dated.length) {
+      sec = carnetSection("Lectures par mois", "Avis par mois de lecture, sur les 12 derniers mois.");
+      var now = new Date(), months = [];
+      for (var mm = 11; mm >= 0; mm--) {
+        var dt = new Date(now.getFullYear(), now.getMonth() - mm, 1);
+        months.push({ key: dt.getFullYear() + "-" + pad2(dt.getMonth() + 1), m: dt.getMonth(), y: dt.getFullYear(), v: 0 });
+      }
+      dated.forEach(function (x) { var mo = months.find(function (o) { return o.key === x.a.lu_le.slice(0, 7); }); if (mo) mo.v++; });
+      carnetColumns(sec, months.map(function (o) {
+        return { v: o.v, label: MOIS_COURT[o.m] + (o.m === 0 || o === months[0] ? " " + String(o.y).slice(2) : ""),
+                 tip: MOIS[o.m] + " " + o.y + " : " + o.v + " avis" };
+      }), "Avis par mois de lecture");
+    }
+
+    var byG = {};
+    noted.forEach(function (x) { x.genre.forEach(function (g) { (byG[g] = byG[g] || { n: 0, t: 0 }); byG[g].n++; byG[g].t += x.a.note; }); });
+    var gl = Object.keys(byG).filter(function (g) { return byG[g].n >= 2; });
+    if (gl.length) {
+      sec = carnetSection("Note moyenne par genre", "Genres qui ont au moins 2 avis notés. Touche un genre pour voir ses avis.");
+      statBarsIn(sec, gl.map(function (g) {
+        var m = byG[g].t / byG[g].n;
+        return { label: g, v: m, text: frNote(m) + "/10 · " + byG[g].n + " avis", go: function () { setCarnetFilter({ genre: g }); } };
+      }).sort(function (a, b) { return b.v - a.v || a.label.localeCompare(b.label, "fr"); }), "/10", 10);
+    }
+
+    // --- la liste ---
+    sec = carnetSection("Mes avis");
+    sec.id = "carnet-liste";
+    var F = state.carnetF, bar = st("div", "cv-filters");
+    var q = st("input", "owner-input cv-q"); q.type = "search"; q.id = "carnet-q"; q.placeholder = "Titre, auteur ou commentaire…"; q.value = F.q;
+    q.setAttribute("aria-label", "Chercher dans le carnet");
+    q.addEventListener("input", function () { F.q = q.value; renderCarnetList(); });
+    bar.appendChild(q);
+    function sel(id, label, opts, val, key) {
+      var s = st("select", "owner-input cv-sel"); s.id = id; s.setAttribute("aria-label", label);
+      opts.forEach(function (o) {
+        if (o.group) { var og = document.createElement("optgroup"); og.label = o.group; o.items.forEach(function (it) { var op = st("option", null, it[1]); op.value = it[0]; og.appendChild(op); }); s.appendChild(og); }
+        else { var op = st("option", null, o[1]); op.value = o[0]; s.appendChild(op); }
+      });
+      s.value = val;
+      s.addEventListener("change", function () { F[key] = s.value; renderCarnetList(); });
+      bar.appendChild(s);
+    }
+    var eq = []; for (var k2 = 10; k2 >= 0; k2--) eq.push(["eq:" + k2, k2 + "/10"]);
+    sel("carnet-note", "Filtrer par note", [["all", "Toutes les notes"], { group: "Au moins", items: [["ge:9", "9 et plus"], ["ge:8", "8 et plus"], ["ge:7", "7 et plus"], ["ge:5", "5 et plus"]] },
+      { group: "Exactement", items: eq }, ["lt:5", "Moins de 5"], ["none", "Sans note"]], F.note, "note");
+    var gs = {}; all.forEach(function (x) { x.genre.forEach(function (g) { gs[g] = true; }); });
+    sel("carnet-genre", "Filtrer par genre", [["", "Tous les genres"]].concat(Object.keys(gs).sort(function (a, b) { return a.localeCompare(b, "fr"); }).map(function (g) { return [g, g]; })), F.genre, "genre");
+    var ys = {}; all.forEach(function (x) { if (x.a.lu_le) ys[x.a.lu_le.slice(0, 4)] = true; });
+    sel("carnet-year", "Filtrer par année de lecture", [["", "Toutes les années"]].concat(Object.keys(ys).sort().reverse().map(function (y) { return [y, "Lus en " + y]; })), F.year, "year");
+    sel("carnet-sort", "Trier", [["date", "Plus récents d'abord"], ["note", "Meilleures notes"], ["note-asc", "Moins bonnes notes"], ["title", "Titre (A → Z)"]], F.sort, "sort");
+    sec.appendChild(bar);
+    var meta = st("div", "cv-meta");
+    var count = st("span", "cv-count"); count.id = "carnet-count"; count.setAttribute("aria-live", "polite"); meta.appendChild(count);
+    var reset = st("button", "btn btn-ghost cv-reset", "Tout afficher"); reset.type = "button"; reset.id = "carnet-reset";
+    reset.addEventListener("click", function () { state.carnetF = { q: "", note: "all", genre: "", year: "", sort: F.sort }; renderCarnet(); });
+    meta.appendChild(reset);
+    var ex = st("button", "btn cv-export", "Exporter (CSV)"); ex.type = "button"; ex.id = "carnet-export";
+    ex.addEventListener("click", exportCarnet);
+    meta.appendChild(ex);
+    sec.appendChild(meta);
+    var ul = st("ul", "cv-list"); ul.id = "carnet-list"; sec.appendChild(ul);
+    renderCarnetList();
+  }
+  function statTilesIn(sec, tiles) {
+    var g = st("div", "st-tiles");
+    tiles.forEach(function (t) { var d = st("div", "st-tile"); d.appendChild(st("div", "st-num", t[1])); d.appendChild(st("div", "st-lab", t[0])); g.appendChild(d); });
+    sec.appendChild(g);
+  }
+  function statBarsIn(sec, rows, unit, max) {
+    var box = st("div", "st-bars");
+    rows.forEach(function (r) {
+      var row = st("div", "st-row");
+      var lab = st("button", "st-lab-btn", r.label); lab.type = "button"; lab.addEventListener("click", r.go);
+      var track = st("span", "st-track"), fill = st("span", "st-fill");
+      fill.style.width = Math.max(1.5, r.v * 100 / max) + "%";
+      track.appendChild(fill); track.title = r.label + " : " + r.text; track.setAttribute("aria-hidden", "true");
+      row.appendChild(lab); row.appendChild(track); row.appendChild(st("span", "st-val", r.text));
+      box.appendChild(row);
+    });
+    sec.appendChild(box);
+  }
+  function setCarnetFilter(p) {
+    Object.keys(p).forEach(function (k) { state.carnetF[k] = p[k]; });
+    renderCarnet();
+    var l = document.getElementById("carnet-liste");
+    if (l) try { l.scrollIntoView({ block: "start" }); } catch (e) {}
+  }
+  function carnetFiltered() {
+    var F = state.carnetF, q = normalize(F.q || "").trim();
+    var list = avisEntries().filter(function (x) {
+      var n = x.a.note;
+      if (F.note === "none" && n !== null) return false;
+      if (/^ge:/.test(F.note) && !(n !== null && n >= +F.note.slice(3))) return false;
+      if (/^eq:/.test(F.note) && n !== +F.note.slice(3)) return false;
+      if (F.note === "lt:5" && !(n !== null && n < 5)) return false;
+      if (F.genre && x.genre.indexOf(F.genre) === -1) return false;
+      if (F.year && (x.a.lu_le || "").slice(0, 4) !== F.year) return false;
+      if (q && normalize(x.title + " " + x.author + " " + x.a.commentaire).indexOf(q) === -1) return false;
+      return true;
+    });
+    var byTitle = function (a, b) { return a.title.localeCompare(b.title, "fr", { sensitivity: "base" }); };
+    var dateOf = function (x) { return x.a.lu_le || (x.a.updated_at || "").slice(0, 10); };
+    list.sort(F.sort === "title" ? byTitle
+      : F.sort === "note" ? function (a, b) { return (b.a.note === null ? -1 : b.a.note) - (a.a.note === null ? -1 : a.a.note) || (dateOf(a) < dateOf(b) ? 1 : -1); }
+      : F.sort === "note-asc" ? function (a, b) { return (a.a.note === null ? 99 : a.a.note) - (b.a.note === null ? 99 : b.a.note) || byTitle(a, b); }
+      : function (a, b) { return dateOf(a) < dateOf(b) ? 1 : dateOf(a) > dateOf(b) ? -1 : byTitle(a, b); });
+    return list;
+  }
+  function renderCarnetList() {
+    var ul = document.getElementById("carnet-list"), count = document.getElementById("carnet-count");
+    if (!ul) return;
+    var list = carnetFiltered(), total = Object.keys(state.avis).length, F = state.carnetF;
+    var filtered = F.q || F.note !== "all" || F.genre || F.year;
+    count.textContent = filtered ? fmt(list.length) + " sur " + fmt(total) + " avis" : fmt(total) + (total > 1 ? " avis" : " avis");
+    var rs = document.getElementById("carnet-reset"); if (rs) rs.hidden = !filtered;
+    ul.innerHTML = "";
+    if (!list.length) { ul.appendChild(st("li", "cv-empty", "Aucun avis ne correspond.")); return; }
+    list.forEach(function (x) {
+      var li = st("li", "cv-item");
+      var th = st("div", "cv-thumb");
+      if (x.cover) { var im = st("img"); im.alt = ""; im.src = coverUrl(x.cover); im.loading = "lazy"; th.appendChild(im); }
+      li.appendChild(th);
+      var body = st("div", "cv-body");
+      var top = st("div", "cv-top");
+      var t = (x.gone || x.hidden) ? st("span", "cv-title gone", x.title) : st("button", "cv-title st-lab-btn", x.title);
+      if (!x.gone && !x.hidden) { t.type = "button"; t.addEventListener("click", function () { openSheet(x.e.id); }); }
+      top.appendChild(t);
+      if (x.a.note !== null) { var nb = st("span", "avis-note", noteText(x.a.note)); nb.setAttribute("aria-label", "Note : " + x.a.note + " sur 10"); top.appendChild(nb); }
+      body.appendChild(top);
+      var sub = [];
+      if (x.author) sub.push(x.author);
+      if (x.a.lu_le) sub.push("lu le " + frDate(x.a.lu_le));
+      if (x.gone) sub.push("fiche disparue du catalogue");
+      else if (x.hidden) sub.push("fiche masquée");
+      else if (x.merged) sub.push("fusionnée dans « " + x.e.title + " »");
+      body.appendChild(st("div", "cv-sub", sub.join(" · ")));
+      if (x.a.commentaire) body.appendChild(st("p", "avis-com cv-com", x.a.commentaire));
+      li.appendChild(body);
+      ul.appendChild(li);
+    });
+  }
+  function csvCell(v) { v = v === null || v === undefined ? "" : String(v); return /[;"\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+  function exportCarnet() {
+    var rows = [["Titre", "Auteur(s)", "Genres", "Note sur 10", "Lu le", "Commentaire", "Identifiant de la fiche"]];
+    carnetFiltered().forEach(function (x) {
+      rows.push([x.title, x.author, x.genre.join(", "), x.a.note === null ? "" : x.a.note, x.a.lu_le || "", x.a.commentaire, x.id]);
+    });
+    var csv = "﻿" + rows.map(function (r) { return r.map(csvCell).join(";"); }).join("\r\n");
+    var blob = new Blob([csv], { type: "text/csv;charset=utf-8" }), url = URL.createObjectURL(blob);
+    var a = document.createElement("a"); a.href = url; a.download = "carnet_de_lecture_" + todayIso() + ".csv";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+  }
+
   // =====================================================================
   // PAGES (routage par l'adresse) : #/ = bibliothèque, #/reglages = réglages,
   // #/doublons = doublons probables (propriétaire). De vraies pages plutôt que des
@@ -2275,6 +2947,7 @@
     settings: document.getElementById("settings-page"),
     dups: document.getElementById("dups-page"),
     stats: document.getElementById("stats-page"),
+    carnet: document.getElementById("carnet-page"),
   };
   var viewScroll = {};
   state.view = "home";
@@ -2284,6 +2957,11 @@
     if (h.indexOf("#/fiche/") === 0) return "home";
     if (h === "#/reglages") return "settings";
     if (h === "#/stats") return "stats";
+    if (h === "#/carnet") {                               // 3.6 : carnet de lecture (propriétaire)
+      if (IS_OWNER) return "carnet";
+      try { history.replaceState(null, "", "#/reglages"); } catch (e) {}
+      return "settings";
+    }
     if (h === "#/doublons") {
       if (IS_OWNER) return "dups";
       try { history.replaceState(null, "", "#/reglages"); } catch (e) {}
@@ -2292,7 +2970,106 @@
     return "home";
   }
 
+  // ---------- Réglages → Présentation (3.4) ----------
+  var PRES_ICONS = {
+    defaut: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    grille: '<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>',
+    eventail: '<path d="M3.5 7.5l3-1.2 2.6 11-3 1.2z"/><path d="M9 5.5h4.5v12H9z"/><path d="M17 6.3l3.2.9-2.3 11-3.2-.9z"/>',
+    etagere: '<path d="M5 18V8h3v10M9 18V5h3v13M13 18V7h3v11M17 18V9l2.5-.6L21 18"/><path d="M3 20.5h19"/>',
+    mur: '<rect x="8" y="3" width="12" height="15" rx="1.5"/><path d="M5.5 6v14.5H17"/><path d="M3 8.5V23h11.5"/>',
+    liste: '<rect x="4" y="5" width="4" height="4" rx="1"/><rect x="4" y="14" width="4" height="4" rx="1"/><path d="M11 7h9M11 16h9"/>'
+  };
+  function presButton(id, label, pressed, sub) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "pres-btn";
+    b.setAttribute("data-pres", id);
+    b.setAttribute("aria-pressed", pressed ? "true" : "false");
+    b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true">' +
+      (PRES_ICONS[id] || "") + '</svg><span class="pres-name"></span>' + (sub ? '<span class="pres-sub"></span>' : "");
+    b.querySelector(".pres-name").textContent = label;
+    if (sub) b.querySelector(".pres-sub").textContent = sub;
+    return b;
+  }
+  function renderPresBlock() {
+    var box = document.getElementById("pres-grid");
+    if (!box) return;
+    var site = presSite() || "grille";
+    box.innerHTML = "";
+    var d = presButton("defaut", "Par défaut", !state.presDevice, "actuellement : " + presNom(site));
+    d.addEventListener("click", function () { setPresDevice(null); });
+    box.appendChild(d);
+    PRESENTATIONS.forEach(function (p) {
+      var b = presButton(p.id, p.name, state.presDevice === p.id);
+      b.addEventListener("click", function () { setPresDevice(p.id); });
+      box.appendChild(b);
+    });
+    var sb = document.getElementById("pres-site");
+    if (!sb) return;
+    sb.hidden = !IS_OWNER;
+    if (!IS_OWNER) { sb.innerHTML = ""; return; }
+    var msg = state.presMsg || "";
+    sb.innerHTML = '<h3 class="pres-site-title">Pour tes visiteurs</h3><p class="settings-hint" id="pres-site-hint"></p>' +
+      '<div class="pres-grid" id="pres-site-grid" aria-label="Présentation par défaut des visiteurs"></div>' +
+      '<p class="settings-hint pres-msg" id="pres-msg" role="status"></p>';
+    sb.querySelector("#pres-site-hint").textContent = state.siteMissing
+      ? "La table bd_reglages n'existe pas encore dans Supabase : lance d'abord supabase_reglages.sql (voir README)."
+      : "La présentation sur laquelle arrive un visiteur qui n'a rien choisi sur son appareil. Actuellement : " + presNom(site) + ".";
+    var g = sb.querySelector("#pres-site-grid");
+    PRESENTATIONS.forEach(function (p) {
+      var b = presButton(p.id, p.name, site === p.id);
+      b.addEventListener("click", function () { saveSitePres(p.id); });
+      g.appendChild(b);
+    });
+    var m = sb.querySelector("#pres-msg");
+    m.textContent = msg; m.hidden = !msg;
+    m.classList.toggle("err", !!state.presMsgErr);
+  }
+  function setPresDevice(v) {
+    state.presDevice = presOk(v) ? v : null;
+    try {
+      if (state.presDevice) localStorage.setItem(PRES_KEY, state.presDevice);
+      else localStorage.removeItem(PRES_KEY);
+    } catch (e) {}
+    viewScroll.home = 0;          // la grille change de hauteur : on y revient en haut
+    renderGrid();
+    renderPresBlock();
+  }
+  function presSaved(text, err) {
+    state.presMsg = text; state.presMsgErr = !!err;
+    if (state.view === "settings") renderPresBlock();
+  }
+  function saveSitePres(v) {
+    if (!presOk(v) || !IS_OWNER) return;
+    if (!supabase) { presSaved("Pas enregistré : Supabase n'est pas configuré.", true); return; }
+    if (needLogin()) return;
+    presSaved("Enregistrement…");
+    supabase.from("bd_reglages")
+      .upsert({ cle: "presentation", valeur: v, updated_at: new Date().toISOString() })
+      .select()
+      .then(function (res) {
+        var e = res.error, m = e ? ((e.message || "") + "") : "";
+        if (e && (e.code === "42P01" || e.code === "PGRST205" || /could not find the table|does not exist/i.test(m))) {
+          state.siteMissing = true;
+          presSaved("Pas enregistré : lance d'abord supabase_reglages.sql dans Supabase (voir README).", true);
+        } else if (e) {
+          presSaved("Pas enregistré : " + refusedText(e), true);
+        } else if (!res.data || !res.data.length) {
+          presSaved("Pas enregistré : la base a refusé (reconnecte-toi dans Réglages → Mode propriétaire).", true);
+        } else {
+          state.siteMissing = false;
+          var before = presentation();
+          state.site.presentation = v;
+          try { localStorage.setItem(SITE_KEY, JSON.stringify(state.site)); } catch (x) {}
+          if (presentation() !== before) renderGrid();
+          presSaved("Enregistré : tes visiteurs arrivent sur « " + presNom(v) + " ».");
+        }
+      })
+      .catch(function (err) { presSaved("Pas enregistré : " + ((err && err.message) || "hors ligne"), true); });
+  }
+
   function renderSettingsPage() {
+    renderPresBlock();
     if (window.BD_THEMES) window.BD_THEMES.loadAllFonts();
     renderThemeGrid();
     renderOwnerPanel();
@@ -2304,6 +3081,7 @@
     var v = viewFromHash(), prev = state.view;
     viewScroll[prev] = window.scrollY;
     if (v !== "home") {
+      state.navMoved = false;
       if (!els.zoomOverlay.hidden) closeZoom();
       if (state.activeId) closeSheetUI();
     }
@@ -2313,6 +3091,7 @@
     if (v === "settings") renderSettingsPage();
     else if (v === "dups") renderDups();
     else if (v === "stats") renderStats();
+    else if (v === "carnet") renderCarnet();
     window.scrollTo(0, viewScroll[v] || 0);
     if (v === "home") {
       sweepSoon();
@@ -2372,6 +3151,79 @@
   if (versionEl) versionEl.textContent = "Ma Bibliothèque BD — version " + APP_VERSION + " du " +
     APP_VERSION_DATE.split("-").reverse().join("/");
 
+  // ---------- fiche précédente / suivante (3.5) ----------
+  // Dans la fiche ouverte : boutons ‹ › en haut, flèches ← → du clavier, et glissement du
+  // doigt sur téléphone. L'ordre est celui de la grille telle qu'elle est affichée (filtres,
+  // recherche et tri compris : state.gridOrder, rempli par renderGrid). L'adresse suit la
+  // fiche (#/fiche/<id>) sans s'empiler dans l'historique : le retour du téléphone referme
+  // la fiche comme avant, et la grille revient sur la dernière fiche vue.
+  // Pas de passage d'une fiche à l'autre au clavier ni au doigt pendant une modification
+  // (éditeur de fiche ou de tome ouvert), pour ne rien perdre de ce qui est en cours.
+  function sheetEditing() {
+    return !!((edit.box && !edit.box.hidden) || state.editVol !== null && state.editVol !== undefined || state.avisEdit);
+  }
+  function navIndex() { return state.activeId ? (state.gridOrder || []).indexOf(state.activeId) : -1; }
+  function titleOf(id) { var e = state.catalog.find(function (x) { return x.id === id; }); return e ? e.title : ""; }
+  function updateSheetNav() {
+    if (!els.sheetNav) return;
+    var order = state.gridOrder || [], i = navIndex(), n = order.length;
+    var show = i !== -1 && n > 1;
+    els.sheetNav.hidden = !show;
+    if (!show) return;
+    els.sheetPrev.disabled = i === 0;
+    els.sheetNext.disabled = i === n - 1;
+    els.sheetPrev.setAttribute("aria-label", i > 0 ? "Fiche précédente : " + titleOf(order[i - 1]) : "Pas de fiche précédente");
+    els.sheetNext.setAttribute("aria-label", i < n - 1 ? "Fiche suivante : " + titleOf(order[i + 1]) : "Pas de fiche suivante");
+    els.sheetPrev.title = i > 0 ? titleOf(order[i - 1]) : "";
+    els.sheetNext.title = i < n - 1 ? titleOf(order[i + 1]) : "";
+    els.sheetPos.textContent = (i + 1) + " / " + n;
+  }
+  // couvertures des fiches voisines chargées d'avance : le passage est immédiat
+  function preloadAround(i) {
+    var order = state.gridOrder || [];
+    [i - 1, i + 1].forEach(function (k) {
+      var e = order[k] && state.catalog.find(function (x) { return x.id === order[k]; });
+      if (e && e.cover) { var im = new Image(); im.src = coverUrl(e.cover); }
+    });
+  }
+  function stepSheet(d, how) {
+    if (els.overlay.hidden || !els.zoomOverlay.hidden) return;
+    if (how !== "btn" && sheetEditing()) return;
+    var order = state.gridOrder || [], i = navIndex(), id = order[i + d];
+    if (i === -1 || !id) return;
+    try { history.replaceState(null, "", FICHE_PREFIX + encodeURIComponent(id)); } catch (e) {}
+    state.navMoved = true;
+    openSheetUI(id, { dir: d, keepFocus: how === "btn" });
+    if (els.sheetLive) els.sheetLive.textContent = titleOf(id) + ", fiche " + (i + d + 1) + " sur " + order.length;
+    preloadAround(i + d);
+  }
+  if (els.sheetPrev) els.sheetPrev.addEventListener("click", function () { stepSheet(-1, "btn"); });
+  if (els.sheetNext) els.sheetNext.addEventListener("click", function () { stepSheet(1, "btn"); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+    if (els.overlay.hidden || !els.zoomOverlay.hidden || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    var t = e.target, tag = t && t.tagName;
+    if (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA" || (t && t.isContentEditable)) return;
+    e.preventDefault();
+    stepSheet(e.key === "ArrowLeft" ? -1 : 1, "key");
+  });
+  (function () {                                      // glissement du doigt (téléphone, tablette)
+    var sheetEl = document.getElementById("sheet"), sx = 0, sy = 0, st = 0, on = false;
+    if (!sheetEl) return;
+    sheetEl.addEventListener("touchstart", function (e) {
+      var t = e.target, tag = t && t.tagName;
+      on = e.touches.length === 1 && !(tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA");
+      if (!on) return;
+      sx = e.touches[0].clientX; sy = e.touches[0].clientY; st = Date.now();
+    }, { passive: true });
+    sheetEl.addEventListener("touchend", function (e) {
+      if (!on || !e.changedTouches.length) return;
+      on = false;
+      var dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+      if (Math.abs(dx) >= 60 && Math.abs(dx) > 1.8 * Math.abs(dy) && Date.now() - st < 800) stepSheet(dx < 0 ? 1 : -1, "swipe");
+    }, { passive: true });
+  })();
+
   els.sheetClose.addEventListener("click", closeSheet);
   els.overlay.addEventListener("click", function (e) { if (e.target === els.overlay) closeSheet(); });
   // 2.8 : Tab reste dans la fiche ouverte (fenêtre modale)
@@ -2389,7 +3241,7 @@
     if (e.key !== "Escape") return;
     if (!els.zoomOverlay.hidden) closeZoom();
     else if (state.activeId) closeSheet();
-    else if (state.view === "dups" || state.view === "stats") location.hash = "#/reglages";
+    else if (state.view === "dups" || state.view === "stats" || state.view === "carnet") location.hash = "#/reglages";
     else if (state.view === "settings") location.hash = "#/";
   });
   els.btnRead.addEventListener("click", toggleAllVolumesRead);

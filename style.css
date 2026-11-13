@@ -1190,3 +1190,238 @@ a.btn { display: inline-flex; align-items: center; text-decoration: none; }
 .auth-box { margin-top: 4px; }
 .auth-h { margin: 0 0 8px; font: 800 13.5px var(--font-body); color: var(--text); }
 .auth-box .owner-input { font-size: 16px; }   /* 16 px : l'iPhone ne zoome pas sur le champ */
+
+/* =====================================================================
+   3.4 : PRÉSENTATIONS DE LA BIBLIOTHÈQUE (Réglages → Présentation)
+   #grid[data-pres] : grille (défaut, règles ci-dessus), eventail, etagere, mur, liste
+   ===================================================================== */
+
+/* --- Éventail : jusqu'à 4 couvertures déployées, la première devant --- */
+.card-cover-wrap.fan { overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.card-cover-wrap.fan img.fan-i {
+  position: absolute; top: 20%; left: 22%;
+  width: 56%; height: auto; aspect-ratio: 500 / 680; object-fit: cover;
+  border: var(--bw-s) solid var(--line); border-radius: var(--r-cover);
+  box-shadow: var(--sh-mini);
+  transform-origin: 50% 100%;
+  transform: translateX(calc(var(--k) * 12%)) rotate(calc(var(--k) * 6deg));
+  transition: transform .18s ease;
+}
+.card:hover .card-cover-wrap.fan img.fan-i,
+.card:focus-visible .card-cover-wrap.fan img.fan-i { transform: translateX(calc(var(--k) * 17%)) rotate(calc(var(--k) * 9deg)); }
+.card-cover-wrap.fan.solo img.fan-i { top: 0; left: 0; width: 100%; height: 100%; border: 0; border-radius: 0; box-shadow: none; transform: none; }
+.card-cover-wrap.fan .card-badges, .card-cover-wrap.fan .card-new { z-index: 9; }
+
+/* --- Mur : les couvertures seules ; une série se voit en pile (2 tomes, 3 et plus) --- */
+#grid[data-pres="mur"] { padding-top: 12px; }
+.card.mur { overflow: visible; border-radius: var(--r-cover); }
+.card.mur .card-cover-wrap { overflow: hidden; border-radius: calc(var(--r-cover) - 1px); }
+.card.mur.pile1 { box-shadow: 5px -5px 0 -1px var(--surface), 5px -5px 0 1px var(--line), var(--sh-card); }
+.card.mur.pile2 { box-shadow: 5px -5px 0 -1px var(--surface), 5px -5px 0 1px var(--line),
+                               10px -10px 0 -1px var(--surface), 10px -10px 0 1px var(--line), var(--sh-card); }
+.mur-cap {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: 22px 8px 7px;
+  background: linear-gradient(to top, rgba(0,0,0,.82), rgba(0,0,0,0));
+  color: #fff; display: flex; flex-direction: column; gap: 1px;
+  opacity: 0; transition: opacity .15s ease; pointer-events: none;
+}
+.mur-title { font-size: 12px; font-weight: 800; line-height: 1.2; }
+.mur-count { font-size: 10px; opacity: .85; }
+.card.mur:hover .mur-cap, .card.mur:focus-visible .mur-cap, .card.mur.no-cover .mur-cap { opacity: 1; }
+
+/* --- Étagère : les tomes debout sur une planche, le titre dessous --- */
+#grid[data-pres="etagere"] { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 30px 0; }
+#grid[data-pres="etagere"] .letter-head { flex: 0 0 100%; margin: 4px 0 -12px; }
+.card.shelf {
+  border: 0; box-shadow: none; background: transparent; border-radius: 0; overflow: visible;
+  padding: 0 14px; width: max-content; max-width: 100%;
+}
+.card.shelf:hover { transform: none; }
+.card.shelf:hover .shelf-books { transform: translateY(-3px); }
+.shelf-books {
+  position: relative; height: 150px;
+  display: flex; align-items: flex-end; gap: 3px;
+  transition: transform .12s ease;
+}
+.shelf-b {
+  height: var(--h, 100%); width: auto; aspect-ratio: 500 / 680; object-fit: cover; display: block;
+  border: var(--bw-s) solid var(--line); border-radius: 2px 3px 3px 2px;
+  background: var(--card-placeholder);
+}
+.shelf-ph { width: 105px; }
+.shelf-b.img-failed { visibility: visible; }
+.shelf-more {
+  align-self: center; margin-left: 4px;
+  font-size: 12px; font-weight: 800; color: var(--muted);
+}
+.shelf-books .card-badges { top: 4px; right: 4px; }
+.shelf-books .card-new { top: 4px; left: 4px; }
+.shelf-plank {
+  height: 9px; margin: 0 -14px;
+  background: var(--tan); border: var(--bw-s) solid var(--line); border-radius: 2px;
+  box-shadow: 0 4px 0 var(--shadow-c);
+}
+.shelf-title {
+  width: 0; min-width: 100%;                         /* jamais plus large que les tomes */
+  margin-top: 9px; font-size: 12px; font-weight: 700; line-height: 1.25; color: var(--text);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+@media (max-width: 560px) {
+  #grid[data-pres="etagere"] { gap: 24px 0; }
+  .shelf-books { height: 96px; }
+  .shelf-ph { width: 68px; }
+  .card.shelf { padding: 0 10px; }
+  .shelf-plank { margin: 0 -10px; }
+}
+
+/* --- Liste : une ligne par fiche --- */
+#grid[data-pres="liste"] { display: flex; flex-direction: column; gap: 10px; }
+#grid[data-pres="liste"] .letter-head { margin: 8px 0 0; }
+.card.row { flex-direction: row; align-items: center; gap: 12px; padding: 6px 12px 6px 6px; background: var(--card-info-bg); box-shadow: var(--sh-btn); border-width: var(--bw-m); }
+.card.row:hover { transform: translateX(3px); }
+.row-cover { flex: 0 0 54px; aspect-ratio: 500 / 680; background: var(--card-placeholder); border-radius: var(--r-cover); overflow: hidden; }
+.row-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.row-info { flex: 1; min-width: 0; }
+.row-info .card-title { font-size: 14px; }
+.row-info .card-author { font-size: 12px; }
+.row-info .card-count { font-size: 11px; }
+.row-badges { display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end; flex: 0 0 auto; max-width: 40%; }
+@media (max-width: 560px) {
+  .row-cover { flex-basis: 46px; }
+  .row-info .card-title { font-size: 13px; }
+}
+
+/* --- Réglages : choix de la présentation --- */
+.pres-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 12px; margin-top: 4px; }
+.pres-btn {
+  font-family: var(--font-body); color: var(--text); background: var(--surface);
+  border: var(--bw-m) solid var(--line); border-radius: var(--r-field); box-shadow: var(--sh-btn);
+  padding: 12px 8px 10px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-height: 82px;
+}
+.pres-btn svg { width: 24px; height: 24px; }
+.pres-name { font-size: 13px; font-weight: 800; }
+.pres-sub { font-size: 10.5px; color: var(--muted); line-height: 1.25; text-align: center; }
+.pres-btn[aria-pressed="true"] { background: var(--chip-on-bg); color: var(--chip-on-text); border-color: var(--chip-on-bg); }
+.pres-btn[aria-pressed="true"] .pres-sub { color: inherit; opacity: .8; }
+.pres-btn:active { transform: translate(1px,1px); }
+.pres-btn:focus-visible { outline: 3px solid var(--text); outline-offset: 2px; }
+.pres-site { margin-top: 18px; }
+.pres-site-title { font-size: 15px; font-weight: 800; margin: 0 0 4px; color: var(--text); }
+.pres-msg { margin-top: 10px; font-weight: 700; }
+.pres-msg.err { color: var(--fav); }
+@media (max-width: 560px) { .pres-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; } }
+
+/* =====================================================================
+   3.5 : FICHE PRÉCÉDENTE / SUIVANTE
+   Barre du haut de la fiche, collée en haut quand on fait défiler : ‹ n / N › et ✕
+   ===================================================================== */
+.sheet-top {
+  position: sticky; top: 0; z-index: 3;
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px 8px;
+  background: var(--sheet);
+}
+.sheet-top .sheet-close { position: static; margin-left: auto; flex-shrink: 0; }
+.sheet-body { padding-top: 4px; }
+.sheet { overflow-x: hidden; }               /* le petit glissement ne fait pas apparaître de barre */
+.sheet-nav { display: flex; align-items: center; gap: 8px; }
+.sheet-nav[hidden] { display: none; }
+.sheet-nav-btn {
+  width: 36px; height: 36px; padding: 0; flex-shrink: 0;
+  border-radius: 50%;
+  border: var(--bw-m) solid var(--line);
+  background: var(--surface); color: var(--text);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; box-shadow: var(--sh-mini);
+}
+.sheet-nav-btn svg { width: 18px; height: 18px; }
+.sheet-nav-btn:hover:not(:disabled) { background: var(--gold); color: var(--on-gold); }
+.sheet-nav-btn:active:not(:disabled) { transform: translate(1px,1px); }
+.sheet-nav-btn:disabled { opacity: .3; cursor: default; box-shadow: none; }
+.sheet-nav-btn:focus-visible, .sheet-close:focus-visible { outline: 3px solid var(--text); outline-offset: 2px; }
+.sheet-pos { font-size: 12px; font-weight: 800; color: var(--muted); min-width: 4.5em; text-align: center; font-variant-numeric: tabular-nums; }
+.sheet-body.slide-next { animation: sheet-in-next .18s ease-out; }
+.sheet-body.slide-prev { animation: sheet-in-prev .18s ease-out; }
+@keyframes sheet-in-next { from { transform: translateX(26px); opacity: .25; } to { transform: none; opacity: 1; } }
+@keyframes sheet-in-prev { from { transform: translateX(-26px); opacity: .25; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .sheet-body.slide-next, .sheet-body.slide-prev { animation: none; } }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* =====================================================================
+   3.6 : MON AVIS (fiche) ET CARNET DE LECTURE (#/carnet)
+   ===================================================================== */
+.badge.note { background: var(--surface); color: var(--text); }
+.sheet-avis { margin-top: 18px; }
+.sheet-avis[hidden] { display: none; }
+.avis-line { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+.avis-note {
+  display: inline-block; font-weight: 800; font-size: 13px; line-height: 1;
+  padding: 5px 9px; border-radius: 999px;
+  border: var(--bw-s) solid var(--line); background: var(--gold); color: var(--on-gold);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.avis-date { font-size: 12.5px; font-weight: 700; color: var(--text-soft); }
+.avis-com { margin: 4px 0 10px; font-size: 13.5px; line-height: 1.5; color: var(--text); white-space: pre-wrap; overflow-wrap: anywhere; }
+.avis-btn { margin-top: 2px; }
+.avis-form { display: flex; flex-direction: column; gap: 10px; }
+.avis-lab { font-size: 11px; letter-spacing: .4px; font-weight: 800; color: var(--muted); text-transform: uppercase; }
+.avis-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.avis-chip {
+  min-width: 36px; height: 36px; padding: 0 6px;
+  border-radius: 999px; border: var(--bw-s) solid var(--line);
+  background: var(--surface); color: var(--text);
+  font-family: var(--font-body); font-size: 13.5px; font-weight: 800; cursor: pointer;
+  font-variant-numeric: tabular-nums;
+}
+.avis-chip[aria-checked="true"] { background: var(--chip-on-bg); color: var(--chip-on-text); border-color: var(--chip-on-bg); }
+.avis-chip:focus-visible { outline: 3px solid var(--text); outline-offset: 2px; }
+.avis-field { flex: none; }
+.avis-field input[type="date"] { max-width: 210px; }
+.avis-text { resize: vertical; min-height: 92px; font-family: var(--font-body); font-size: 14px; line-height: 1.45; }
+.avis-msg:empty { display: none; }
+.avis-msg { color: var(--fav); font-weight: 700; margin: 0; }
+.avis-confirm { margin-top: 2px; }
+.avis-warn { color: var(--fav); font-weight: 700; }
+@media (max-width: 420px) { .avis-chip { min-width: 34px; height: 34px; } .avis-chips { gap: 5px; } }
+
+/* carnet : colonnes (répartition des notes, lectures par mois) */
+.cv-cols { display: flex; align-items: stretch; gap: 4px; height: 170px; max-width: 640px; }
+.cv-col {
+  flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  background: none; border: 0; padding: 0; font-family: var(--font-body); color: var(--text); cursor: default;
+}
+button.cv-col { cursor: pointer; border-radius: 6px; }
+button.cv-col:hover .cv-bar, button.cv-col:focus-visible .cv-bar { filter: brightness(1.15); }
+button.cv-col:focus-visible { outline: 3px solid var(--text); outline-offset: 2px; }
+.cv-val { font-size: 11.5px; font-weight: 800; color: var(--text-soft); height: 15px; font-variant-numeric: tabular-nums; }
+.cv-barwrap { flex: 1; width: 100%; display: flex; align-items: flex-end; justify-content: center; border-bottom: 1px solid var(--divider-strong); }
+.cv-bar { display: block; width: 72%; max-width: 34px; background: var(--fav); border-radius: 4px 4px 0 0; }
+.cv-lab { font-size: 11px; font-weight: 700; color: var(--muted); white-space: nowrap; }
+.cv-col.zero .cv-lab { opacity: .7; }
+
+/* carnet : filtres et liste */
+.cv-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.cv-q { flex: 1 1 240px; min-width: 0; }
+.cv-sel { flex: 0 1 auto; min-width: 0; max-width: 100%; }
+.cv-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+.cv-count { font-size: 13px; font-weight: 800; color: var(--text); margin-right: auto; }
+.cv-reset[hidden] { display: none; }
+.cv-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.cv-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--divider); align-items: flex-start; }
+.cv-thumb { flex: 0 0 52px; aspect-ratio: 500 / 680; background: var(--card-placeholder); border: var(--bw-s) solid var(--line); border-radius: var(--r-cover); overflow: hidden; }
+.cv-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cv-body { flex: 1; min-width: 0; }
+.cv-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.cv-title { font-size: 14.5px; font-weight: 800; text-align: left; white-space: normal; overflow-wrap: anywhere; }
+.cv-title.gone { color: var(--text-soft); font-style: italic; }
+.cv-sub { font-size: 12px; color: var(--text-soft); margin-top: 3px; }
+.cv-com { margin: 6px 0 0; }
+.cv-empty { padding: 14px 0; color: var(--muted); font-style: italic; }
+@media (max-width: 560px) {
+  .cv-cols { height: 140px; gap: 2px; }
+  .cv-lab { font-size: 10px; }
+  .cv-sel { flex: 1 1 calc(50% - 4px); }
+  .cv-thumb { flex-basis: 44px; }
+}

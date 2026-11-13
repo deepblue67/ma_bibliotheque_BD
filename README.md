@@ -2,7 +2,7 @@
 
 Catalogue personnel de bandes dessinées de Christophe (**1291 séries, 998 one-shots, 8822 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
 
-> **Version actuellement livrée : 3.3 du 08/11/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
+> **Version actuellement livrée : 3.7 du 13/11/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
 >
 > **Mode d'emploi** : ce README est la documentation **technique** du projet. Le mode d'emploi **du propriétaire** est ailleurs : dans l'appli (Réglages → Aide, visible en mode propriétaire seulement) et en PDF (`Mode_emploi_proprietaire.pdf`). Voir la section « Aide et mode d'emploi ».
 >
@@ -45,6 +45,12 @@ ma-bibliotheque-bd/
 ├── supabase_bd_overrides.sql # script du SQL Editor de Supabase : crée/complète la table
 │                        #   bd_overrides (corrections depuis l'appli) — relançable,
 │                        #   à relancer après chaque lot qui le modifie
+├── supabase_reglages.sql     # 3.4 : table bd_reglages (présentation par défaut des visiteurs),
+│                        #   à lancer une fois dans le SQL Editor — relançable
+├── supabase_reglages_retour.sql # 3.4 : retour arrière (supprime la table bd_reglages)
+├── supabase_avis.sql         # 3.6 : table bd_avis (mon avis, carnet de lecture), privée,
+│                        #   à lancer une fois dans le SQL Editor — relançable
+├── supabase_avis_retour.sql  # 3.6 : retour arrière — SUPPRIME TOUS LES AVIS (exporter avant)
 ├── masquages.json         # fiches masquées à l'import (doublons) — voir « Fiches masquées »
 ├── genre_map.json         # id -> {genres, confidence, source} — modifiable à la main,
 │                        #   lu par build_public_catalog_v2.py (voir section "Genres")
@@ -68,7 +74,8 @@ ma-bibliotheque-bd/
 │                        #   gitignoré, peut être supprimé
 ├── outils_delta/         # scripts de la mise à jour « delta » (voir « Mise à jour du
 │                        #   catalogue en mode delta ») + leur état (etat/) — GITIGNORÉ,
-│                        #   reste sur le PC
+│                        #   reste sur le PC. Depuis la 3.4, aussi aide_pdf/ : fabrication
+│                        #   du mode d'emploi PDF (voir « Aide et mode d'emploi »)
 ├── volume_covers_delta_<date>/ # couvertures d'un delta, à envoyer via uploader.html
 │                        #   — GITIGNORÉ, supprimable une fois envoyé
 ├── uploader.html         # page d'envoi des couvertures vers Supabase Storage, réservée
@@ -201,6 +208,41 @@ Pas de policy d'écriture publique : l'envoi des couvertures se fait via `upload
 
 **Contrainte importante** : les noms de fichiers dans le bucket doivent être **ASCII uniquement** (Supabase Storage rejette les accents avec une erreur `Invalid key`). C'est pour ça que chaque `cover` dans catalog.json est un nom sans accents (ex: `Thorgal_001.jpg`) même si le `title`/`label` affiché garde ses accents.
 
+### Table `bd_reglages` (réglages du site, depuis la 3.4)
+
+Une ligne par réglage du site, clé → valeur. Pour l'instant une seule : `presentation`, la présentation sur laquelle arrive un visiteur qui n'a rien choisi sur son appareil (voir « Présentations de la bibliothèque »). Créée par `supabase_reglages.sql` (à lancer une fois, relançable ; il exige la fonction `bd_proprietaire()` de `supabase_securite.sql`) :
+
+```sql
+create table public.bd_reglages (
+  cle        text primary key,
+  valeur     text not null,
+  updated_at timestamptz not null default now()
+);
+-- valeurs permises pour « presentation » : grille, eventail, etagere, mur, liste
+-- RLS : lecture pour anon et authenticated ; insert / update pour le propriétaire connecté
+--       (bd_proprietaire()) ; pas de delete. Ligne de départ : ('presentation', 'grille').
+```
+
+Retour arrière : `supabase_reglages_retour.sql` supprime la table ; l'appli retombe alors sur la grille (ou sur le choix de chaque appareil). Testé sur un PostgreSQL 16 local avant livraison : la clé publique lit mais ne peut ni ajouter ni modifier, une session anonyme ne peut rien modifier, le propriétaire peut enregistrer (upsert), une valeur inconnue est refusée, la suppression est refusée, et le script s'arrête avec un message clair si `supabase_securite.sql` n'a pas été lancé.
+
+### Table `bd_avis` (mon avis, depuis la 3.6)
+
+Un avis par fiche, identifiée comme dans `bd_status` (id de la fiche). **Privée** : lecture et écriture réservées au propriétaire connecté, comme les favoris et les coches ; la clé publique n'y a aucun droit (`revoke all … from anon`). Créée par `supabase_avis.sql` (à lancer une fois, relançable, exige `bd_proprietaire()`), qui l'ajoute aussi à la synchronisation en direct (`supabase_realtime`) :
+
+```sql
+create table public.bd_avis (
+  id          text primary key,   -- id de la fiche
+  note        smallint,           -- 0 à 10, facultative
+  lu_le       date,               -- date de lecture
+  commentaire text,               -- 4000 caractères au plus
+  updated_at  timestamptz not null default now()
+);
+-- contraintes : note entre 0 et 10 ; au moins une note ou un commentaire
+-- RLS : select / insert / update / delete pour le propriétaire connecté (bd_proprietaire())
+```
+
+Retour arrière : `supabase_avis_retour.sql` supprime la table **et tous les avis** : exporter d'abord (Carnet de lecture → Exporter). Testé sur PostgreSQL 16 avant livraison : la clé publique ne lit ni n'écrit rien, une session anonyme ne voit et ne modifie rien, le propriétaire ajoute, lit, modifie (upsert) et efface ; une note hors de 0 à 10, un avis vide et un commentaire de plus de 4000 caractères sont refusés ; le script relancé ne change rien.
+
 ## Icône écran d'accueil (iPad / iPhone / Android)
 
 Le site déclare une icône pour "Ajouter à l'écran d'accueil" (Safari iOS/iPadOS) et pour l'installation en PWA sous Chrome/Android :
@@ -294,6 +336,7 @@ Résultat : `genre_map.json` (id → `{genres, confidence, source}`) — `confid
 
 Le champ « titre » cherche dans le nom de la série **et dans le titre de tous ses tomes** : « magicienne trahie » trouve *Thorgal*. Les deux champs, titre et auteur, suivent les mêmes règles (fonction `normalize()` dans `app.js`) :
 - les **accents** sont ignorés (« etrange » → *Étrange*), tout comme `œ`/`æ` (« oeil » → *Œil de dragon*) ;
+- depuis la 3.7, les **lettres que la décomposition Unicode ne simplifie pas** sont ramenées à leur équivalent (`foldLetters()`) : `ø` → o, `ß` → ss, `ł` → l, `đ` et `ð` → d, `þ` → th, `ı` → i, majuscules comprises (« soren » → *Søren*, « strasse » → *Straße*, « lukasz » → *Łukasz*, « thor » → *Þór*). Le même repli sert au **classement alphabétique** et à la **barre alphabétique** : *Þór* se range à T, et non après le Z ; *Søren* à S. Aucun titre du catalogue n'en contient au 13 novembre 2026 : c'est une précaution pour les prochains imports (auteurs scandinaves, polonais, allemands…) ;
 - les apostrophes droites et courbes sont confondues, puis supprimées (« l'arabe » → *L’Arabe du futur*) ;
 - toute **ponctuation** compte comme un espace (« kim jong un » → *Kim Jong-un*, « jean marc » → *Jean-Marc*) ;
 - **plusieurs mots** peuvent être tapés **dans n'importe quel ordre** : tous doivent être présents (« terre pilliers » → *Les pilliers de la terre*) ;
@@ -327,7 +370,7 @@ Code : `initialOf()`, `letterHead()`, `renderAz()`, `jumpToLetter()` et `renderG
 
 ## Thèmes et réglages
 
-La roue crantée, en haut à droite, ouvre la **page Réglages** (adresse `#/reglages`). C'est une vraie page, plus une fenêtre par-dessus la grille, sur le modèle de l'appli ebooks de Christophe : « ← Retour à la bibliothèque » en haut (le bouton retour du téléphone marche aussi), recherche et filtres masqués tant qu'on n'est pas sur la grille, et on retrouve la grille à l'endroit où on l'avait quittée. La page contient le choix du thème, le **mode propriétaire** (section suivante) et, en mode propriétaire, *Doublons probables*, *Fiches masquées et fusionnées* et l'*Aide*. *Doublons probables* ouvre à son tour une page (`#/doublons`, « ← Retour aux réglages » ; un visiteur qui tape cette adresse est renvoyé aux Réglages).
+La roue crantée, en haut à droite, ouvre la **page Réglages** (adresse `#/reglages`). C'est une vraie page, plus une fenêtre par-dessus la grille, sur le modèle de l'appli ebooks de Christophe : « ← Retour à la bibliothèque » en haut (le bouton retour du téléphone marche aussi), recherche et filtres masqués tant qu'on n'est pas sur la grille, et on retrouve la grille à l'endroit où on l'avait quittée. La page contient le choix de la **présentation**, le **carnet de lecture** (propriétaire, depuis la 3.6) (depuis la 3.4, voir « Présentations de la bibliothèque »), le choix du thème, le **mode propriétaire** (section suivante) et, en mode propriétaire, *Doublons probables*, *Fiches masquées et fusionnées* et l'*Aide*. *Doublons probables* ouvre à son tour une page (`#/doublons`, « ← Retour aux réglages » ; un visiteur qui tape cette adresse est renvoyé aux Réglages).
 
 **Sections pliables.** Chaque section se plie et se déplie d'un clic sur son titre (chevron à droite, cible tactile de 44 px), et « Tout déplier · Tout replier » en haut agit sur toutes. Ce qui est replié est **mémorisé sur l'appareil** (`localStorage`, clé `bd_reglages_replies_v1`) : la page se rouvre telle qu'on l'a laissée, y compris après un changement de thème ou un déverrouillage. Tout est déplié au premier affichage. Code : `setBlockOpen()` et le câblage qui suit dans `app.js` ; routage : `route()` (événement `hashchange`).
 
@@ -437,12 +480,12 @@ Chaque suggestion a un bouton **Pas un doublon** : la décision est stockée (`"
 ## Aide et mode d'emploi (propriétaire)
 
 Il n'y a **pas** de mode d'emploi pour les visiteurs : ce n'était pas nécessaire (choix de Christophe, octobre 2026). Le mode d'emploi du propriétaire existe sous deux formes, **au contenu identique** :
-- **dans l'appli** : Réglages (roue crantée) → dernière section, **Aide — mode d'emploi propriétaire**. Ce sont dix sujets dépliables (`<details class="help-item">`), écrits en dur dans `index.html`, dans une section `owner-only`. Ils sont donc invisibles en mode visiteur, mais présents dans le code source de la page : rien de secret ne doit y figurer ;
-- **en PDF** : `Mode_emploi_proprietaire.pdf`, 4 pages A4, pour lire ou imprimer hors de l'appli. Depuis la version 2.1, il est **publié à la racine du dépôt GitHub** et s'ouvre depuis l'appli : Réglages → Aide → bouton **Mode d'emploi complet (PDF)**, dans un nouvel onglet. Le bouton n'apparaît qu'en mode propriétaire ; le fichier lui-même reste accessible à qui connaîtrait son adresse, ce qui est sans conséquence puisqu'il ne contient rien de confidentiel (ni code, ni clé). Le lien porte le numéro de version (`Mode_emploi_proprietaire.pdf?v=2.1`, ajouté par `app.js`) pour qu'un téléphone ne garde pas en cache un ancien PDF. **Le PDF doit donc être republié chaque fois qu'il change.** Son pied de page indique la date de mise à jour du mode d'emploi, pas le numéro de version de l'appli, pour ne pas devoir le régénérer à chaque livraison.
+- **dans l'appli** : Réglages (roue crantée) → dernière section, **Aide — mode d'emploi propriétaire**. Ce sont treize sujets dépliables (`<details class="help-item">`), écrits en dur dans `index.html`, dans une section `owner-only`. Ils sont donc invisibles en mode visiteur, mais présents dans le code source de la page : rien de secret ne doit y figurer ;
+- **en PDF** : `Mode_emploi_proprietaire.pdf`, 6 pages A4, pour lire ou imprimer hors de l'appli. Depuis la version 2.1, il est **publié à la racine du dépôt GitHub** et s'ouvre depuis l'appli : Réglages → Aide → bouton **Mode d'emploi complet (PDF)**, dans un nouvel onglet. Le bouton n'apparaît qu'en mode propriétaire ; le fichier lui-même reste accessible à qui connaîtrait son adresse, ce qui est sans conséquence puisqu'il ne contient rien de confidentiel (ni code, ni clé). Le lien porte le numéro de version (`Mode_emploi_proprietaire.pdf?v=2.1`, ajouté par `app.js`) pour qu'un téléphone ne garde pas en cache un ancien PDF. **Le PDF doit donc être republié chaque fois qu'il change.** Son pied de page indique la date de mise à jour du mode d'emploi, pas le numéro de version de l'appli, pour ne pas devoir le régénérer à chaque livraison.
 
-Les dix sujets : passer en mode propriétaire, suivre ses lectures, corriger une fiche, corriger ou masquer un tome, masquer une fiche et la retrouver, fusionner deux fiches, examiner les doublons probables, ce que voient les visiteurs, ajouter de nouvelles BD, bon à savoir.
+Les treize sujets : passer en mode propriétaire, suivre ses lectures, mon avis et carnet de lecture, corriger une fiche, corriger ou masquer un tome, masquer une fiche et la retrouver, fusionner deux fiches, examiner les doublons probables, ce que voient les visiteurs, nouveautés, tri et statistiques, choisir la présentation, ajouter de nouvelles BD, bon à savoir.
 
-**À faire vivre, comme ce README** : toute fonction ajoutée ou modifiée côté propriétaire doit être reportée dans l'aide de `index.html` **et** dans le PDF. Le PDF est produit à partir du même texte : une page HTML imprimée en PDF par Chromium.
+**À faire vivre, comme ce README** : toute fonction ajoutée ou modifiée côté propriétaire doit être reportée dans l'aide de `index.html` **et** dans le PDF. Le PDF est produit à partir du même texte : une page HTML imprimée en PDF par Chromium. **Depuis la 3.4, la seule source est l'aide de `index.html`** : le script `outils_delta/aide_pdf/aide_pdf.js` lit les `<details class="help-item">` de `index.html` et en fait le PDF (bandeau, sommaire, un chapitre par sujet, pied de page daté), avec ses polices dans `outils_delta/aide_pdf/fonts/` (Bangers, Archivo, licence OFL). Commande (Node + Playwright) : `node aide_pdf.js ../../index.html ../../Mode_emploi_proprietaire.pdf AAAA-MM-JJ`. On ne retouche donc que `index.html`, puis on refait le PDF.
 
 ## One-shots (dossier `BD Unique`)
 
@@ -468,13 +511,65 @@ Depuis octobre 2026, `D:\Christophe\Mes BD\BD Unique` contient les BD **sans sui
 
 Lot « 3.1 — Nouveautés et tri » de la revue de code du 7 novembre 2026, livré en version 3.0. Tout repose sur le champ `added` du catalogue (voir le schéma).
 
-- **Tri** : menu à côté des genres, **Titre (A → Z)** (par défaut, avec la barre alphabétique) ou **Ajoutés récemment**. Ce second tri range les fiches par **dernière** date d'ajout (fiche ou tome visible le plus récent : une série enrichie remonte), puis par titre ; un séparateur par date (« Ajoutés le 5 novembre 2026 ») remplace les lettres et la barre alphabétique disparaît. Le choix est mémorisé sur l'appareil (`localStorage`, clé `bd_tri_v1`). Visible de tous.
+- **Tri** : menu à côté des genres, **Titre (A → Z)** (par défaut, avec la barre alphabétique) ou **Ajoutés récemment** (et, depuis la 3.7, **Nombre de tomes** et **Lus récemment**, voir « Ordre de la grille »). Ce second tri range les fiches par **dernière** date d'ajout (fiche ou tome visible le plus récent : une série enrichie remonte), puis par titre ; un séparateur par date (« Ajoutés le 5 novembre 2026 ») remplace les lettres et la barre alphabétique disparaît. Le choix est mémorisé sur l'appareil (`localStorage`, clé `bd_tri_v1`). Visible de tous.
 - **Pastilles** (visibles de tous), en haut à gauche de la vignette : **Nouveau** pour une fiche arrivée au dernier import, **+3 tomes** pour une série existante qui y a reçu des tomes ; dans la fiche, ces tomes portent la mention « nouveau ». « Dernier import » = la date d'ajout la plus récente du catalogue et les 7 jours qui la précèdent (un import en plusieurs fois, comme les 4 et 5 novembre) ; la pastille reste 30 jours après l'import (`NEW_DAYS`, `NEW_BURST_DAYS` dans `app.js`). Sans la limite des 7 jours, le premier mois aurait marqué « Nouveau » les 968 one-shots importés le 16 octobre.
 - **Date d'ajout dans la fiche** (tous) : « Fiche ajoutée le 27 octobre 2026 · derniers tomes ajoutés le 5 novembre 2026 », ou « Ajouté le … » pour un one-shot.
 - **Tomes manquants** (propriétaire) : « Il manque les tomes 1 à 12 », sous la date d'ajout. Calculés seulement sur les fiches aux numéros sûrs (les mêmes que celles qui affichent les vrais numéros), entre 1 et le plus grand numéro : ce qui manque **après** le dernier tome n'est pas visible. Garde-fous : un numéro qui figure dans le titre (« 60 ans en BD ») ne compte pas ; une numérotation à 100 et plus à côté de 1, 2, 3 (*Donjon Crépuscule* : 1 à 9 et 113) est ignorée. Au 7 novembre 2026 : 43 séries, 179 tomes manquants. Quelques cas restent trompeurs (*Blandice*, numérotée dans une collection d'éditeur) : c'est une indication, pas une vérité.
 - **Page Statistiques** (`#/stats`, Réglages → Statistiques, visible de tous) : séries, one-shots, albums, auteurs ; tableau des ajouts par date d'import ; barres par genre et des 10 auteurs les plus présents (toucher un genre ou un nom ouvre la grille filtrée) ; bouton vers le tri « Ajoutés récemment ». Le propriétaire voit en plus **ses lectures** (albums lus, fiches lues, en cours, pas commencées, favoris) et la **liste des séries incomplètes**, dont chaque titre ouvre la fiche. Calculs faits sur les fiches affichées : sans les fiches masquées, ni les fiches réservées pour un visiteur.
 
 Code : `newCutoff()`, `newInfo()`, `missingTomes()`, `rangesText()`, `dateHead()`, `renderStats()` dans `app.js` ; styles `.card-new`, `.date-head`, `.sheet-added`, `.sheet-missing`, `.vol-new` et `.st-*` dans `style.css`. Suite de tests : `test13_v30.js` (44 vérifications).
+
+## Présentations de la bibliothèque (version 3.4)
+
+Reprise de l'appli ebooks de Christophe, demandée le 13 novembre 2026 : Réglages → **Présentation** propose cinq façons d'afficher la grille.
+
+- **Grille** : les vignettes d'avant (couverture, titre, auteurs, nombre de tomes), à l'identique.
+- **Éventail** : jusqu'à 4 couvertures des premiers tomes visibles, déployées en éventail (la première devant), qui s'ouvre un peu plus au survol ; un one-shot garde sa couverture seule.
+- **Étagère** : les tomes debout sur une planche, de hauteurs légèrement différentes, 6 sur PC et 4 sur téléphone (moins de 560 px de large), puis « +37 » ; le titre dessous, jamais plus large que les tomes. Les fiches se suivent sur la même planche.
+- **Mur** : les couvertures seules ; une série de 2 tomes est dessinée en pile, de 3 tomes et plus en pile plus haute ; titre et nombre de tomes au survol.
+- **Liste** : une ligne par fiche, petite couverture, titre, auteurs, nombre de tomes et pastilles.
+
+Dans toutes les présentations : mêmes pastilles (Nouveau, Lu, ★, Privé…), même barre alphabétique et mêmes séparateurs de date, même chargement différé des couvertures, ouverture de la fiche au clic, à Entrée ou à Espace. La loupe n'apparaît qu'en grille et en mur.
+
+**Qui choisit quoi.**
+- Chaque appareil choisit sa présentation (`localStorage`, clé `bd_presentation_v1`), comme le thème.
+- **Par défaut** (aucun choix sur l'appareil) suit la présentation que le propriétaire a fixée pour ses visiteurs : Réglages → Présentation → **Pour tes visiteurs** (propriétaire seulement). Elle est gardée dans la table Supabase `bd_reglages` (ligne `presentation`), lisible de tous et modifiable par le propriétaire connecté seul. L'appli la garde aussi en cache sur l'appareil (`bd_reglages_site_v1`) pour l'afficher tout de suite à la visite suivante, et hors ligne.
+- Sans la table (script pas encore lancé), tout le monde est sur la grille sauf choix de l'appareil ; le propriétaire voit l'indication de lancer `supabase_reglages.sql`.
+
+Code : `PRESENTATIONS`, `presentation()`, `fetchReglages()`, `renderCard(entry, cut, pres)` (une mise en page par présentation), `coversOf()`, `renderPresBlock()`, `setPresDevice()`, `saveSitePres()` dans `app.js` ; `#grid[data-pres]` et le bloc « 3.4 : PRÉSENTATIONS » en fin de `style.css`.
+
+## Fiche précédente / suivante (version 3.5)
+
+Dans une fiche ouverte, on passe à la fiche voisine sans revenir à la grille : boutons **‹ ›** en haut à gauche de la fiche, avec la position (« 2079 / 2282 ») entre les deux, touches **← →** du clavier, et **glissement du doigt** vers la gauche (suivante) ou la droite (précédente) sur téléphone et tablette. Pour tout le monde, visiteurs compris.
+
+- **Ordre** : celui de la grille telle qu'elle est affichée, recherche, filtres et tri compris (`state.gridOrder`, rempli par `renderGrid()`). Une fiche ouverte par un lien et absente de la grille (filtrée) n'a pas de flèches. Aux deux bouts, le bouton correspondant est grisé ; on ne reboucle pas.
+- **Adresse et retour** : l'adresse suit la fiche (`#/fiche/<id>`) par `history.replaceState`, sans ajouter d'entrée à l'historique : le retour du téléphone, Échap ou ✕ referment la fiche comme avant, et la grille se place alors sur la dernière fiche vue (focus sur sa vignette).
+- **Barre du haut** : ‹ › et ✕ sont dans une barre qui reste collée en haut de la fiche quand on la fait défiler (`.sheet-top`, `position: sticky`). La fiche suivante s'affiche depuis le haut, avec un petit glissement (supprimé si l'appareil demande moins d'animations).
+- **Garde-fous** : les flèches du clavier n'agissent pas quand le curseur est dans un champ, quand la couverture est agrandie, ni pendant une modification (éditeur de fiche ou de tome ouvert) ; le doigt non plus. Les boutons ‹ › restent utilisables et referment l'éditeur, comme fermer la fiche.
+- **Accessibilité** : les boutons annoncent le titre de la fiche voisine (« Fiche suivante : Thorgal - Saga ») ; le focus reste sur le bouton utilisé, et une zone `aria-live` annonce « Thorgal, fiche 2079 sur 2282 ». Les couvertures des deux fiches voisines sont chargées d'avance.
+
+Code : `stepSheet()`, `updateSheetNav()`, `sheetEditing()`, `preloadAround()` et l'écoute des touches et du doigt, dans `app.js` (juste avant le câblage de la fermeture de la fiche) ; `openSheetUI(id, opts)` accepte `dir` et `keepFocus` ; styles en fin de `style.css` (bloc « 3.5 »).
+
+## Mon avis et carnet de lecture (version 3.6)
+
+Propriétaire seulement ; les visiteurs n'en voient rien.
+
+- **Dans la fiche**, au-dessus des tomes : bloc **Mon avis**. Sans avis, un bouton « ＋ Donner mon avis » ; avec, la note (« 9/10 »), « lu le 2 octobre 2026 », le commentaire (retours à la ligne gardés) et « ✎ Modifier mon avis ». Le formulaire : 11 pastilles de 0 à 10 (toucher à nouveau enlève la note), la date de lecture (aujourd'hui par défaut, pas dans le futur), le commentaire (4000 caractères), Enregistrer / Annuler / Effacer mon avis (avec confirmation). Il faut une note ou un commentaire. Formulaire ouvert : les flèches ← → et le glissement du doigt ne changent pas de fiche (3.5).
+- **Sur la vignette** : pastille « 8/10 » à côté de Lu et ★, dans toutes les présentations ; annoncée par VoiceOver (« noté 8 sur 10 »).
+- **Page Carnet de lecture** (`#/carnet`, depuis Réglages → Carnet de lecture ou les Statistiques ; un visiteur qui tape l'adresse est renvoyé aux Réglages) : chiffres (avis, note moyenne, avec commentaire, lus dans l'année) ; **répartition des notes** de 0 à 10 et **lectures par mois** (12 derniers mois), en colonnes ; **note moyenne par genre** (genres d'au moins 2 avis notés). Toucher une note ou un genre filtre la liste. Puis **la liste** : recherche (titre, auteur, commentaire), filtres par note (au moins, exactement, moins de 5, sans note), genre et année de lecture, tri (plus récents, meilleures notes, moins bonnes, titre), « Tout afficher ». Un titre ouvre la fiche, et le retour revient au carnet. Les avis d'une fiche fusionnée, masquée ou disparue du catalogue restent listés, avec la mention. Les graphiques portent sur tous les avis, les filtres sur la liste.
+- **Export** : « Exporter (CSV) » télécharge les avis affichés (`carnet_de_lecture_AAAA-MM-JJ.csv`, point-virgule, UTF-8 avec BOM pour Excel).
+- **Données** : table `bd_avis` (voir « Backend Supabase »), lue une fois connecté (`syncStatuses()`), synchronisée en direct entre les appareils, avec une copie sur l'appareil du propriétaire (`localStorage`, clé `bd_avis_v1`) pour l'affichage hors ligne. Cette copie est effacée sur un appareil visiteur et quand on quitte le mode propriétaire. Écriture affichée tout de suite puis annulée à l'écran si la base refuse, comme les coches. Sans la table, la fiche et le carnet indiquent de lancer `supabase_avis.sql`.
+
+Code : `renderAvis()`, `saveAvis()`, `deleteAvis()`, `fetchRemoteAvis()`, `renderCarnet()`, `renderCarnetList()`, `carnetFiltered()`, `exportCarnet()` dans `app.js` ; bloc « 3.6 » en fin de `style.css` (`.avis-*`, `.cv-*`).
+
+## Ordre de la grille (version 3.7)
+
+Deux tris de plus dans le menu à côté des genres, mémorisés sur l'appareil comme les autres (clé `bd_tri_v1`). Comme pour « Ajoutés récemment », la barre alphabétique disparaît et des séparateurs remplacent les lettres ; à l'intérieur d'un groupe, l'ordre alphabétique départage.
+
+- **Nombre de tomes** (tout le monde) : les séries d'abord, de la plus longue à la plus courte, par tranches (« 20 tomes et plus », « 10 à 19 tomes », « 5 à 9 tomes », « 2 à 4 tomes », « Séries d'un seul tome »), puis les « One-shots ». Le nombre compté est celui des tomes visibles.
+- **Lus récemment** (propriétaire seulement : l'option n'est ajoutée au menu qu'en mode propriétaire, et un visiteur qui l'aurait gardée revient au titre) : par **date de dernière lecture**, séparateurs « Lus en novembre 2026 », puis « Pas encore lus » (ordre alphabétique). La date de dernière lecture d'une fiche est la plus récente entre le jour où un de ses tomes visibles a été coché lu (`updated_at` de `bd_volume_status`, gardé dans `state.readAt` et sur l'appareil, clé `bd_lu_dates_v1`) et la date de lecture de son avis (3.6). Un tome décoché ne compte plus. Limite : pour les coches anciennes, la date est celle de la dernière écriture de la ligne ; « Tout marquer comme lu » date tous les tomes du jour même.
+
+Code : `tomesBand()`, `lastReadOf()`, `textHead()` et le tri dans `renderGrid()`, `sortOk()` / `setSort()` dans `app.js`. La fiche précédente / suivante (3.5) suit ces ordres comme les autres.
 
 ## Points restés ouverts (au moment de la rédaction)
 
@@ -524,6 +619,10 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 
 | Version | Date | Contenu |
 |---|---|---|
+| 3.7 | 13/11/2026 | **Ordre et recherche** : tris **Nombre de tomes** (tous) et **Lus récemment** (propriétaire, d'après les dates des coches et des avis), avec séparateurs ; recherche, classement et barre alphabétique qui ramènent ø, ß, ł, đ, ð, þ et ı à o, ss, l, d, d, th et i. Aide et PDF mis à jour (6 pages). |
+| 3.6 | 13/11/2026 | **Mon avis et carnet de lecture** (propriétaire) : note sur 10, date de lecture et commentaire dans la fiche, pastille « 8/10 » sur la vignette ; page **Carnet de lecture** (`#/carnet`) avec chiffres, répartition des notes, lectures par mois, note par genre, liste avec recherche, filtres, tri et export CSV. Nouvelle table privée `bd_avis` (`supabase_avis.sql`, `supabase_avis_retour.sql`). Aide et PDF mis à jour (6 pages). |
+| 3.5 | 13/11/2026 | **Fiche précédente / suivante** : boutons ‹ › (avec la position) dans une barre collée en haut de la fiche, touches ← →, glissement du doigt sur téléphone ; ordre de la grille affichée (recherche, filtres, tri) ; adresse mise à jour sans encombrer l'historique ; en refermant, la grille se place sur la dernière fiche vue. Aide et PDF mis à jour (5 pages). |
+| 3.4 | 13/11/2026 | **Présentations de la bibliothèque** (reprise de l'appli ebooks) : Réglages → **Présentation** avec Grille, Éventail, Étagère, Mur et Liste, choix par appareil ; « Par défaut » suit la présentation fixée par le propriétaire pour ses visiteurs (« Pour tes visiteurs »), gardée dans la nouvelle table Supabase `bd_reglages` (`supabase_reglages.sql`, `supabase_reglages_retour.sql`). Aide et PDF mis à jour (5 pages), PDF désormais fabriqué par `outils_delta/aide_pdf/`. |
 | 3.3 | 08/11/2026 | **Sécurité, étape 3 : le ménage** : plus de code propriétaire ; un appareil est propriétaire quand il est connecté à Supabase (e-mail + mot de passe depuis Réglages → Mode propriétaire, rechargement automatique). « Quitter le mode propriétaire » déconnecte ; une session perdue repasse en visiteur avec un message. `BD_OWNER_HASH` retiré de `config.js` ; `uploader.html` suit la même règle. Aide et PDF mis à jour (5 pages). |
 | 3.2 | 08/11/2026 | **Sécurité, étape 2 : le verrou** : nouveaux scripts `supabase_securite.sql` (écritures et lecture des statuts réservées au propriétaire connecté, corrections lisibles de tous) et `supabase_securite_retour.sql` ; `supabase_bd_overrides.sql` ne touche plus aux règles. L'appli prévient avant d'écrire sans connexion, affiche un bandeau, lit les statuts une fois connectée et annule à l'écran une écriture refusée. Aide et PDF mis à jour (5 pages). |
 | 3.1 | 08/11/2026 | **Sécurité, étape 1 : connexion** : bloc **Connexion sécurisée** dans Réglages → Mode propriétaire (e-mail + mot de passe, Supabase Auth), session gardée par appareil, déconnexion ; aucune règle Supabase changée. Corrigé : une fiche réservée au propriétaire apparaissait un instant à un visiteur venu pour la première fois. Aide et PDF mis à jour. Export des tables Supabase gardé dans `outils_delta/etat/sauvegardes/supabase_2026-11-07/`. |
@@ -542,6 +641,21 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 Les livraisons antérieures n'étaient pas numérotées ; leur détail est dans l'historique ci-dessous.
 
 ## Historique des décisions notables
+
+- **Version 3.7 — ordre et recherche** (13 novembre 2026) : quatrième idée tirée de l'appli ebooks. Aucun script Supabase : les dates de lecture viennent de la colonne `updated_at` déjà présente dans `bd_volume_status`. Détails : « Ordre de la grille » et « Recherche ».
+  - **Tests** : nouvelle suite de 31 vérifications (12 recherches sur des titres et auteurs d'essai — Søren, Straße, Þór, Iğdır, Łukasz Ðorđević, Anna Weiß, Ayşe Kılıç —, en minuscules et majuscules ; classement sous la bonne lettre ; tri par nombre de tomes : ordre, séparateurs, barre masquée, mémorisé ; visiteur sans « Lus récemment » ; propriétaire : ordre et séparateurs d'après les coches et un avis, tome décoché ignoré, tome coché le jour même remonté en tête et envoyé à Supabase, même ordre après rechargement ; aucune erreur JS). Les suites 3.4 (103), 3.5 (38) et 3.6 (57) repassent ; non-régression par rapport à la 3.6 : grille, recherche, tri récent, fiche et statistiques identiques (différences : le menu de tri, l'aide).
+
+- **Version 3.6 — mon avis et carnet de lecture** (13 novembre 2026) : troisième idée tirée de l'appli ebooks, choisie le 13 novembre (note sur 10, date, commentaire par série ou one-shot, table privée, page carnet avec tri, filtres et graphiques). Choix faits pour Christophe, à revoir s'il le souhaite : note de 0 à 10 en entiers et facultative (un commentaire seul suffit), un avis par fiche (pas par tome), date de lecture modifiable, export CSV. Détails : « Mon avis et carnet de lecture ».
+  - **Mise en service** : publier l'appli, puis lancer `supabase_avis.sql` (résultat attendu : `regles = 4`, `avis = 0`).
+  - **Tests** (navigateur, vrai supabase-js, base simulée) : nouvelle suite de 57 vérifications (visiteur : rien de visible, adresse du carnet renvoyée aux Réglages, aucune requête, copie locale effacée ; propriétaire : pastille et annonce, avis affiché, création, note enlevée, effacement avec confirmation, formulaire vide refusé, flèches bloquées pendant la saisie ; carnet : chiffres, graphiques, filtre par clic sur une note, recherche dans les commentaires sans perdre le curseur, filtres sans note et par année, tris, export CSV (en-tête, BOM, point-virgule protégé), fiche ouverte depuis le carnet puis retour au carnet, liens depuis Réglages et Statistiques ; « Quitter » efface les avis de l'appareil ; écriture refusée annulée ; table absente ; iPhone sans débordement). Les suites 3.4 (103) et 3.5 (38) repassent. Non-régression par rapport à la 3.5 : grille, recherche et tri identiques ; différences attendues seulement (bloc Mon avis, lien du carnet, section des Réglages, aide).
+
+- **Version 3.5 — fiche précédente / suivante** (13 novembre 2026) : deuxième des idées tirées de l'appli ebooks, demandée à la suite de la 3.4. Christophe a choisi d'enchaîner sans publier la 3.4 d'abord : publier la 3.5 publie aussi la 3.4 (et le script `supabase_reglages.sql` reste à lancer). Détails : « Fiche précédente / suivante ».
+  - **Tests** (navigateur, vrai supabase-js, base simulée) : nouvelle suite de 38 vérifications (bouton ›, touches ← →, focus, historique inchangé, annonce ; 25 fiches d'affilée puis retour : grille placée sur la dernière ; première et dernière fiches ; ordre d'une recherche et du tri récent ; fiche hors grille sans flèches ; couverture agrandie ; éditeur ouvert et curseur dans un champ ; glissement du doigt à gauche, à droite et vertical sur iPhone ; barre collée en haut, fiche suivante affichée depuis le haut ; aucune erreur JS). La suite des présentations (103) repasse. Non-régression par rapport à la 3.4 : grille, recherche, tri récent et statistiques identiques ; seules différences, la barre du haut de la fiche et le nouveau paragraphe de l'aide.
+
+- **Version 3.4 — présentations de la bibliothèque** (13 novembre 2026) : Christophe a demandé les présentations de son appli ebooks (éventail, étagère, liste, mur, grille) ; la présentation des visiteurs est **réglable par lui** depuis l'appli (choix fait le 13 novembre), d'où la table `bd_reglages`. Construit directement, sans maquette (choix de Christophe). Détails : « Présentations de la bibliothèque ».
+  - **Mise en service** : publier l'appli, lancer `supabase_reglages.sql` dans le SQL Editor (résultat attendu : une ligne `presentation | grille` et 3 règles), puis choisir la présentation des visiteurs dans Réglages → Présentation → « Pour tes visiteurs ». Tant que le script n'est pas lancé, rien ne casse : tout le monde reste sur la grille.
+  - **Tests** (navigateur, vrai supabase-js 2.45.4, base simulée) : nouvelle suite de 103 vérifications sur les présentations (réglage du site pour un visiteur, cache hors ligne, choix de l'appareil prioritaire, chacune des cinq présentations sur PC et sur iPhone : pas de débordement horizontal, chargement différé, ouverture de la fiche au clic et à Entrée ; éventail, piles du mur, étagère de Thorgal à 6 + 37 et 4 + 39 tomes avec planches alignées, lignes de la liste ; Réglages visiteur et propriétaire ; enregistrement, refus de la base et table absente ; aucune erreur JS). Non-régression : en présentation grille, la grille (120 premiers éléments), la recherche, le tri récent, la fiche, les statistiques et les Réglages sont identiques à la 3.3, en visiteur, en propriétaire et sur iPhone. Script SQL testé sur PostgreSQL 16 (voir « Table `bd_reglages` »).
+  - **Incident de préparation** : l'espace de travail de Claude a été réinitialisé pendant la préparation ; la 3.4 a été reconstruite à partir de la 3.3 du PC. Les anciennes suites de tests et les outils de l'aide, qui n'existaient que dans cet espace, ont disparu : l'outil du PDF est désormais rangé sur le PC (`outils_delta/aide_pdf/`).
 
 - **7ᵉ mise à jour delta** (10 novembre 2026) : **8 nouvelles séries** (*American Parano*, *Après guerre*, *La Tour de Kyla*, *Les Chroniques de Magon*, *Les jours heureux*, *Melvile*, *Pathfinder*, et *Ping*, née du tome 2 rangé dans `-- BD Séries à compléter`), **29 séries enrichies** (42 tomes, surtout des tomes manquants comblés : *Petit poilu* 1, 6, 12 et 31, *Les Elfées* 3 à 5, *Triple galop* 16 à 18, *Mashle* 9 à 11, *100 Bullets* 4 à 6, *Silver Coin* 1 et 2…) et **7 nouveaux one-shots** (*AMR*, *Euy*, *La Fayette*, *Les mille et une vies des urgences*, *Les Évadés d'Alcatraz*, *Mauviette*, *Sculpter l'éternité*). `-- BD Séries à compléter` : 179 fichiers déjà présents, 1 nouvelle fiche. Catalogue : 2274 → **2289 entrées** (1291 séries + 998 one-shots), 8758 → **8822 albums**. 64 couvertures (dossier `volume_covers_delta_10nov/`), toutes vérifiées sur la planche contact, aucune avec nudité. Premier delta avec les dates d'ajout (`added` = 2026-11-10 sur les 15 nouvelles fiches et les 42 tomes ajoutés aux séries existantes). Auteurs des nouveaux tomes vérifiés dans les métadonnées PDF : mêmes séries (seuls les dessinateurs changent : *Orcs Gobelins*, *Terres d'Ogon*, *Silver Coin*, *Empire USA*). Pas de remise en ordre (depuis la 3.2, la clé publique ne lit plus les coches : la vérification « sans coche » demanderait la session du propriétaire ; l'appli range de toute façon les tomes par numéro). Genres en confiance « low » : *AMR*, *Ping*. Pas de changement de version de l'appli.
 
