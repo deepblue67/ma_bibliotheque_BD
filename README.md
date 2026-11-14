@@ -649,8 +649,18 @@ Ou plus simple : pousser directement sur GitHub Pages (qui sert en https, aucun 
 1. `covers/`, les dossiers `volume_covers*/`, `outils_delta/` et les fichiers de travail sont exclus via `.gitignore` — le commit ne contient que le code (dont `uploader.html`, publié depuis la 2.5), `data/catalog.json` (~1 Mo) et `Mode_emploi_proprietaire.pdf` (lié depuis Réglages → Aide).
 2. Pousser sur GitHub (dépôt `ma-bibliotheque-bd`, via GitHub Desktop).
 3. Settings → Pages → source = branche `main`, dossier racine.
-4. Site en ligne à `https://<pseudo-github>.github.io/ma-bibliotheque-bd/` après 1-2 minutes.
+4. Site en ligne après 1-2 minutes, à l'adresse **https://bd.cdesmottes.fr** depuis le 14 novembre 2026 (avant : `https://deepblue67.github.io/ma_bibliotheque_BD/`). Voir « Nom de domaine ».
 5. Le lien n'est indexé nulle part mais reste techniquement accessible à qui aurait l'URL exacte (pas de mot de passe sans offre GitHub payante).
+
+### Nom de domaine (14 novembre 2026)
+
+Christophe a acheté **cdesmottes.fr** chez **Infomaniak** (au nom de Christophe, propriétaire masqué dans le Whois ; 6,12 € TTC la première année, environ 8,40 € par an ensuite ; sans hébergement ni messagerie). Le site **reste hébergé par GitHub Pages** : seul le nom change, la publication aussi reste la même. Choix d'un sous-domaine pour que le même domaine puisse servir plus tard à l'appli ebooks (par exemple `livres.cdesmottes.fr`).
+
+- **Zone DNS chez Infomaniak** (Manager → Noms de domaine → cdesmottes.fr → Zone DNS) : `bd.cdesmottes.fr` CNAME `deepblue67.github.io` (sans le nom du dépôt) ; TXT `_github-pages-challenge-deepblue67.cdesmottes.fr` = code de vérification GitHub, **à garder** (il maintient le domaine vérifié) ; plus les lignes posées par Infomaniak (NS, SPF `v=spf1 -all` et DMARC `p=reject` : le domaine n'envoie pas d'e-mails), à laisser.
+- **GitHub** : domaine vérifié dans les réglages du compte (Settings → Pages → Verified domains), ce qui empêche un autre compte GitHub de l'utiliser ; dans le dépôt, Settings → Pages → Custom domain = `bd.cdesmottes.fr` et « Enforce HTTPS » coché. GitHub ajoute alors au dépôt un fichier **`CNAME`** (contenant `bd.cdesmottes.fr`) : il doit rester dans le dépôt. Avec GitHub Desktop, **récupérer ce commit (Fetch / Pull origin) avant la publication suivante** ; ne pas recréer le fichier à la main dans le dossier, Git refuserait alors de récupérer le sien.
+- **Supabase** : rien à changer (la connexion par e-mail et mot de passe ne dépend pas de l'adresse du site).
+- **Changer d'adresse, pour chaque appareil** : le navigateur range ses données par adresse. Sur la nouvelle, il faut se reconnecter (Réglages → Mode propriétaire), refaire thème, style et présentation, et recréer l'icône sur l'écran d'accueil de l'iPhone. Les coches, favoris, avis et corrections sont dans Supabase : rien n'est perdu.
+- Le mode d'emploi PDF affiche désormais `bd.cdesmottes.fr` dans son bandeau (`outils_delta/aide_pdf/aide_pdf.js`).
 
 ## Versions des livraisons
 
