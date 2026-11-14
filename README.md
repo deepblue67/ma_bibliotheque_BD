@@ -2,7 +2,7 @@
 
 Catalogue personnel de bandes dessinées de Christophe (**1291 séries, 998 one-shots, 8822 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
 
-> **Version actuellement livrée : 3.9 du 13/11/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
+> **Version actuellement livrée : 3.10 du 14/11/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
 >
 > **Mode d'emploi** : ce README est la documentation **technique** du projet. Le mode d'emploi **du propriétaire** est ailleurs : dans l'appli (Réglages → Aide, visible en mode propriétaire seulement) et en PDF (`Mode_emploi_proprietaire.pdf`). Voir la section « Aide et mode d'emploi ».
 >
@@ -39,6 +39,7 @@ ma-bibliotheque-bd/
 ├── apple-touch-icon.png  # icône écran d'accueil iPad/iPhone (180×180, convention racine)
 ├── favicon.ico           # favicon multi-résolution (onglet navigateur)
 ├── site.webmanifest      # manifest PWA (icônes Android/Chrome, nom, couleurs)
+├── robots.txt            # 3.10 : consignes aux moteurs de recherche (site non référencé)
 ├── icons/                 # déclinaisons de tailles de l'icône (apple-touch-icon-*, favicon-*,
 │                        #   android-chrome-*) — voir section dédiée plus bas
 ├── Mode_emploi_proprietaire.pdf # mode d'emploi du propriétaire (même texte que Réglages → Aide),
@@ -662,12 +663,23 @@ Christophe a acheté **cdesmottes.fr** chez **Infomaniak** (au nom de Christophe
 - **Changer d'adresse, pour chaque appareil** : le navigateur range ses données par adresse. Sur la nouvelle, il faut se reconnecter (Réglages → Mode propriétaire), refaire thème, style et présentation, et recréer l'icône sur l'écran d'accueil de l'iPhone. Les coches, favoris, avis et corrections sont dans Supabase : rien n'est perdu.
 - Le mode d'emploi PDF affiche désormais `bd.cdesmottes.fr` dans son bandeau (`outils_delta/aide_pdf/aide_pdf.js`).
 
+### Discrétion : site non référencé (version 3.10)
+
+Christophe ne veut pas que n'importe qui tombe sur le site. Trois niveaux ont été présentés le 14 novembre 2026 : (1) **discrétion**, retenu pour commencer ; (2) vraie porte d'entrée avec une connexion Supabase obligatoire pour voir le catalogue (catalogue sorti du dépôt public vers un stockage Supabase privé, couvertures privées, comptes créés à la main pour les proches) ; (3) hébergement chez Cloudflare (dépôt privé + porte d'entrée par code e-mail). Un simple mot de passe dans la page a été écarté : vérifié par le navigateur, il se contourne, et le catalogue reste lisible dans le dépôt GitHub public.
+
+Ce qui est en place :
+- `<meta name="robots" content="noindex, nofollow, noarchive">` dans `index.html` et `uploader.html` : les moteurs de recherche ne listent pas les pages.
+- `robots.txt` à la racine : les robots peuvent lire les pages HTML (sinon ils ne verraient pas la consigne « noindex »), mais pas `data/`, ni le PDF, ni `uploader.html`.
+
+Limites, à connaître : ce n'est **pas une protection** (qui connaît l'adresse ouvre le site, comme avant) ; les robots malveillants ignorent ces consignes ; **le dépôt GitHub reste public**, donc `data/catalog.json` et le code y sont lisibles et peuvent être trouvés depuis GitHub. Ce qui est personnel (coches, favoris, avis, carnet, corrections) reste, lui, réservé à la connexion du propriétaire par les règles Supabase. Pour une vraie protection : option (2) ci-dessus.
+
 ## Versions des livraisons
 
 **Règle (à appliquer à chaque livraison de l'application, par Claude ou une autre IA) :**
 1. Augmenter `APP_VERSION` dans `app.js` (et `APP_VERSION_DATE` = date du jour, format `AAAA-MM-JJ`) :
    - `+0.1` pour une livraison ordinaire (correctif, retouche, petite fonction) : 2.0 → 2.1 → 2.2…
    - `+1.0` pour une refonte (nouvel écran, changement de structure) : 2.9 → 3.0.
+   - Après x.9 vient x.10 (puis x.11…), pas (x+1).0, réservé aux refontes : 3.9 → 3.10 (14 novembre 2026).
 2. Reporter **le même numéro** dans `index.html`, sur tous les liens : `themes.js?v=…`, `style.css?v=…`, `config.js?v=…` et, depuis la 3.8, les sept fichiers du code (`app.js`, `grille.js`, `fiche.js`, `reglages.js`, `doublons.js`, `carnet.js`, `demarrage.js`), soit dix liens, ainsi que sur les trois liens de `uploader.html` (`themes.js`, `style.css`, `config.js`). Le lien vers `uploader.html` dans les Réglages prend le numéro tout seul (`app.js`).
 3. Ajouter une ligne au tableau ci-dessous et mettre à jour la ligne « Version actuellement livrée » en tête de ce fichier.
 4. Livrer ensemble `index.html` et `app.js` (le numéro est dans les deux), plus les autres fichiers modifiés ; comme leur `?v=` change, les sept fichiers du code se publient toujours ensemble.
@@ -677,6 +689,7 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 
 | Version | Date | Contenu |
 |---|---|---|
+| 3.10 | 14/11/2026 | **Site non référencé** : balise `noindex` dans `index.html` et `uploader.html`, nouveau `robots.txt` (données et PDF non explorés). Discrétion seulement, pas une protection. Mode d'emploi : adresse bd.cdesmottes.fr et paragraphe « Site non référencé » (6 pages). |
 | 3.9 | 13/11/2026 | **Réglages → Style** (repris de l'appli ebooks) : 12 réglages en deux groupes, Bandeau et Pages, qui affinent le thème sur l'appareil ; 5 préréglages (D'origine, Doux, Élégant, Épuré, Tout BD), « personnalisé », aperçu en direct ; appliqué avant le premier affichage. Sans choix, aspect identique à la 3.8. Aide et PDF mis à jour (6 pages). Éventail revu : sans cadre, titre seul (nombre de tomes pour les séries), moins de colonnes et couvertures plus grandes, couverture seule à la taille des autres et droite. Étagère : tomes à la même hauteur. |
 | 3.8 | 13/11/2026 | **Chantier technique** (rien ne change à l'écran) : `app.js` découpé en sept fichiers (`app.js`, `grille.js`, `fiche.js`, `reglages.js`, `doublons.js`, `carnet.js`, `demarrage.js`), à publier ensemble ; client Supabase renommé `supa` ; `style.css` rangé (sommaire, règles mortes retirées, doublons fusionnés). Vérifié par un banc de captures identiques avant / après. |
 | 3.7 | 13/11/2026 | **Ordre et recherche** : tris **Nombre de tomes** (tous) et **Lus récemment** (propriétaire, d'après les dates des coches et des avis), avec séparateurs ; recherche, classement et barre alphabétique qui ramènent ø, ß, ł, đ, ð, þ et ı à o, ss, l, d, d, th et i. Aide et PDF mis à jour (6 pages). |
@@ -701,6 +714,8 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 Les livraisons antérieures n'étaient pas numérotées ; leur détail est dans l'historique ci-dessous.
 
 ## Historique des décisions notables
+
+- **Version 3.10 — site non référencé** (14 novembre 2026) : après le passage au domaine `bd.cdesmottes.fr`, Christophe a demandé comment protéger le site ; il a choisi de commencer par la discrétion (option 1). Détails : « Discrétion : site non référencé ». Vérifié : la balise est présente et lue par le navigateur sur les deux pages, `robots.txt` est servi à la racine du site local, et les suites de présentations, de fiche précédente / suivante et de style repassent.
 
 - **Version 3.9 — Réglages → Style** (13 novembre 2026) : seconde partie du dernier lot tiré de l'appli ebooks, demandée par Christophe « comme l'appli ebook » (groupes Bandeau et Pages, préréglages, aperçu), l'aspect BD restant le défaut. Lancée sans attendre la publication de la 3.8 (choix de Christophe) : publier la 3.9 publie aussi la 3.8. Détails : « Style » dans « Thèmes et réglages ».
   - **Tests** : nouvelle suite `test21.js` (76 vérifications : rien de posé par défaut ; section visible des visiteurs, 5 préréglages, 12 réglages ; l'effet réel mesuré à l'écran de chaque réglage du bandeau et des pages ; police chargée à la demande ; mémoire sur l'appareil, « personnalisé », préréglage Épuré conservé après rechargement, appliqué à la grille et à la fiche ; « D'origine » efface tout ; valeur inconnue ignorée ; style posé avant le premier affichage ; pour chaque préréglage, sur PC (étagère) et iPhone (mur) : pas de débordement, étagère intacte, piles du mur dessinées, pas d'identifiant en double, aucune erreur JS ; sur iPhone SE, aucune des 10 polices du titre ne déborde ni ne touche le bouton Réglages). Les suites 3.4 à 3.7 repassent (103, 38, 57, 31). **Banc visuel** 3.8 / 3.9 sans style choisi : en dehors des Réglages (nouvelle section, attendue), 74 écrans sur 78 retombent sur une image identique au pixel près ; les 4 autres (fiche ou zoom ouverts sur la grille) diffèrent de quelques dizaines de pixels d'une nuance d'au plus 5/255, exactement comme deux captures de la même version entre elles.

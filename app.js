@@ -13,8 +13,8 @@
   // ordinaire, +1.0 pour une refonte), avec le même numéro dans tous les ?v= de
   // index.html (un par fichier : themes, style, config et les 7 fichiers du code, depuis
   // la 3.8) et de uploader.html, et une ligne dans l'historique « Versions » du README.
-  var APP_VERSION = "3.9";
-  var APP_VERSION_DATE = "2026-11-13";
+  var APP_VERSION = "3.10";
+  var APP_VERSION_DATE = "2026-11-14";
 
   // ---------- mode propriétaire (3.3) ----------
   // Propriétaire = appareil connecté à Supabase (Supabase Auth, e-mail + mot de passe ; voir

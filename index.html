@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 3.10 : site personnel, non référencé par les moteurs de recherche (voir aussi robots.txt).
+     Discrétion seulement : ce n'est pas un mot de passe. -->
+<meta name="robots" content="noindex, nofollow, noarchive">
 <title>Ma Bibliothèque BD</title>
 
 <!-- Icône écran d'accueil iPad / iPhone -->
@@ -26,8 +29,8 @@
      livraison, dans tous les liens (et les trois de uploader.html), pour forcer les navigateurs (iPhone compris) à recharger.
      themes.js est volontairement bloquant et placé AVANT style.css : il pose le thème
      mémorisé (et charge ses polices) avant le premier affichage. -->
-<script src="themes.js?v=3.9"></script>
-<link rel="stylesheet" href="style.css?v=3.9">
+<script src="themes.js?v=3.10"></script>
+<link rel="stylesheet" href="style.css?v=3.10">
 </head>
 <body>
 
@@ -372,6 +375,7 @@
               <li><b>Chercher un sigle</b> : tape-le avec ses points ou son $ (« I.R.$ », « M.A.D », « W.I.T.C.H ») pour ne trouver que la série. Sans les points (« irs »), la recherche porte aussi sur l'intérieur des mots (« soirs »).</li>
               <li><b>Thème, style et présentation</b> : ils sont choisis appareil par appareil, dans Réglages → Thème, Style et Présentation. <b>Style</b> affine l'aspect du thème, aspect par aspect : pour le bandeau (police, écriture et ombre du titre, fond, champs de recherche, puces de filtre, bouton Réglages) et pour les pages (police des titres, vignettes et fiche, pastilles, boutons, panneaux). Cinq préréglages en tête (D'origine, Doux, Élégant, Épuré, Tout BD) et un aperçu qui change tout de suite ; « personnalisé » s'affiche dès qu'un réglage s'en écarte. <b>D'origine</b> remet tout comme le thème.</li>
               <li><b>Fiche précédente / suivante</b> : dans une fiche ouverte, les flèches ‹ › en haut à gauche (ou les touches ← → du clavier, ou un glissement du doigt vers la gauche ou la droite sur l'iPhone) passent à la fiche voisine, dans l'ordre de la grille, recherche, filtres et tri compris. Le numéro entre les flèches dit où tu en es. En refermant, la grille se place sur la dernière fiche vue. Pendant une modification (✎ ouvert), le clavier et le doigt ne changent pas de fiche.</li>
+              <li><b>Site non référencé</b> : Google et les autres moteurs de recherche sont priés de ne pas lister le site. Seules les personnes à qui tu donnes l'adresse le trouvent. Ce n'est pas un mot de passe : quelqu'un qui connaît l'adresse peut ouvrir la bibliothèque (jamais tes lectures, avis ni corrections, qui restent réservés à ta connexion).</li>
               <li><b>Barre alphabétique</b> : en haut de la grille, # puis A à Z. Elle reste visible quand tu fais défiler ; touche une lettre pour sauter directement aux titres qui commencent par elle (# : chiffres et signes). Une lettre grisée n'a aucune BD. Elle suit les filtres (One-shots, genre…) et s'efface quand une recherche donne moins de 40 résultats.</li>
               <li><b>Page Réglages</b> : chaque partie se plie ou se déplie en touchant son titre, et « Tout déplier · Tout replier » agit sur toutes à la fois. L'appareil se souvient de ce que tu as replié. « ← Retour à la bibliothèque » (ou le retour du téléphone) te ramène à l'endroit où tu étais dans la grille.</li>
               <li><b>Version de l'appli</b> : elle est indiquée tout en bas des Réglages. Après une publication, elle te permet de vérifier que ton iPhone affiche bien la dernière version ; sinon, ou si une modification publiée n'apparaît pas, recharge la page (au besoin, vide le cache du navigateur).</li>
@@ -524,16 +528,16 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"
         integrity="sha384-0w2KAL2YHP6wKOkUDzkCDGgVvfmHnj02DHeQ6XcHOgTfFsGyonKOpShMH1x6nk9o"
         crossorigin="anonymous"></script>
-<script src="config.js?v=3.9"></script>
+<script src="config.js?v=3.10"></script>
 <!-- 3.8 : le code de l'appli est découpé en 7 fichiers qui se partagent les mêmes noms ; ils
      doivent être chargés tous, et dans cet ordre (le dernier lance l'appli). README :
      « Organisation du code ». -->
-<script src="app.js?v=3.9"></script>
-<script src="grille.js?v=3.9"></script>
-<script src="fiche.js?v=3.9"></script>
-<script src="reglages.js?v=3.9"></script>
-<script src="doublons.js?v=3.9"></script>
-<script src="carnet.js?v=3.9"></script>
-<script src="demarrage.js?v=3.9"></script>
+<script src="app.js?v=3.10"></script>
+<script src="grille.js?v=3.10"></script>
+<script src="fiche.js?v=3.10"></script>
+<script src="reglages.js?v=3.10"></script>
+<script src="doublons.js?v=3.10"></script>
+<script src="carnet.js?v=3.10"></script>
+<script src="demarrage.js?v=3.10"></script>
 </body>
 </html>
