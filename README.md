@@ -669,7 +669,7 @@ Christophe ne veut pas que n'importe qui tombe sur le site. Trois niveaux ont é
 
 Ce qui est en place :
 - `<meta name="robots" content="noindex, nofollow, noarchive">` dans `index.html` et `uploader.html` : les moteurs de recherche ne listent pas les pages.
-- `robots.txt` à la racine : les robots peuvent lire les pages HTML (sinon ils ne verraient pas la consigne « noindex »), mais pas `data/`, ni le PDF, ni `uploader.html`.
+- `robots.txt` à la racine : il ne bloque que ce qui ne peut pas porter de balise, `data/` (catalogue JSON) et le PDF. Les pages HTML, `uploader.html` compris, restent lisibles par les robots : s'ils ne pouvaient pas les lire, ils ne verraient pas la consigne « noindex » (une page bloquée par `robots.txt` peut même être listée sans contenu si un lien y mène). Corrigé le 16 novembre 2026 sur une remarque de Christophe : la première version bloquait aussi `uploader.html`, ce qui annulait sa balise.
 
 Limites, à connaître : ce n'est **pas une protection** (qui connaît l'adresse ouvre le site, comme avant) ; les robots malveillants ignorent ces consignes ; **le dépôt GitHub reste public**, donc `data/catalog.json` et le code y sont lisibles et peuvent être trouvés depuis GitHub. Ce qui est personnel (coches, favoris, avis, carnet, corrections) reste, lui, réservé à la connexion du propriétaire par les règles Supabase. Pour une vraie protection : option (2) ci-dessus.
 

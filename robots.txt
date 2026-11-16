@@ -1,8 +1,8 @@
 # Ma Bibliothèque BD (bd.cdesmottes.fr) — site personnel, à ne pas référencer.
-# Les pages HTML portent aussi <meta name="robots" content="noindex…"> : on laisse les robots
-# les lire (sans quoi ils ne verraient pas cette consigne), mais pas les données ni le PDF.
+# Les pages HTML (index.html, uploader.html) portent <meta name="robots" content="noindex…"> :
+# elles ne sont PAS bloquées ici, sinon les robots ne pourraient pas lire cette consigne.
+# Seuls les fichiers qui ne peuvent pas porter de balise (catalogue JSON, PDF) sont bloqués.
 # Ce n'est PAS une protection : quiconque connaît l'adresse peut ouvrir le site.
 User-agent: *
 Disallow: /data/
 Disallow: /Mode_emploi_proprietaire.pdf
-Disallow: /uploader.html
