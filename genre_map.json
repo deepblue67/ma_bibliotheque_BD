@@ -142,6 +142,13 @@
   ],
   "source": "oneshot_pass1"
  },
+ "A_B_C_contre_Poirot": {
+  "genres": [
+   "Policier / Thriller"
+  ],
+  "confidence": "high",
+  "source": "pass3"
+ },
  "A_Prix_d_Or": {
   "confidence": "low",
   "genres": [],
@@ -1149,6 +1156,13 @@
    "Documentaire"
   ],
   "source": "oneshot_pass1"
+ },
+ "Au_temps_pour_elle": {
+  "genres": [
+   "Drame / Chronique sociale"
+  ],
+  "confidence": "low",
+  "source": "oneshot_delta"
  },
  "Aucune_tombe_assez_profonde": {
   "confidence": "low",
@@ -2190,6 +2204,14 @@
    "Guerre"
   ],
   "source": "pass2_web"
+ },
+ "Chapatanka": {
+  "genres": [
+   "Western",
+   "Jeunesse"
+  ],
+  "confidence": "medium",
+  "source": "pass3"
  },
  "Charbon": {
   "genres": [
@@ -6065,6 +6087,14 @@
   ],
   "source": "pass1"
  },
+ "L_homme-chevreuil": {
+  "genres": [
+   "Biographie",
+   "Aventure"
+  ],
+  "confidence": "high",
+  "source": "oneshot_delta"
+ },
  "L_homme_qui_pouvait_accomplir_des_miracles": {
   "confidence": "high",
   "genres": [
@@ -6104,6 +6134,13 @@
    "Humour"
   ],
   "source": "oneshot_pass1"
+ },
+ "L_incroyable_histoire_des_mathématiques_en_bande_dessinée": {
+  "genres": [
+   "Documentaire"
+  ],
+  "confidence": "high",
+  "source": "oneshot_delta"
  },
  "L_instit_Latouche": {
   "confidence": "high",
@@ -6253,6 +6290,14 @@
    "Drame / Chronique sociale"
   ],
   "source": "oneshot_pass1"
+ },
+ "L_Île_Oubliée": {
+  "genres": [
+   "Fantastique / Horreur",
+   "Aventure"
+  ],
+  "confidence": "medium",
+  "source": "pass3"
  },
  "L_Île_des_Mythes": {
   "genres": [
@@ -6432,6 +6477,13 @@
    "Drame / Chronique sociale"
   ],
   "source": "oneshot_pass1"
+ },
+ "La_Canne_de_Balzac": {
+  "genres": [
+   "Drame / Chronique sociale"
+  ],
+  "confidence": "low",
+  "source": "oneshot_delta"
  },
  "La_Cantoche": {
   "confidence": "low",
@@ -8329,6 +8381,14 @@
   ],
   "source": "pass3"
  },
+ "Le_complot_des_grenouilles": {
+  "genres": [
+   "Jeunesse",
+   "Policier / Thriller"
+  ],
+  "confidence": "low",
+  "source": "oneshot_delta"
+ },
  "Le_comte_de_Monte_Cristo": {
   "confidence": "high",
   "genres": [
@@ -8761,6 +8821,13 @@
    "Fantastique / Horreur"
   ],
   "source": "oneshot_pass1"
+ },
+ "Le_pouvoir_de_M": {
+  "genres": [
+   "Policier / Thriller"
+  ],
+  "confidence": "low",
+  "source": "oneshot_delta"
  },
  "Le_pouvoir_des_innocents": {
   "confidence": "high",
@@ -10224,6 +10291,14 @@
   ],
   "source": "pass1"
  },
+ "Les_grands_reveurs": {
+  "genres": [
+   "Fantasy",
+   "Jeunesse"
+  ],
+  "confidence": "medium",
+  "source": "pass3"
+ },
  "Les_griffes_du_Gévaudan": {
   "genres": [
    "Historique",
@@ -10801,6 +10876,14 @@
   "confidence": "medium",
   "source": "a_completer"
  },
+ "Lili_toujours_debout_jusqu_au_bout": {
+  "genres": [
+   "Biographie",
+   "Historique"
+  ],
+  "confidence": "high",
+  "source": "oneshot_delta"
+ },
  "Ling_Ling": {
   "confidence": "low",
   "genres": [
@@ -10875,6 +10958,13 @@
    "Fantastique / Horreur"
   ],
   "source": "pass1"
+ },
+ "Loin_de_la_mer": {
+  "genres": [
+   "Drame / Chronique sociale"
+  ],
+  "confidence": "low",
+  "source": "oneshot_delta"
  },
  "Loki_-_Le_Dieu_Tombé_Sur_Terre": {
   "confidence": "low",
@@ -12070,6 +12160,14 @@
   ],
   "source": "pass3"
  },
+ "Mortuus": {
+  "genres": [
+   "Fantastique / Horreur",
+   "Historique"
+  ],
+  "confidence": "medium",
+  "source": "a_completer"
+ },
  "Mousquetaire": {
   "confidence": "low",
   "genres": [
@@ -12234,6 +12332,14 @@
    "Guerre"
   ],
   "source": "oneshot_pass1"
+ },
+ "Naheulbeuk_Fiers_de_hache": {
+  "genres": [
+   "Fantasy",
+   "Humour"
+  ],
+  "confidence": "high",
+  "source": "pass3"
  },
  "Nanami": {
   "confidence": "low",
@@ -13101,6 +13207,14 @@
   ],
   "source": "oneshot_pass1"
  },
+ "Phœnix": {
+  "genres": [
+   "Science-fiction",
+   "Policier / Thriller"
+  ],
+  "confidence": "low",
+  "source": "pass3"
+ },
  "Pigafetta": {
   "confidence": "low",
   "genres": [
@@ -13340,6 +13454,14 @@
    "Drame / Chronique sociale"
   ],
   "source": "oneshot_pass1"
+ },
+ "Purple_Heart": {
+  "genres": [
+   "Policier / Thriller",
+   "Drame / Chronique sociale"
+  ],
+  "confidence": "medium",
+  "source": "pass3"
  },
  "Putzi": {
   "confidence": "low",
@@ -14029,6 +14151,13 @@
   ],
   "source": "pass1"
  },
+ "Samir": {
+  "genres": [
+   "Drame / Chronique sociale"
+  ],
+  "confidence": "low",
+  "source": "oneshot_delta"
+ },
  "Samurai": {
   "genres": [
    "Historique",
@@ -14500,6 +14629,13 @@
   ],
   "source": "oneshot_pass1"
  },
+ "Soeurs_de_glisse": {
+  "genres": [
+   "Drame / Chronique sociale"
+  ],
+  "confidence": "low",
+  "source": "oneshot_delta"
+ },
  "Sol13": {
   "confidence": "low",
   "genres": [
@@ -14801,6 +14937,14 @@
    "Drame / Chronique sociale"
   ],
   "source": "oneshot_pass1"
+ },
+ "SuperPunk": {
+  "genres": [
+   "Drame / Chronique sociale",
+   "Biographie"
+  ],
+  "confidence": "low",
+  "source": "oneshot_delta"
  },
  "Superman_-_Lost": {
   "confidence": "high",
@@ -15141,6 +15285,14 @@
   ],
   "confidence": "medium",
   "source": "pass3"
+ },
+ "The_Kids": {
+  "genres": [
+   "Policier / Thriller",
+   "Guerre"
+  ],
+  "confidence": "low",
+  "source": "oneshot_delta"
  },
  "The_Kong_crew": {
   "confidence": "low",

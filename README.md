@@ -1,6 +1,6 @@
 # Ma Bibliothèque BD
 
-Catalogue personnel de bandes dessinées de Christophe (**1291 séries, 998 one-shots, 8822 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
+Catalogue personnel de bandes dessinées de Christophe (**1299 séries, 1010 one-shots, 8916 albums**) : recherche par titre/auteur/genre, filtre séries / one-shots, marquage "lu" **par tome** (le titre passe "lu" automatiquement quand tous ses tomes le sont, filtrable en 3 états : Lus / En cours / Non lus) et favoris **par titre**, synchronisés entre iPhone, iPad et PC. Cliquer sur un tome dans la fiche détail affiche sa propre couverture. Site statique, sans backend applicatif — juste GitHub Pages + Supabase.
 
 > **Version actuellement livrée : 3.10 du 14/11/2026**, affichée en bas de la page Réglages de l'appli. Règle et historique : section « Versions des livraisons ».
 >
@@ -61,7 +61,7 @@ ma-bibliotheque-bd/
 ├── genre_taxonomy.json    # liste fixe des genres, informatif (la vraie source pour l'appli
 │                        #   est le tableau GENRES dans app.js)
 ├── data/
-│   ├── catalog.json     # catalogue généré (2289 entrées : 1291 séries + 998 one-shots)
+│   ├── catalog.json     # catalogue généré (2309 entrées : 1299 séries + 1010 one-shots)
 │   └── version.json     # empreinte du catalogue (2.8), écrite par outils_delta/6_finir.py : l'appli
 │                        #   garde le catalogue en cache tant qu'elle ne change pas — à publier avec lui
 ├── pending_covers.json   # FICHIER DE TRAVAIL d'une mise à jour "delta" : liste des tomes
@@ -714,6 +714,8 @@ Une livraison qui ne touche que les données (`data/catalog.json`, couvertures, 
 Les livraisons antérieures n'étaient pas numérotées ; leur détail est dans l'historique ci-dessous.
 
 ## Historique des décisions notables
+
+- **8ᵉ mise à jour delta** (19 novembre 2026) : **8 nouvelles séries** (*A.B.C. contre Poirot*, manga d'Uzuki d'après Agatha Christie, distinct de la fiche *Hercule Poirot* ; *Chapatanka* ; *L'Île Oubliée* ; *Les grands reveurs* ; *Naheulbeuk Fiers de hache* ; *Phœnix* ; *Purple Heart* ; et *Mortuus*, née du tome 1 rangé dans `-- BD Séries à compléter`), **19 séries enrichies** (64 tomes, dont *Les chroniques de Conan* 11 → 39 avec les tomes 1 à 28, *Les Elfées* 5 → 10, *Mashle* 11 → 16, *100 Bullets* 6 → 10, *Les Chroniques de Magon* 2 → 6, désormais complète de 1 à 6) et **12 nouveaux one-shots** (*Au temps pour elle*, *L'homme-chevreuil*, *La Canne de Balzac*, *Le complot des grenouilles*, *Le pouvoir de M*, *Lili, toujours debout, jusqu'au bout!*, *Loin de la mer*, *L'incroyable histoire des mathématiques en bande dessinée* — titre corrigé, le fichier porte « dessinéee » —, *Samir*, *SuperPunk*, *Soeurs de glisse*, *The Kids*). `-- BD Séries à compléter` : 2 tomes rattachés (*Les Chroniques de Magon* 3, *Les jours heureux* 2), 1 nouvelle fiche (*Mortuus*), 176 déjà présents. Catalogue : 2289 → **2309 entrées** (1299 séries + 1010 one-shots), 8822 → **8916 albums**. 94 couvertures (dossier `volume_covers_delta_19nov/`), toutes vérifiées sur la planche contact ; certaines couvertures des *Chroniques de Conan* (Buscema) montrent des femmes très peu vêtues, signalées à Christophe. *Conan* : les tomes 1 à 28 s'ajoutent après les 29 à 39 déjà présents (append-only) ; l'appli les range par numéro. *Guerres d'Arran* : le tome 4 en double était déjà au catalogue avant ce delta. *La Tour de Kyla* 3 : auteurs PDF erronés, mais même série (couverture et titre). Pas de remise en ordre (aucune session propriétaire disponible pour vérifier les coches ; l'appli range les tomes par numéro). **Dossiers spéciaux (référence pour les prochains deltas, catalogue/disque)** : Alix 71/72, Astérix 39/87, I.R.$ 38/42, Jeremiah 42/43, Les mondes de Leo 38/103, Les passagers du vent 13/22, Paradis perdu 4/8, Spirou 78/79, Tintin 24/85, Uchronie[s] 2/20, XIII 46/72. Genres en confiance « low » : *Phœnix*, *Au temps pour elle*, *La Canne de Balzac*, *Le complot des grenouilles*, *Le pouvoir de M*, *Loin de la mer*, *Samir*, *SuperPunk*, *Soeurs de glisse*, *The Kids*. Pas de changement de version de l'appli.
 
 - **Version 3.10 — site non référencé** (14 novembre 2026) : après le passage au domaine `bd.cdesmottes.fr`, Christophe a demandé comment protéger le site ; il a choisi de commencer par la discrétion (option 1). Détails : « Discrétion : site non référencé ». Vérifié : la balise est présente et lue par le navigateur sur les deux pages, `robots.txt` est servi à la racine du site local, et les suites de présentations, de fiche précédente / suivante et de style repassent.
 
